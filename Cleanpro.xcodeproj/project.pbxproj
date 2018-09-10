@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		046D7CB4214612F100648E78 /* TPPasswordTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046D7CB2214612F100648E78 /* TPPasswordTextView.m */; };
+		046D7E8821461E5100648E78 /* ChangeLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = 046D7E8721461E5100648E78 /* ChangeLanguage.m */; };
+		046D7E9221461FB500648E78 /* PriceHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 046D7E9021461FB500648E78 /* PriceHomeViewController.m */; };
 		04782CC720C54F5500252F70 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04782CC620C54F5500252F70 /* AppDelegate.m */; };
 		04782CCA20C54F5500252F70 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04782CC920C54F5500252F70 /* HomeViewController.m */; };
 		04782CCD20C54F5500252F70 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04782CCB20C54F5500252F70 /* Main.storyboard */; };
@@ -20,7 +22,6 @@
 		049676EC2101E8630080D920 /* BGLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 049676EB2101E8630080D920 /* BGLabel.m */; };
 		049676F2210569480080D920 /* CustomUINavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 049676F0210569480080D920 /* CustomUINavigationBar.m */; };
 		049676F3210569480080D920 /* NAvigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 049676F1210569480080D920 /* NAvigationViewController.m */; };
-		049676FB21056A440080D920 /* PriceHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 049676F821056A440080D920 /* PriceHomeViewController.m */; };
 		049676FF210B24E10080D920 /* locationMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 049676FE210B24E10080D920 /* locationMapViewController.m */; };
 		04967704210B2EB30080D920 /* PirceListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04967701210B2EB30080D920 /* PirceListTableViewCell.m */; };
 		04967705210B2EB30080D920 /* PirceListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04967702210B2EB30080D920 /* PirceListTableViewCell.xib */; };
@@ -50,7 +51,6 @@
 		049677822113F9140080D920 /* NSData+AES256.m in Sources */ = {isa = PBXBuildFile; fileRef = 049677812113F9140080D920 /* NSData+AES256.m */; };
 		049677852113F9340080D920 /* NSString+AES256.m in Sources */ = {isa = PBXBuildFile; fileRef = 049677842113F9340080D920 /* NSString+AES256.m */; };
 		04BC9F0E20C7767E00DE5039 /* setPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04BC9F0D20C7767E00DE5039 /* setPasswordViewController.m */; };
-		04BC9F1220C78FBA00DE5039 /* ChangeLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = 04BC9F1120C78FBA00DE5039 /* ChangeLanguage.m */; };
 		04BC9F1620C7BDDC00DE5039 /* BarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04BC9F1420C7BDDC00DE5039 /* BarViewController.m */; };
 		04BC9F1920C7C23E00DE5039 /* hp_banner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04BC9F1720C7C23D00DE5039 /* hp_banner@2x.png */; };
 		04BC9F1A20C7C23E00DE5039 /* hp_banner@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04BC9F1820C7C23D00DE5039 /* hp_banner@3x.png */; };
@@ -211,6 +211,10 @@
 /* Begin PBXFileReference section */
 		046D7CB2214612F100648E78 /* TPPasswordTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPPasswordTextView.m; sourceTree = "<group>"; };
 		046D7CB3214612F100648E78 /* TPPasswordTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPPasswordTextView.h; sourceTree = "<group>"; };
+		046D7E8621461E5100648E78 /* ChangeLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeLanguage.h; sourceTree = "<group>"; };
+		046D7E8721461E5100648E78 /* ChangeLanguage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeLanguage.m; sourceTree = "<group>"; };
+		046D7E9021461FB500648E78 /* PriceHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceHomeViewController.m; sourceTree = "<group>"; };
+		046D7E9121461FB500648E78 /* PriceHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceHomeViewController.h; sourceTree = "<group>"; };
 		04782CC220C54F5500252F70 /* Cleanpro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cleanpro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04782CC520C54F5500252F70 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		04782CC620C54F5500252F70 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -234,8 +238,6 @@
 		049676EF210569480080D920 /* NAvigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAvigationViewController.h; sourceTree = "<group>"; };
 		049676F0210569480080D920 /* CustomUINavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomUINavigationBar.m; sourceTree = "<group>"; };
 		049676F1210569480080D920 /* NAvigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAvigationViewController.m; sourceTree = "<group>"; };
-		049676F721056A440080D920 /* PriceHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PriceHomeViewController.h; path = ../../../../../wordPirce/wordPirce/Price/PriceHomeViewController.h; sourceTree = "<group>"; };
-		049676F821056A440080D920 /* PriceHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PriceHomeViewController.m; path = ../../../../../wordPirce/wordPirce/Price/PriceHomeViewController.m; sourceTree = "<group>"; };
 		049676FD210B24E10080D920 /* locationMapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = locationMapViewController.h; sourceTree = "<group>"; };
 		049676FE210B24E10080D920 /* locationMapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = locationMapViewController.m; sourceTree = "<group>"; };
 		04967701210B2EB30080D920 /* PirceListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PirceListTableViewCell.m; sourceTree = "<group>"; };
@@ -276,8 +278,6 @@
 		049677842113F9340080D920 /* NSString+AES256.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+AES256.m"; sourceTree = "<group>"; };
 		04BC9F0C20C7767E00DE5039 /* setPasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = setPasswordViewController.h; sourceTree = "<group>"; };
 		04BC9F0D20C7767E00DE5039 /* setPasswordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = setPasswordViewController.m; sourceTree = "<group>"; };
-		04BC9F1020C78FBA00DE5039 /* ChangeLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeLanguage.h; sourceTree = "<group>"; };
-		04BC9F1120C78FBA00DE5039 /* ChangeLanguage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeLanguage.m; sourceTree = "<group>"; };
 		04BC9F1420C7BDDC00DE5039 /* BarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarViewController.m; sourceTree = "<group>"; };
 		04BC9F1520C7BDDC00DE5039 /* BarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarViewController.h; sourceTree = "<group>"; };
 		04BC9F1720C7C23D00DE5039 /* hp_banner@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hp_banner@2x.png"; sourceTree = "<group>"; };
@@ -529,6 +529,15 @@
 			path = TPPasswordTextView;
 			sourceTree = "<group>";
 		};
+		046D7E8521461E5100648E78 /* 语言设置单例 */ = {
+			isa = PBXGroup;
+			children = (
+				046D7E8621461E5100648E78 /* ChangeLanguage.h */,
+				046D7E8721461E5100648E78 /* ChangeLanguage.m */,
+			);
+			path = "语言设置单例";
+			sourceTree = "<group>";
+		};
 		04782CB920C54F5500252F70 = {
 			isa = PBXGroup;
 			children = (
@@ -613,8 +622,8 @@
 				04967703210B2EB30080D920 /* PirceListTableViewCell.h */,
 				04967701210B2EB30080D920 /* PirceListTableViewCell.m */,
 				04967702210B2EB30080D920 /* PirceListTableViewCell.xib */,
-				049676F721056A440080D920 /* PriceHomeViewController.h */,
-				049676F821056A440080D920 /* PriceHomeViewController.m */,
+				046D7E9121461FB500648E78 /* PriceHomeViewController.h */,
+				046D7E9021461FB500648E78 /* PriceHomeViewController.m */,
 				049676E92101E7F10080D920 /* 自定义表格lable */,
 			);
 			path = Price;
@@ -685,16 +694,6 @@
 			children = (
 			);
 			path = "密码框";
-			sourceTree = "<group>";
-		};
-		04BC9F0F20C78FBA00DE5039 /* 语言设置单例 */ = {
-			isa = PBXGroup;
-			children = (
-				04BC9F1020C78FBA00DE5039 /* ChangeLanguage.h */,
-				04BC9F1120C78FBA00DE5039 /* ChangeLanguage.m */,
-			);
-			name = "语言设置单例";
-			path = "../../../../屏蔽公司租仓/5.23日上传gitlab/UATStorHub/StorHub/Third/语言设置单例";
 			sourceTree = "<group>";
 		};
 		04BC9F1320C7BDDC00DE5039 /* UITabBarController */ = {
@@ -894,9 +893,9 @@
 		04F95E2B20C661E700984A6B /* 第三方库 */ = {
 			isa = PBXGroup;
 			children = (
+				046D7E8521461E5100648E78 /* 语言设置单例 */,
 				046D7CB1214612F100648E78 /* TPPasswordTextView */,
 				04BC9F2420C9064300DE5039 /* 二维码扫描 */,
-				04BC9F0F20C78FBA00DE5039 /* 语言设置单例 */,
 				04BC9F0720C6989100DE5039 /* 密码框 */,
 				04F95F4520C6782700984A6B /* 公共库函数 */,
 				04F95F4120C6769400984A6B /* 截获系统返回类 */,
@@ -1636,6 +1635,7 @@
 				04F95EB320C664DC00984A6B /* UIImageView+AFNetworking.m in Sources */,
 				04BC9F1D20C8CD1200DE5039 /* LoginViewController.m in Sources */,
 				04F95F4420C6769400984A6B /* UIViewController+BackButtonHandler.m in Sources */,
+				046D7E9221461FB500648E78 /* PriceHomeViewController.m in Sources */,
 				04782CD020C54F5500252F70 /* Cleanpro.xcdatamodeld in Sources */,
 				04F95EB620C664DC00984A6B /* UIWebView+AFNetworking.m in Sources */,
 				04967704210B2EB30080D920 /* PirceListTableViewCell.m in Sources */,
@@ -1666,7 +1666,6 @@
 				04782CD820C54F5700252F70 /* main.m in Sources */,
 				04F95EB220C664DC00984A6B /* AFNetworkActivityIndicatorManager.m in Sources */,
 				049677322112A7350080D920 /* PromotionViewController.m in Sources */,
-				04BC9F1220C78FBA00DE5039 /* ChangeLanguage.m in Sources */,
 				04BC9F4820C9068800DE5039 /* WCQRCodeScanningVC.m in Sources */,
 				04BC9F2020C8D6C400DE5039 /* ForgetPasswordViewController.m in Sources */,
 				04F95EB720C664DC00984A6B /* AFAutoPurgingImageCache.m in Sources */,
@@ -1678,7 +1677,7 @@
 				04BC9F5620CA346100DE5039 /* LaundryDetailsViewController.m in Sources */,
 				04BC9F9120CE81B400DE5039 /* DetailsListTableViewCell.m in Sources */,
 				04F95EBB20C664DC00984A6B /* AFURLSessionManager.m in Sources */,
-				049676FB21056A440080D920 /* PriceHomeViewController.m in Sources */,
+				046D7E8821461E5100648E78 /* ChangeLanguage.m in Sources */,
 				049676F3210569480080D920 /* NAvigationViewController.m in Sources */,
 				049676FF210B24E10080D920 /* locationMapViewController.m in Sources */,
 				04F270EF20CFC8DA00170876 /* SettingViewController.m in Sources */,
@@ -1881,7 +1880,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pakpobox.Cleanpro;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pakpobox.Cleanpro-ceshi";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1903,7 +1902,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pakpobox.Cleanpro;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pakpobox.Cleanpro-ceshi";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
