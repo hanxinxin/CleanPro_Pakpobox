@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface PromotionViewController : UIViewController
-
+@property (weak, nonatomic) IBOutlet UITableView *StableView;
 @end

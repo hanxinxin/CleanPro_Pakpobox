@@ -88,16 +88,16 @@
     // 样式可以自定义
     _mainBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_mainBtn setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-//    [_mainBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_mainBtn setTitle:@"+86" forState:UIControlStateNormal];
+    [_mainBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_mainBtn setTitle:@"" forState:UIControlStateNormal];
     [_mainBtn addTarget:self action:@selector(clickMainBtn:) forControlEvents:UIControlEventTouchUpInside];
     _mainBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     _mainBtn.titleLabel.font    = [UIFont systemFontOfSize:14.f];
     _mainBtn.titleEdgeInsets    = UIEdgeInsetsMake(0, 15, 0, 0);
     _mainBtn.selected           = NO;
     _mainBtn.backgroundColor    = [UIColor whiteColor];
-    _mainBtn.layer.borderColor  = [UIColor blackColor].CGColor;
-    _mainBtn.layer.borderWidth  = 0;
+//    _mainBtn.layer.borderColor  = [UIColor blackColor].CGColor;
+//    _mainBtn.layer.borderWidth  = 0;
 
     [self addSubview:_mainBtn];
     
@@ -119,7 +119,7 @@
     
     _titleArr  = [NSArray arrayWithArray:titlesArr];
     _rowHeight = rowHeight;
-
+    [_mainBtn setTitle:_titleArr[0] forState:UIControlStateNormal];
     
     // 下拉列表背景View
     _listView = [[UIView alloc] init];
@@ -221,12 +221,12 @@
     if (cell == nil) {
         //---------------------------下拉选项样式，可在此处自定义-------------------------
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.textLabel.font          = [UIFont systemFontOfSize:11.f];
+        cell.textLabel.font          = [UIFont systemFontOfSize:14.f];
         cell.textLabel.textColor     = [UIColor blackColor];
         cell.selectionStyle          = UITableViewCellSelectionStyleNone;
         
         UIView * line = [[UIView alloc] initWithFrame:CGRectMake(0, _rowHeight -0.5, VIEW_WIDTH(cell), 0.5)];
-        line.backgroundColor = [UIColor blackColor];
+        line.backgroundColor = [UIColor whiteColor];
         [cell addSubview:line];
         //---------------------------------------------------------------------------
     }

@@ -9,5 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface LaundrySuccessViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIButton *iamge_set;
+@property (weak, nonatomic) IBOutlet UILabel *title_text;
 
+@property (weak, nonatomic) IBOutlet UILabel *tips_text;
+@property (weak, nonatomic) IBOutlet UIButton *Compelet_btn;
+
+//// 传值类
+@property (nonatomic, strong)CreateOrder * order_c;
 @end

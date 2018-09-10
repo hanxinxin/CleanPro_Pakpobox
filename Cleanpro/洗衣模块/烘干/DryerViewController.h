@@ -9,5 +9,20 @@
 #import <UIKit/UIKit.h>
 
 @interface DryerViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIView *topView;
+@property (weak, nonatomic) IBOutlet UILabel *machine_label;
+@property (weak, nonatomic) IBOutlet UILabel *Time_label;
+@property (weak, nonatomic) IBOutlet UILabel *money_label;
+@property (weak, nonatomic) IBOutlet UIButton *jian_btn;
+@property (weak, nonatomic) IBOutlet UILabel *time_minute_label;
+@property (weak, nonatomic) IBOutlet UIButton *jia_btn;
+
+
+@property (weak, nonatomic) IBOutlet UIButton *pay_btn;
+
+//// 定义选择分钟数  默认是23分钟
+@property (assign, nonatomic) NSInteger TimeTeger;
+
+@property(nonatomic,strong)NSArray * arrayList;
 
 @end

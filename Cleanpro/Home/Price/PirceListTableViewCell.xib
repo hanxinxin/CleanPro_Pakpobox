@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,27 +18,90 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="125.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lanudry" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s50-Ip-g6Z">
-                        <rect key="frame" x="16" y="11" width="288" height="28"/>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OAJ-jW-nBb">
+                        <rect key="frame" x="16" y="4" width="288" height="47"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lanudry" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s50-Ip-g6Z">
+                                <rect key="frame" x="47" y="10" width="241" height="28"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="wvM-nD-FqD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PLK-jw-a6u">
+                                <rect key="frame" x="8" y="10" width="31" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="29" id="ZWi-Ny-01v"/>
+                                    <constraint firstAttribute="width" constant="31" id="nRF-dR-RxF"/>
+                                </constraints>
+                                <state key="normal" image="icon_laundry_1.png"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="28" id="dAV-8Y-bQm"/>
+                            <constraint firstAttribute="height" constant="47" id="0TX-nG-5nG"/>
+                            <constraint firstItem="s50-Ip-g6Z" firstAttribute="leading" secondItem="PLK-jw-a6u" secondAttribute="trailing" constant="8" id="Jga-dt-gzA"/>
+                            <constraint firstItem="s50-Ip-g6Z" firstAttribute="top" secondItem="OAJ-jW-nBb" secondAttribute="top" constant="10" id="Jpx-cC-2vJ"/>
+                            <constraint firstItem="PLK-jw-a6u" firstAttribute="leading" secondItem="OAJ-jW-nBb" secondAttribute="leading" constant="8" id="KRB-27-X2l"/>
+                            <constraint firstAttribute="trailing" secondItem="s50-Ip-g6Z" secondAttribute="trailing" id="coD-IM-sk8"/>
+                            <constraint firstItem="PLK-jw-a6u" firstAttribute="top" secondItem="OAJ-jW-nBb" secondAttribute="top" constant="10" id="lGM-a4-ANv"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Na3-tK-H8p">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="47"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lanudry" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3s7-Pa-N8r">
+                                <rect key="frame" x="53" y="8" width="259" height="28"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="nxo-YA-4FT"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y58-Ul-vjg">
+                                <rect key="frame" x="8" y="7" width="31" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="31" id="DVb-Te-WCR"/>
+                                    <constraint firstAttribute="height" constant="29" id="e3T-Nz-pPL"/>
+                                </constraints>
+                                <state key="normal" image="icon_laundry_1.png"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="3s7-Pa-N8r" firstAttribute="leading" secondItem="Y58-Ul-vjg" secondAttribute="trailing" constant="14" id="1Ay-ir-TCX"/>
+                            <constraint firstAttribute="trailing" secondItem="3s7-Pa-N8r" secondAttribute="trailing" constant="8" id="CKE-Tl-KqO"/>
+                            <constraint firstItem="3s7-Pa-N8r" firstAttribute="top" secondItem="Na3-tK-H8p" secondAttribute="top" constant="8" id="CQi-F5-bcv"/>
+                            <constraint firstItem="Y58-Ul-vjg" firstAttribute="top" secondItem="Na3-tK-H8p" secondAttribute="top" constant="7" id="kkS-Gb-FWH"/>
+                            <constraint firstItem="Y58-Ul-vjg" firstAttribute="leading" secondItem="Na3-tK-H8p" secondAttribute="leading" constant="8" id="klU-Dm-BWq"/>
+                            <constraint firstAttribute="height" constant="47" id="ztA-8s-sSg"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="s50-Ip-g6Z" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="84z-Zd-avt"/>
-                    <constraint firstItem="s50-Ip-g6Z" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="eV0-hT-7tS"/>
-                    <constraint firstItem="s50-Ip-g6Z" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="nJd-mp-lRY"/>
+                    <constraint firstItem="OAJ-jW-nBb" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="13E-Ar-Xo1"/>
+                    <constraint firstItem="Na3-tK-H8p" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="COQ-kA-0Ib"/>
+                    <constraint firstAttribute="trailing" secondItem="OAJ-jW-nBb" secondAttribute="trailing" constant="16" id="Kle-XA-fLA"/>
+                    <constraint firstAttribute="trailing" secondItem="Na3-tK-H8p" secondAttribute="trailing" id="ZDt-xd-QE7"/>
+                    <constraint firstItem="OAJ-jW-nBb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="kg5-0F-O1S"/>
+                    <constraint firstItem="Na3-tK-H8p" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="xFv-hf-7d3"/>
                 </constraints>
             </tableViewCellContentView>
-            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="left_btn" destination="PLK-jw-a6u" id="ORO-m9-GKQ"/>
+                <outlet property="left_btn_two" destination="Y58-Ul-vjg" id="nAB-v1-HQh"/>
                 <outlet property="title_label" destination="s50-Ip-g6Z" id="uBr-lv-CM3"/>
+                <outlet property="title_label_two" destination="3s7-Pa-N8r" id="bZC-0e-AAq"/>
+                <outlet property="topView" destination="OAJ-jW-nBb" id="nrU-7c-o3O"/>
+                <outlet property="topView_two" destination="Na3-tK-H8p" id="OBt-xF-euL"/>
             </connections>
-            <point key="canvasLocation" x="-88" y="72"/>
+            <point key="canvasLocation" x="5" y="64"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="icon_laundry_1.png" width="20" height="18"/>
+    </resources>
 </document>

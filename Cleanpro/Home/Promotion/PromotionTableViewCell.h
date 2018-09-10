@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface PromotionTableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIImageView *image_P;
 
 @end

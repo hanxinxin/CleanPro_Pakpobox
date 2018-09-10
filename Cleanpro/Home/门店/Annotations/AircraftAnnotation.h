@@ -21,5 +21,10 @@
 /**
  *  大头针的子标题
  */
-@property (nonatomic, copy) NSString *subtitle;  
+@property (nonatomic, copy) NSString *subtitle;
+
+/**
+ *  大头针的  tag
+ */
+@property (nonatomic, assign) NSInteger tagg;
 @end

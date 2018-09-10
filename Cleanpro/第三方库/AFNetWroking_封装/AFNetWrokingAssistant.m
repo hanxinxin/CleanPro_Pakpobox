@@ -8,7 +8,7 @@
 
 #import "AFNetWrokingAssistant.h"
 #import "AFNetworking.h"
-#import "ReSetChallenge.h"
+//#import "ReSetChallenge.h"
 
 #define ACCEPTTYPENORMAL @[@"application/json",@"application/xml",@"text/json",@"text/javascript",@"text/html",@"text/plain"]
 #define ACCEPTTYPEIMAGE @[@"text/plain", @"multipart/form-data", @"application/json", @"text/html", @"image/jpeg", @"image/png", @"application/octet-stream", @"text/json"]
@@ -52,7 +52,7 @@
                    failure:(void (^)(NSError *error))failure
                   useHTTPS:(BOOL)use{
     if (use) {
-        [_manager setSecurityPolicy:[self customSecurityPolicy]];
+//        [_manager setSecurityPolicy:[self customSecurityPolicy]];
     }
     [self POSTWithCompleteURL:URLString parameters:parameters progress:progress success:success failure:failure];
 }
@@ -84,6 +84,68 @@
     }];
 }
 
+
+///// 获取 statusCode
+-(void)PostURL_Code:(NSString *)URLString parameters:(id)parameters progress:(void(^)(id progress))Progress Success:(void (^)(NSInteger statusCode,id responseObject))Success failure:(void (^)(NSError *error))failure
+{
+    self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPENORMAL];
+    [self.manager POST:URLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //        NSLog(@"task===  %@",task);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)task.response;
+//        statusCode(responses.statusCode);
+        NSLog(@"statusCode == %ld",    responses.statusCode );
+        Success(responses.statusCode,responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failure(error);
+    }];
+}
+
+///// 获取 请求头加token
+-(void)PostURL_Token:(NSString *)URLString parameters:(id)parameters progress:(void(^)(id progress))Progress Success:(void (^)(NSInteger statusCode,id responseObject))Success failure:(void (^)(NSInteger statusCode,NSError *error))failure
+{
+    self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPENORMAL];
+    [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"userToken"];
+    [self.manager POST:URLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //        NSLog(@"task===  %@",task);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)task.response;
+        //        statusCode(responses.statusCode);
+//        NSLog(@"statusCode == %ld",    responses.statusCode );
+        Success(responses.statusCode,responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)task.response;
+        //        statusCode(responses.statusCode);
+//        NSLog(@"statusCode == %ld",    responses.statusCode );
+        failure(responses.statusCode,error);
+    }];
+}
+
+/////请求头加token
+-(void)GETWithCompleteURL_token:(NSString *)URLString
+               parameters:(id)parameters
+                 progress:(void(^)(id progress))progress
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSInteger statusCode,NSError *error))failure{
+    // 设置请求头
+    [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"userToken"];
+    //    _manager.securityPolicy=[self customSecurityPolicy];
+    _manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPENORMAL];
+    
+    [_manager GET:URLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
+        progress(downloadProgress);
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //        NSLog(@"success");
+        //        NSDictionary *responseObject1 = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        //        success(responseObject1);
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)task.response;
+        failure(responses.statusCode,error);
+    }];
+}
+
+
 -(void)GETWithCompleteURL:(NSString *)URLString
                parameters:(id)parameters
                  progress:(void(^)(id progress))progress
@@ -92,13 +154,13 @@
     // 设置请求头
 //    [_manager.requestSerializer setValue:@"" forHTTPHeaderField:@"Authorization"];
     
-    _manager.securityPolicy=[self customSecurityPolicy];
+//    _manager.securityPolicy=[self customSecurityPolicy];
     _manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPENORMAL];
    
     [_manager GET:URLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
         progress(downloadProgress);
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"success");
+//        NSLog(@"success");
 //        NSDictionary *responseObject1 = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
 //        success(responseObject1);
         success(responseObject);
@@ -179,7 +241,7 @@
         block(filePath,YES);
     }];
 }
-
+/*
 //是否加入HTTPS证书
 -(AFSecurityPolicy *)customSecurityPolicy
 {
@@ -198,7 +260,7 @@
     // AFSSLPinningModeCertificate 使用证书验证模式
 //    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey];
 //    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
-    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
     // allowInvalidCertificates 是否允许无效证书（也就是自建的证书），默认为NO
     // 如果是需要验证自建证书，需要设置为YES
     securityPolicy.allowInvalidCertificates = YES;
@@ -213,7 +275,7 @@
     
     return securityPolicy;
 }
-
+*/
 
 
 -(void)cancelTask{

@@ -9,6 +9,7 @@
 #import "WBQRCodeScanningVC.h"
 #import "SGQRCode.h"
 #import "ScanSuccessJumpVC.h"
+#import "NSString+AES256.h"
 
 @interface WBQRCodeScanningVC () <SGQRCodeScanManagerDelegate, SGQRCodeAlbumManagerDelegate>
 @property (nonatomic, strong) SGQRCodeScanManager *manager;
@@ -45,10 +46,18 @@
     [self setupQRCodeScanning];
     [self.view addSubview:self.promptLabel];
 }
+- (void)viewWillAppear:(BOOL)animated {
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];
+//    [backBtn setTintColor:[UIColor blackColor]];
+    backBtn.title = FGGetStringWithKeyFromTable(@"", @"Language");
+    self.navigationItem.backBarButtonItem = backBtn;
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [super viewWillAppear:animated];
+}
 
 - (void)setupNavigationBar {
-    self.navigationItem.title = @"扫一扫";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"相册" style:(UIBarButtonItemStyleDone) target:self action:@selector(rightBarButtonItenAction)];
+//    self.navigationItem.title = @"扫一扫";
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"相册" style:(UIBarButtonItemStyleDone) target:self action:@selector(rightBarButtonItenAction)];
 }
 
 - (SGQRCodeScanningView *)scanningView {
@@ -115,10 +124,17 @@
         [scanManager stopRunning];
         
         AVMetadataMachineReadableCodeObject *obj = metadataObjects[0];
-        ScanSuccessJumpVC *jumpVC = [[ScanSuccessJumpVC alloc] init];
-        jumpVC.comeFromVC = ScanSuccessJumpComeFromWB;
-        jumpVC.jump_URL = [obj stringValue];
-        [self.navigationController pushViewController:jumpVC animated:YES];
+         NSLog(@"metadataObjects - - %@ ，，， obj String=%@", obj,[obj stringValue]);
+//        NSLog(@"解密1 ===  %@",[jiamiStr AesDecrypt:[obj stringValue]]);
+        
+//        ScanSuccessJumpVC *jumpVC = [[ScanSuccessJumpVC alloc] init];
+//        jumpVC.comeFromVC = ScanSuccessJumpComeFromWB;
+//        jumpVC.jump_URL = [obj stringValue];
+//        [self.navigationController pushViewController:jumpVC animated:YES];
+        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        DryerViewController *vc=[main instantiateViewControllerWithIdentifier:@"DryerViewController"];
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
     } else {
         NSLog(@"暂未识别出扫描的二维码");
     }

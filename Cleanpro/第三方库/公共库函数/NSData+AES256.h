@@ -7,7 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CommonCrypto/CommonDigest.h>
+#import <CommonCrypto/CommonCryptor.h>
 
-@interface NSData_AES256 : NSData
-
+@interface NSData(AES256)
+-(NSData *) aes256_encrypt:(NSString *)key;
+-(NSData *) aes256_decrypt:(NSString *)key;
 @end

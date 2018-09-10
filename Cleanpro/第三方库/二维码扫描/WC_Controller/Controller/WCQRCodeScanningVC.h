@@ -10,4 +10,6 @@
 
 @interface WCQRCodeScanningVC : UIViewController
 
+@property (assign,nonatomic)NSInteger tag_int;
+
 @end

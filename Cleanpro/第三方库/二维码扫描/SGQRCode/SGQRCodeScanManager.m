@@ -125,7 +125,7 @@ static SGQRCodeScanManager *_instance;
     NSDictionary *exifMetadata = [[metadata objectForKey:(NSString *)kCGImagePropertyExifDictionary] mutableCopy];
     float brightnessValue = [[exifMetadata objectForKey:(NSString *)kCGImagePropertyExifBrightnessValue] floatValue];
     
-    NSLog(@"%f",brightnessValue);
+//    NSLog(@"%f",brightnessValue);
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(QRCodeScanManager:brightnessValue:)]) {
         [self.delegate QRCodeScanManager:self brightnessValue:brightnessValue];

@@ -8,15 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "HomeViewController.h"
-#import "MyViewController.h"
-#import "NAvigationViewController.h"
-#import "MapViewController.h"
+//#import "MyViewController.h"
+
 @interface BarViewController : UITabBarController
 
 @property (nonatomic,strong)UINavigationController *navHome;
 @property (nonatomic,strong)UINavigationController *navMy;
-@property (nonatomic,strong)UINavigationController *StorHub;
-@property (nonatomic,strong)UINavigationController *GYHub;
+@property (nonatomic,strong)UINavigationController *Order;
+//@property (nonatomic,strong)UINavigationController *GYHub;
 
 -(void)setTitle;
 @end

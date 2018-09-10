@@ -9,5 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface MyWalletViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIView *topView;
+@property (weak, nonatomic) IBOutlet UILabel *label_title;
+@property (weak, nonatomic) IBOutlet UILabel *RMB;
+@property (weak, nonatomic) IBOutlet UITableView *Down_tableView;
 
+
+@property (nonatomic,strong) NSNumber * balance;
+@property (nonatomic,strong) NSString * currencyUnit;
 @end

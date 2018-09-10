@@ -9,5 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface MyAccountViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIView *topView;
+@property (weak, nonatomic) IBOutlet UIImageView *background_image;
+@property (weak, nonatomic) IBOutlet UIButton *touxiang_btn;
+@property (weak, nonatomic) IBOutlet UILabel *name_label;
+
+
+@property (weak, nonatomic) IBOutlet UITableView *Down_tableView;
 
 @end

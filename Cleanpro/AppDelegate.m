@@ -17,6 +17,23 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:41.0/255.0 green:209.0/255.0 blue:255.0/255.0 alpha:1]]; 
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]){
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
+        //第一次启动
+        
+        [userDefaults setObject:@"1" forKey:@"Token"];
+        [userDefaults setObject:@"1" forKey:@"phoneNumber"];
+        [userDefaults setObject:@"100" forKey:@"TokenError"];
+    }else
+    {
+        //不是第一次启动
+    }
+    [jiamiStr base64Data_encrypt:@"1"];
+    // 启动图片延时: 1秒
+    [NSThread sleepForTimeInterval:1.0];
     return YES;
 }
 

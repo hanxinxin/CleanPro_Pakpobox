@@ -17,8 +17,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.title=@"My Wallet";
+    
+    
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];
+    //    [backBtn setTintColor:[UIColor blackColor]];
+    backBtn.title = FGGetStringWithKeyFromTable(@"", @"Language");
+    self.navigationItem.backBarButtonItem = backBtn;
+    [super viewWillAppear:animated];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

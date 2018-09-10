@@ -1,21 +1,97 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13142" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12042"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="OrdersTableViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="OrdersTableViewCell" selectionStyle="default" indentationWidth="10" rowHeight="80" id="KGk-i7-Jjw" customClass="OrdersTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="79.5"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z1s-Je-8O3">
+                        <rect key="frame" x="16" y="9" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="h2Y-8s-TaS"/>
+                            <constraint firstAttribute="height" constant="30" id="v5q-sg-FGN"/>
+                        </constraints>
+                        <state key="normal" image="icon_laundry_1.png"/>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Laundry" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rYF-f4-yil">
+                        <rect key="frame" x="54" y="14" width="180" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="UbP-QT-8QO"/>
+                            <constraint firstAttribute="width" constant="180" id="VPI-9s-mka"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order NO. L123454786" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tXm-5p-hm7">
+                        <rect key="frame" x="16" y="48" width="218" height="26"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="26" id="hxx-SY-lRJ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RM 5.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fjU-Ss-8DZ">
+                        <rect key="frame" x="212" y="29" width="100" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="100" id="4qG-zx-hcu"/>
+                            <constraint firstAttribute="height" constant="21" id="say-XG-C2a"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PAID" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xKM-pQ-Sec">
+                        <rect key="frame" x="234" y="6" width="78" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="nH4-44-L15"/>
+                            <constraint firstAttribute="width" constant="78" id="qRT-pB-TKN"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.29019607843137257" green="0.792156862745098" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="rYF-f4-yil" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="3" id="2fe-Vy-nGY"/>
+                    <constraint firstItem="z1s-Je-8O3" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="9" id="BcF-z1-gcF"/>
+                    <constraint firstItem="z1s-Je-8O3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Hq5-gk-h2e"/>
+                    <constraint firstItem="fjU-Ss-8DZ" firstAttribute="top" secondItem="xKM-pQ-Sec" secondAttribute="bottom" constant="2" id="HwD-62-A5a"/>
+                    <constraint firstAttribute="trailing" secondItem="xKM-pQ-Sec" secondAttribute="trailing" constant="8" id="X51-IH-Uft"/>
+                    <constraint firstItem="xKM-pQ-Sec" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="iUP-4X-1xY"/>
+                    <constraint firstItem="tXm-5p-hm7" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="iZl-0m-IeT"/>
+                    <constraint firstItem="tXm-5p-hm7" firstAttribute="top" secondItem="z1s-Je-8O3" secondAttribute="bottom" constant="9" id="k9Z-QA-aLI"/>
+                    <constraint firstAttribute="trailing" secondItem="tXm-5p-hm7" secondAttribute="trailing" constant="86" id="nh6-Su-6dV"/>
+                    <constraint firstAttribute="trailing" secondItem="fjU-Ss-8DZ" secondAttribute="trailing" constant="8" id="vIu-o4-wgZ"/>
+                    <constraint firstItem="rYF-f4-yil" firstAttribute="leading" secondItem="z1s-Je-8O3" secondAttribute="trailing" constant="8" id="vqy-UH-LOV"/>
+                </constraints>
             </tableViewCellContentView>
-            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="OrderNo" destination="tXm-5p-hm7" id="she-8y-f0I"/>
+                <outlet property="Order_type" destination="rYF-f4-yil" id="nJy-Kn-43g"/>
+                <outlet property="Paid" destination="xKM-pQ-Sec" id="P2t-ah-b5x"/>
+                <outlet property="totalAmount" destination="fjU-Ss-8DZ" id="dsD-k4-0Ru"/>
+                <outlet property="typeButton" destination="z1s-Je-8O3" id="HkY-cH-I8f"/>
+            </connections>
+            <point key="canvasLocation" x="-114" y="48"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="icon_laundry_1.png" width="20" height="18"/>
+    </resources>
 </document>

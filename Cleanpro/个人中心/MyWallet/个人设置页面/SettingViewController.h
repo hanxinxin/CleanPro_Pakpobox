@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface SettingViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIButton *NextSetp;
 
 @end

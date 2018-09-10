@@ -7,6 +7,8 @@
 //
 
 #import "LaundrySuccessViewController.h"
+#import "HomeViewController.h"
+#import "MyAccountViewController.h"
 
 @interface LaundrySuccessViewController ()
 
@@ -17,6 +19,37 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+//    [self postOrder];
+    self.Compelet_btn.layer.cornerRadius = 18;//2.0是圆角的弧度，根据需求自己更改
+    
+}
+
+
+
+- (void)viewWillAppear:(BOOL)animated {
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];
+//    [backBtn setTintColor:[UIColor blackColor]];
+    backBtn.title = FGGetStringWithKeyFromTable(@"", @"Language");
+    self.navigationItem.backBarButtonItem = backBtn;
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [super viewWillAppear:animated];
+}
+
+
+- (IBAction)Compelet_touch:(id)sender {
+    for (UIViewController *temp in self.navigationController.viewControllers) {
+        if ([temp isKindOfClass:[HomeViewController class]]) {
+            [self.navigationController popToViewController:temp animated:YES];
+        
+        }
+    }
+    for (UIViewController *temp in self.navigationController.viewControllers) {
+        if ([temp isKindOfClass:[MyAccountViewController class]]) {
+            [self.navigationController popToViewController:temp animated:YES];
+            ////            return NO;//这里要设为NO，不是会返回两次。返回到主界面。
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning {

@@ -15,8 +15,8 @@
 #import "PingLunCollectionViewCell.h"
 #import "XLCardSwitchFlowLayout.h"
 #import "PriceHomeViewController.h"
-
-
+#import "locationMapViewController.h"
+#import "PromotionViewController.h"
 
 #define kMyCollectionViewCellID @"PingLunCollectionViewCell"
 
@@ -50,6 +50,8 @@
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];//隐藏导航栏
     //    [self.rotateTimer setFireDate:[NSDate dateWithTimeInterval:2.0 sinceDate:[NSDate date]]];
+//    self.tabBarController.tabBar.hidden = NO;
+//    [self.navigationController.tabBarController.tabBar setHidden:NO];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.title=@"Cleapro";
     self.navigationController.title=@"Home";
@@ -66,7 +68,15 @@
 
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
         NSLog(@"高度：%f",SCREEN_HEIGHT);
-        
+        NSString* TokenError=[[NSUserDefaults standardUserDefaults] objectForKey:@"TokenError"];
+        if([TokenError isEqualToString:@"1"])
+        {
+            [[NSUserDefaults standardUserDefaults] setObject:@"101" forKey:@"TokenError"];
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            LoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"LoginViewController"];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
         
     });
 
@@ -297,10 +307,23 @@
 -(void)btn_list:(id)sender
 {
     UIButton * btn=(UIButton*)sender;
-    if(btn.tag==2)
+    
+    if(btn.tag==1)
+    {
+        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        locationMapViewController *vc=[main instantiateViewControllerWithIdentifier:@"locationMapViewController"];
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if(btn.tag==2)
     {
         UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
         PriceHomeViewController *vc=[main instantiateViewControllerWithIdentifier:@"PriceHomeViewController"];
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if(btn.tag==3)
+    {
+        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        PromotionViewController *vc=[main instantiateViewControllerWithIdentifier:@"PromotionViewController"];
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -385,10 +408,10 @@
             UIImageView *imagView = [[UIImageView alloc]init];  imagView.frame=CGRectMake(self.view.frame.size.width*i, 0, self.view.frame.size.width, self.GG_Scroller.frame.size.height);
             if(i==0)
             {
-                imagView.image = [UIImage imageNamed:[NSString stringWithFormat:@"hp_banner"]];
+                imagView.image = [UIImage imageNamed:[NSString stringWithFormat:@"banner_1"]];
             }else
             {
-                imagView.image = [UIImage imageNamed:[NSString stringWithFormat:@"hp_banner"]];
+                imagView.image = [UIImage imageNamed:[NSString stringWithFormat:@"banner_1"]];
             }
             //        [imagView setContentMode:UIViewContentModeCenter];
             

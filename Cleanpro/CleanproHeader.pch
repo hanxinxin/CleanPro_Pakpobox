@@ -8,8 +8,82 @@
 
 #ifndef CleanproHeader_pch
 #define CleanproHeader_pch
+#define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
+#define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
+#define NAVIGATION_HEIGHT (CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]) + CGRectGetHeight(self.navigationController.navigationBar.frame))
 
+#import "AFNetworking.h"
+#import "MBProgressHUD.h"
+#import "AFNetWrokingAssistant.h"
+#import "UIViewController+BackButtonHandler.h"
+#import "VPKCUIViewExt.h"
+#import "PublicLibrary.h"
+#import "TPPasswordTextView.h"
+#import "ChangeLanguage.h"
+#import "MJRefresh.h"
+#import "LoginViewController.h"
+
+//// 自定义 viewcontroller
+#import "DryerViewController.h"
+#import "LaundryViewController.h"
+
+#import "ClassAll.h"
+////加载语言的宏
+#define CNS @"zh-Hans"
+#define EN @"en"
+#define FGGetStringWithKeyFromTable(key, tbl) [[ChangeLanguage sharedInstance] getStringForKey:key withTable:tbl]
+
+#define phoneNumberString [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"]]
+#define TokenStr [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"]]
+
+
+#define ACCEPTTYPENORMAL @[@"application/json",@"application/xml",@"text/json",@"text/javascript",@"text/html",@"text/plain"]
+#define ACCEPTTYPEIMAGE @[@"text/plain", @"multipart/form-data", @"application/json", @"text/html", @"image/jpeg", @"image/png", @"application/octet-stream", @"text/json"]
+//以iphone5，5s，5c为基本机型，其他型号机器按比例系数做乘法.
+
+#define autoSizeScaleX_5s SCREEN_WIDTH/320.f
+#define autoSizeScaleY_5s SCREEN_HEIGHT/568.f
+#define autoSizeScaleX  SCREEN_WIDTH/414.f
+#define autoSizeScaleY  SCREEN_HEIGHT/736.f
+#define autoSizeScaleX_6  SCREEN_WIDTH/375
+#define autoSizeScaleY_6  SCREEN_HEIGHT/667
+#define autoSizeScaleX_X  SCREEN_WIDTH/375
+#define autoSizeScaleY_X  SCREEN_HEIGHT/812
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+//  接口  URL
+//#define FuWuQiUrl @"http://192.168.0.240:8098/ebox/api/v1/" ///服务器地址
+#define FuWuQiUrl @"http://47.90.16.40:18987/ebox/api/v1/"  ///打包地址
+//#define FuWuQiUrl @"http://192.168.0.240:8080/ebox/api/v1/"//服务器地址
+
+#define P_Register  @"member/phoneRegister" ///注册
+
+#define P_login @"member/login" ///登录
+
+#define P_sendVerifyCode @"member/sendVerifyCode"  ////注册获取验证码
+#define Post_JYverif @"member/checkVerifyCode"   ////注册校验验证码
+
+#define P_zhaohuiPassword @"member/retrievePassword"  ////找回密码获取验证码
+#define P_zhaohuiPasswordYZ @"member/retrievePasswordVerify" ////找回密码验证 验证码
+#define P_zhaohuiPasswordCZ @"member/resetPassword"  ////重置登录密码
+////个人中心的密码修改
+#define P_jiaoyanPayPassword @"member/checkPayPassword"  /////校验支付密码
+#define P_XiugaiPayPassword @"member/updatePayPassword"  /////修改支付密码
+#define P_ChongzhiPayPassword @"member/resetPayPassword"     /////重置支付密码
+
+#define Get_wallet @"member/wallet"   /////获取用户钱包
+#define Get_UserQuery @"member/walletLog/query"////获取用户钱包流水
+
+
+#define Post_order @"cleanpro/order/create"   //生成订单
+#define post_payZhifu @"payment/checkout"  ////订单支付
+#define Post_userOrder @"cleanpro/order/query"  ////查询用户订单
+//#define Get_PriceList @"http://192.168.0.240:8080/ebox/api/v1/goods/member/getWashMachePrice" ////价格列表
+#define Get_PriceList @"goods/member/getWashMachePrice" ////价格列表
+#define Get_location @"cleanpro/location"  ///获取门店坐标
+
+#define Get_PriceMache @"goods/member/getMachePrice?macheNo="  ////获取指定机型价格
+
 
 #endif /* CleanproHeader_pch */

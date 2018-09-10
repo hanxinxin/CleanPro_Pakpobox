@@ -7,16 +7,212 @@
 //
 
 #import "MyWalletViewController.h"
+#import "RechargeViewController.h"
+#import "RechargeErViewController.h"
+#import "DetailsListViewController.h"
+#import "MyAccountViewController.h"
 
-@interface MyWalletViewController ()
+
+@interface MyWalletViewController ()<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic,strong)NSArray * arrtitle;
 
 @end
 
 @implementation MyWalletViewController
-
+@synthesize arrtitle;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    arrtitle=[NSArray arrayWithObjects:@"Recharge by credit card",@"Scan to recharge", nil];
+//    [self.RMB setText:@"RM100.00"];
+   [self.RMB setFont:[UIFont fontWithName:@"Helvetica-Bold" size:25]];
+    self.RMB.textColor = [UIColor colorWithRed:51.0026/255.0 green:51.0026/255.0 blue:51.0026/255.0 alpha:1];
+    [self addUIBarButtonItem];
+    
+}
+
+-(void)addUIBarButtonItem
+{
+    UIButton * btn1 = [[UIButton alloc] init];
+    [btn1 setTitle:FGGetStringWithKeyFromTable(@"Details", @"Language") forState:UIControlStateNormal];
+    [btn1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btn1 addTarget:self action:@selector(selectRightAction:) forControlEvents:UIControlEventTouchUpInside];
+    [btn1.titleLabel setFont:[UIFont systemFontOfSize:12.f]];
+     UIBarButtonItem *rightBtn = [[UIBarButtonItem alloc] initWithCustomView:btn1];
+//        UIBarButtonItem *negativeSpacer1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+//        negativeSpacer1.width = -20; self.navigationItem.rightBarButtonItems = @[negativeSpacer1,self.navigationItem.leftBarButtonItem];
+        self.navigationItem.rightBarButtonItem = rightBtn;
+}
+- (void)viewWillAppear:(BOOL)animated {
+    
+    [self.navigationController setNavigationBarHidden:NO animated:NO];//隐藏导航栏
+    //    [self.rotateTimer setFireDate:[NSDate dateWithTimeInterval:2.0 sinceDate:[NSDate date]]];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.title=@"My Wallet";
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
+    
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [self addsetTableView];
+    });
+    [self Get_wallet_A];
+    [super viewWillAppear:animated];
+}
+-(void)selectRightAction:(id)sender
+{
+        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        DetailsListViewController *vc=[main instantiateViewControllerWithIdentifier:@"DetailsListViewController"];
+        vc.hidesBottomBarWhenPushed = YES;
+        self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+        [self.navigationController pushViewController:vc animated:YES];
+ 
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];
+//    [backBtn setTintColor:[UIColor blackColor]];
+    backBtn.title = FGGetStringWithKeyFromTable(@"", @"Language");
+    self.navigationItem.backBarButtonItem = backBtn;
+    
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [super viewWillDisappear:animated];
+}
+
+
+/**
+ 获取用户钱包
+ */
+-(void)Get_wallet_A
+{
+    [HudViewFZ labelExample:self.view];
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,Get_wallet] parameters:nil progress:^(id progress) {
+         NSLog(@"请求成功 = %@",progress);
+    } success:^(id responseObject) {
+         NSLog(@"responseObject = %@",responseObject);
+        [HudViewFZ HiddenHud];
+                NSDictionary * dictObject=(NSDictionary *)responseObject;
+                NSNumber * statusCode =[dictObject objectForKey:@"statusCode"];
+        
+        
+        if([statusCode intValue] ==401)
+        {
+//            [[NSUserDefaults standardUserDefaults] setObject:@"100" forKey:@"TokenError"];
+            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"TokenError"];
+            [HudViewFZ showMessageTitle:@"Token expired" andDelay:2.0];
+            for (UIViewController *controller in self.navigationController.viewControllers) {
+                if ([controller isKindOfClass:[MyAccountViewController class]]) {
+                    [self.navigationController popToViewController:controller animated:YES];
+                    
+                }
+            }
+        }else{
+            self.balance = [dictObject objectForKey:@"balance"];
+            self.currencyUnit = [dictObject objectForKey:@"currencyUnit"];
+            [self update_label];
+            
+            
+        }
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ HiddenHud];
+        if(statusCode==401)
+        {
+            [HudViewFZ showMessageTitle:@"Token expired" andDelay:2.0];
+            //创建一个消息对象
+            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
+            //发送消息
+            [[NSNotificationCenter defaultCenter]postNotification:notice];
+            
+        }else{
+            [HudViewFZ showMessageTitle:@"Get error" andDelay:2.0];
+            
+        }
+    }];
+}
+
+
+-(void)update_label
+{
+    [self.RMB setText:[NSString stringWithFormat:@"%@%.2f",self.currencyUnit,[self.balance floatValue]/100.0]];
+}
+
+-(void)addsetTableView
+{
+    self.Down_tableView.frame=CGRectMake(0, self.topView.bottom+15, SCREEN_WIDTH, SCREEN_HEIGHT-self.topView.height-15);
+    self.Down_tableView.delegate=self;
+    self.Down_tableView.dataSource=self;
+    //     self.Set_tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    //    self.Set_tableView.separatorInset=UIEdgeInsetsMake(0,10, 0, 10);           //top left bottom right 左右边距相同
+    self.Down_tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+    //    self.Set_tableView.separatorColor = [UIColor blackColor];
+    [self.view addSubview:self.Down_tableView];
+}
+
+
+#pragma mark -------- Tableview -------
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return arrtitle.count;
+}
+//4、设置组数
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"cellID"];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cellID"];
+        
+        //            cell.contentView.backgroundColor = [UIColor blueColor];
+        
+    }
+    UIView *lbl = [[UIView alloc] init]; //定义一个label用于显示cell之间的分割线（未使用系统自带的分割线），也可以用view来画分割线
+    lbl.frame = CGRectMake(cell.frame.origin.x + 10, 0, self.view.width-1, 1);
+    lbl.backgroundColor =  [UIColor colorWithRed:240/255.0 green:241/255.0 blue:242/255.0 alpha:1];
+    [cell.contentView addSubview:lbl];
+    //cell选中效果
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.textLabel.text = [arrtitle objectAtIndex:indexPath.row];
+    
+    //    NSLog(@"%ld",(long)indexPath.row);
+    if(indexPath.row==0)
+    {
+        cell.imageView.image=[UIImage imageNamed:@"creditcard"];
+    }else if (indexPath.row==1)
+    {
+        cell.imageView.image=[UIImage imageNamed:@"QR"];
+    }
+    //    if(indexPath.row!=3)
+    //    {
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
+    //    }
+    cell.textLabel.textColor = [UIColor darkGrayColor];
+    //    cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    //    cell.layer.cornerRadius=4;
+    return cell;
+}
+
+//行高
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return 80;
+}
+
+//选中时 调用的方法
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row==0)
+    {
+        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        RechargeViewController *vc=[main instantiateViewControllerWithIdentifier:@"RechargeViewController"];
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if (indexPath.row==1)
+    {
+        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        RechargeErViewController *vc=[main instantiateViewControllerWithIdentifier:@"RechargeErViewController"];
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

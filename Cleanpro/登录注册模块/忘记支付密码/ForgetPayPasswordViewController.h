@@ -9,5 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface ForgetPayPasswordViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIButton *phone_btn;
+@property (weak, nonatomic) IBOutlet UITextField *phone_textfield;
+@property (weak, nonatomic) IBOutlet UITextField *Verification_Textfield;
+@property (weak, nonatomic) IBOutlet UIButton *getCodeBtn;
+@property (weak, nonatomic) IBOutlet UIButton *NextSetp;
 
 @end

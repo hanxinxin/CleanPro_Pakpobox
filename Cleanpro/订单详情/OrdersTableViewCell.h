@@ -9,5 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface OrdersTableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIButton *typeButton;
+@property (weak, nonatomic) IBOutlet UILabel *Order_type;
+@property (weak, nonatomic) IBOutlet UILabel *OrderNo;
+@property (weak, nonatomic) IBOutlet UILabel *Paid;
+@property (weak, nonatomic) IBOutlet UILabel *totalAmount;
 
 @end

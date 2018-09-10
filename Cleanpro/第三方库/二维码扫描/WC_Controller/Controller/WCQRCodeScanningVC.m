@@ -9,6 +9,8 @@
 #import "WCQRCodeScanningVC.h"
 #import "SGQRCode.h"
 #import "ScanSuccessJumpVC.h"
+#import "DryerViewController.h"
+#import "NSString+AES256.h"
 
 @interface WCQRCodeScanningVC () <SGQRCodeScanManagerDelegate, SGQRCodeAlbumManagerDelegate>
 @property (nonatomic, strong) SGQRCodeScanManager *manager;
@@ -43,6 +45,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.view.backgroundColor = [UIColor clearColor];
+    
+}
+- (void)viewWillAppear:(BOOL)animated {
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];
+//    [backBtn setTintColor:[UIColor blackColor]];
+    backBtn.title = FGGetStringWithKeyFromTable(@"", @"Language");
+    self.navigationItem.backBarButtonItem = backBtn;
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     [self.view addSubview:self.scanningView];
@@ -51,11 +62,12 @@
     [self.view addSubview:self.promptLabel];
     /// 为了 UI 效果
     [self.view addSubview:self.bottomView];
+    
+    [super viewWillAppear:animated];
 }
-
 - (void)setupNavigationBar {
-    self.navigationItem.title = @"扫一扫";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"相册" style:(UIBarButtonItemStyleDone) target:self action:@selector(rightBarButtonItenAction)];
+//    self.navigationItem.title = @"扫一扫";
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"相册" style:(UIBarButtonItemStyleDone) target:self action:@selector(rightBarButtonItenAction)];
 }
 
 - (SGQRCodeScanningView *)scanningView {
@@ -112,17 +124,38 @@
 
 #pragma mark - - - SGQRCodeScanManagerDelegate
 - (void)QRCodeScanManager:(SGQRCodeScanManager *)scanManager didOutputMetadataObjects:(NSArray *)metadataObjects {
-    NSLog(@"metadataObjects - - %@", metadataObjects);
+//    NSLog(@"metadataObjects - - %@", metadataObjects);
     if (metadataObjects != nil && metadataObjects.count > 0) {
         [scanManager playSoundName:@"SGQRCode.bundle/sound.caf"];
         [scanManager stopRunning];
         [scanManager videoPreviewLayerRemoveFromSuperlayer];
-        
+//
         AVMetadataMachineReadableCodeObject *obj = metadataObjects[0];
-        ScanSuccessJumpVC *jumpVC = [[ScanSuccessJumpVC alloc] init];
-        jumpVC.comeFromVC = ScanSuccessJumpComeFromWC;
-        jumpVC.jump_URL = [obj stringValue];
-        [self.navigationController pushViewController:jumpVC animated:YES];
+//        ScanSuccessJumpVC *jumpVC = [[ScanSuccessJumpVC alloc] init];
+//        jumpVC.comeFromVC = ScanSuccessJumpComeFromWC;
+//        NSLog(@"metadataObjects - - %@ ，，， obj String=%@", obj,[obj stringValue]);
+        
+        NSString * orderStr=[jiamiStr AesDecrypt:[obj stringValue]];
+//        NSArray *arrys= [orderStr DiscountPricecomponentsSeparatedByString:@"."];
+        NSArray *array = [orderStr componentsSeparatedByString:@"#"];
+        NSLog(@"解密2 ===  %@",array);
+        if([array[2] isEqualToString:@"LAUNDRY"])
+//        if(_tag_int==1)
+        {
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            LaundryViewController *vc=[main instantiateViewControllerWithIdentifier:@"LaundryViewController"];
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.arrayList=array;
+            [self.navigationController pushViewController:vc animated:YES];
+//        }else if (_tag_int==2)
+        }else if([array[2] isEqualToString:@"DRYER"])
+        {
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            DryerViewController *vc=[main instantiateViewControllerWithIdentifier:@"DryerViewController"];
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.arrayList=array;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     } else {
         NSLog(@"暂未识别出扫描的二维码");
     }
@@ -149,7 +182,8 @@
         _promptLabel.textAlignment = NSTextAlignmentCenter;
         _promptLabel.font = [UIFont boldSystemFontOfSize:13.0];
         _promptLabel.textColor = [[UIColor whiteColor] colorWithAlphaComponent:0.6];
-        _promptLabel.text = @"将二维码/条码放入框内, 即可自动扫描";
+//        _promptLabel.text = @"将二维码/条码放入框内, 即可自动扫描";
+        _promptLabel.text = @"Scan the QR code on the machine";
     }
     return _promptLabel;
 }
@@ -167,10 +201,11 @@
     if (!_flashlightBtn) {
         // 添加闪光灯按钮
         _flashlightBtn = [UIButton buttonWithType:(UIButtonTypeCustom)];
+//        _flashlightBtn.backgroundColor=[UIColor blueColor];
         CGFloat flashlightBtnW = 30;
         CGFloat flashlightBtnH = 30;
-        CGFloat flashlightBtnX = 0.5 * (self.view.frame.size.width - flashlightBtnW);
-        CGFloat flashlightBtnY = 0.55 * self.view.frame.size.height;
+        CGFloat flashlightBtnX = 0.5 * (SCREEN_WIDTH - flashlightBtnW);
+        CGFloat flashlightBtnY = _promptLabel.bottom+15;
         _flashlightBtn.frame = CGRectMake(flashlightBtnX, flashlightBtnY, flashlightBtnW, flashlightBtnH);
         [_flashlightBtn setBackgroundImage:[UIImage imageNamed:@"SGQRCodeFlashlightOpenImage"] forState:(UIControlStateNormal)];
         [_flashlightBtn setBackgroundImage:[UIImage imageNamed:@"SGQRCodeFlashlightCloseImage"] forState:(UIControlStateSelected)];

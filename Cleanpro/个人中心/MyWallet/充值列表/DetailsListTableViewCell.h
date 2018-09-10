@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface DetailsListTableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *top_Label;
+@property (weak, nonatomic) IBOutlet UILabel *down_label;
+@property (weak, nonatomic) IBOutlet UILabel *right_label;
 
 @end

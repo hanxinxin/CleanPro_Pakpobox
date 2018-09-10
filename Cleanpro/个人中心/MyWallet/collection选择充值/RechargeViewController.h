@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface RechargeViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UILabel *Amount_label;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIButton *pay_btn;
 
 @end

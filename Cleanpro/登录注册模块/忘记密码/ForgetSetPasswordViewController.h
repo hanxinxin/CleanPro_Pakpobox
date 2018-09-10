@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface ForgetSetPasswordViewController : UIViewController
-
+@property (weak, nonatomic) IBOutlet UITextField *setPassword_textField;
+@property (weak, nonatomic) IBOutlet UIButton *Complete;
+@property (strong, nonatomic)NSString * TokenString;///// 验证token
 @end
