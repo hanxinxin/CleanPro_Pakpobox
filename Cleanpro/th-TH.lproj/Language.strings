@@ -1,0 +1,189 @@
+/* 
+  Language.strings
+  Cleanpro
+
+  Created by mac on 2019/7/30.
+  Copyright © 2019 mac. All rights reserved.
+*/
+///
+"Home"="บ้าน";
+"Nearby"="ใกล้เคียง";
+"Inbox"="กล่องจดหมาย";
+"Me"="ฉัน";
+"Cancel"="ยกเลิก";
+"Confirm"="ยืนยัน";
+//    //
+"Balance"="สมดุล";
+"Reward Points"="คะแนนสะสม";
+"Collections for you!"="คอลเล็กชันสำหรับคุณ!";
+"Viwe all"="Viwe all";
+////    ////
+//""=// "";
+////    ////
+"Click here to login"="คลิกที่นี่เพื่อเข้าสู่ระบบ";
+"My Wallet"="กระเป๋าเงินของฉัน";
+"History"="ประวัติศาสตร์";
+"Invite Friends"="เชิญเพื่อน";
+"Introduction"="รู้จัก";
+"Feedback"="ความคิดเห็น";
+"Settings"="ตั้งค่า";
+///    ///
+"Personal Infomation"="ข้อมูลส่วนตัว";
+"Profile Picture"="รูปภาพโปรไฟล์";
+"Name"="ชื่อ";
+"Phone number"="หมายเลขโทรศัพท์";
+"Gender"="เพศ";
+"Birthday"="วันเกิด";
+"Email"="อีเมล";
+"Post code"="รหัสไปรษณีย์";
+"MALE"="ชาย";
+"FEMALE"="หญิง";
+"Take New Profile Picture"="ถ่ายภาพโปรไฟล์ใหม่";
+"Select Profile Picture"="เลือกรูปภาพโปรไฟล์";
+///    ///
+"Reload"="โหลด";
+"Account balance"="ยอดเงินในบัญชี";
+"Details"="รายละเอียด";
+"Washer"="เครื่องซักผ้า";
+"Amount"="จำนวน";
+"*There is no refundable after payment"="* ไม่มีการคืนเงินหลังจากการชำระเงิน";
+"Pay"="ชำระเงิน";
+// setting    // การตั้งค่า
+"Laundry"="ซักอบรีด";
+"Dryer"="เป่า";
+"Price"="ราคา";
+"Quality"="คุณภาพ";
+"Use Process"="ใช้กระบวนการ";
+"Others"="อื่น ๆ";
+"Add a comment"="เพิ่มความคิดเห็น";
+"24 hours Customer Careline: 03-2770 0100"="24 ชั่วโมง Careline ลูกค้า: 03-2770 0100";
+"Submit"="ส่ง";
+"Select an option"="เลือกตัวเลือก";
+//////    //////
+"Invite friends"="เชิญเพื่อน";
+"Invite your friends to Cleanpro & get free incentives"="เชิญเพื่อนของคุณเข้าร่วม Cleanpro และรับสิทธิประโยชน์ฟรี";
+"Use your invitation code"="ใช้รหัสเชิญของคุณ";
+"The person that share will get RM2 for the 1st person that register"="บุคคลที่แบ่งปันจะได้รับ RM2 สำหรับบุคคลที่ 1 ที่ลงทะเบียน";
+"The person that share will get RM2 for the 2nd person that register"="บุคคลที่แบ่งปันจะได้รับ RM2 สำหรับบุคคลที่ 2 ที่ลงทะเบียน";
+"The person that share will get RM7 for the 3rd person that register"="บุคคลที่แบ่งปันจะได้รับ RM7 สำหรับบุคคลที่ 3 ที่ลงทะเบียน";
+"For the 4th person that register, the structure for the amount of RM that the person that share will reset back to Point a (as above)."="สำหรับคนที่ 4 ที่ลงทะเบียนโครงสร้างสำหรับจำนวน RM ที่บุคคลที่แบ่งปันจะถูกรีเซ็ตกลับไปยังจุด a (ดังด้านบน)";
+"Copy successful!"="คัดลอกสำเร็จ!";
+"Invite friends to Cleanpro -  you will get 300 credits after your friend uses your invitation code to register! "="เชิญเพื่อนเข้าสู่ Cleanpro - คุณจะได้รับ 300 เครดิตหลังจากเพื่อนของคุณใช้รหัสเชิญของคุณเพื่อลงทะเบียน!";
+
+////   ”\n“  Translation  ///////////    ////” \n“ การแปล ///////////
+"Q1: How to use machine?\n"="Q1: วิธีการใช้งานเครื่อง \n";
+"There is a QR code attached on the machine,click “scan” function at the bottom of HomePage,just scan the QR code.\n\n"="มีรหัส QR ติดอยู่บนเครื่องคลิกฟังก์ชั่น“ สแกน ”ที่ด้านล่างของ HomePage เพียงสแกนรหัส QR \n\n";
+"Q2: How to recharge?\n"="Q2: วิธีการเติมเงิน \n";
+"There is a wallet in My Account, you can recharge by using  IPay 88.\n\n"="มีกระเป๋าเงินในบัญชีของฉันคุณสามารถเติมเงินได้โดยใช้ IPay 88 \n\n";
+"Q3: How to set payment password?\n"="Q3: วิธีตั้งค่ารหัสผ่านการชำระเงิน \n";
+"In wallet, you can set your payment password,If you forget or want to change it, still here.\n\n"="ในกระเป๋าเงินคุณสามารถตั้งรหัสผ่านการชำระเงินของคุณหากคุณลืมหรือต้องการเปลี่ยนยังคงอยู่ที่นี่ \n\n";
+"Q4: How to add extra time for dryer machine?\n"="Q4: วิธีเพิ่มเวลาพิเศษสำหรับเครื่องเป่า \n";
+"In  orders, click the order of dryer, there is a button that you can add time.\n\n"="ในคำสั่งให้คลิกลำดับของเครื่องเป่ามีปุ่มที่คุณสามารถเพิ่มเวลาได้ \n\n";
+"Address\n"="ที่อยู่ \n";
+"No. 24, Jalan Puchong Permai 2,\nTaman Puchong Permai,\n47150 Puchong,\nSelangor Darul Ehsan Malaysia.\n\n"="เลขที่ 24, Jalan Puchong Permai 2, \n ตามาน Puchong Permai, \n47150 Puchong, \n เซลังงอร์ดารุลเอซานประเทศมาเลเซีย \n \n";
+"Tel\n"="โทร \n";
+"+6 03-5879 1228 / 03-5879 1268\n\n"="+6 03-5879 1228 / 03-5879 1268 \n \n";
+"Careline Number\n"="Careline Number \n";
+"+603-2770 0100\n\n"="+ 603-2770 0100 \n \n";
+"Email\n"="อีเมล \n";
+"info@cleanproexpress.com\n\n"="info@cleanproexpress.com \n \n";
+"CLEANPRO EXPRESS SDN BHD\n"="CLEANPRO EXPRESS SDN BHD \n";
+//////    //////
+"Log out"="ออกจากระบบ";
+///个人中心页面 就差z修改支付密码界面没改完    /// 个人中心页面就差 z 修改支付密码界面界面没改完
+"Please enter original password"="โปรดป้อนรหัสผ่านดั้งเดิม";
+"Password"="รหัสผ่าน";
+"Forget password?"="ลืมรหัสผ่าน?";
+"Next"="ถัดไป";
+"Verify Phone Number:"="ยืนยันหมายเลขโทรศัพท์:";
+"Verification"="การตรวจสอบ";
+"Next Step"="ขั้นตอนต่อไป";
+"Get code"="รับรหัส";
+"Please set 6 digits password"="กรุณาตั้งรหัสผ่าน 6 หลัก";
+"Please enter again"="โปรดป้อนอีกครั้ง";
+"Transaction NO. "="ธุรกรรม NO.";
+"Duration"="ระยะเวลา";
+"Temperature"="อุณหภูมิ";
+"Outlet"="Outlet";
+"Machine No. "="Machine No. ";
+"Time"="เวลา";
+"Charges"="ค่าใช้จ่าย";
+"Order No"="หมายเลขสั่งซื้อ";
+"Location"="สถานที่";
+"Machine No"="Machine No";
+/////    /////
+"Tips"="เคล็ดลับ";
+"Bluetooth connection"="การเชื่อมต่อบลูทู ธ ";
+"Time(MIN)"="เวลา (นาที)";
+"Credits"="เครดิต";
+"Payment method"="วิธีการชำระเงิน";
+"Wallet"="กระเป๋าสตางค์";
+"discount"="ส่วนลด";
+"Success!"="ความสำเร็จ!";
+"Please click start on the machine!"="โปรดคลิกเริ่มบนเครื่อง!";
+"Complete"="สมบูรณ์";
+"Choose water temperature"="เลือกอุณหภูมิของน้ำ";
+"Cold"="เย็น";
+"Warm"="อบอุ่น";
+"Hot"="ร้อน";
+"Welcome"="ยินดีต้อนรับ";
+"Join Cleanpro"="เข้าร่วม Cleanpro";
+"We'll help you create a new account in a few easy step."="เราจะช่วยคุณสร้างบัญชีใหม่ในไม่กี่ขั้นตอนง่ายๆ";
+"I agree to the personal data protection terms of Cleanpro."="ฉันเห็นด้วยกับข้อกำหนดการป้องกันข้อมูลส่วนบุคคลของ Cleanpro";
+"Enter Your Mobile Number"="ป้อนหมายเลขโทรศัพท์มือถือของคุณ";
+"Mobile No."="หมายเลขโทรศัพท์มือถือ";
+"Choose a Password"="เลือกรหัสผ่าน";
+"At least 6 digit numbers"="ตัวเลขอย่างน้อย 6 หลัก";
+"Enter code from your friends!"="ป้อนรหัสจากเพื่อนของคุณ!";
+"Code"="รหัส";
+"Skip"="ข้าม";
+"Privacy policy"="นโยบายความเป็นส่วนตัว";
+"Register"="ลงทะเบียน";
+"Sign in"="ลงชื่อเข้าใช้";
+"Please set your login password"="กรุณาตั้งรหัสผ่านเข้าสู่ระบบของคุณ";
+///////    ///////
+"No more messages."="ไม่มีข้อความเพิ่มเติม";
+"Request timed out!"="คำขอหมดเวลา!";
+"You have no message"="คุณไม่มีข้อความ";
+"Token expired"="Token หมดอายุแล้ว";
+"Get error"="รับข้อผิดพลาด";
+"Data acquisition failure"="การเก็บข้อมูลล้มเหลว";
+"Send a success"="ส่งความสำเร็จ";
+"Check success"="Check success";
+"statusCode error"="statusCode error";
+"Password mistake"="รหัสผ่านผิดพลาด";
+"Cannot be the same as the old password"="ไม่สามารถเหมือนกับรหัสผ่านเก่า";
+"The passwords do not match"="รหัสผ่านไม่ตรงกัน";
+"Post error"="โพสต์ข้อผิดพลาด";
+"Set up the success"="ตั้งค่าความสำเร็จ";
+"SendVerifyCode Success"="SendVerifyCode สำเร็จ";
+"Phone number error"="ข้อผิดพลาดหมายเลขโทรศัพท์";
+"Network error"="Network error";
+"Registered successfully"="ลงทะเบียนเรียบร้อยแล้ว";
+"Wrong password"="รหัสผ่านไม่ถูกต้อง";
+"Two password inconsistencies"="สองรหัสผ่านไม่สอดคล้องกัน";
+"Modify successfully"="แก้ไขสำเร็จ";
+"Login successful"="เข้าสู่ระบบสำเร็จ";
+"Bluetooth connection failed"="การเชื่อมต่อบลูทู ธ ล้มเหลว";
+"There's no more data"="ไม่มีข้อมูลเพิ่มเติม";
+"Copy successful!"="คัดลอกสำเร็จ!";
+"Same as before"="เหมือนก่อน";
+"Email format error"="ข้อผิดพลาดรูปแบบอีเมล";
+"Please enter the correct email address"="โปรดป้อนที่อยู่อีเมลที่ถูกต้อง";
+"Payment success"="การชำระเงินสำเร็จ";
+"Feedback successful!"="ข้อเสนอแนะสำเร็จ!";
+"The scanned qr code has not been identified yet"="รหัส qr ที่สแกนยังไม่ได้รับการระบุ";
+"The machine has not been found"="ไม่พบเครื่อง";
+"Total"="รวม";
+"it can be used if it’s more than 450"="สามารถใช้งานได้หากมากกว่า 450";
+"Recharge"="เติมเงิน";
+"Later"="ต่อมา";
+"Update"="การปรับปรุง";
+
+"Payment Setting"="การตั้งค่าการชำระเงิน";
+"Version"="รุ่น";
+"Contact us"="ติดต่อเรา";
+"Collections for you！"="คอลเลกชันสำหรับคุณ！";
+"View all"="ดูทั้งหมด";
+"You balance is insufficient,please recharge"="ยอดเงินคงเหลือของคุณไม่เพียงพอโปรดเติมเงิน";
+"Please set your payment password!"="กรุณาตั้งรหัสผ่านการชำระเงินของคุณ!";

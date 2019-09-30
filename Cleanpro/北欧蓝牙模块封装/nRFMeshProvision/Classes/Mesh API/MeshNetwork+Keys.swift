@@ -1,0 +1,190 @@
+//
+//  MeshNetwork+Keys.swift
+//  nRFMeshProvision
+//
+//  Created by Aleksander Nowakowski on 25/04/2019.
+//
+
+import Foundation
+
+public extension MeshNetwork {
+    
+    /// Next available Key Index that can be assigned
+    /// to a new Application Key.
+    var nextAvailableApplicationKeyIndex: KeyIndex? {
+        if applicationKeys.isEmpty {
+            return 0
+        }
+        guard let lastAppKey = applicationKeys.last, (lastAppKey.index + 1).isValidKeyIndex else {
+            return nil
+        }
+        return lastAppKey.index + 1
+    }
+    
+    /// Next available Key Index that can be assigned
+    /// to a new Network Key.
+    var nextAvailableNetworkKeyIndex: KeyIndex? {
+        if networkKeys.isEmpty {
+            return 0
+        }
+        guard let lastNetKey = networkKeys.last, (lastNetKey.index + 1).isValidKeyIndex else {
+            return nil
+        }
+        return lastNetKey.index + 1
+    }
+    
+    /// Adds a new Application Key and binds it to the first Network Key.
+    ///
+    /// - parameter applicationKey: The 128-bit Application Key.
+    /// - parameter index:          The optional Key Index to assign. If `nil`,
+    ///                             the next available Key Index will be assigned
+    ///                             automatically.
+    /// - parameter name:           The human readable name.
+    /// - throws: This method throws an error if the key is not 128-bit long,
+    ///           there isn't any Network Key to bind the new key to
+    ///           or the assigned Key Index is out of range.
+    /// - seeAlso: `nextAvailableApplicationKeyIndex`
+    func add(applicationKey: Data, withIndex index: KeyIndex? = nil, name: String) throws -> ApplicationKey {
+        guard applicationKey.count == 16 else {
+            throw MeshModelError.invalidKey
+        }
+        guard let defaultNetworkKey = networkKeys.first else {
+            throw MeshModelError.noNetworkKey
+        }
+        guard let nextIndex = index ?? nextAvailableApplicationKeyIndex, nextIndex.isValidKeyIndex else {
+            throw MeshModelError.keyIndexOutOfRange
+        }
+        let key = try ApplicationKey(name: name, index: nextIndex,
+                                     key: applicationKey, bindTo: defaultNetworkKey)
+        key.meshNetwork = self
+        applicationKeys.append(key)
+        
+        // Make the local Provisioner aware of the new key.
+        if let localProvisioner = provisioners.first,
+           let n = node(for: localProvisioner) {
+            n.appKeys.append(Node.NodeKey(of: key))
+        }
+        return key
+    }
+    
+    /// Removes Applicaiton Key with given Key Index.
+    ///
+    /// - parameter index: The Key Index of a key to be removed.
+    /// - parameter force: If set to `true`, the key will be deleted even
+    ///                    if there are other Nodes known to use this key.
+    /// - returns: The removed key.
+    /// - throws: The method throws if the key is in use and cannot be
+    ///           removed (unless `force` was set to `true`).
+    func remove(applicationKeyWithKeyIndex index: KeyIndex, force: Bool = false) throws {
+        if let index = applicationKeys.firstIndex(where: { $0.index == index }) {
+            _ = try remove(applicationKeyAt: index, force: force)
+        }
+    }
+    
+    /// Removes Applicaiton Key at the given index.
+    ///
+    /// - parameter index: The position of the element to remove.
+    ///                    `index` must be a valid index of the array.
+    /// - parameter force: If set to `true`, the key will be deleted even
+    ///                    if there are other Nodes known to use this key.
+    /// - returns: The removed key.
+    /// - throws: The method throws if the key is in use and cannot be
+    ///           removed (unless `force` was set to `true`).
+    func remove(applicationKeyAt index: Int, force: Bool = false) throws -> ApplicationKey {
+        let applicationKey = applicationKeys[index]
+        // Ensure no node is using this Application Key.
+        guard force || !applicationKey.isUsed(in: self) else {
+            throw MeshModelError.keyInUse
+        }
+        applicationKey.meshNetwork = nil
+        return applicationKeys.remove(at: index)
+    }
+    
+    /// Removes the given Application Key. This method does nothing if the
+    /// Application Key was not added to the Mesh Network before.
+    ///
+    /// - parameter applicationKey: Key to be removed.
+    /// - parameter force: If set to `true`, the key will be deleted even
+    ///                    if there are other Nodes known to use this key.
+    /// - throws: The method throws if the key is in use and cannot be
+    ///           removed (unless `force` was set to `true`).
+    func remove(applicationKey: ApplicationKey, force: Bool = false) throws {
+        if let index = applicationKeys.firstIndex(of: applicationKey) {
+            _ = try remove(applicationKeyAt: index, force: force)
+        }
+    }
+    
+    /// Adds a new Network Key.
+    ///
+    /// - parameter networkKey: The 128-bit Application Key.
+    /// - parameter index:      The optional Key Index to assign. If `nil`, the next
+    ///                         available Key Index will be assigned automatically.
+    /// - parameter name:       The human readable name.
+    /// - throws: This method throws an error if the key is not 128-bit long
+    ///           or the assigned Key Index is out of range.
+    /// - seeAlso: `nextAvailableNetworkKeyIndex`
+    func add(networkKey: Data, withIndex index: KeyIndex? = nil, name: String) throws -> NetworkKey {
+        guard networkKey.count == 16 else {
+            throw MeshModelError.invalidKey
+        }
+        guard let nextIndex = index ?? nextAvailableNetworkKeyIndex, nextIndex.isValidKeyIndex else {
+            throw MeshModelError.keyIndexOutOfRange
+        }
+        let key = try NetworkKey(name: name, index: nextIndex, key: networkKey)
+        networkKeys.append(key)
+        
+        // Make the local Provisioner aware of the new key.
+        if let localProvisioner = provisioners.first,
+           let n = node(for: localProvisioner) {
+            n.netKeys.append(Node.NodeKey(of: key))
+        }
+        return key
+    }
+    
+    /// Removes Network Key with given Key Index.
+    ///
+    /// - parameter index: The Key Index of a key to be removed.
+    /// - parameter force: If set to `true`, the key will be deleted even
+    ///                    if there are other Nodes known to use this key.
+    /// - returns: The removed key.
+    /// - throws: The method throws if the key is in use and cannot be
+    ///           removed (unless `force` was set to `true`).
+    func remove(networkKeyWithKeyIndex index: KeyIndex, force: Bool = false) throws {
+        if let networkKey = networkKeys[index] {
+            _ = try remove(networkKey: networkKey, force: force)
+        }
+    }
+    
+    /// Removes Network Key at the given index.
+    ///
+    /// - parameter index: The position of the element to remove.
+    ///                    `index` must be a valid index of the array.
+    /// - parameter force: If set to `true`, the key will be deleted even
+    ///                    if there are other Nodes known to use this key.
+    /// - returns: The removed key.
+    /// - throws: The method throws if the key is in use and cannot be
+    ///           removed (unless `force` was set to `true`).
+    func remove(networkKeyAt index: Int, force: Bool = false) throws -> NetworkKey {
+        let networkKey = networkKeys[index]
+        // Ensure no Node is using this Application Key.
+        guard force || !networkKey.isPrimary && !networkKey.isUsed(in: self) else {
+            throw MeshModelError.keyInUse
+        }
+        return networkKeys.remove(at: index)
+    }
+    
+    /// Removes the given Network Key. This method does nothing if the
+    /// Network Key was not added to the Mesh Network before.
+    ///
+    /// - parameter networkKey: Key to be removed.
+    /// - parameter force: If set to `true`, the key will be deleted even
+    ///                    if there are other Nodes known to use this key.
+    /// - throws: The method throws if the key is in use and cannot be
+    ///           removed (unless `force` was set to `true`).
+    func remove(networkKey: NetworkKey, force: Bool = false) throws {
+        if let index = networkKeys.firstIndex(of: networkKey) {
+            _ = try remove(networkKeyAt: index, force: force)
+        }
+    }
+    
+}

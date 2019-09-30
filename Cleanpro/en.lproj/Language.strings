@@ -1,0 +1,191 @@
+/* 
+  Language.strings
+  Cleanpro
+
+  Created by mac on 2019/7/30.
+  Copyright © 2019 mac. All rights reserved.
+*/
+///
+"Home"="Home";
+"Nearby"="Nearby";
+"Inbox"="Inbox";
+"Me"="Me";
+"Cancel"="Cancel";
+"Confirm"="Confirm";
+//
+"Balance"="Balance";
+"Reward Points"="Reward Points";
+"Collections for you!"="Collections for you!";
+"Viwe all"="Viwe all";
+////
+//""="";
+////
+"Click here to login"="Click here to login";
+"My Wallet"="My Wallet";
+"History"="History";
+"Invite Friends"="Invite Friends";
+"Introduction"="Introduction";
+"Feedback"="Feedback";
+"Settings"="Settings";
+///
+"Personal Infomation"="Personal Infomation";
+"Profile Picture"="Profile Picture";
+"Name"="Name";
+"Phone number"="Phone number";
+"Gender"="Gender";
+"Birthday"="Birthday";
+"Email"="Email";
+"Post code"="Post code";
+"MALE"="MALE";
+"FEMALE"="FEMALE";
+"Take New Profile Picture"="Take New Profile Picture";
+"Select Profile Picture"="Select Profile Picture";
+///
+"Reload"="Reload";
+"Account balance"="Account balance";
+"Details"="Details";
+"Washer"="Washer";
+"Amount"="Amount";
+"*There is no refundable after payment"="*There is no refundable after payment";
+"Pay"="Pay";
+// setting
+"Laundry"="Laundry";
+"Dryer"="Dryer";
+"Price"="Price";
+"Quality"="Quality";
+"Use Process"="Use Process";
+"Others"="Others";
+"Add a comment"="Add a comment";
+"24 hours Customer Careline: 03-2770 0100"="24 hours Customer Careline: 03-2770 0100";
+"Submit"="Submit";
+"Select an option"="Select an option";
+//////
+"Invite friends"="Invite friends";
+"Invite your friends to Cleanpro & get free incentives"="Invite your friends to Cleanpro & get free incentives";
+"Use your invitation code"="Use your invitation code";
+"The person that share will get RM2 for the 1st person that register"="The person that share will get RM2 for the 1st person that register";
+"The person that share will get RM2 for the 2nd person that register"="The person that share will get RM2 for the 2nd person that register";
+"The person that share will get RM7 for the 3rd person that register"="The person that share will get RM7 for the 3rd person that register";
+"For the 4th person that register, the structure for the amount of RM that the person that share will reset back to Point a (as above)."="For the 4th person that register, the structure for the amount of RM that the person that share will reset back to Point a (as above).";
+"Copy successful!"="Copy successful!";
+"Invite friends to Cleanpro -  you will get 300 credits after your friend uses your invitation code to register! "="Invite friends to Cleanpro -  you will get 300 credits after your friend uses your invitation code to register! ";
+
+////   ”\n“  Translation  ///////////
+"Q1: How to use machine?\n"="Q1: How to use machine?\n";
+"There is a QR code attached on the machine,click “scan” function at the bottom of HomePage,just scan the QR code.\n\n"="There is a QR code attached on the machine,click “scan” function at the bottom of HomePage,just scan the QR code.\n\n";
+"Q2: How to recharge?\n"="Q2: How to recharge?\n";
+"There is a wallet in My Account, you can recharge by using  IPay 88.\n\n"="There is a wallet in My Account, you can recharge by using  IPay 88.\n\n";
+"Q3: How to set payment password?\n"="Q3: How to set payment password?\n";
+"In wallet, you can set your payment password,If you forget or want to change it, still here.\n\n"="In wallet, you can set your payment password,If you forget or want to change it, still here.\n\n";
+"Q4: How to add extra time for dryer machine?\n"="Q4: How to add extra time for dryer machine?\n";
+"In  orders, click the order of dryer, there is a button that you can add time.\n\n"="In  orders, click the order of dryer, there is a button that you can add time.\n\n";
+"Address\n"="Address\n";
+"No. 24, Jalan Puchong Permai 2,\nTaman Puchong Permai,\n47150 Puchong,\nSelangor Darul Ehsan Malaysia.\n\n"="No. 24, Jalan Puchong Permai 2,\nTaman Puchong Permai,\n47150 Puchong,\nSelangor Darul Ehsan Malaysia.\n\n";
+"Tel\n"="Tel\n";
+"+6 03-5879 1228 / 03-5879 1268\n\n"="+6 03-5879 1228 / 03-5879 1268\n\n";
+"Careline Number\n"="Careline Number\n";
+"+603-2770 0100\n\n"="+603-2770 0100\n\n";
+"Email\n"="Email\n";
+"info@cleanproexpress.com\n\n"="info@cleanproexpress.com\n\n";
+"CLEANPRO EXPRESS SDN BHD\n"="CLEANPRO EXPRESS SDN BHD\n";
+//////
+"Log out"="Log out";
+///
+"Please enter original password"="Please enter original password";
+"Password"="Password";
+"Forget password?"="Forget password?";
+"Next"="Next";
+"Verify Phone Number:"="Verify Phone Number:";
+"Verification"="Verification";
+"Next Step"="Next Step";
+"Get code"="Get code";
+"Please set 6 digits password"="Please set 6 digits password";
+"Please enter again"="Please enter again";
+///// History
+"Transaction NO. "="Transaction NO. ";
+"Duration"="Duration";
+"Temperature"="Temperature";
+"Outlet"="Outlet";
+"Machine No. "="Machine No. ";
+"Time"="Time";
+"Charges"="Charges";
+"Order No"="Order No";
+"Location"="Location";
+"Machine No"="Machine No";
+/////
+"Tips"="Tips";
+"Bluetooth connection"="Bluetooth connection";
+"Time(MIN)"="Time(MIN)";
+"Credits"="Credits";
+"Payment method"="Payment method";
+"Wallet"="Wallet";
+"discount"="discount";
+"Success!"="Success!";
+"Please click start on the machine!"="Please click start on the machine!";
+"Complete"="Complete";
+"Choose water temperature"="Choose water temperature";
+"Cold"="Cold";
+"Warm"="Warm";
+"Hot"="Hot";
+/////
+"Welcome"="Welcome";
+"Join Cleanpro"="Join Cleanpro";
+"We'll help you create a new account in a few easy step."="We'll help you create a new account in a few easy step.";
+"I agree to the personal data protection terms of Cleanpro."="I agree to the personal data protection terms of Cleanpro.";
+"Enter Your Mobile Number"="Enter Your Mobile Number";
+"Mobile No."="Mobile No.";
+"Choose a Password"="Choose a Password";
+"At least 6 digit numbers"="At least 6 digit numbers";
+"Enter code from your friends!"="Enter code from your friends!";
+"Code"="Code";
+"Skip"="Skip";
+"Privacy policy"="Privacy policy";
+"Register"="Register";
+"Sign in"="Sign in";
+"Please set your login password"="Please set your login password";
+///////
+"No more messages."="No more messages.";
+"Request timed out!"="Request timed out!";
+"You have no message"="You have no message";
+"Token expired"="Token expired";
+"Get error"="Get error";
+"Data acquisition failure"="Data acquisition failure";
+"Send a success"="Send a success";
+"Check success"="Check success";
+"statusCode error"="statusCode error";
+"Password mistake"="Password mistake";
+"Cannot be the same as the old password"="Cannot be the same as the old password";
+"The passwords do not match"="The passwords do not match";
+"Post error"="Post error";
+"Set up the success"="Set up the success";
+"SendVerifyCode Success"="SendVerifyCode Success";
+"Phone number error"="Phone number error";
+"Network error"="Network error";
+"Registered successfully"="Registered successfully";
+"Wrong password"="Wrong password";
+"Two password inconsistencies"="Two password inconsistencies";
+"Modify successfully"="Modify successfully";
+"Login successful"="Login successful";
+"Bluetooth connection failed"="Bluetooth connection failed";
+"There's no more data"="There's no more data";
+"Copy successful!"="Copy successful!";
+"Same as before"="Same as before";
+"Email format error"="Email format error";
+"Please enter the correct email address"="Please enter the correct email address";
+"Payment success"="Payment success";
+"Feedback successful!"="Feedback successful!";
+"The scanned qr code has not been identified yet"="The scanned qr code has not been identified yet";
+"The machine has not been found"="The machine has not been found";
+"Total"="Total";
+"it can be used if it’s more than 450"="it can be used if it’s more than 450";
+"Recharge"="Recharge";
+"Later"="Later";
+"Update"="Update";
+
+"Payment Setting"="Payment Setting";
+"Version"="Version";
+"Contact us"="Contact us";
+"Collections for you！"="Collections for you！";
+"View all"="View all";
+"You balance is insufficient,please recharge"="You balance is insufficient,please recharge";
+"Please set your payment password!"="Please set your payment password!";

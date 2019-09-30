@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Email Str View Controller-->
+        <scene sceneID="hCx-xH-SIn">
+            <objects>
+                <viewController storyboardIdentifier="EmailStrViewController" id="dZY-Sa-gZE" customClass="EmailStrViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bpa-qM-FFn">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WiW-jo-W4d">
+                                <rect key="frame" x="15" y="170" width="290" height="50"/>
+                                <color key="backgroundColor" red="0.10017182677984238" green="0.58586043119430542" blue="0.89747458696365356" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="l0l-R1-yxZ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="complete">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="WC_touch:" destination="dZY-Sa-gZE" eventType="touchUpInside" id="9AQ-ib-5cr"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0TT-yS-PGN">
+                                <rect key="frame" x="0.0" y="80" width="320" height="50"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入邮箱地址" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jX6-y4-4yc">
+                                        <rect key="frame" x="16" y="0.0" width="288" height="50"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" textContentType="email"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="jX6-y4-4yc" secondAttribute="bottom" id="4fk-sH-mAn"/>
+                                    <constraint firstItem="jX6-y4-4yc" firstAttribute="top" secondItem="0TT-yS-PGN" secondAttribute="top" id="ABh-bB-3sd"/>
+                                    <constraint firstAttribute="trailing" secondItem="jX6-y4-4yc" secondAttribute="trailing" constant="16" id="I8j-NR-14m"/>
+                                    <constraint firstAttribute="height" constant="50" id="PQd-7b-AfT"/>
+                                    <constraint firstItem="jX6-y4-4yc" firstAttribute="leading" secondItem="0TT-yS-PGN" secondAttribute="leading" constant="16" id="ncV-hK-TWN"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94108378887176514" green="0.94124132394790649" blue="0.94106310606002808" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="wA2-Xg-Itb" firstAttribute="trailing" secondItem="WiW-jo-W4d" secondAttribute="trailing" constant="15" id="I1Y-Ay-dZN"/>
+                            <constraint firstItem="0TT-yS-PGN" firstAttribute="trailing" secondItem="wA2-Xg-Itb" secondAttribute="trailing" id="JXB-Dz-W4O"/>
+                            <constraint firstItem="0TT-yS-PGN" firstAttribute="top" secondItem="wA2-Xg-Itb" secondAttribute="top" constant="60" id="QIl-CZ-EVZ"/>
+                            <constraint firstItem="WiW-jo-W4d" firstAttribute="top" secondItem="0TT-yS-PGN" secondAttribute="bottom" constant="40" id="ctN-FV-NNK"/>
+                            <constraint firstItem="0TT-yS-PGN" firstAttribute="leading" secondItem="wA2-Xg-Itb" secondAttribute="leading" id="k9x-ZU-yAX"/>
+                            <constraint firstItem="WiW-jo-W4d" firstAttribute="leading" secondItem="wA2-Xg-Itb" secondAttribute="leading" constant="15" id="yAf-Ml-ncw"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="wA2-Xg-Itb"/>
+                    </view>
+                    <connections>
+                        <outlet property="Email_textfield" destination="jX6-y4-4yc" id="5Xz-p9-1k1"/>
+                        <outlet property="WC_btn" destination="WiW-jo-W4d" id="6jN-ke-W3L"/>
+                        <outlet property="topView" destination="0TT-yS-PGN" id="7qx-rz-IcY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cd5-Pu-7t3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-663.75" y="-156.33802816901408"/>
+        </scene>
+    </scenes>
+</document>

@@ -1,0 +1,190 @@
+/* 
+  Language.strings
+  Cleanpro
+
+  Created by mac on 2019/7/30.
+  Copyright © 2019 mac. All rights reserved.
+*/
+//////////// 请按照这个格式翻译。在“=”后面填写
+///
+"Home"="Halaman Utama";
+"Nearby"="Berdekatan";
+"Inbox"="Peti Masuk";
+"Me"="Saya";
+"Cancel"="Batal";
+"Confirm"="Sah";
+//
+"Balance"="Baki";
+"Reward Points"="Mata Ganjaran";
+"Collections for you!"="Koleksi untuk anda";
+"Viwe all"="Lihat Semua";
+////
+//""="";
+////
+"Click here to login"="Klik di Sini Untuk Masuk";
+"My Wallet"="Simpanan Saya";
+"History"="Histori";
+"Invite Friends"="Jemput rakan";
+"Introduction"="Pengenalan";
+"Feedback"="Maklum Balas";
+"Settings"="Tetapan";
+///
+"Personal Infomation"="Maklumat Peribadi";
+"Profile Picture"="Gambar Profil";
+"Name"="Nama";
+"Phone number"="Nombor Telefon";
+"Gender"="Jantina";
+"Birthday"="Tarikh Lahir";
+"Email"="Emel";
+"Post code"="Poskod";
+"MALE"="Lelaki";
+"FEMALE"="Perempuan";
+"Take New Profile Picture"="Gambar Profil Baru";
+"Select Profile Picture"="Pilih Gambar Profil";
+///
+"Reload"="Tambah Nilai";
+"Account balance"="Baki Akaun";
+"Details"="Butiran";
+"Washer"="Cucian";
+"Amount"="Amaun";
+"*There is no refundable after payment"="Tiada pulangan semula";
+"Pay"="Bayar";
+// setting    Tetapan
+"Laundry"="Dobi";
+"Dryer"="Pengering";
+"Price"="Harga";
+"Quality"="Kualiti";
+"Use Process"="Proses penggunaan";
+"Others"="Lain-lain";
+"Add a comment"="Tambah komen";
+"24 hours Customer Careline: 03-2770 0100"="24 jam talian pelanggan";
+"Submit"="Hantar";
+"Select an option"="Sila buat pilihan";
+//////
+"Invite friends"="Jemput rakan";
+"Invite your friends to Cleanpro & get free incentives"="Jemput rakan-rakan ke Cleanpro & dapat insentif percuma";
+"Use your invitation code"="Guna kod jemputan";
+"The person that share will get RM2 for the 1st person that register"="Orang yang berkongsi akan dapat RM2 untuk pendaftaran orang pertama";
+"The person that share will get RM2 for the 2nd person that register"="Orang yang berkongsi akan dapat RM2 untuk pendaftaran orang kedua";
+"The person that share will get RM7 for the 3rd person that register"="Orang yang berkongsi akan dapat RM7 untuk pendaftaran orang ketiga";
+"For the 4th person that register, the structure for the amount of RM that the person that share will reset back to Point a (as above)."="Bagi orang keempat yang mendaftar, struktur untuk jumlah RM yang berkongsi akan diset semula kembali seperti di atas.";
+"Copy successful!"="Salinan berjaya";
+"Invite friends to Cleanpro -  you will get 300 credits after your friend uses your invitation code to register! "="Jemput rakan ke Cleanpro - anda akan mendapat 300 kredit selepas rakan anda menggunakan kod jemputan anda untuk mendaftar!";
+
+////   ”\n“  Translation  ///////////
+"Q1: How to use machine?\n"="Cara menggunakan mesin";
+"There is a QR code attached on the machine,click “scan” function at the bottom of HomePage,just scan the QR code.\n\n"="Terdapat kod QR yang dilampirkan pada mesin, klik “mengimbas“ fungsi di bahagian bawah halaman utama, kemudian imbas kod QR.";
+"Q2: How to recharge?\n"="Cara untuk mengisi semula";
+"There is a wallet in My Account, you can recharge by using  IPay 88.\n\n"="Terdapat simpanan dalam akaun Saya, anda boleh mengisi semula dengan menggunakan IPay 88.";
+"Q3: How to set payment password?\n"="Bagaimana untuk menetapkan kata laluan pembayaran";
+"In wallet, you can set your payment password,If you forget or want to change it, still here.\n\n"="Dalam dompet, anda boleh menetapkan kata laluan pembayaran anda, Jika anda terlupa atau ingin mengubahnya, kata laluan masih di sini.";
+"Q4: How to add extra time for dryer machine?\n"="Bagaimana untuk menambah masa tambahan untuk mesin pengering?";
+"In  orders, click the order of dryer, there is a button that you can add time.\n\n"="Mengikut urutan, klik arahan pengering, terdapat butang yang anda boleh menambah masa.";
+"Address\n"="Alamat";
+"No. 24, Jalan Puchong Permai 2,\nTaman Puchong Permai,\n47150 Puchong,\nSelangor Darul Ehsan Malaysia.\n\n"="";
+"Tel\n"="";
+"+6 03-5879 1228 / 03-5879 1268\n\n"="";
+"Careline Number\n"="Talian Pelanggan";
+"+603-2770 0100\n\n"="";
+"Email\n"="Emel";
+"info@cleanproexpress.com\n\n"="";
+"CLEANPRO EXPRESS SDN BHD\n"="";
+//////
+"Log out"="Log keluar";
+///个人中心页面 就差z修改支付密码界面没改完
+"Please enter original password"="Sila masukkan kata laluan asal";
+"Password"="Kata laluan";
+"Forget password?"="Lupa kata laluan";
+"Next"="Seterusnya";
+"Verify Phone Number:"="Sahkan nombor telefon";
+"Verification"="Pengesahan";
+"Next Step"="Langkah seterusnya";
+"Get code"="Dapatkan kod";
+"Please set 6 digits password"="Sila masuk 6 digit kata laluan";
+"Please enter again"="Sila masuk sekali lagi";
+"Transaction NO. "="Tiada transaksi";
+"Duration"="Durasi";
+"Temperature"="Suhu";
+"Outlet"="Kedai";
+"Machine No. "="Nombor mesin";
+"Time"="Masa";
+"Charges"="Caj";
+"Order No"="Nombor pesanan";
+"Location"="Lokasi";
+"Machine No"="Nombor mesin";
+/////
+"Tips"="Tips";
+"Bluetooth connection"="Sambungan bluetooth";
+"Time(MIN)"="Masa (min)";
+"Credits"="Kredit";
+"Payment method"="Cara Pembayaran";
+"Wallet"="Dompet/ simpanan/ akaun";
+"discount"="Diskaun";
+"Success!"="Berjaya";
+"Please click start on the machine!"="Sila tekan mula pada mesin";
+"Complete"="Selesai";
+"Choose water temperature"="Pilih suhu air";
+"Cold"="Sejuk";
+"Warm"="Suam";
+"Hot"="Panas";
+"Welcome"="Selamat datang";
+"Join Cleanpro"="Sertai Cleanpro";
+"We'll help you create a new account in a few easy step."="Kami akan membantu anda membuat akaun baru dalam beberapa langkah mudah";
+"I agree to the personal data protection terms of Cleanpro."="Saya bersetuju dengan terma perlindungan data peribadi Cleanpro.";
+"Enter Your Mobile Number"=" Masukkan Nombor Telefon Anda";
+"Mobile No."="Nombor telefon";
+"Choose a Password"="Pilih kata laluan";
+"At least 6 digit numbers"="Melebihi 6 digit nombor";
+"Enter code from your friends!"="Sila masukkan kod dari rakan anda";
+"Code"="Kod";
+"Skip"="Langkau";
+"Privacy policy"="Dasar privasi";
+"Register"="Daftar";
+"Sign in"="Log masuk";
+"Please set your login password"="Sila tetapkan kata laluan anda";
+///////
+"No more messages."="Tiada mesej";
+"Request timed out!"="Permintaan tamat!";
+"You have no message"="Anda tiada mesej";
+"Token expired"="Token telah tamat tempoh";
+"Get error"="Terdapat kesilapan";
+"Data acquisition failure"="Kegagalan pengambilalihan data";
+"Send a success"="Penghantaran berjaya";
+"Check success"="Semakan berjaya";
+"statusCode error"="Kod status salah";
+"Password mistake"="Kata laluan salah";
+"Cannot be the same as the old password"="Kata laluan tidak boleh sama dengan yang lama";
+"The passwords do not match"="Kata laluan tidak sama";
+"Post error"="Kesalahan Pos";
+"Set up the success"="Ketetapan Berjaya";
+"SendVerifyCode Success"="Penghantaran Kod Verifikasi Berjaya";
+"Phone number error"="Ralat Nombor Telefon";
+"Network error"="Ralat Rangkaian";
+"Registered successfully"="Pendaftaran Berjaya";
+"Wrong password"="Kata laluan salah";
+"Two password inconsistencies"="Dua kata laluan tidak sama";
+"Modify successfully"="Ubah suai berjaya";
+"Login successful"="Log masuk berjaya";
+"Bluetooth connection failed"="Sambungan Bluetooth Gagal";
+"There's no more data"="Tiada lagi data";
+"Copy successful!"="Salinan berjaya";
+"Same as before"="Sama seperti sebelum";
+"Email format error"="Format emel ralat";
+"Please enter the correct email address"="Sila masukkan alamat emel yang betul";
+"Payment success"="Pembayaran Berjaya";
+"Feedback successful!"="Maklumbalas berjaya";
+"The scanned qr code has not been identified yet"="Pengimbas kod tidak dikenalpasti";
+"The machine has not been found"="Mesin Tidak dijumpai";
+"Total"="Jumlah";
+"it can be used if it’s more than 450"="Ia boleh digunakan lebih dari 450 kali";
+"Recharge"="Cas Semula";
+"Later"="Kemudian";
+"Update"="Kemaskini";
+
+"Payment Setting"="Tetapan Pembayaran";
+"Version"="Versi";
+"Contact us"="Hubungi Kami";
+"Collections for you！"="Koleksi untuk anda!";
+"View all"="Lihat semua";
+"You balance is insufficient,please recharge"="Baki anda tidak mencukupi, sila cas semula";
+"Please set your payment password!"="Sila nyatakan kata laluan pembayaran anda!";

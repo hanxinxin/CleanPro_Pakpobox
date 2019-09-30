@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="tipsView" id="iN0-l3-epB" customClass="tipsView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="68"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ksB-S7-oYU">
+                    <rect key="frame" x="16" y="18" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="2QD-xX-w2v"/>
+                        <constraint firstAttribute="width" constant="32" id="VaL-qA-FrJ"/>
+                    </constraints>
+                    <state key="normal" image="message_bear"/>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thank you for washing clothes with Cleanpro !" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oSa-vA-qbZ">
+                    <rect key="frame" x="56" y="9" width="319" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="dPT-Yl-hPk"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.25879433751106262" green="0.25884398818016052" blue="0.25878781080245972" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="ksB-S7-oYU" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="20k-hq-PAf"/>
+                <constraint firstItem="oSa-vA-qbZ" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="KZj-Ed-Ztg"/>
+                <constraint firstItem="oSa-vA-qbZ" firstAttribute="leading" secondItem="ksB-S7-oYU" secondAttribute="trailing" constant="8" id="Oel-Io-YNr"/>
+                <constraint firstItem="oSa-vA-qbZ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Ypn-b4-0Hs"/>
+                <constraint firstItem="ksB-S7-oYU" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="y9q-wI-h6Q"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="left_button" destination="ksB-S7-oYU" id="ykm-bN-w5x"/>
+                <outlet property="right_Label" destination="oSa-vA-qbZ" id="eHN-S3-joj"/>
+            </connections>
+            <point key="canvasLocation" x="138.40000000000001" y="422.78860569715147"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="message_bear" width="16" height="16"/>
+    </resources>
+</document>
