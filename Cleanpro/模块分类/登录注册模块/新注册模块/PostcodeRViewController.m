@@ -92,7 +92,8 @@
     CGFloat kbHeight = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
     
     //计算出键盘顶端到inputTextView panel底端的距离(加上自定义的缓冲距离INTERVAL_KEYBOARD)
-    CGFloat offset = (self.Skip_btn.top+self.Skip_btn.height+kbHeight) - (self.view.frame.size.height);
+//    CGFloat offset = (self.Skip_btn.top+self.Skip_btn.height+kbHeight) - (self.view.frame.size.height);
+    CGFloat offset = (self.textfield.top+self.textfield.height+kbHeight+(kNavBarAndStatusBarHeight)) - SCREEN_HEIGHT;
     
     // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
     double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
@@ -112,7 +113,8 @@
     
     //视图下沉恢复原状
     [UIView animateWithDuration:duration animations:^{
-        self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    //        self.view.frame = [UIScreen mainScreen].bounds;
+            self.view.frame = CGRectMake(0, kNavBarAndStatusBarHeight, SCREEN_WIDTH, SCREEN_HEIGHT);
     }];
 }
 

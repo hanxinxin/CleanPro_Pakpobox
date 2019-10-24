@@ -18,6 +18,19 @@
 
 @implementation HQTextField
 
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        self.textColor = [UIColor blackColor];
+    }
+    return self;
+}
+-(void)awakeFromNib
+{
+    self.textColor = [UIColor blackColor];
+    [super awakeFromNib];
+}
+
 #pragma mark -- 警示框
 
 - (void)createAlertLayer {

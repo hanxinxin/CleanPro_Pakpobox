@@ -9,6 +9,7 @@
 #import "SetPayPTwoViewController.h"
 #import "MyWalletViewController.h"
 #import "LaundryDetailsViewController.h"
+#import "SettingViewController.h"
 
 @interface SetPayPTwoViewController ()<UIGestureRecognizerDelegate,UITextFieldDelegate>
 
@@ -112,7 +113,8 @@
     
     //视图下沉恢复原状
     [UIView animateWithDuration:duration animations:^{
-        self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+            self.view.frame = [UIScreen mainScreen].bounds;
+//            self.view.frame = CGRectMake(0, kNavBarAndStatusBarHeight, SCREEN_WIDTH, SCREEN_HEIGHT);
     }];
 }
 
@@ -278,16 +280,8 @@
             [defaults synchronize];
             [jiamiStr base64Data_encrypt:mode.yonghuID];
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Set up the success", @"Language") andDelay:2.0];
-            for (UIViewController *controller in self.navigationController.viewControllers) {
-                if ([controller isKindOfClass:[MyWalletViewController class]]) {
-                    [self.navigationController popToViewController:controller animated:YES];
-                }
-            }
-            for (UIViewController *controller in self.navigationController.viewControllers) {
-                if ([controller isKindOfClass:[LaundryDetailsViewController class]]) {
-                    [self.navigationController popToViewController:controller animated:YES];
-                }
-            }
+            [self PopViewcontroller];
+            
         }
     } failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"error = %@",error);
@@ -306,8 +300,20 @@
         }
     }];
 }
-
-
+-(void)PopViewcontroller
+{
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isKindOfClass:[MyWalletViewController class]]) {
+            [self.navigationController popToViewController:controller animated:YES];
+        }
+    }
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isKindOfClass:[SettingViewController class]]) {
+            [self.navigationController popToViewController:controller animated:YES];
+        }
+    }
+    
+}
 -(void)setPostPasswrod
 {
     [HudViewFZ labelExample:self.view];
@@ -329,16 +335,7 @@
                 {
                     [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Set up the success", @"Language") andDelay:2.0];
                     //            [self.navigationController popToViewController:LoginViewController animated:YES];
-                    for (UIViewController *controller in self.navigationController.viewControllers) {
-                        if ([controller isKindOfClass:[MyWalletViewController class]]) {
-                            [self.navigationController popToViewController:controller animated:YES];
-                        }
-                    }
-                    for (UIViewController *controller in self.navigationController.viewControllers) {
-                        if ([controller isKindOfClass:[LaundryDetailsViewController class]]) {
-                            [self.navigationController popToViewController:controller animated:YES];
-                        }
-                    }
+                    [self PopViewcontroller];
                 }else
                 {
                     NSString*errorMessage = [dict objectForKey:@"errorMessage"];

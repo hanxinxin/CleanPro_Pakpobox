@@ -131,7 +131,12 @@
         //    [appDelegate.appdelegate1 closeConnected];
         NSString * deviceName = self.arrayList[1];
         NSData * dataAAA = [self getData:strCommand];
-        [appDelegate.appdelegate1 dataSendWithNameStr:deviceName dataA:dataAAA];
+        if([appDelegate.appdelegate1 isConnected_to])
+        {
+            [appDelegate.appdelegate1 dataSendWithNameStr:deviceName dataA:dataAAA];
+        }else{
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Bluetooth disconnected", @"Language") andDelay:2.5];
+        }
 //    [HudViewFZ HiddenHud];
         if(array.count==1)
         {
@@ -156,7 +161,7 @@
             
             break;
         }
-            [NSThread sleepForTimeInterval:8.0];
+            [NSThread sleepForTimeInterval:10.0];
         }
         
     }

@@ -183,7 +183,8 @@
 {
     [HudViewFZ labelExample:self.view];
     __block locationMapViewController *  blockSelf = self;
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,Get_location] parameters:nil progress:^(id progress) {
+    NSLog(@"url===  %@",[NSString stringWithFormat:@"%@%@?page=%@&maxCount=%@",FuWuQiUrl,Get_location,@"0",@"20"]);
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:[NSString stringWithFormat:@"%@%@?page=%@&maxCount=%@",FuWuQiUrl,Get_location,@"0",@"20"] parameters:nil progress:^(id progress) {
         
     } success:^(id responseObject) {
         NSLog(@"responseObject=  %@",responseObject);
@@ -201,7 +202,7 @@
             NSLog(@"address === %@",[dic objectForKey:@"address"]);
             MD_Mode.MDName=[dic objectForKey:@"name"];
             MD_Mode.MDaddress=[dic objectForKey:@"address"];
-            
+            MD_Mode.showApp = [dic objectForKey:@"showApp"];
             [blockSelf->MD_MUtableArr addObject:MD_Mode];
             
 //            }
@@ -421,7 +422,26 @@
             annotationView.calloutOffset = CGPointMake(0, 0); // 设置大头针气泡的偏移
 
         }
-        annotationView.image = [UIImage imageNamed:@"location_mark_app"];
+//        MD_Mode.showApp
+//        icon_pay@2x
+        AircraftAnnotation * annotationTagg=(AircraftAnnotation *)annotation;
+        NSLog(@"tagg === %ld",(long)annotationTagg.tagg);
+        LocationClass * mode = MD_MUtableArr[annotationTagg.tagg];
+        if(mode.showApp!=nil)
+        {
+            if([mode.showApp doubleValue]==0)
+            {
+//                annotationView.image = [UIImage imageNamed:@"location_mark_app"];
+                annotationView.image = [UIImage imageNamed:@"location_mark_app"];
+            }else
+            {
+                annotationView.image = [UIImage imageNamed:@"icon_pay"];
+            }
+        }else
+        {
+            annotationView.image = [UIImage imageNamed:@"location_mark_app"];
+        }
+        
         ///无  APP门店图标  location_mark@2x
         //有 app门店图标  location_mark_app
         //        annotationView.canShowCallout = YES;//显示气泡

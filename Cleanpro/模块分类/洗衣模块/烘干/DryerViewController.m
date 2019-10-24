@@ -154,7 +154,18 @@
 //    if([Manager.inst isConnected])
 //    {
     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    NSLog(@"Connected1=== %d",[appDelegate.appdelegate1 isConnected_to]);
+//    NSLog(@"Connected1=== %d",[appDelegate.appdelegate1 isConnected_to]);
+    NSString * strMM = [NSString stringWithFormat:@"%@",self.arrayList[0]];
+    if([strMM isEqualToString:@"20190605"]|| [strMM isEqualToString:@"P20191011"])//P2018080603
+    {
+        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        LaundryDetailsViewController *vc=[main instantiateViewControllerWithIdentifier:@"LaundryDetailsViewController"];
+        vc.hidesBottomBarWhenPushed = YES;
+        vc.order_c=self->order_c;
+        vc.arrayList=self.arrayList;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else
+    {
     if([appDelegate.appdelegate1 isConnected_to])
     {
         NSLog(@"已连接偶忆蓝牙2");
@@ -167,26 +178,26 @@
     }else
     {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:FGGetStringWithKeyFromTable(@"Tips", @"Language") message:FGGetStringWithKeyFromTable(@"Bluetooth connection", @"Language") preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:FGGetStringWithKeyFromTable(@"Cancel", @"Language") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            NSLog(@"点击取消");
-        }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:FGGetStringWithKeyFromTable(@"Next", @"Language") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        [alertController addAction:[UIAlertAction actionWithTitle:FGGetStringWithKeyFromTable(@"Cancel", @"Language") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//            NSLog(@"点击取消");
+//        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:FGGetStringWithKeyFromTable(@"OK", @"Language") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
 //            NSLog(@"点击确认");
             NSLog(@"未连接直接跳转");
-            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            LaundryDetailsViewController *vc=[main instantiateViewControllerWithIdentifier:@"LaundryDetailsViewController"];
-            vc.hidesBottomBarWhenPushed = YES;
-            vc.order_c=self->order_c;
-            vc.arrayList=self.arrayList;
-            [self.navigationController pushViewController:vc animated:YES];
+//            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//            LaundryDetailsViewController *vc=[main instantiateViewControllerWithIdentifier:@"LaundryDetailsViewController"];
+//            vc.hidesBottomBarWhenPushed = YES;
+//            vc.order_c=self->order_c;
+//            vc.arrayList=self.arrayList;
+//            [self.navigationController pushViewController:vc animated:YES];
         }]];
         // 由于它是一个控制器 直接modal出来就好了
         
         [self presentViewController:alertController animated:YES completion:nil];
         //        [HudViewFZ showMessageTitle:@"Bluetooth connection failed" andDelay:2.5];
     }
-    
+    }
 }
 
 

@@ -17,7 +17,7 @@
 //@property (nonatomic,assign)CLLocationCoordinate2D LocationeCoor;
 @property (nonatomic,strong)NSString * MenDian_lat;
 @property (nonatomic,strong)NSString * MenDian_lon;
-
+@property (nonatomic,strong)NSString * showApp; //是否支持APP操作
 @property (nonatomic,strong)NSString * MDName;
 @property (nonatomic,strong)NSString * MDenName;
 @property (nonatomic,strong)NSString * MDaddress;

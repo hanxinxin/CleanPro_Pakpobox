@@ -13,14 +13,15 @@
 #import "ContactViewController.h"
 #import "newPhoneViewController.h"
 #import "ExistingPayViewController.h"
+#import "ZGQActionSheetView.h"
 
-@interface SettingViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface SettingViewController ()<UITableViewDelegate,UITableViewDataSource,ZGQActionSheetViewDelegate>
 @property (nonatomic,strong)NSArray * arrtitle;
-
+@property (nullable,strong)ChangeLanguage * Change;
 @end
 
 @implementation SettingViewController
-@synthesize arrtitle;
+@synthesize arrtitle,Change;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -33,7 +34,7 @@
     self.edgesForExtendedLayout = UIRectEdgeTop;
     
     
-    arrtitle=@[FGGetStringWithKeyFromTable(@"Payment Setting", @"Language"),FGGetStringWithKeyFromTable(@"Version", @"Language"),FGGetStringWithKeyFromTable(@"Contact us", @"Language")];
+    arrtitle=@[FGGetStringWithKeyFromTable(@"Payment Setting", @"Language"),FGGetStringWithKeyFromTable(@"Language", @"Language"),FGGetStringWithKeyFromTable(@"Version", @"Language"),FGGetStringWithKeyFromTable(@"Contact us", @"Language")];
 //    [self addsetTableView];
     [self.NextSetp setTitle:FGGetStringWithKeyFromTable(@"Log out", @"Language") forState:(UIControlStateNormal)];
     [self.navigationController.navigationBar setTranslucent:NO];
@@ -167,13 +168,17 @@
         return cell1;
     }else if(indexPath.section==1)
     {
+        cell.textLabel.text = [arrtitle objectAtIndex:indexPath.section];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
+    }else if(indexPath.section==2)
+    {
     cell.textLabel.text = [arrtitle objectAtIndex:indexPath.section];
     NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary];
     // app版本
     NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
     [cell.detailTextLabel setText:app_Version];
     [cell.detailTextLabel setTextColor:[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0]];
-    }else if(indexPath.section==2)
+    }else if(indexPath.section==3)
     {
         cell.textLabel.text = [arrtitle objectAtIndex:indexPath.section];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
@@ -246,11 +251,18 @@
         }
     }else if(indexPath.section==1)
     {
+        NSArray *optionArray = @[FGGetStringWithKeyFromTable(@"English", @"Language"),FGGetStringWithKeyFromTable(@"Malay", @"Language"),FGGetStringWithKeyFromTable(@"Thai", @"Language")];
+        ZGQActionSheetView *sheetView = [[ZGQActionSheetView alloc] initWithOptions:optionArray];
+        sheetView.tag=202;
+        sheetView.delegate = self;
+        [sheetView show];
+    }else if(indexPath.section==2)
+    {
 //        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        mimaViewController *vc=[main instantiateViewControllerWithIdentifier:@"mimaViewController"];
+//        ContactViewController *vc=[main instantiateViewControllerWithIdentifier:@"ContactViewController"];
 //        vc.hidesBottomBarWhenPushed = YES;
 //        [self.navigationController pushViewController:vc animated:YES];
-    }else if(indexPath.section==2)
+    }else if(indexPath.section==3)
     {
         UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
         ContactViewController *vc=[main instantiateViewControllerWithIdentifier:@"ContactViewController"];
@@ -258,6 +270,31 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
     
+}
+
+
+
+- (void)ZGQActionSheetView:(ZGQActionSheetView *)sheetView didSelectRowAtIndex:(NSInteger)index text:(NSString *)text {
+    NSLog(@"%zd,%@",index,text);
+    if(sheetView.tag==202)
+    {
+        Change = [ChangeLanguage sharedInstance];;
+        
+        if(index==0)
+        {
+            NSLog(@"英");
+            [Change setNewLanguage:EN];
+        }else if(index==1)
+        {
+            NSLog(@"马来文");
+            [Change setNewLanguage:malai];
+            
+        }else if(index==2)
+        {
+             NSLog(@"泰文");
+            [Change setNewLanguage:TaiWen];
+        }
+    }
 }
 
 @end

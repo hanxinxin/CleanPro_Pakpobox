@@ -76,7 +76,7 @@
     
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
         [self AddtableView];
-        [HudViewFZ labelJuHua:self.view andDelay:2.0];
+        [HudViewFZ labelJuHua:self.view andDelay:0.5];
     });
 }
 - (void)viewWillAppear:(BOOL)animated {

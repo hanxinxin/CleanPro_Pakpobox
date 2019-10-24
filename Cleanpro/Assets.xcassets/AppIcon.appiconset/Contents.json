@@ -3,49 +3,49 @@
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "桌面图标iPhoneNotification_20pt@2x.png",
+      "filename" : "newLogoiPhoneNotification_20pt@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "桌面图标iPhoneNotification_20pt@3x.png",
+      "filename" : "newLogoiPhoneNotification_20pt@3x.png",
       "scale" : "3x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "桌面图标iPhoneSpootlight5_29pt@2x.png",
+      "filename" : "newLogoiPhoneSpootlight5_29pt@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "桌面图标iPhoneSpootlight5_29pt@3x.png",
+      "filename" : "newLogoiPhoneSpootlight5_29pt@3x.png",
       "scale" : "3x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "桌面图标iPhoneSpootlight7_40pt@2x.png",
+      "filename" : "newLogoiPhoneSpootlight7_40pt@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "桌面图标iPhoneSpootlight7_40pt@3x.png",
+      "filename" : "newLogoiPhoneSpootlight7_40pt@3x.png",
       "scale" : "3x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "桌面图标iPhoneApp_60pt@2x.png",
+      "filename" : "newLogoiPhoneApp_60pt@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "桌面图标iPhoneApp_60pt@3x.png",
+      "filename" : "newLogoiPhoneApp_60pt@3x.png",
       "scale" : "3x"
     },
     {
@@ -96,7 +96,7 @@
     {
       "size" : "1024x1024",
       "idiom" : "ios-marketing",
-      "filename" : "桌面图标store_1024pt.png",
+      "filename" : "newLogostore_1024pt.png",
       "scale" : "1x"
     }
   ],

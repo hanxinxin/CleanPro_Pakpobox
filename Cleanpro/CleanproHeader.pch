@@ -12,6 +12,26 @@
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
 #define NAVIGATION_HEIGHT (CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]) + CGRectGetHeight(self.navigationController.navigationBar.frame))
 
+#define kIs_iphone (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define kIs_iPhoneX SCREEN_WIDTH >=375.0f && SCREEN_HEIGHT >=812.0f&& kIs_iphone
+/*状态栏高度*/
+#define kStatusBarHeight (CGFloat)kIs_iPhoneX?(44.0):(20.0)
+/*导航栏高度*/
+#define kNavBarHeight 44.0
+/*状态栏和导航栏总高度*/
+#define kNavBarAndStatusBarHeight kIs_iPhoneX?(88.0):(64.0)
+/*TabBar高度*/
+#define kTabBarHeight (CGFloat)kIs_iPhoneX?(49.0 + 34.0):(49.0)
+/*顶部安全区域远离高度*/
+#define kTopBarSafeHeight (CGFloat)kIs_iPhoneX?(44.0):(0)
+/*底部安全区域远离高度*/
+#define kBottomSafeHeight (CGFloat)kIs_iPhoneX?(34.0):(0)
+/*iPhoneX的状态栏高度差值*/
+#define kTopBarDifHeight (CGFloat)kIs_iPhoneX?(24.0):(0)
+/*导航条和Tabbar总高度*/
+
+
+
 #import "AFNetworking.h"
 #import "MBProgressHUD.h"
 #import "AFNetWrokingAssistant.h"
@@ -45,9 +65,9 @@
 ////加载语言的宏
 #define CNS @"zh-Hans"//// 中文
 #define EN @"en" //// 英文
-#define malai @"ms-CN" //// 马来文
+#define malai @"ms" //// 马来文
 
-#define TaiWen @"th-CN" //// 泰文
+#define TaiWen @"th-TH" //// 泰文
 
 #define FGGetStringWithKeyFromTable(key, tbl) [[ChangeLanguage sharedInstance] getStringForKey:key withTable:tbl]
 

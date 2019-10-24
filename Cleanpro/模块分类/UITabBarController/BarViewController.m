@@ -367,6 +367,7 @@
     }
     versionView1.delegate=self;
     [self.view addSubview:versionView1];
+ 
 }
 -(void)Buttontouch:(NSInteger)key_Int View:(UIView *)view forcedFlag:(nonnull NSString *)forcedFlagStr
 {
@@ -417,9 +418,16 @@
             if (a1 > b) {
                 NSLog(@"有新版本");
                 [self addVersionView:contentStr forcedFlag:forcedFlagStr];
-            }else if(a1 <= b){
+            }else if(a1 == b){
+               NSLog(@"没有新版本1");
                 
-               NSLog(@"没有新版本");
+            }else if(a1 < b){
+                if(i==0 || i==1)
+                {
+                    NSLog(@"直接跳出");
+                    break;
+                }
+               NSLog(@"没有新版本2");
                 
             }
             

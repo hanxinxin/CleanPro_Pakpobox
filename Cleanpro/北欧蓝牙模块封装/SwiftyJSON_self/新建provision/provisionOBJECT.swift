@@ -307,23 +307,15 @@ private extension provisionOBJECT {
     func ensureNewRangesAreValid(for provisioner: Provisioner) throws {
         let meshNetwork = (UIApplication.shared.delegate as! AppDelegate).appdelegate1.meshNetworkManager.meshNetwork!
         
-        guard newUnicastAddressRange == nil || !newUnicastAddressRange!.isEmpty else {
-            throw MeshModelError.invalidRange
-        }
+        newUnicastAddressRange == nil || !newUnicastAddressRange!.isEmpty 
         if let newUnicastAddressRange = newUnicastAddressRange {
-            guard meshNetwork.areRanges(newUnicastAddressRange, availableForAllocationTo: provisioner) else {
-                throw MeshModelError.overlappingProvisionerRanges
-            }
+            meshNetwork.areRanges(newUnicastAddressRange, availableForAllocationTo: provisioner)
         }
         if let newGroupAddressRange = newGroupAddressRange {
-            guard meshNetwork.areRanges(newGroupAddressRange, availableForAllocationTo: provisioner) else {
-                throw MeshModelError.overlappingProvisionerRanges
-            }
+            meshNetwork.areRanges(newGroupAddressRange, availableForAllocationTo: provisioner)
         }
         if let newSceneRange = newSceneRange {
-            guard meshNetwork.areRanges(newSceneRange, availableForAllocationTo: provisioner) else {
-                throw MeshModelError.overlappingProvisionerRanges
-            }
+            meshNetwork.areRanges(newSceneRange, availableForAllocationTo: provisioner)
         }
     }
     
@@ -340,16 +332,12 @@ private extension provisionOBJECT {
         if let newAddress = newAddress {
             // Check whether the address is in Provisioner's unicast range.
             let range = newUnicastAddressRange ?? provisioner.allocatedUnicastRange
-            guard range.contains(newAddress) else {
-                throw MeshModelError.addressNotInAllocatedRange
-            }
+            range.contains(newAddress)
             
             // Check whether the new address is available.
-            guard !meshNetwork.nodes
+            !meshNetwork.nodes
                 .filter({ $0.uuid != provisioner.uuid })
-                .contains(where: { $0.unicastAddress == newAddress }) else {
-                    throw MeshModelError.addressNotAvailable
-            }
+                .contains(where: { $0.unicastAddress == newAddress })
         }
     }
     

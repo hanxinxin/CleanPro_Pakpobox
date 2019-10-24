@@ -105,7 +105,8 @@
     
     //视图下沉恢复原状
     [UIView animateWithDuration:duration animations:^{
-        self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+            self.view.frame = [UIScreen mainScreen].bounds;
+//            self.view.frame = CGRectMake(0, kNavBarAndStatusBarHeight, SCREEN_WIDTH, SCREEN_HEIGHT);
     }];
 }
 

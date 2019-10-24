@@ -83,15 +83,16 @@ static ChangeLanguage *sharedModel;
 
 -(void)setNewLanguage:(NSString *)language
 {
-    if ([language isEqualToString:self.language])
-    {
-        return;
-    }
+//    if ([language isEqualToString:self.language])
+//    {
+//        return;
+//    }
     
     //找到需要改成的语言路径
     if ([language isEqualToString:EN] || [language isEqualToString:CNS] || [language isEqualToString:malai] || [language isEqualToString:TaiWen])
     {
         NSString *path = [[NSBundle mainBundle] pathForResource:language ofType:@"lproj"];
+        NSLog(@"language_path= %@",path);
         self.bundle = [NSBundle bundleWithPath:path];
     }
     

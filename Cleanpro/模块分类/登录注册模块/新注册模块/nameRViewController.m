@@ -72,6 +72,7 @@
     [self.navigationController.navigationBar setHidden:NO];
     [self addNoticeForKeyboard];
     [super viewWillAppear:animated];
+//    self.navigationController.navigationBar.translucent = YES;
 }
 - (void)viewWillDisappear:(BOOL)animated {
     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];
@@ -101,8 +102,9 @@
     CGFloat kbHeight = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
     
     //计算出键盘顶端到inputTextView panel底端的距离(加上自定义的缓冲距离INTERVAL_KEYBOARD)
-    CGFloat offset = (self.next_btn.top+self.next_btn.height+kbHeight) - (SCREEN_HEIGHT);
-    
+    CGFloat offheight = SCREEN_HEIGHT-(kNavBarAndStatusBarHeight);
+    CGFloat offset = (self.next_btn.top+self.next_btn.height+kbHeight+(kNavBarAndStatusBarHeight)) - SCREEN_HEIGHT;
+    NSLog(@"duibi  = %f，%f",SCREEN_HEIGHT,kNavBarAndStatusBarHeight);
     // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
     double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
@@ -118,10 +120,11 @@
 - (void) keyboardWillHide:(NSNotification *)notify {
     // 键盘动画时间
     double duration = [[notify.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    
+   
     //视图下沉恢复原状
     [UIView animateWithDuration:duration animations:^{
-        self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    //        self.view.frame = [UIScreen mainScreen].bounds;
+            self.view.frame = CGRectMake(0, kNavBarAndStatusBarHeight, SCREEN_WIDTH, SCREEN_HEIGHT);
     }];
 }
 

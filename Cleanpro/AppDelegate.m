@@ -133,7 +133,7 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     
     //创建带着有自定义图标项
     UIMutableApplicationShortcutItem * item1 = [[UIMutableApplicationShortcutItem alloc] initWithType:@"Scan" localizedTitle:@"Sacn" localizedSubtitle:@"" icon:icon1 userInfo:nil];
-    [self get_Language];
+//    [self get_Language];
     //创建带着有自定义图标项
 //     UIApplicationShortcutItem *shortItem2 = [[UIApplicationShortcutItem alloc] initWithType:@"Share" localizedTitle:[NSString stringWithFormat:@"Share“%@”",app_Name] localizedSubtitle:@"" icon:[UIApplicationShortcutIcon iconWithType: UIApplicationShortcutIconTypeShare] userInfo:nil];;
     [[UIApplication sharedApplication] setShortcutItems:@[item1]];
@@ -162,21 +162,24 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 
 -(void)bearerDidConnect:(NSNotification *)noti {
 //    NSDictionary *dic = [noti userInfo];
-    NSLog(@"正在连接蓝牙22");
+    NSLog(@"正在连接蓝牙");
+     [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"正在连接蓝牙", @"Language") andDelay:2.0];
 }
 -(void)bearerClose:(NSNotification *)noti {
 //    NSDictionary *dic = [noti userInfo];
-    NSLog(@"蓝牙关闭22");
+    NSLog(@"蓝牙关闭");
+    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙关闭", @"Language") andDelay:2.5];
 }
 -(void)bearerDeliverData:(NSNotification *)noti {
     NSDictionary *dic = [noti userInfo];
     NSData * dataA = [dic objectForKey:@"data"];
-//    NSLog(@"接受到数据22");
-//    NSLog(@"接受 Data  ====%@",dataA);
+    NSLog(@"接受到数据22");
+    NSLog(@"接受 Data  ====%@",dataA);
 }
 -(void)bearerDidOpen:(NSNotification *)noti {
 //    NSDictionary *dic = [noti userInfo];
-    NSLog(@"蓝牙连接成功22");
+    NSLog(@"蓝牙连接成功");
+    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙连接成功", @"Language") andDelay:2.0];
 }
 
 

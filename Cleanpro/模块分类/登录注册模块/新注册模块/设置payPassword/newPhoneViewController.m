@@ -112,10 +112,11 @@
 - (void) keyboardWillHide:(NSNotification *)notify {
     // 键盘动画时间
     double duration = [[notify.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    
+    NSLog(@"距上对比 = %f，%f",self.view.frame.origin.y,[UIScreen mainScreen].bounds.origin.y);
     //视图下沉恢复原状
     [UIView animateWithDuration:duration animations:^{
-        self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+            self.view.frame = [UIScreen mainScreen].bounds;
+//            self.view.frame = CGRectMake(0, kNavBarAndStatusBarHeight, SCREEN_WIDTH, SCREEN_HEIGHT);
     }];
 }
 

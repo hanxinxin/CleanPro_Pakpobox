@@ -28,7 +28,7 @@
 
 @property (nonatomic, strong) NSString *orderStr; //////扫描二维码得到的信息
 
-@property CBCentralManager *centralManager;
+//@property CBCentralManager *centralManager;
 
 
 @end
@@ -94,7 +94,7 @@
         [self.view addSubview:self.bottomView];
         
         [self setupNavigationBar];
-        self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
+//        self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil options:nil];
         [self QRCodeScanVC];
         if(self->QRBool==YES)
         {
@@ -487,12 +487,12 @@
     NSString * Strdata = [dic objectForKey:@"data"];
     if([Strdata isEqualToString:@"112"])
     {
-        NSLog(@"111111122222");
+//        NSLog(@"111111122222");
         [HudViewFZ HiddenHud];
         [self AddConnected];
     }else if([Strdata isEqualToString:@"110"])
     {
-        NSLog(@"333333444444");
+//        NSLog(@"333333444444");
         [HudViewFZ HiddenHud];
         [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Data parsing error", @"Language") andDelay:2.5];
             dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.3/*延迟执行时间*/ * NSEC_PER_SEC));

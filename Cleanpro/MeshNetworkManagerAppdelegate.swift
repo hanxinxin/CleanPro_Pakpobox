@@ -83,28 +83,28 @@ import os.log
     
     @objc public func AddConnected()
     {
-        var loaded = false
-        do {
-            loaded = try meshNetworkManager.load()
-        } catch {
-            print(error)
-            // ignore
-        }
-        dataZong = []
-        // If load failed, create a new MeshNetwork.
-        if !loaded {
-            createNewMeshNetwork()
-        } else {
-            let meshNetwork = meshNetworkManager.meshNetwork!
-            connection = NetworkConnection(to: meshNetwork)
-            meshNetworkManager.delegate = self
-            meshNetworkManager.logger = self
-            connection!.dataDelegate = self
-            connection.delegate = self;
-            
-            meshNetworkManager.transmitter = connection
-            connection!.open()
-        }
+               var loaded = false
+               do {
+                   loaded = try meshNetworkManager.load()
+               } catch {
+                   print(error)
+                   // ignore
+               }
+               dataZong = []
+               // If load failed, create a new MeshNetwork.
+               if !loaded {
+                   createNewMeshNetwork()
+               } else {
+                   let meshNetwork = meshNetworkManager.meshNetwork!
+                   connection = NetworkConnection(to: meshNetwork)
+                   meshNetworkManager.delegate = self
+                   meshNetworkManager.logger = self
+                   connection!.dataDelegate = self
+                   connection.delegate = self;
+                   
+                   meshNetworkManager.transmitter = connection
+                   connection!.open()
+               }
     }
     
     
@@ -192,7 +192,8 @@ import os.log
                         self.dataZong.append(dataA)
                     }
 //                    print("数组===  ",(self.dataZong as AnyObject))
-                    try meshNetworkManager.send(onoff, to: meshaddressA, using: node.applicationKeys[0])
+                   try meshNetworkManager.send(onoff, to: meshaddressA, using: node.applicationKeys[0])
+//                    print("打印==== ",MessShrow)
                 } catch {
                     print(error)
                     // ignore
@@ -440,7 +441,7 @@ import os.log
                 }
                 addProvisioner(provisioner: ProvisionerMMM, meshNetworkA: meshNetwork)
                 self.AddConnected()
-
+                
 //
                 /*
                 _ = meshNetwork.remove(provisionerAt: 0)
@@ -522,24 +523,7 @@ import os.log
             }
         } catch {
             
-             switch error as! MeshModelError {
-             case .nodeAlreadyExist:
-             // A node with the same UUID as the Provisioner has been found.
-             // This is very unlikely to happen, as UUIDs are randomly generated.
-             // The solution is to go cancel and add another Provisioner, which
-             // will have another randomly generated UUID.
-             print("A node for this Provisioner already exists.")
-             case .overlappingProvisionerRanges:
-             print("Provisioner's ranges overlap with another Provisioner.")
-             case .invalidRange:
-             print("At least one of specified ranges is invalid.")
-             case .addressNotInAllocatedRange:
-             print("The Provisioner's unicast address is outside of its allocated range.")
-             case .addressNotAvailable:
-             print("The address is already in use.")
-             default:
-             print("An error occurred.")
-             }
+             
             
         }
     }
@@ -597,7 +581,7 @@ extension MeshNetworkManagerAppdelegate:GattBearerDelegate,BearerDataDelegate,Me
                             from localElement: Element, to destination: Address,
                             error: Error)
     {
-        print("未发送成功通知 error = ",error)
+//        print("未发送成功通知 error = ",error)
         /*
         let onoff : GenericOnOffSet = message as! GenericOnOffSet
         print("未发送成功通知 = ",onoff.parameters?.hex as Any)
@@ -632,7 +616,7 @@ extension MeshNetworkManagerAppdelegate:GattBearerDelegate,BearerDataDelegate,Me
         
     }
     public func bearer(_ bearer: Bearer, didClose error: Error?) {
-        print("蓝牙连接关闭11")
+//        print("蓝牙连接关闭11")
         NotificationCenter.default.post(name: NSNotification.Name(rawValue:"bearerClose"), object:nil, userInfo:["bearer":bearer])
         isConnected = false;
     }
@@ -652,7 +636,7 @@ extension MeshNetworkManagerAppdelegate:GattBearerDelegate,BearerDataDelegate,Me
     }
     public func bearerDidOpen(_ bearer: Bearer) {
         
-        print("蓝牙连接成功11 开启通知")
+//        print("蓝牙连接成功11 开启通知")
         isConnected = true;
         NotificationCenter.default.post(name: NSNotification.Name(rawValue:"bearerDidOpen"), object:nil, userInfo:["bearer":bearer])
     }
