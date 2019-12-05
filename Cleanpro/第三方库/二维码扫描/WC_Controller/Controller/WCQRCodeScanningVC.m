@@ -28,6 +28,8 @@
 
 @property (nonatomic, strong) NSString *orderStr; //////扫描二维码得到的信息
 
+@property (nonatomic, strong) NSString * addr; ///获取二维码的加密字节
+
 //@property CBCentralManager *centralManager;
 
 
@@ -76,6 +78,8 @@
     // Do any additional setup after loading the view from its nib.
     self.view.backgroundColor = [UIColor clearColor];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ImportError:) name:@"ImportError" object:nil];
+    //注册通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(AddConnectState:)name:@"AddConnectState" object:nil];
 }
 - (void)viewWillAppear:(BOOL)animated {
     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];
@@ -88,6 +92,7 @@
 //
 //    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
         self.orderStr =@"";
+    self.addr = @"";
         /// 为了 UI 效果
         [self.view addSubview:self.scanningView];
         [self.view addSubview:self.promptLabel];
@@ -287,7 +292,8 @@
         }
          */
             NSArray *array = [self.orderStr componentsSeparatedByString:@"#"];
-            [self get_zuwangmessage:array[0]];
+//            [self get_zuwangmessage:array[0]];
+            [self getBLEMac:array[0] NumberStr:array[1]];
         }else
         {
             NSLog(@"暂未识别出扫描的二维码1");
@@ -317,7 +323,8 @@
     if(![self.orderStr isEqualToString:@""])
     {
         NSArray *array = [self.orderStr componentsSeparatedByString:@"#"];
-        [self get_zuwangmessage:array[0]];
+//        [self get_zuwangmessage:array[0]];
+        [self getBLEMac:array[0] NumberStr:array[1]];
     }
 }
 
@@ -387,6 +394,7 @@
             LaundryViewController *vc=[main instantiateViewControllerWithIdentifier:@"LaundryViewController"];
             vc.hidesBottomBarWhenPushed = YES;
             vc.arrayList=array;
+            vc.addrStr = self.addr;
             [self.navigationController pushViewController:vc animated:YES];
             //        }else if (_tag_int==2)
         }else if([array[2] isEqualToString:@"DRYER"])
@@ -395,6 +403,7 @@
             DryerViewController *vc=[main instantiateViewControllerWithIdentifier:@"DryerViewController"];
             vc.hidesBottomBarWhenPushed = YES;
             vc.arrayList=array;
+            vc.addrStr = self.addr;
             [self.navigationController pushViewController:vc animated:YES];
         }
     }else {
@@ -405,6 +414,59 @@
         [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"The scanned qr code has not been identified yet", @"Language") andDelay:2.0];
     }
 }
+
+
+-(void)getBLEMac:(NSString *)siteNo NumberStr:(NSString*)NumStr
+{
+    NSLog(@"URL = %@",[NSString stringWithFormat:@"%@%@%@#%@",FuWuQiUrl,get_BLEmacAddress,siteNo,NumStr]);
+    NSString *escapedPathURL = [[NSString stringWithFormat:@"%@%@%@#%@",FuWuQiUrl,get_BLEmacAddress,siteNo,NumStr] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSLog(@"URL2 = %@",escapedPathURL);
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:escapedPathURL parameters:nil progress:^(id progress) {
+            
+        } success:^(id responseObject) {
+//            addr = 0016;
+//            mac = "F5:13:44:A9:73:F6";
+//            machineNo = 03;
+//            siteNo = P2018080603;
+            NSLog(@"responseObject ORder=  %@",responseObject);
+            NSDictionary * dictList=(NSDictionary *)responseObject;
+                NSString * statusCode =[dictList objectForKey:@"statusCode"];
+            if([statusCode integerValue] == 403)
+            {
+               NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+               [userDefaults setObject:@"1" forKey:@"Token"];
+               [userDefaults setObject:@"1" forKey:@"phoneNumber"];
+               [userDefaults setObject:nil forKey:@"SaveUserMode"];
+               [userDefaults setObject:@"1" forKey:@"logCamera"];
+               NSNotification *notification =[NSNotification notificationWithName:@"UIshuaxinLog" object: nil];
+               //通过通知中心发送通知
+               [[NSNotificationCenter defaultCenter] postNotification:notification];
+            }else{
+                NSString * addr = [dictList objectForKey:@"addr"];;
+                NSString * mac = [dictList objectForKey:@"mac"];
+                NSString * machineNo = [dictList objectForKey:@"machineNo"];
+//                NSString * siteNo = [dictList objectForKey:@"siteNo"];
+                NSString * macByte=[mac stringByReplacingOccurrencesOfString:@":" withString:@""];
+                if(macByte)
+                {
+                    self.addr = addr;
+                    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                    [appDelegate.ManagerBLE scanPeripherals];
+                    [appDelegate.ManagerBLE setAddressName:macByte];
+//                    [appDelegate.ManagerBLE setMacName:machineNo];
+                    [self AddConnected];
+                }
+            }
+           
+        } failure:^(NSInteger statusCode, NSError *error) {
+            [HudViewFZ HiddenHud];
+            NSLog(@"error ORder=  %@",error);
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Bluetooth connection failed", @"Language") andDelay:2.0];
+        }];
+}
+
+
+
 
 -(void)get_zuwangmessage:(NSString *)siteNo
 {
@@ -480,6 +542,17 @@
         NSLog(@"error ORder=  %@",error);
         [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Bluetooth connection failed", @"Language") andDelay:2.0];
     }];
+}
+-(void)AddConnectState:(NSNotification *)noti
+{
+    NSDictionary *dic = [noti userInfo];
+        NSString * Strdata = [dic objectForKey:@"data"];
+        if([Strdata isEqualToString:@"112"])
+        {
+    //        NSLog(@"111111122222");
+            [HudViewFZ HiddenHud];
+            [self AddConnected];
+        }
 }
 -(void)ImportError:(NSNotification *)noti
 {

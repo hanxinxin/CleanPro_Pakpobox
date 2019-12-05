@@ -16,6 +16,7 @@
 #import "VIPjfViewController.h"
 #import "IntroductionViewController.h"
 
+#import "NewMyWalletViewController.h"
 #import "IMessageViewController.h"
 #import "OrdersViewController.h"
 #import "AppDelegate.h"
@@ -630,8 +631,12 @@
                 [self.navigationController pushViewController:vc animated:YES];
             }else
             {
+//                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//                MyWalletViewController *vc=[main instantiateViewControllerWithIdentifier:@"MyWalletViewController"];
+//                vc.hidesBottomBarWhenPushed = YES;
+//                [self.navigationController pushViewController:vc animated:YES];
                 UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                MyWalletViewController *vc=[main instantiateViewControllerWithIdentifier:@"MyWalletViewController"];
+                NewMyWalletViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewMyWalletViewController"];
                 vc.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:vc animated:YES];
             }

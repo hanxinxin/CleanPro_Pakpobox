@@ -71,8 +71,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-    [self.navigationController.navigationBar setShadowImage:nil];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
@@ -83,6 +81,7 @@
     });
     
     [super viewWillAppear:animated];
+    self.navigationController.navigationBar.translucent = YES;
 }
 - (void)viewWillDisappear:(BOOL)animated {
 //    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];

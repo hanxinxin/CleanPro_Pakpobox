@@ -15,4 +15,5 @@
 
 @property (nonatomic,assign)NSNumber * totalCount;// 总个数
 @property (nonatomic,assign)NSNumber * totalPage;  ///总页数
+@property (nonatomic,assign)CGFloat topHeight;
 @end

@@ -17,7 +17,10 @@
 #import "IMessageViewController.h"
 #import "BadgeButton.h"
 #import "versionView.h"
+#import "ConnectFeedViewController.h"
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "ShardHViewController.h"
+#import "InviteFriendsViewController.h"
 //#import <luckysdk/utils.h>
 
 
@@ -33,6 +36,7 @@
 
 @property (nonatomic,strong) NSMutableArray *imgArr;//图片数组
 @property (nonatomic,strong) NSMutableArray * imageViewArr;
+@property (nonatomic,strong) NSMutableArray * ArrZongCout;//保存首页图片，检测到有更新的再更新。没有就不更新
 @property (nonatomic,assign) CGFloat oldContentOffsetX;
 //@property CBCentralManager *centralManager;
 
@@ -60,14 +64,24 @@
     self.creditStr=@"0";
     self.currencyUnitStr=@"0";
     self.couponCountStr=@"0";
-    
     self.imgArr=[NSMutableArray arrayWithCapacity:0];
-    [self.imgArr addObject:[UIImage imageNamed:@"banner01"]];
-    [self.imgArr addObject:[UIImage imageNamed:@"banner02"]];
     self.imageViewArr = [NSMutableArray arrayWithCapacity:0];
-    [self.imageViewArr addObject:[UIImage imageNamed:@"collects_registration1"]];
-    [self.imageViewArr addObject:[UIImage imageNamed:@"collections_invite-friends"]];
-    [self.imageViewArr addObject:[UIImage imageNamed:@"collections_get-credits"]];
+    NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SYbanner"];
+       NSArray * arrayUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+       ///  对比请求下来的图片和本地是否一样
+       if(arrayUser!=nil)
+       {
+           [self UpdateGuanggao:arrayUser];
+       }else
+       {
+           
+           [self.imgArr addObject:[UIImage imageNamed:@"banner01"]];
+           [self.imgArr addObject:[UIImage imageNamed:@"banner02"]];
+           
+           [self.imageViewArr addObject:[UIImage imageNamed:@"collects_registration1"]];
+           [self.imageViewArr addObject:[UIImage imageNamed:@"collections_invite-friends"]];
+           [self.imageViewArr addObject:[UIImage imageNamed:@"collections_get-credits"]];
+       }
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
@@ -86,13 +100,12 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 //    self.title=@"Cleapro";
     self.navigationController.title=FGGetStringWithKeyFromTable(@"Home", @"Language");
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]}];
+   
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.07/*延迟执行时间*/ * NSEC_PER_SEC));
-
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
         [self getGuanggao];
         [self getToken];
@@ -232,61 +245,67 @@
         {
             [self.imgArr removeAllObjects];
             [self.imageViewArr removeAllObjects];
-        }
-        for (int i=0; i<array.count; i++) {
-         
-        NSDictionary * dictObject =array[i];
-//        NSLog(@"dictObject111 = %@",dictObject);
-        NSString * advertType = [dictObject objectForKey:@"advertType"];
-        NSDictionary * dicMainPage = [dictObject objectForKey:@"mainPage"];
-//        NSString * base64Str = [dicMainPage objectForKey:@"base64"];
-//        self->iamgeCC = imageD;
-            bannerMode * mode = [[bannerMode alloc] init];
-            mode.advertType = advertType;
-            mode.mainPage = dicMainPage;
-            mode.pageName = [dictObject objectForKey:@"pageName"];
-            mode.sequence = [dictObject objectForKey:@"sequence"];
-            mode.subPageType = [dictObject objectForKey:@"subPageType"];
-            if([advertType isEqualToString:@"BANNER"])
+//            SYbanner
+            NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SYbanner"];
+            NSArray * arrayUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+            ///  对比请求下来的图片和本地是否一样
+            if(arrayUser!=nil)
             {
-                [self.imgArr addObject:mode];
-            }else if([advertType isEqualToString:@"PROMOTION"])
+                int counterImage = 0;
+                for (int i=0; i<array.count; i++) {
+                    NSDictionary * dictObject =array[i];
+//                    NSLog(@"dictObject111 = %@",dictObject);
+                    NSString * advertType = [dictObject objectForKey:@"advertType"];
+                    NSDictionary * dicMainPage = [dictObject objectForKey:@"mainPage"];
+                    bannerMode * mode = [[bannerMode alloc] init];
+                    mode.advertType = advertType;
+                    mode.mainPage = dicMainPage;
+                    mode.pageName = [dictObject objectForKey:@"pageName"];
+                    mode.sequence = [dictObject objectForKey:@"sequence"];
+                    mode.subPageType = [dictObject objectForKey:@"subPageType"];
+                    NSDictionary * dict = mode.mainPage;
+                    NSString * ImageIDA = [dict objectForKey:@"id"];
+                    for (int j=0; j<arrayUser.count; j++) {
+                        NSDictionary * dictObject2 =arrayUser[
+                        j];
+//                        NSLog(@"dictObject111 = %@",dictObject);
+                        NSString * advertType2 = [dictObject2 objectForKey:@"advertType"];
+                        NSDictionary * dicMainPage2 = [dictObject2 objectForKey:@"mainPage"];
+                        bannerMode * mode2 = [[bannerMode alloc] init];
+                        mode2.advertType = advertType2;
+                        mode2.mainPage = dicMainPage2;
+                        mode2.pageName = [dictObject2 objectForKey:@"pageName"];
+                        mode2.sequence = [dictObject2 objectForKey:@"sequence"];
+                        mode2.subPageType = [dictObject2 objectForKey:@"subPageType"];
+                        NSDictionary * dict2 = mode2.mainPage;
+                        NSString * ImageIDB = [dict2 objectForKey:@"id"];
+                        if([ImageIDA isEqualToString:ImageIDB])
+                        {
+                            counterImage++;
+                            NSLog(@"counterImage == %d",counterImage);
+                        }
+                    }
+                }
+                if(counterImage != array.count)
+                {
+                    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                    //存储到NSUserDefaults（转NSData存）
+                    NSData *data = [NSKeyedArchiver archivedDataWithRootObject: array];
+                    [defaults setObject:data forKey:@"SYbanner"];
+                    [defaults synchronize];
+                    [self UpdateGuanggao:array];
+                }
+            }else
             {
-                [self.imageViewArr addObject:mode];
+                NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                 //存储到NSUserDefaults（转NSData存）
+                 NSData *data = [NSKeyedArchiver archivedDataWithRootObject: array];
+                 [defaults setObject:data forKey:@"SYbanner"];
+                 [defaults synchronize];
+                [self UpdateGuanggao:array];
             }
-            
         }
-        for (int j=0; j<self.imgArr.count; j++) {
-            for (int m=0; m<self.imgArr.count; m++) {
-                bannerMode * modePX = self.imgArr[j];
-                NSString* seq = modePX.sequence;
-                bannerMode * modePX1 = self.imgArr[m];
-                NSString* seq1 = modePX1.sequence;
-                if ([seq intValue] < [seq1 intValue]) {
-                    [self.imgArr exchangeObjectAtIndex:j withObjectAtIndex:m];
-                }
-            }
-            
-        }
-        for (int j=0; j<self.imageViewArr.count; j++) {
-            for (int m=0; m<self.imageViewArr.count; m++) {
-                bannerMode * modePX = self.imageViewArr[j];
-                NSString* seq = modePX.sequence;
-                bannerMode * modePX1 = self.imageViewArr[m];
-                NSString* seq1 = modePX1.sequence;
-                if ([seq intValue] < [seq1 intValue]) {
-                    [self.imageViewArr exchangeObjectAtIndex:j withObjectAtIndex:m];
-                }
-            }
-            
-        }
-        self->iamgeCC=1;
-        [self addScrollerView];
-//        [self downviewset];
-        self.downView.frame = CGRectMake(0, self->topView.bottom+8, SCREEN_WIDTH, 160*self.imageViewArr.count+8*self.imageViewArr.count+60);
-        self->globalScrollview.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self->topView.height+160*self.imageViewArr.count+8*self.imageViewArr.count+60+64);
-        self.tableViewD.frame = CGRectMake(15, self.title_View.height, SCREEN_WIDTH-30,160*self.imageViewArr.count+8*self.imageViewArr.count);
-        [self.tableViewD reloadData];
+        
     } failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"error = %@",error);
         [HudViewFZ HiddenHud];
@@ -294,6 +313,66 @@
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
     }];
 }
+
+-(void)UpdateGuanggao:(NSArray *)array
+{
+
+            for (int i=0; i<array.count; i++) {
+             
+            NSDictionary * dictObject =array[i];
+            NSLog(@"dictObject111 = %@",dictObject);
+            NSString * advertType = [dictObject objectForKey:@"advertType"];
+            NSDictionary * dicMainPage = [dictObject objectForKey:@"mainPage"];
+    //        NSString * base64Str = [dicMainPage objectForKey:@"base64"];
+    //        self->iamgeCC = imageD;
+                bannerMode * mode = [[bannerMode alloc] init];
+                mode.advertType = advertType;
+                mode.mainPage = dicMainPage;
+                mode.pageName = [dictObject objectForKey:@"pageName"];
+                mode.sequence = [dictObject objectForKey:@"sequence"];
+                mode.subPageType = [dictObject objectForKey:@"subPageType"];
+                if([advertType isEqualToString:@"BANNER"])
+                {
+                    [self.imgArr addObject:mode];
+                }else if([advertType isEqualToString:@"PROMOTION"])
+                {
+                    [self.imageViewArr addObject:mode];
+                }
+            }
+            for (int j=0; j<self.imgArr.count; j++) {
+                for (int m=0; m<self.imgArr.count; m++) {
+                    bannerMode * modePX = self.imgArr[j];
+                    NSString* seq = modePX.sequence;
+                    bannerMode * modePX1 = self.imgArr[m];
+                    NSString* seq1 = modePX1.sequence;
+                    if ([seq intValue] < [seq1 intValue]) {
+                        [self.imgArr exchangeObjectAtIndex:j withObjectAtIndex:m];
+                    }
+                }
+                
+            }
+            for (int j=0; j<self.imageViewArr.count; j++) {
+                for (int m=0; m<self.imageViewArr.count; m++) {
+                    bannerMode * modePX = self.imageViewArr[j];
+                    NSString* seq = modePX.sequence;
+                    bannerMode * modePX1 = self.imageViewArr[m];
+                    NSString* seq1 = modePX1.sequence;
+                    if ([seq intValue] < [seq1 intValue]) {
+                        [self.imageViewArr exchangeObjectAtIndex:j withObjectAtIndex:m];
+                    }
+                }
+                
+            }
+            self->iamgeCC=1;
+            [self addScrollerView];
+    //        [self downviewset];
+            self.downView.frame = CGRectMake(0, self->topView.bottom+8, SCREEN_WIDTH, 160*self.imageViewArr.count+8*self.imageViewArr.count+60);
+            self->globalScrollview.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self->topView.height+160*self.imageViewArr.count+8*self.imageViewArr.count+60+64);
+            self.tableViewD.frame = CGRectMake(15, self.title_View.height, SCREEN_WIDTH-30,160*self.imageViewArr.count+8*self.imageViewArr.count);
+            [self.tableViewD reloadData];
+}
+
+
 
 -(void)getToken
 {
@@ -942,7 +1021,32 @@
 }
 //点击
 -(void)doTapChange:(UITapGestureRecognizer *)sender{
-    //    NSLog(@"点击了第%ld个",(long)self.myPageControl.currentPage);
+        NSLog(@"点击了第%ld个",(long)self.myPageControl.currentPage);
+    /*
+         bannerMode *mode=self.imgArr[self.myPageControl.currentPage];
+    //    NSArray * arrTitle = @[@"Invite friend",@"My Wallet"];
+        if([mode.subPageType isEqualToString:@"NATIVE_PAGE"])
+        {
+            if([mode.pageName isEqualToString:@"Invite friend"])
+            {
+                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                InviteFriendsViewController *vc=[main instantiateViewControllerWithIdentifier:@"InviteFriendsViewController"];
+                vc.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }else if([mode.pageName isEqualToString:@"My Wallet"]){
+                    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                       MyWalletViewController *vc=[main instantiateViewControllerWithIdentifier:@"MyWalletViewController"];
+                       vc.hidesBottomBarWhenPushed = YES;
+                       [self.navigationController pushViewController:vc animated:YES];
+            }
+            
+        }else if([mode.subPageType isEqualToString:@"PICTURE"]){
+            ShardHViewController * avc = [[ShardHViewController alloc] init];
+            avc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:avc animated:YES];
+        }
+    */
 }
 
 /*
@@ -1036,7 +1140,41 @@
 //    vc.hidesBottomBarWhenPushed = YES;
     //    [self.navigationController pushViewController:vc- (void)centralManagerDidUpdateState:(nonnull CBCentralManager *)central {
     
+    
+//    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//       ConnectFeedViewController *vc=[main instantiateViewControllerWithIdentifier:@"ConnectFeedViewController"];
+//       vc.hidesBottomBarWhenPushed = YES;
+//       [self.navigationController pushViewController:vc animated:YES];
+    
+     bannerMode *mode=self.imageViewArr[indexPath.section];
+//    NSArray * arrTitle = @[@"Invite friend",@"My Wallet"];
+    if([mode.subPageType isEqualToString:@"NATIVE_PAGE"])
+    {
+        if([mode.pageName isEqualToString:@"Invite friend"])
+        {
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            InviteFriendsViewController *vc=[main instantiateViewControllerWithIdentifier:@"InviteFriendsViewController"];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+            
+        }else if([mode.pageName isEqualToString:@"My Wallet"]){
+                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                   MyWalletViewController *vc=[main instantiateViewControllerWithIdentifier:@"MyWalletViewController"];
+                   vc.hidesBottomBarWhenPushed = YES;
+                   [self.navigationController pushViewController:vc animated:YES];
+        }
+        
+    }else if([mode.subPageType isEqualToString:@"PICTURE"]){
+        ShardHViewController * avc = [[ShardHViewController alloc] init];
+        avc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:avc animated:YES];
+    }
+    
 }
+
+
+
+
 
 
 @end

@@ -28,6 +28,9 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *next_btn;
 
+@property (strong, nonatomic) IBOutlet UITextView *TextViewAA;
+
+
 @property (strong ,nonatomic)UIButton * xuandian;
 
 ///////定义选择什么价位
@@ -37,4 +40,5 @@
 
 //@property(nonatomic,strong)Device * DeviceStr;///蓝牙设备
 
+@property(nonatomic,strong)NSString * addrStr;  ///加密字节
 @end

@@ -237,7 +237,7 @@
     [HudViewFZ labelExample:self.view];
     NSDictionary * dict=@{@"account":self.phone_textfiled.text,
                           @"password":self.verification_textfiled.text,};
-    NSLog(@"dict=== %@",dict);
+    NSLog(@"dict=== %@    url === %@",dict,[NSString stringWithFormat:@"%@%@",FuWuQiUrl,P_login]);
     [[AFNetWrokingAssistant shareAssistant] PostURL_Code:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,P_login] parameters:dict progress:^(id progress) {
         NSLog(@"请求成功 = %@",progress);
     }Success:^(NSInteger statusCode,id responseObject) {

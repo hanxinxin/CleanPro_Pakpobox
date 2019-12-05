@@ -231,6 +231,7 @@ static MBProgressHUD* HUD;
 
 +(NSString*)AesDecrypt:(NSString*)str{
     
+    
     NSString*key=@"s8fPakpoE1j676v6";//密钥
     
     NSData*data=[self dataWithBase64EncodedString:str];// base4解码

@@ -57,6 +57,8 @@
         self.title =FGGetStringWithKeyFromTable(@"Dryer", @"Language");
     }
     });
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [appDelegate addFCViewSet];
 }
 - (void)viewWillAppear:(BOOL)animated {
     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];
@@ -148,11 +150,20 @@
     [self.jia_btn setImage:[UIImage imageNamed:@"plus_unavailable"] forState:UIControlStateNormal];
     
 }
-
+// 点击back按钮后调用 引用的他人写的一个extension
+- (BOOL)navigationShouldPopOnBackButton {
+    NSLog(@"点击返回按钮");
+    //    [self.navigationController popToRootViewControllerAnimated:YES];
+//    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    [appDelegate.appdelegate1 closeConnected];
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [appDelegate.ManagerBLE closeConnected];
+    [appDelegate hiddenFCViewNO];
+    return YES;
+}
 
 - (IBAction)pay_touch:(id)sender {
-//    if([Manager.inst isConnected])
-//    {
+/*
     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 //    NSLog(@"Connected1=== %d",[appDelegate.appdelegate1 isConnected_to]);
     NSString * strMM = [NSString stringWithFormat:@"%@",self.arrayList[0]];
@@ -198,6 +209,14 @@
         //        [HudViewFZ showMessageTitle:@"Bluetooth connection failed" andDelay:2.5];
     }
     }
+ */
+    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LaundryDetailsViewController *vc=[main instantiateViewControllerWithIdentifier:@"LaundryDetailsViewController"];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.order_c=order_c;
+    vc.arrayList=self.arrayList;
+    vc.addrStr = self.addrStr;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

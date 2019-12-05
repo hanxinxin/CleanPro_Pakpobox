@@ -462,7 +462,7 @@
     NSArray * arr = [NSArray arrayWithObjects:image, nil];
     
     
-    [[AFNetWrokingAssistant shareAssistant] uploadImagesWihtImgArr:arr url:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,UploadHeadImage] parameters:nil block:^(id objc, BOOL success) {
+    [[AFNetWrokingAssistant shareAssistant] uploadImagesWihtImgArr:arr url:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,UploadHeadImage] Tokenbool:NO parameters:nil block:^(id objc, BOOL success) {
         NSLog(@"objc=====  %@",objc);
         NSDictionary *dict= (NSDictionary*)objc;
         NSString * strResult = [dict objectForKey:@"result"];
@@ -495,6 +495,8 @@
                 [HudViewFZ showMessageTitle:strResult andDelay:2.0];
             }
         }
+    }blockprogress:^(id progress) {
+        
     }];
 }
 

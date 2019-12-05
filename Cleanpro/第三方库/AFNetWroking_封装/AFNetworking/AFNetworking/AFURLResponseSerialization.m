@@ -90,6 +90,11 @@ static id AFJSONObjectByRemovingKeysWithNullValues(id JSONObject, NSJSONReadingO
 + (instancetype)serializer {
     return [[self alloc] init];
 }
++ (instancetype)defaultManager {
+    return [[self alloc] init];
+}
+
+
 
 - (instancetype)init {
     self = [super init];

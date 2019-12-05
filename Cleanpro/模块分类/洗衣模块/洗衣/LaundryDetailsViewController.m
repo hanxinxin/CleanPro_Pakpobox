@@ -16,6 +16,7 @@
 #import "IpayPayment.h"
 #import "newPhoneViewController.h"
 #import "ExistingPayViewController.h"
+#import "AppDelegate.h"
 
 
 #define SelectTableViewCellID @"SelectTableViewCell"
@@ -37,7 +38,7 @@
     
     
     NSInteger payAndSet;
-    
+    NSInteger payCheck;
 }
 @property (nonatomic,strong)NSMutableArray * arr_title;
 @property (nonatomic,strong)NSNumber * credit;////积分
@@ -64,6 +65,7 @@
 //    [self.arr_title addObject:[NSArray arrayWithObjects:@"Payment method",@"Payment online",@"Wallet", nil]];
     [self.arr_title addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"Payment method", @"Language"),FGGetStringWithKeyFromTable(@"Wallet", @"Language"), nil]];
     payAndSet=0;
+    payCheck=0;
     [self.arr_title addObject:[NSArray arrayWithObjects:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Credits", @"Language")], nil]];
     self.credit=[[NSNumber alloc] initWithInt:0];
     self.balance=[[NSNumber alloc] initWithInt:0];
@@ -78,6 +80,7 @@
         [self AddtableView];
         [HudViewFZ labelJuHua:self.view andDelay:0.5];
     });
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDidOpen:) name:@"bearerDidOpen" object:nil];
 }
 - (void)viewWillAppear:(BOOL)animated {
     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];
@@ -105,6 +108,12 @@
     
     [super viewWillAppear:animated];
     
+}
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"bearerDidOpen" object:nil];
+    self->payCheck=0;
+    [super viewDidDisappear:animated];
 }
 
 -(void)AddtableView
@@ -471,7 +480,7 @@
 //        [self push_IPay];
     }else if([self.payment isEqualToString:@"2"])
     {
-        NSLog(@"BTN.tag=%ld",sender.tag);
+        NSLog(@"BTN.tag=%ld",(long)sender.tag);
         if(sender.tag==1002)
         {
             [self pushDetailsListViewController];
@@ -568,15 +577,16 @@
 
 
 
--(void)pushView:(NSString *)orderidStr
+-(void)pushView:(NSString *)orderidStr taskCommandStr:(NSString *)taskCommandStr
 {
     UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
     LaundrySuccessViewController *vc=[main instantiateViewControllerWithIdentifier:@"LaundrySuccessViewController"];
     vc.hidesBottomBarWhenPushed = YES;
     vc.order_c=self.order_c;
     vc.orderidStr = orderidStr;
-//    vc.DeviceStr = self.DeviceStr;
+//    vc.taskCommandStr = taskCommandStr;
     vc.arrayList = self.arrayList;
+    vc.addrStr = self.addrStr;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -608,6 +618,7 @@
         if([statusCodeBer intValue] ==401)
         {
             [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"TokenError"];
+            self->payCheck=0;
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
             for (UIViewController *controller in self.navigationController.viewControllers) {
                 if ([controller isKindOfClass:[HomeViewController class]]) {
@@ -619,21 +630,26 @@
         if([code intValue]==0)
         {
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"statusCode error", @"Language") andDelay:2.0];
+            self->payCheck=0;
             [blockSelf->textfiledView clearPassword];
             [blockSelf tisp];
             
         }else
         {
+            /* 屏蔽以前的直接创建订单。
             if([blockSelf.payment isEqualToString:@"1"])
-            {
-                self.order_c.payment_platform=@"Payment online";
-                self.order_c.coupon_code=@"";
-            }else if([blockSelf.payment isEqualToString:@"2"])
-            {
-                self.order_c.payment_platform=@"WALLET";
-                self.order_c.coupon_code=@"";
-            }
-            [blockSelf postOrder];
+                       {
+                           self.order_c.payment_platform=@"Payment online";
+                           self.order_c.coupon_code=@"";
+                       }else if([blockSelf.payment isEqualToString:@"2"])
+                       {
+                           self.order_c.payment_platform=@"WALLET";
+                           self.order_c.coupon_code=@"";
+                       }
+                       [blockSelf postOrder];
+             */
+            self->payCheck=1;
+            [self nextPushView];
             
         }
         }
@@ -641,8 +657,10 @@
         NSLog(@"error = %@",error);
         [blockSelf->textfiledView clearPassword];
         [HudViewFZ HiddenHud];
+        self->payCheck=0;
         if(statusCode==401)
         {
+            
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
             //创建一个消息对象
             NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
@@ -675,9 +693,9 @@
     [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,Pay_Newzhifu] parameters:dict progress:^(id progress) {
         NSLog(@"111  %@",progress);
     } Success:^(NSInteger statusCode,id responseObject) {
-        [HudViewFZ HiddenHud];
+//        [HudViewFZ HiddenHud];
         NSLog(@"responseObject = %@",responseObject);
-        [HudViewFZ HiddenHud];
+//        [HudViewFZ HiddenHud];
         if(statusCode==200)
         {
             
@@ -705,6 +723,7 @@
                     
                     if([self.payment isEqualToString:@"1"])
                     {
+                        [self Touch_two:nil];
 //                        NSString * pay_req_no= [resp objectForKey:@"pay_req_no"];
 //                        NSString * notify_url= [resp objectForKey:@"notify_url"];
 //                        NSString * pay_order_no= [resp objectForKey:@"pay_order_no"];
@@ -716,13 +735,18 @@
                         NSDictionary * orderDic = [resp objectForKey:@"order"];
                         NSString * order_no = [orderDic objectForKey:@"order_no"];
                         self.order_noStr = order_no;
-                        [self pushView:order_no];
-                        
+//                        [self pushView:order_no];
+                        [self pushView:self.order_noStr taskCommandStr:nil];
+//                        [self Touch_two:nil];
+//                        [self get_order_task_ZL:order_no];
                     }
                     
                 }else
                 {
+                    [HudViewFZ HiddenHud];
+                    
                     [HudViewFZ showMessageTitle:errorMessage andDelay:2.5];
+                    [self Touch_two:nil];
                 }
                 
             }
@@ -747,6 +771,146 @@
     }];
     
 }
+-(void)nextPushView
+{
+    [HudViewFZ labelExample:self.view];
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    //    NSLog(@"Connected1=== %d",[appDelegate.appdelegate1 isConnected_to]);
+        NSString * strMM = [NSString stringWithFormat:@"%@",self.arrayList[0]];
+        if([strMM isEqualToString:@"20190605"]|| [strMM isEqualToString:@"P20191011"])//P2018080603
+        {
+            if([self.payment isEqualToString:@"1"])
+            {
+                self.order_c.payment_platform=@"Payment online";
+                self.order_c.coupon_code=@"";
+            }else if([self.payment isEqualToString:@"2"])
+            {
+                self.order_c.payment_platform=@"WALLET";
+                self.order_c.coupon_code=@"";
+            }
+            
+            [self postOrder];
+        }else
+        {
+            if([appDelegate.ManagerBLE returnConnect])
+            {
+//                [HudViewFZ HiddenHud];
+                if([self.payment isEqualToString:@"1"])
+                {
+                    self.order_c.payment_platform=@"Payment online";
+                    self.order_c.coupon_code=@"";
+                }else if([self.payment isEqualToString:@"2"])
+                {
+                    self.order_c.payment_platform=@"WALLET";
+                    self.order_c.coupon_code=@"";
+                }
+                [self postOrder];
+            }else
+            {
+                dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.1/*延迟执行时间*/ * NSEC_PER_SEC));
+                
+                dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                    [self CycleNextPushView];
+                });
+            }
+        }
+}
+
+-(void)CycleNextPushView
+{
+//    [HudViewFZ labelExample:self.view];
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    //    NSLog(@"Connected1=== %d",[appDelegate.appdelegate1 isConnected_to]);
+        NSString * strMM = [NSString stringWithFormat:@"%@",self.arrayList[0]];
+        if([strMM isEqualToString:@"20190605"]|| [strMM isEqualToString:@"P20191011"])//P2018080603
+        {
+            if([self.payment isEqualToString:@"1"])
+            {
+                self.order_c.payment_platform=@"Payment online";
+                self.order_c.coupon_code=@"";
+            }else if([self.payment isEqualToString:@"2"])
+            {
+                self.order_c.payment_platform=@"WALLET";
+                self.order_c.coupon_code=@"";
+            }
+            
+            [self postOrder];
+        }else
+        {
+            if([appDelegate.ManagerBLE returnConnect])
+            {
+//                [HudViewFZ HiddenHud];
+                if([self.payment isEqualToString:@"1"])
+                {
+                    self.order_c.payment_platform=@"Payment online";
+                    self.order_c.coupon_code=@"";
+                }else if([self.payment isEqualToString:@"2"])
+                {
+                    self.order_c.payment_platform=@"WALLET";
+                    self.order_c.coupon_code=@"";
+                }
+                [self postOrder];
+            }else
+            {
+                dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.1/*延迟执行时间*/ * NSEC_PER_SEC));
+                
+                dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                    [self CycleNextPushView];
+                });
+            }
+        }
+}
+/*
+-(void)nextPushView
+{
+    [HudViewFZ labelExample:self.view];
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    //    NSLog(@"Connected1=== %d",[appDelegate.appdelegate1 isConnected_to]);
+        NSString * strMM = [NSString stringWithFormat:@"%@",self.arrayList[0]];
+        if([strMM isEqualToString:@"20190605"]|| [strMM isEqualToString:@"P20191011"])//P2018080603
+        {
+            if([self.payment isEqualToString:@"1"])
+            {
+                self.order_c.payment_platform=@"Payment online";
+                self.order_c.coupon_code=@"";
+            }else if([self.payment isEqualToString:@"2"])
+            {
+                self.order_c.payment_platform=@"WALLET";
+                self.order_c.coupon_code=@"";
+            }
+            
+            [self postOrder];
+        }else
+        {
+            if([appDelegate.appdelegate1 isConnected_to])
+            {
+//                [HudViewFZ HiddenHud];
+                if([self.payment isEqualToString:@"1"])
+                {
+                    self.order_c.payment_platform=@"Payment online";
+                    self.order_c.coupon_code=@"";
+                }else if([self.payment isEqualToString:@"2"])
+                {
+                    self.order_c.payment_platform=@"WALLET";
+                    self.order_c.coupon_code=@"";
+                }
+                [self postOrder];
+            }else
+            {
+                
+            }
+        }
+}
+ */
+-(void)bearerDidOpen:(NSNotification *)noti {
+//    NSDictionary *dic = [noti userInfo];
+    NSLog(@"LaundryDetailsViewController重连蓝牙连接成功");
+    if(self->payCheck==1)
+    {
+        [self nextPushView ];
+    }
+}
+
 
 //-(void)postOrder
 //{
@@ -795,13 +959,124 @@
 //    }];
 //
 //}
-
-
-
 -(void)tisp
 {
     [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Wrong password", @"Language") andDelay:2.0];
 }
+
+-(void)get_order_task_ZL:(NSString *)orderidStr
+{
+    [HudViewFZ labelExample:self.view];
+    NSLog(@"GetOrder URL = %@",[NSString stringWithFormat:@"%@%@%@/task",FuWuQiUrl,get_order_task,orderidStr]);
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@%@/task",FuWuQiUrl,get_order_task,orderidStr] parameters:nil progress:^(id progress) {
+        
+    } success:^(id responseObject) {
+        NSLog(@"responseObject=  %@",responseObject);
+        
+        //        NSDictionary * dictionary = (NSDictionary*)responseObject;
+        //
+        //        NSArray * resultListArr=[dictionary objectForKey:@"resultList"];
+        
+        NSDictionary * dictionary = (NSDictionary *)responseObject;
+        NSString * taskCommand=[dictionary objectForKey:@"taskCommand"];
+//        self.taskCommandStr = taskCommand;
+        [self sendStrCmd:taskCommand];
+//        [self sendDeviceData:@"01017880-0000-0000-83cd-c0bb04840000" taskCommand:taskCommand];
+        
+//        @"031119190001110e0066";
+        
+    } failure:^(NSInteger statusCode, NSError *error) {
+    
+        [HudViewFZ HiddenHud];
+   
+    }];
+}
+-(void)sendStrCmd:(NSString *)str
+{
+    NSArray *array = [str componentsSeparatedByString:@";"];
+    for (int i=0; i<array.count; i++) {
+        NSString * strCommand = array[i];
+        /*
+        [self sendDeviceData:@"" taskCommand:strCommand];
+         */
+        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        //    [appDelegate.appdelegate1 closeConnected];
+        NSString * deviceName = self.arrayList[1];
+        NSData * dataAAA = [self getData:strCommand];
+        if([appDelegate.appdelegate1 isConnected_to])
+        {
+            [appDelegate.appdelegate1 dataSendWithNameStr:deviceName dataA:dataAAA];
+        }else{
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Bluetooth disconnected", @"Language") andDelay:2.5];
+        }
+//    [HudViewFZ HiddenHud];
+        if(array.count==1)
+        {
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0/*延迟执行时间*/ * NSEC_PER_SEC));
+            
+            dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                
+                [HudViewFZ HiddenHud];
+//                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"未收到Return data", @"Language") andDelay:2.5];
+                
+                [self pushView:self.order_noStr taskCommandStr:str];
+            });
+        }else{
+        if(i==1)
+        {
+            
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0/*延迟执行时间*/ * NSEC_PER_SEC));
+            
+            dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                
+                [HudViewFZ HiddenHud];
+//                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"未收到Return data", @"Language") andDelay:2.5];
+                
+                [self pushView:self.order_noStr taskCommandStr:str];
+            });
+            
+            break;
+        }
+            [NSThread sleepForTimeInterval:10.0];
+        }
+        
+    }
+}
+- (NSData *) getData: (NSString *) t {
+    NSString * d = t;
+    if (d == nil || d.length == 0) d = @"00";
+    
+//    NSLog(@"数据 ： = %@",[NSString stringWithFormat:@"%@%@", d, d.length % 2 == 0 ? @"" : @"0"]);
+//    return decodeHex([NSString stringWithFormat:@"%@%@", d, d.length % 2 == 0 ? @"" : @"0"]);
+    return [self convertHexStrToData:[NSString stringWithFormat:@"%@%@", d, d.length % 2 == 0 ? @"" : @"0"]];
+    
+}
+// 十六进制字符串转换成NSData
+- (NSData *)convertHexStrToData:(NSString *)str {
+    if (!str || [str length] == 0) {
+        return nil;
+    }
+    NSMutableData *hexData = [[NSMutableData alloc] initWithCapacity:8];
+    NSRange range;
+    if ([str length] % 2 == 0) {
+        range = NSMakeRange(0, 2);
+    } else {
+        range = NSMakeRange(0, 1);
+    }
+    for (NSInteger i = range.location; i < [str length]; i += 2) {
+        unsigned int anInt;
+        NSString *hexCharStr = [str substringWithRange:range];
+        NSScanner *scanner = [[NSScanner alloc] initWithString:hexCharStr];
+        [scanner scanHexInt:&anInt];
+        NSData *entity = [[NSData alloc] initWithBytes:&anInt length:1];
+        [hexData appendData:entity];
+        range.location += range.length;
+        range.length = 2;
+    }
+    return hexData;
+}
+
+
 
 
 

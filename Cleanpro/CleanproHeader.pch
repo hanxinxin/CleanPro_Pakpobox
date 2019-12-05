@@ -46,6 +46,7 @@
 #import "UIColor+ColorChange.h"
 #import "HQTextField.h"
 #import "UIBezierPathView.h"
+#import "HXBleManager.h"
 //#import <luckysdk/Manager.h>
 //#import <luckysdk/NetworkConfig.h>
 
@@ -153,6 +154,10 @@
 #define post_payZhifu @"payment/checkout"  ////订单支付
 #define Pay_Newzhifu @"cleanpro/order/checkout" ///// 新接口  订单支付
 #define Post_userOrder @"cleanpro/order/query"  ////查询用户订单
+
+#define Post_refund_apply @"cleanpro/order/refund/apply"///订单问题反馈
+#define Post_refund_Image @"file/uploadImage" ///订单反馈图片上传
+
 //#define Get_PriceList @"http://192.168.0.240:8080/ebox/api/v1/goods/member/getWashMachePrice" ////价格列表
 #define Get_PriceList @"goods/member/getWashMachePrice" ////价格列表
 #define Get_location @"cleanpro/location"  ///获取门店坐标
@@ -178,6 +183,9 @@
 #define get_order_task @"cleanpro/order/" //获取云端洗衣机指令
 
 #define get_ZuwangMessage @"bluetooth/group/" /////获取组网信息
+
+#define get_BLEmacAddress @"bluetooth/getBluetoothInfo?macheNo="
+
 
 #define get_version @"faq/loadAppVersion"
 

@@ -11,6 +11,7 @@
 #import "NAvigationViewController.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <AVFoundation/AVFoundation.h>
+
 #import <AVKit/AVKit.h>
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 #import <UserNotifications/UserNotifications.h>
@@ -27,6 +28,7 @@
 @property (nonatomic, strong, nullable) UIVisualEffectView *visualEffectView;
 @property (strong,nonatomic)AFHTTPSessionManager *manager;
 @property (nullable,strong)ChangeLanguage * Change;
+@property (nonatomic,strong) dispatch_source_t timer;
 @end
 NSString *const kGCMMessageIDKey = @"gcm.message_id";
 @implementation AppDelegate
@@ -75,6 +77,7 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
         [userDefaults setObject:@"1" forKey:@"YHToken"];
         //存到本地UserDefaults 里面
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"FirstLoad"];
+        [userDefaults setObject:nil forKey:@"SYbanner"];
         [self get_Language];
     }else
     {
@@ -122,8 +125,8 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     }
 //    NSLog(@"app  userInfo =%@",userInfo);
     
-    
-    
+
+        
     // 启动图片延时: 1秒
    
 ////    //然后再跳转到播放视频的画面
@@ -151,24 +154,29 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
                              didFinishLaunchingWithOptions:launchOptions];
     
     self.appdelegate1 = [[MeshNetworkManagerAppdelegate alloc] instanceMeshApp];
+    self.ManagerBLE = [HXBleManager sharedInstance];
 //    [self.appdelegate1 setMesh];
 //    self.appdelegate1.connection
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDidConnect:) name:@"bearerDidConnect" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerClose:) name:@"bearerClose" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDeliverData:) name:@"bearerDeliverData" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDidOpen:) name:@"bearerDidOpen" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDidConnectHX:) name:@"bearerDidConnectHX" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerCloseHX:) name:@"bearerCloseHX" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDidOpenHX:) name:@"bearerDidOpenHX" object:nil];
     return YES;
 }
 
 -(void)bearerDidConnect:(NSNotification *)noti {
 //    NSDictionary *dic = [noti userInfo];
     NSLog(@"正在连接蓝牙");
-     [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"正在连接蓝牙", @"Language") andDelay:2.0];
+//     [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"正在连接蓝牙", @"Language") andDelay:1.5];
 }
 -(void)bearerClose:(NSNotification *)noti {
 //    NSDictionary *dic = [noti userInfo];
     NSLog(@"蓝牙关闭");
-    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙关闭", @"Language") andDelay:2.5];
+    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙关闭", @"Language") andDelay:1.5];
 }
 -(void)bearerDeliverData:(NSNotification *)noti {
     NSDictionary *dic = [noti userInfo];
@@ -179,9 +187,105 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 -(void)bearerDidOpen:(NSNotification *)noti {
 //    NSDictionary *dic = [noti userInfo];
     NSLog(@"蓝牙连接成功");
-    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙连接成功", @"Language") andDelay:2.0];
+    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙连接成功", @"Language") andDelay:1.5];
 }
 
+-(void)bearerDidConnectHX:(NSNotification *)noti {
+//    NSDictionary *dic = [noti userInfo];
+    NSLog(@"正在连接蓝牙");
+}
+-(void)bearerCloseHX:(NSNotification *)noti {
+//    NSDictionary *dic = [noti userInfo];
+    NSLog(@"蓝牙关闭");
+    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙已断开", @"Language") andDelay:1.5];
+}
+
+-(void)bearerDidOpenHX:(NSNotification *)noti {
+//    NSDictionary *dic = [noti userInfo];
+    NSLog(@"蓝牙连接成功");
+    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙连接成功", @"Language") andDelay:1.5];
+}
+
+
+-(void)addFCViewSet
+{
+    self.FCViewLabel = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.FCViewLabel.frame = CGRectMake(SCREEN_WIDTH-90, 90, 90, 30);
+    self.FCViewLabel.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
+    self.FCViewLabel.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    [self.FCViewLabel setImage:[UIImage imageNamed:@"fasdfdaf"] forState:(UIControlStateNormal)];
+    [self.FCViewLabel setTitleColor:[UIColor colorWithRed:56/255.0 green:107/255.0 blue:169/255.0 alpha:1] forState:(UIControlStateNormal)];
+    [self.FCViewLabel.titleLabel setFont:[UIFont systemFontOfSize:14.f]];
+    [self.FCViewLabel setBackgroundColor:[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:0.27]];
+    [self.FCViewLabel setTitle:@"00:00" forState:(UIControlStateNormal)];
+//    self.FCViewLabel.layer.cornerRadius= 15;
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.FCViewLabel.bounds byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerTopLeft cornerRadii:CGSizeMake(15, 15)];
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = self.FCViewLabel.bounds;
+    maskLayer.path = maskPath.CGPath;
+    self.FCViewLabel.layer.mask = maskLayer;
+    [self.window addSubview:self.FCViewLabel ];
+    [self JSTimer:900];
+}
+-(void)hiddenFCViewYES
+{
+    self.FCViewLabel.hidden=NO;
+}
+-(void)hiddenFCViewNO
+{
+    self.FCViewLabel.hidden=YES;
+    [self stopTimer];
+}
+/**
+ GCD停止计时
+
+ */
+- (void)stopTimer {
+    if(_timer)
+    {
+        dispatch_source_cancel(_timer) ;
+        _timer=nil;
+    }
+}
+
+-(void)JSTimer:(NSInteger)secondsCountDown
+{
+    __weak __typeof(self) weakSelf = self;
+       
+       if (_timer == nil) {
+           __block NSInteger timeout = secondsCountDown; // 倒计时时间
+           
+           if (timeout!=0) {
+               dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+               _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+               dispatch_source_set_timer(_timer, dispatch_walltime(NULL, 0), 1.0*NSEC_PER_SEC,  0); //每秒执行
+               dispatch_source_set_event_handler(_timer, ^{
+                   if(timeout <= 0){ //  当倒计时结束时做需要的操作: 关闭 活动到期不能提交
+                       dispatch_source_cancel(self->_timer);
+                       self->_timer = nil;
+                       dispatch_async(dispatch_get_main_queue(), ^{
+                           [weakSelf.FCViewLabel setTitle:@"00:00" forState:(UIControlStateNormal)];
+                           [weakSelf.ManagerBLE closeConnected];
+                       });
+                   } else { // 倒计时重新计算 时/分/秒
+//                       NSInteger days = (int)(timeout/(3600*24));
+//                       NSInteger hours = (int)((timeout-days*24*3600)/3600);
+                       NSInteger minute = (int)(timeout)/60;
+                       NSInteger second = timeout - (minute*60);
+//                       NSString *strTime = [NSString stringWithFormat:@"活动倒计时 %02ld : %02ld : %02ld", hours, minute, second];
+                       dispatch_async(dispatch_get_main_queue(), ^{
+
+                               [weakSelf.FCViewLabel setTitle:[NSString stringWithFormat:@"%02ld : %02ld",minute, second] forState:(UIControlStateNormal)];
+                                
+                           
+                       });
+                       timeout--; // 递减 倒计时-1(总时间以秒来计算)
+                   }
+               });
+               dispatch_resume(_timer);
+           }
+       }
+}
 
 +(instancetype)shareAppDelegate{
     return [[self alloc]init];

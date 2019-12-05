@@ -18,10 +18,11 @@
     
 }
 @property (nonatomic ,strong)NSMutableArray * arrPrice;
+@property (nonatomic ,strong)NSMutableAttributedString *stringLog;
 @end
 
 @implementation LaundryViewController
-@synthesize left_view,center_view,right_view,xuandian;
+@synthesize left_view,center_view,right_view,xuandian,stringLog;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -29,6 +30,7 @@
     self.next_btn.layer.cornerRadius=4;
     order_c=[[CreateOrder alloc] init];
     self.arrPrice=[NSMutableArray arrayWithCapacity:0];
+    stringLog=[[NSMutableAttributedString alloc] init];
 //    order_c.machine_no=@"P2018070401";
     self.machine_label.text=[NSString stringWithFormat:@"%@",self.arrayList[1]];
     order_c.machine_no=[NSString stringWithFormat:@"%@#%@",self.arrayList[0],self.arrayList[1]];
@@ -69,7 +71,8 @@
         }
         [self getPriceMache];
     });
-    
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [appDelegate addFCViewSet];
 }
 - (void)viewWillAppear:(BOOL)animated {
     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];
@@ -93,6 +96,7 @@
     {
         NSLog(@"未连接蓝牙");
     }
+   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerNSLog:) name:@"bearerNSLog" object:nil];
     /*
     if([Manager.inst isConnected])
     {
@@ -119,12 +123,52 @@
     };
 }
 
+-(void)bearerNSLog:(NSNotification *)noti {
+    NSDictionary *advertisementData = [noti userInfo];
+//    NSData *data  =[advertisementData objectForKey:@"kCBAdvDataLeBluetoothDeviceAddress"];
+    NSData *data  =[advertisementData objectForKey:@"kCBAdvDataManufacturerData"];
+    
+    NSString * uuid = [advertisementData objectForKey:@"kCBAdvDataServiceUUIDs"];
+    NSString * kCBAdvDataLocalName = [advertisementData objectForKey:@"kCBAdvDataLocalName"];
+    NSString *mac =[[self convertToNSStringWithNSData:data] uppercaseString];
+//    NSLog(@"uuid= %@",uuid);
+    
+    NSMutableAttributedString * SubStr1=[[NSMutableAttributedString alloc] init];
+    NSAttributedString *substring1 = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n mac = %@",mac]];
+    [SubStr1 appendAttributedString:substring1];
+    [stringLog appendAttributedString:SubStr1];
+    NSMutableAttributedString * SubStr3=[[NSMutableAttributedString alloc] init];
+    NSAttributedString *substring3 = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n Name = %@",kCBAdvDataLocalName]];
+    [SubStr3 appendAttributedString:substring3];
+    [stringLog appendAttributedString:SubStr3];
+    NSMutableAttributedString * SubStr2=[[NSMutableAttributedString alloc] init];
+    NSAttributedString *substring2 = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n uuid = %@",uuid]];
+    [SubStr2 appendAttributedString:substring2];
+    [stringLog appendAttributedString:SubStr2];
+    
+    
+    self.TextViewAA.text = stringLog.string;;
+}
+//MARK: mac地址解析处理
+- (NSString *)convertToNSStringWithNSData:(NSData *)data {
+    NSMutableString *strTemp = [NSMutableString stringWithCapacity:[data length]*2];
+    const unsigned char *szBuffer = [data bytes];
+    for (NSInteger i=2; i < [data length]; ++i) {
+        [strTemp appendFormat:@"%02lx",(unsigned long)szBuffer[i]];
+    }
+    return strTemp;
+}
+
+
 // 点击back按钮后调用 引用的他人写的一个extension
 - (BOOL)navigationShouldPopOnBackButton {
     NSLog(@"点击返回按钮");
     //    [self.navigationController popToRootViewControllerAnimated:YES];
+//    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    [appDelegate.appdelegate1 closeConnected];
     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [appDelegate.appdelegate1 closeConnected];
+    [appDelegate.ManagerBLE closeConnected];
+    [appDelegate hiddenFCViewNO];
     
     return YES;
 }
@@ -368,6 +412,8 @@
     _right_label.attributedText = attributStr;
 }
 - (IBAction)next_touch:(id)sender {
+    
+    /*暂时先屏蔽  修改判断逻辑
     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 //    NSLog(@"Connected1=== %d",[appDelegate.appdelegate1 isConnected_to]);
     NSString * strMM = [NSString stringWithFormat:@"%@",self.arrayList[0]];
@@ -415,7 +461,16 @@
             //        [HudViewFZ showMessageTitle:@"Bluetooth connection failed" andDelay:2.5];
     }
     }
+    */
     
+    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LaundryDetailsViewController *vc=[main instantiateViewControllerWithIdentifier:@"LaundryDetailsViewController"];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.order_c=self->order_c;
+    vc.arrayList=self.arrayList;
+    vc.addrStr = self.addrStr;
+//    vc.DeviceStr = self.DeviceStr;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

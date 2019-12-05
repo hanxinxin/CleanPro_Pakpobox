@@ -181,8 +181,15 @@
  */
 - (void)uploadImagesWihtImgArr:(NSArray *)imgArr
                            url:(NSString *)url
+                     Tokenbool:(BOOL)Tokenbool
                     parameters:(id)parameters
-                         block:(void (^)(id objc,BOOL success))block{
+                         block:(void (^)(id objc,BOOL success))block
+                 blockprogress:(void(^)(id progress))progress{
+    if(Tokenbool)
+    {
+        // 设置请求头
+        [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"userToken"];
+    }
     // 基于AFN3.0+ 封装的HTPPSession句柄
     _manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPEIMAGE];
     // 在parameters里存放照片以外的对象
@@ -210,6 +217,7 @@
         }
     } progress:^(NSProgress * _Nonnull uploadProgress) {
         NSLog(@"ssss  == %@",uploadProgress);
+        progress(uploadProgress);
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         block(responseObject,YES);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

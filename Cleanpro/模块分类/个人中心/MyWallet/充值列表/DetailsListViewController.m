@@ -28,23 +28,26 @@
         self.automaticallyAdjustsScrollViewInsets = NO;
         
     }
-    self.page=0;
-    self.maxCount=20;
     arr_title=[NSMutableArray arrayWithCapacity:0];
-   [self loadNewData];
+//    self.view.backgroundColor = [UIColor redColor];
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
     
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [self addTableViewOrders];
+        [self loadNewData];
+    });
     
 }
 - (void)viewWillAppear:(BOOL)animated {
     
     [self.navigationController setNavigationBarHidden:NO animated:NO];//隐藏导航栏
-    self.title=FGGetStringWithKeyFromTable(@"Details", @"Language");
+//    self.title=FGGetStringWithKeyFromTable(@"Details", @"Language");
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
+    self.page=0;
+     self.maxCount=20;
+     
     
-    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        [self addTableViewOrders];
-    });
+    
     [super viewWillAppear:animated];
 }
 
@@ -125,6 +128,13 @@
                 mode.paymentType=[dict objectForKey:@"paymentType"];
                 mode.tradeType=[dict objectForKey:@"tradeType"];
                 mode.transactionType=[dict objectForKey:@"transactionType"];
+//                if([mode.incomeType isEqualToString:@"OUT"])
+//                {
+//
+//                }else if ([mode.incomeType isEqualToString:@"IN"])
+//                {
+//                    [self->arr_title addObject:mode];
+//                }
                 [self->arr_title addObject:mode];
             }
             [self.tableView_top reloadData];
@@ -153,14 +163,14 @@
 //        self.tableView_top.frame=CGRectMake(0, getRectNavAndStatusHight, SCREEN_WIDTH,SCREEN_HEIGHT-64-self.tabBarController.tabBar.height);
 //    }
 //    self.tableView_top.frame=CGRectMake(0, getRectNavAndStatusHight, SCREEN_WIDTH,SCREEN_HEIGHT-64-self.tabBarController.tabBar.height);
-    self.tableView_top.frame=self.view.frame;
+    self.tableView_top.frame=CGRectMake(0, 0, SCREEN_WIDTH,self.topHeight);
 //    self.tableView_top.frame=CGRectMake(0, 0, SCREEN_WIDTH,SCREEN_HEIGHT-0);
     self.tableView_top.delegate=self;
     self.tableView_top.dataSource=self;
     //     self.Set_tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     //    self.Set_tableView.separatorInset=UIEdgeInsetsMake(0,10, 0, 10);           //top left bottom right 左右边距相同
     self.tableView_top.separatorStyle=UITableViewCellSeparatorStyleNone;
-    self.tableView_top.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1];
+    self.tableView_top.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.tableView_top];
     [self.tableView_top registerNib:[UINib nibWithNibName:@"DetailsListTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:tableID];
     

@@ -57,10 +57,16 @@
  *  @param imgArr 图片数组
  *  @param block  返回图片地址数组
  */
+//- (void)uploadImagesWihtImgArr:(NSArray *)imgArr
+//                           url:(NSString *)url
+//                    parameters:(id)parameters
+//                         block:(void (^)(id objc,BOOL success))block;
 - (void)uploadImagesWihtImgArr:(NSArray *)imgArr
-                           url:(NSString *)url
-                    parameters:(id)parameters
-                         block:(void (^)(id objc,BOOL success))block;
+          url:(NSString *)url
+    Tokenbool:(BOOL)Tokenbool
+   parameters:(id)parameters
+        block:(void (^)(id objc,BOOL success))block
+                 blockprogress:(void(^)(id progress))progress;
 
 /**
  文件下载

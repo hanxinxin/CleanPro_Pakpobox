@@ -13,9 +13,13 @@
 #import "ShakeViewController.h"
 //#import <luckysdk/utils.h>
 #import "AppDelegate.h"
+#import "ConnectFeedViewController.h"
+#import "AES_SecurityUtil.h"
 
 @interface LaundrySuccessViewController ()
-@property (nonatomic,strong)NSString * taskCommandStr;
+{
+    NSInteger countTZ;
+}
 @end
 
 @implementation LaundrySuccessViewController
@@ -26,13 +30,30 @@
 //    [self presenViewcontroller]; //// 暂时先屏蔽   第二版本开启
 //    [self postOrder];
     self.Compelet_btn.layer.cornerRadius = 18;//2.0是圆角的弧度，根据需求自己更改
+    self.Reconnect.layer.cornerRadius = 18;//2.0是圆角的弧度，根据需求自己更改
     [self setimage];
     [self.title_text setText:FGGetStringWithKeyFromTable(@"Success!", @"Language")];
     [self.tips_text setText:FGGetStringWithKeyFromTable(@"Please click start on the machine!", @"Language")];
     [self.Compelet_btn setTitle:FGGetStringWithKeyFromTable(@"Complete", @"Language") forState:(UIControlStateNormal)];
 //    [Manager.inst checkConnect];
 //    [Manager.inst addLsnr:self];
-    self.taskCommandStr=@"";
+//    self.taskCommandStr=@"";
+    countTZ=0;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDidOpen:) name:@"bearerDidOpen" object:nil];
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(380.0/*延迟执行时间*/ * NSEC_PER_SEC));
+        
+        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            self.Reconnect.userInteractionEnabled=NO;
+            self.Reconnect.backgroundColor = [UIColor grayColor];
+        });
+    [HudViewFZ labelExample:self.view];
+        dispatch_time_t delayTime2 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2/*延迟执行时间*/ * NSEC_PER_SEC));
+        
+        dispatch_after(delayTime2, dispatch_get_main_queue(), ^{
+    //        [HudViewFZ HiddenHud];
+            [self get_order_task_ZL]; ////停止获取指令
+        });
+    
 }
 -(void)setimage
 {
@@ -63,13 +84,7 @@
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]}; // title颜色
     //    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1];
     self.navigationController.navigationBar.tintColor=[UIColor whiteColor];
-    [HudViewFZ labelExample:self.view];
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
     
-    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        
-        [self get_order_task_ZL];
-    });
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NotificationRead:) name:@"NotificationRead" object:nil];
     [super viewWillAppear:animated];
 }
@@ -124,23 +139,42 @@
     NSArray *array = [str componentsSeparatedByString:@";"];
     for (int i=0; i<array.count; i++) {
         NSString * strCommand = array[i];
-        /*
-        [self sendDeviceData:@"" taskCommand:strCommand];
-         */
+        
+//        [self sendDeviceData:@"" taskCommand:strCommand];
+         
         AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
         //    [appDelegate.appdelegate1 closeConnected];
-        NSString * deviceName = self.arrayList[1];
-        NSData * dataAAA = [self getData:strCommand];
-        if([appDelegate.appdelegate1 isConnected_to])
+//        NSString * deviceName = self.arrayList[1];
+        
+        ///////发送前需要加密
+                char keyPtr[16+1]={0xc0,0x07,0x12,0x63,0xa9,0x05,0x61,0x00,0x09,0x18,0x0a,0x51,0x4c,0xd7,0x49,0x0c};
+        NSData * Databytes = [self getData:self.addrStr];
+//        const unsigned char *szBuffer = [Databytes bytes];
+        keyPtr[7]=((Byte*)[Databytes bytes])[1];
+        keyPtr[15]=((Byte*)[Databytes bytes])[0];;
+        //        NSLog(@"秘钥 ：%s",keyPtr);
+                NSData *dataAAA = [AES_SecurityUtil aes128EncryptWithContentData:strCommand KeyStr:keyPtr gIvStr:keyPtr];
+//                NSLog(@"加密前：%@",strCommand);
+//                NSLog(@"加密后：%@",dataAAA);
+        
+        
+//        NSData * dataAAA = [self getData:strCommand];
+//        if([appDelegate.appdelegate1 isConnected_to])
+//        {
+//            [appDelegate.appdelegate1 dataSendWithNameStr:deviceName dataA:dataAAA];
+//        }else{
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Bluetooth disconnected", @"Language") andDelay:2.5];
+//        }
+        if([appDelegate.ManagerBLE returnConnect])
         {
-            [appDelegate.appdelegate1 dataSendWithNameStr:deviceName dataA:dataAAA];
+            [appDelegate.ManagerBLE sendDataToBLE:dataAAA];
         }else{
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Bluetooth disconnected", @"Language") andDelay:2.5];
         }
 //    [HudViewFZ HiddenHud];
         if(array.count==1)
         {
-            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0/*延迟执行时间*/ * NSEC_PER_SEC));
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
             
             dispatch_after(delayTime, dispatch_get_main_queue(), ^{
                 
@@ -151,7 +185,7 @@
         if(i==1)
         {
             
-            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0/*延迟执行时间*/ * NSEC_PER_SEC));
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0  * NSEC_PER_SEC));
             
             dispatch_after(delayTime, dispatch_get_main_queue(), ^{
                 
@@ -161,7 +195,7 @@
             
             break;
         }
-            [NSThread sleepForTimeInterval:10.0];
+            [NSThread sleepForTimeInterval:2.0];
         }
         
     }
@@ -199,6 +233,7 @@
     }
     return hexData;
 }
+/*
 -(void)sendDeviceData:(NSString*)DeviceStr taskCommand:(NSString *)taskCommand
 {
 //    UniId *  idA = [UniId fromStr:DeviceStr];
@@ -221,22 +256,28 @@
 {
     NSLog(@"data11 = %@",data);
 }
-
+*/
 - (IBAction)Compelet_touch:(id)sender {
 //    [Manager.inst disconnect];
     
     for (UIViewController *temp in self.navigationController.viewControllers) {
         if ([temp isKindOfClass:[WCQRCodeScanningVC class]]) {
+//            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//            [appDelegate.appdelegate1 closeConnected];
             AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-            [appDelegate.appdelegate1 closeConnected];
+            [appDelegate.ManagerBLE closeConnected];
+            [appDelegate hiddenFCViewNO];
             [self.navigationController popToViewController:temp animated:YES];
             
         }
     }
     for (UIViewController *temp in self.navigationController.viewControllers) {
         if ([temp isKindOfClass:[MyAccountViewController class]]) {
+//            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//            [appDelegate.appdelegate1 closeConnected];
             AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-            [appDelegate.appdelegate1 closeConnected];
+            [appDelegate.ManagerBLE closeConnected];
+            [appDelegate hiddenFCViewNO];
             [self.navigationController popToViewController:temp animated:YES];
             ////            return NO;//这里要设为NO，不是会返回两次。返回到主界面。
         }
@@ -246,6 +287,60 @@
 //    {
 //        [self sendStrCmd:self.taskCommandStr];
 //    }
+}
+- (IBAction)Reconnect_touch:(id)sender {
+    [HudViewFZ labelExample:self.view];
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    if([appDelegate.appdelegate1 isConnected_to])
+//    {
+//        [self sendStrCmd:self.taskCommandStr];
+//    }else{
+////        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Bluetooth disconnected", @"Language") andDelay:2.5];
+//        [appDelegate.appdelegate1 closeConnected];
+//        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0/*延迟执行时间*/ * NSEC_PER_SEC));
+//
+//            dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+//               [appDelegate.appdelegate1 AddConnected];
+//                self->countTZ+=1;
+//            });
+//    }
+    if([appDelegate.ManagerBLE returnConnect])
+        {
+            [self sendStrCmd:self.taskCommandStr];
+        }else{
+    //        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Bluetooth disconnected", @"Language") andDelay:2.5];
+            [appDelegate.ManagerBLE closeConnected];
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0/*延迟执行时间*/ * NSEC_PER_SEC));
+                
+                dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                   [appDelegate.ManagerBLE scanPeripherals];
+                    self->countTZ+=1;
+                });
+        }
+    
+}
+-(void)bearerDidOpen:(NSNotification *)noti {
+//    NSDictionary *dic = [noti userInfo];
+    NSLog(@"重连蓝牙连接成功");
+    if(countTZ!=0)
+    {
+        if(countTZ<=3)
+        {
+            [self sendStrCmd:self.taskCommandStr];
+        }else
+        {
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Bluetooth reconnection failed, please try refund operation.", @"Language") andDelay:2.5];
+        }
+    }
+}
+
+- (IBAction)Machine_touch:(id)sender {
+    
+    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ConnectFeedViewController *vc=[main instantiateViewControllerWithIdentifier:@"ConnectFeedViewController"];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.orderidStr=self.orderidStr;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 
@@ -257,7 +352,9 @@
         if ([temp isKindOfClass:[WCQRCodeScanningVC class]]) {
 //            [Manager.inst disconnect];
             AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-            [appDelegate.appdelegate1 closeConnected];
+//            [appDelegate.appdelegate1 closeConnected];
+            [appDelegate.ManagerBLE closeConnected];
+            [appDelegate hiddenFCViewNO];
             [self.navigationController popToViewController:temp animated:YES];
             return NO;//这里要设为NO，不是会返回两次。返回到主界面。
             
