@@ -58,7 +58,13 @@
     NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
     self.ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     [self addScroller];
-    [UIBezierPathView setCornerOnTop:4 view_b:self.DownViewShare];;
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
+    
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [UIBezierPathView setCornerOnTop:4 view_b:self.DownViewShare];;
+        
+    });
+    
 //    [self addtopView];
     
 }

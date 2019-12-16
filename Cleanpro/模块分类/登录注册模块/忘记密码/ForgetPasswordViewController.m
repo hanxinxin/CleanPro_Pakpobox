@@ -16,6 +16,8 @@
 }
 @property(nonatomic,retain)NSTimer *timer;
 @property(nonatomic,strong)NSArray * DQNumber;
+
+@property(nonatomic,strong)NSString * diquStr;
 @end
 
 @implementation ForgetPasswordViewController
@@ -44,6 +46,7 @@
 //    [self.getCode_btn setBackgroundColor:[UIColor colorWithRed:218/255.0 green:222/255.0 blue:223/255.0 alpha:1]];
     self.NextStep.backgroundColor=[UIColor colorWithRed:172/255.0 green:220/255.0 blue:251/255.0 alpha:1.0];
     [self.NextStep setUserInteractionEnabled:NO];
+    self.diquStr = @"60";
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
@@ -150,7 +153,9 @@
     if(self.phone_textfield.text.length > 8)
     {
         [HudViewFZ labelExample:self.view];
-        NSDictionary * dict=@{@"phone":self.phone_textfield.text};
+        NSDictionary * dict=@{@"phone":self.phone_textfield.text,
+                              @"countryCode":self.diquStr
+        };
         //        NSLog(@"url=== %@",[NSString stringWithFormat:@"%@%@",FuWuQiUrl,P_sendVerifyCode]);
         [[AFNetWrokingAssistant shareAssistant] PostURL_Code:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,P_zhaohuiPassword] parameters:dict progress:^(id progress) {
             NSLog(@"请求成功 = %@",progress);
@@ -158,7 +163,7 @@
             [HudViewFZ HiddenHud];
             if(statusCode==200)
             {
-                //            NSLog(@"responseObject = %@",responseObject);
+                            NSLog(@"responseObject = %@",responseObject);
                 [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"SendVerifyCode Success", @"Language") andDelay:2.0];
                 [self countDown:60];
             }else
@@ -266,7 +271,9 @@
 #pragma mark - LMJDropdownMenu Delegate
 
 - (void)dropdownMenu:(LMJDropdownMenu *)menu selectedCellNumber:(NSInteger)number{
-    NSLog(@"你选择了：%ld",number);
+    NSLog(@"你选择了：%ld",(long)number);
+    self.diquStr=[self ReplacingStr:self.DQNumber[number] ];
+//    self.countryCodeStr
 }
 
 - (void)dropdownMenuWillShow:(LMJDropdownMenu *)menu{
@@ -274,6 +281,7 @@
 }
 - (void)dropdownMenuDidShow:(LMJDropdownMenu *)menu{
     //    NSLog(@"--已经显示--");
+    [self.Verification_textfield setUserInteractionEnabled:NO];
 }
 
 - (void)dropdownMenuWillHidden:(LMJDropdownMenu *)menu{
@@ -281,6 +289,11 @@
 }
 - (void)dropdownMenuDidHidden:(LMJDropdownMenu *)menu{
     //    NSLog(@"--已经隐藏--");
+    [self.Verification_textfield setUserInteractionEnabled:YES];
+}
+-(NSString*)ReplacingStr:(NSString *)str
+{
+   return [str stringByReplacingOccurrencesOfString:@"+" withString:@""];
 }
 
 

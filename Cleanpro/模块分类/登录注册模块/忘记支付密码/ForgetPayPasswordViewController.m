@@ -36,6 +36,7 @@
     [self.getCodeBtn setBackgroundColor:[UIColor colorWithRed:218/255.0 green:222/255.0 blue:223/255.0 alpha:1]];
     self.NextSetp.backgroundColor=[UIColor colorWithRed:176/255.0 green:221/255.0 blue:231/255.0 alpha:1];
     [self.NextSetp setUserInteractionEnabled:NO];
+    self.diquStr=@"60";
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
@@ -75,12 +76,13 @@
 
 -(void)setDiqu_select
 {
-    self.DQNumber=@[@"+60",@"+86"];
-    self.diquStr=self.DQNumber[0];
+//    self.DQNumber=@[@"+60",@"+86"];
+    self.DQNumber=@[@"+60",@"+86",@"+65",@"+66"];
+//    self.diquStr=self.DQNumber[0];
     // 控件的创建
     LMJDropdownMenu * dropdownMenu = [[LMJDropdownMenu alloc] init];
     [dropdownMenu setFrame:self.phone_btn.frame];
-    [dropdownMenu setMenuTitles:self.DQNumber rowHeight:30];
+    [dropdownMenu setMenuTitles:self.DQNumber rowHeight:40];
     dropdownMenu.delegate = self;
     [self.view addSubview:dropdownMenu];
     
@@ -100,7 +102,9 @@
     if(self.phone_textfield.text.length==11)
     {
         [HudViewFZ labelExample:self.view];
-        NSDictionary * dict=@{@"phone":self.phone_textfield.text};
+        NSDictionary * dict=@{@"phone":self.phone_textfield.text,
+                              @"countryCode":self.diquStr
+        };
 //        NSDictionary * dict=@{@"phoneNumber":self.phone_number.text,
 //                              @"countryCode":[self strDiqu:self.diquStr]
 //                              };
@@ -221,7 +225,9 @@
 
 - (void)dropdownMenu:(LMJDropdownMenu *)menu selectedCellNumber:(NSInteger)number{
     NSLog(@"你选择了：%ld",number);
-    self.diquStr=self.DQNumber[number];
+//    self.diquStr=self.DQNumber[number];
+    self.diquStr=[self ReplacingStr:self.DQNumber[number] ];
+//    self.countryCodeStr
 }
 
 - (void)dropdownMenuWillShow:(LMJDropdownMenu *)menu{
@@ -229,6 +235,7 @@
 }
 - (void)dropdownMenuDidShow:(LMJDropdownMenu *)menu{
     //    NSLog(@"--已经显示--");
+    [self.Verification_Textfield setUserInteractionEnabled:NO];
 }
 
 - (void)dropdownMenuWillHidden:(LMJDropdownMenu *)menu{
@@ -236,8 +243,12 @@
 }
 - (void)dropdownMenuDidHidden:(LMJDropdownMenu *)menu{
     //    NSLog(@"--已经隐藏--");
+    [self.Verification_Textfield setUserInteractionEnabled:YES];
 }
-
+-(NSString*)ReplacingStr:(NSString *)str
+{
+   return [str stringByReplacingOccurrencesOfString:@"+" withString:@""];
+}
 
 #define UITextFieldDelete  -------- - -------
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {

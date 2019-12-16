@@ -37,8 +37,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     MD_MUtableArr=[NSMutableArray arrayWithCapacity:0];
-    My_Loca.latitude=0;
-    My_Loca.longitude=0;
+    My_Loca.latitude=5555;
+    My_Loca.longitude=5555;
     
     if ([CLLocationManager locationServicesEnabled] && ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)) {
         
@@ -85,7 +85,10 @@
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        [self getLocationList];
+//        if(self->My_Loca.latitude != 5555 && My_Loca.longitude != 5555)
+//        {
+//            [self getLocationList:self->My_Loca];
+//        }
         [self down_viewHidden];
         [self setLabelFrame];
         [self updateMessage];
@@ -179,12 +182,16 @@
 }
 
 
--(void)getLocationList
+-(void)getLocationList:(CLLocationCoordinate2D)My_LocaACE
 {
+    //    name    String    否    门店名称
+    //    latitude    Double    否    纬度
+    //    longitude    Double    否    经度
     [HudViewFZ labelExample:self.view];
     __block locationMapViewController *  blockSelf = self;
-    NSLog(@"url===  %@",[NSString stringWithFormat:@"%@%@?page=%@&maxCount=%@",FuWuQiUrl,Get_location,@"0",@"20"]);
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:[NSString stringWithFormat:@"%@%@?page=%@&maxCount=%@",FuWuQiUrl,Get_location,@"0",@"20"] parameters:nil progress:^(id progress) {
+    NSLog(@"url===  %@",[NSString stringWithFormat:@"%@%@?page=%@&maxCount=%@&latitude=%f&longitude=%f",FuWuQiUrl,Get_location,@"0",@"10000",My_LocaACE.latitude,My_LocaACE.longitude]);///默认距离
+//    NSLog(@"url===  %@",[NSString stringWithFormat:@"%@%@?page=%@&maxCount=%@&latitude=%f&longitude=%f&distance=%f",FuWuQiUrl,Get_location,@"0",@"10000",My_LocaACE.latitude,My_LocaACE.longitude]); ///设置距离4000
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:[NSString stringWithFormat:@"%@%@?page=%@&maxCount=%@&latitude=%f&longitude=%f",FuWuQiUrl,Get_location,@"0",@"10000",My_LocaACE.latitude,My_LocaACE.longitude] parameters:nil progress:^(id progress) {
         
     } success:^(id responseObject) {
         NSLog(@"responseObject=  %@",responseObject);
@@ -387,6 +394,7 @@
 //    [self.MapView setRegion:region animated:YES];
     [manager stopUpdatingLocation];
     [manager stopUpdatingHeading];
+    [self getLocationList:My_Loca];
     
 }
 //MapView委托方法，当定位自身时调用

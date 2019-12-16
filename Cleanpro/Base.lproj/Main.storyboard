@@ -1960,6 +1960,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="125" id="84G-ux-ye9"/>
                                     <constraint firstItem="ObA-ix-wUM" firstAttribute="leading" secondItem="q6n-xp-FB8" secondAttribute="leading" constant="55" id="9VT-dT-GUn"/>
                                     <constraint firstItem="ObA-ix-wUM" firstAttribute="top" secondItem="q6n-xp-FB8" secondAttribute="top" constant="24" id="BkH-74-e62"/>
                                     <constraint firstAttribute="bottom" secondItem="lzx-0k-LoQ" secondAttribute="bottom" id="GTe-cR-K9d"/>
@@ -1979,6 +1980,9 @@
                         <constraints>
                             <constraint firstItem="0zd-rF-1Kz" firstAttribute="top" secondItem="q6n-xp-FB8" secondAttribute="bottom" id="5t3-Sj-0YZ"/>
                             <constraint firstAttribute="trailing" secondItem="q6n-xp-FB8" secondAttribute="trailing" id="ND0-t3-LQj"/>
+                            <constraint firstItem="q6n-xp-FB8" firstAttribute="leading" secondItem="axW-Ip-fbk" secondAttribute="leading" id="Vf9-H1-6Xw"/>
+                            <constraint firstItem="0zd-rF-1Kz" firstAttribute="top" secondItem="q6n-xp-FB8" secondAttribute="bottom" id="k24-vq-NHN"/>
+                            <constraint firstAttribute="trailing" secondItem="q6n-xp-FB8" secondAttribute="trailing" id="op5-5V-m6t"/>
                             <constraint firstItem="q6n-xp-FB8" firstAttribute="leading" secondItem="axW-Ip-fbk" secondAttribute="leading" id="vai-8q-JBk"/>
                         </constraints>
                     </view>

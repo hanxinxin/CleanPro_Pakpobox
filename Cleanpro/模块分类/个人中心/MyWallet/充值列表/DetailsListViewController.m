@@ -64,6 +64,7 @@
 
 -(void)getOrderList
 {
+
     self.page = 0;
     [arr_title removeAllObjects];
     [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?page=%ld&maxCount=%ld",FuWuQiUrl,Get_UserQuery,(long)self.page,(long)self.maxCount] parameters:nil progress:^(id progress) {
@@ -316,10 +317,27 @@
 
 
 
-//将时间戳转换成NSDate
+//将时间戳转换成NSDate  13位是毫秒，10位是秒
 +(NSDate *)changeSpToTime:(NSString*)spString{
-    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:[spString intValue]];
-    return confromTimesp;
+    if(spString.length!=10)
+    {
+        if(spString.length>10)
+        {
+//            NSLog(@"spString == %f   %f ",[spString doubleValue],[spString doubleValue]/1000.0 );
+            NSTimeInterval timeInt = [spString doubleValue]/1000.0;
+            NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:timeInt];
+            return confromTimesp;
+        }else
+        {
+//            NSTimeInterval timeInt = [spString intValue]/1000;
+            NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:[spString intValue]];
+            return confromTimesp;
+        }
+    }else
+    {
+        NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:[spString intValue]];
+        return confromTimesp;
+    }
 }
 //将NSDate按yyyy-MM-dd HH:mm:ss格式时间输出
 +(NSString*)nsdateToString:(NSDate *)date{

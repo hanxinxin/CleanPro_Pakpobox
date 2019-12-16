@@ -28,11 +28,13 @@ static MBProgressHUD* HUD;
 
 ///// loading 提示
 +(void)labelExample:(UIView *)view {
+    if(HUD == nil)
+    {
     HUD = [MBProgressHUD showHUDAddedTo:view animated:YES];
     
     // Set the label text.
     HUD.label.text = NSLocalizedString(@"Loading...", @"HUD loading title");
-    
+    }
 }
 
 ///// 菊花 提示  几秒后关闭
@@ -48,6 +50,7 @@ static MBProgressHUD* HUD;
 +(void)HiddenHud
 {
     [HUD hideAnimated:YES];
+    HUD=nil;
 }
 
 +(void)showMessageTitle:(NSString *)title andDelay:(int)timeInt{
@@ -88,6 +91,7 @@ static MBProgressHUD* HUD;
     
     // 将加密后的文件存储到桌面
     //    [base64Data writeToFile:@"/Users/wangpengfei/Desktop/IDNumber" atomically:YES];
+     NSLog(@"测试断点33");
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:base64Data forKey:@"YonghuID"];
     return nil;

@@ -128,6 +128,7 @@
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
         self.navigationController.navigationBar.translucent = YES;
         self.navigationController.navigationBar.subviews[0].alpha = 0.0;
+        NSLog(@"890890");
     });
     
     [super viewDidAppear:animated];
@@ -243,8 +244,7 @@
 //        NSNumber * statusCode =[dictObject objectForKey:@"statusCode"];
         if(array.count>0)
         {
-            [self.imgArr removeAllObjects];
-            [self.imageViewArr removeAllObjects];
+            
 //            SYbanner
             NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SYbanner"];
             NSArray * arrayUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
@@ -288,6 +288,8 @@
                 }
                 if(counterImage != array.count)
                 {
+                    [self.imgArr removeAllObjects];
+                    [self.imageViewArr removeAllObjects];
                     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
                     //存储到NSUserDefaults（转NSData存）
                     NSData *data = [NSKeyedArchiver archivedDataWithRootObject: array];
@@ -297,6 +299,8 @@
                 }
             }else
             {
+                [self.imgArr removeAllObjects];
+                [self.imageViewArr removeAllObjects];
                 NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
                  //存储到NSUserDefaults（转NSData存）
                  NSData *data = [NSKeyedArchiver archivedDataWithRootObject: array];

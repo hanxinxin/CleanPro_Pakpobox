@@ -70,7 +70,7 @@
     self.touxiangImage.layer.mask = maskLayer;
     ///////
     [self.touxiangImage setUserInteractionEnabled:YES];
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
     
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
         self.navigationController.navigationBar.translucent = YES;
@@ -112,7 +112,7 @@
 //    [self.Down_tableView setHidden:YES];
 //    [self addRightBtn];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15/*延迟执行时间*/ * NSEC_PER_SEC));
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
         NSLog(@"宽度：%f ，高度：%f",SCREEN_WIDTH,SCREEN_HEIGHT);
         [self addsetTableView];
@@ -137,6 +137,7 @@
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
         self.navigationController.navigationBar.translucent = YES;
         self.navigationController.navigationBar.subviews[0].alpha = 0.0;
+        NSLog(@"123123");
     });
     
     [super viewDidAppear:animated];
@@ -279,11 +280,13 @@
         self.name_label.text=FGGetStringWithKeyFromTable(@"Click here to login", @"Language");
         self.jifen_label.text=@"";
     }
+    NSLog(@"测试断点");
     if(self.ModeUser!=nil)
     {
         if(self.ModeUser.headImageUrl!=nil)
         {
             [self.touxiangImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",FuWuQiUrl,get_downImage,self.ModeUser.headImageUrl]] placeholderImage:[UIImage imageNamed:@"icon_Avatar"]];
+            NSLog(@"测试断点22");
         }else
         {
             [self.touxiangImage setImage:[UIImage imageNamed:@"icon_Avatar"]];
@@ -373,7 +376,7 @@
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             //存储到NSUserDefaults（转NSData存）
             NSData *data = [NSKeyedArchiver archivedDataWithRootObject: mode];
-            
+             NSLog(@"测试断点5555");
             [defaults setObject:data forKey:@"SaveUserMode"];
             [defaults synchronize];
             [jiamiStr base64Data_encrypt:mode.yonghuID];
@@ -448,7 +451,7 @@
     if(SCREEN_WIDTH==375 && SCREEN_HEIGHT==812)
     {
         //设置滚动范围
-        Down_Scroller =[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, SCREEN_HEIGHT)];
+        Down_Scroller =[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
 //        Down_Scroller.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self.topView.height+6*60);
         Down_Scroller.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self.topView.height+5*60+8+95+10);
     }else if(SCREEN_WIDTH==320.f && SCREEN_HEIGHT==568.f)
@@ -459,11 +462,11 @@
     }else if(SCREEN_WIDTH==375.f && SCREEN_HEIGHT==667.f)
     {
         //设置滚动范围
-        Down_Scroller =[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, SCREEN_HEIGHT)];
+        Down_Scroller =[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
         Down_Scroller.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self.topView.height+5*60+8+95+10);
     }else{
         //设置滚动范围
-        Down_Scroller =[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, SCREEN_HEIGHT)];
+        Down_Scroller =[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
         Down_Scroller.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self.topView.height+5*60+8+95+10);
     }
     NSLog(@"Down_Scroller.top= %f",self.Down_Scroller.top);
@@ -491,10 +494,12 @@
     //    self.Set_tableView.separatorInset=UIEdgeInsetsMake(0,10, 0, 10);           //top left bottom right 左右边距相同
     if((self.topView.height+self.Down_tableView.height+30) > SCREEN_HEIGHT)
     {
+        NSLog(@"ANober");
         self.Down_tableView.scrollEnabled = YES;  ////设置tableview可以上下滑动
         self.Down_tableView.frame=CGRectMake(0, self.topView.bottom, SCREEN_WIDTH, 6*60+40);
     }else{
         self.Down_tableView.scrollEnabled = NO;  ////设置tableview不上下滑动
+        NSLog(@"BNober");
     }
     
     self.Down_tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
@@ -537,7 +542,7 @@
     NSArray  * titleT=arrtitle[indexPath.section];
     cell.textLabel.text = [titleT objectAtIndex:indexPath.row];
     
-    //    NSLog(@"%ld",(long)indexPath.row);
+        NSLog(@"%ld",(long)indexPath.row);
     if(indexPath.section==0)
     {
         if(indexPath.row==0)

@@ -12,6 +12,8 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <AVFoundation/AVFoundation.h>
 
+#import <MessageUI/MFMailComposeViewController.h>
+#import <MessageUI/MessageUI.h>
 #import <AVKit/AVKit.h>
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 #import <UserNotifications/UserNotifications.h>
@@ -24,7 +26,7 @@
 
 @import Firebase;
 //@import FIRMessaging;
-@interface AppDelegate ()<UNUserNotificationCenterDelegate,FIRMessagingDelegate>
+@interface AppDelegate ()<UNUserNotificationCenterDelegate,FIRMessagingDelegate,MFMailComposeViewControllerDelegate>
 @property (nonatomic, strong, nullable) UIVisualEffectView *visualEffectView;
 @property (strong,nonatomic)AFHTTPSessionManager *manager;
 @property (nullable,strong)ChangeLanguage * Change;
@@ -157,6 +159,8 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     self.ManagerBLE = [HXBleManager sharedInstance];
 //    [self.appdelegate1 setMesh];
 //    self.appdelegate1.connection
+
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDidConnect:) name:@"bearerDidConnect" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerClose:) name:@"bearerClose" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDeliverData:) name:@"bearerDeliverData" object:nil];

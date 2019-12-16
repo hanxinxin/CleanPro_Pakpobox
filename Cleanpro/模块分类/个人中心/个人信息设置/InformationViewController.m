@@ -12,11 +12,12 @@
 #import "nameRViewController.h"
 #import "PostcodeRViewController.h"
 #import "EmailStrViewController.h"
+#import "HQImageEditViewController.h"
 #import <AVFoundation/AVFoundation.h>
 
 #define ZGQ_BACKGROUND_COLOR [UIColor colorWithWhite:0.001 alpha:0.6]
 
-@interface InformationViewController ()<UITableViewDelegate,UITableViewDataSource,ZGQActionSheetViewDelegate,TZImagePickerControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate>
+@interface InformationViewController ()<UITableViewDelegate,UITableViewDataSource,ZGQActionSheetViewDelegate,TZImagePickerControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate,HQImageEditViewControllerDelegate>
 {
     UITapGestureRecognizer * tapSuperGesture22;
 }
@@ -763,6 +764,31 @@
         }
     }
 }
+
+-(void)openSDKHQImageEdit:(UIImage*)imageBD
+{
+     HQImageEditViewController *vc = [[HQImageEditViewController alloc] init];
+        vc.originImage = imageBD;
+        vc.delegate = self;
+        vc.maskViewAnimation = YES;
+    //    vc.editViewSize = CGSizeMake(300, 200);
+    //    [self presentViewController:vc animated:YES completion:nil];
+        [self.navigationController pushViewController:vc animated:YES];
+}
+#pragma mark - HQImageEditViewControllerDelegate
+- (void)editController:(HQImageEditViewController *)vc finishiEditShotImage:(UIImage *)image originSizeImage:(UIImage *)originSizeImage {
+//    self.imageView.image = originSizeImage;
+//    [vc dismissViewControllerAnimated:YES completion:nil];
+    [self postUploadHeadImage:originSizeImage];
+    [vc.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)editControllerDidClickCancel:(HQImageEditViewController *)vc {
+//    [vc dismissViewControllerAnimated:YES completion:nil];
+    [vc.navigationController popViewControllerAnimated:YES];
+}
+
+
 - (void)openAlbum
 {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
@@ -801,8 +827,8 @@
     // 往数据数组拼接图片
     //    [self.dataArr addObject:info[UIImagePickerControllerOriginalImage]];
     NSLog(@"MMMM= %@",info[UIImagePickerControllerOriginalImage]);
-  
-    [self postUploadHeadImage:[InformationViewController compressImageQuality:info[UIImagePickerControllerOriginalImage] toByte:51200]];
+    [self openSDKHQImageEdit:[InformationViewController compressImageQuality:info[UIImagePickerControllerOriginalImage] toByte:51200]];
+//    [self postUploadHeadImage:[InformationViewController compressImageQuality:info[UIImagePickerControllerOriginalImage] toByte:51200]];
 }
 //取消按钮
 - (void)imagePickerControllerDidCancel:(TZImagePickerController *)picke{
@@ -813,7 +839,8 @@
 // 相册选的图片
 - (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray<UIImage *> *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto{
     
-    [self postUploadHeadImage:[InformationViewController compressImageQuality:(UIImage*)photos[0] toByte:51200]];
+//    [self postUploadHeadImage:[InformationViewController compressImageQuality:(UIImage*)photos[0] toByte:51200]];
+    [self openSDKHQImageEdit:[InformationViewController compressImageQuality:(UIImage*)photos[0] toByte:51200]];
 }
 
 
