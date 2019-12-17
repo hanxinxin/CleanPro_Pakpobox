@@ -664,6 +664,13 @@
 		04DC202423699D760004FC43 /* ConnectFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DC202323699D760004FC43 /* ConnectFeedViewController.m */; };
 		04DC202E236AE5CA0004FC43 /* PhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DC202C236AE5CA0004FC43 /* PhotoCollectionViewCell.m */; };
 		04DC202F236AE5CA0004FC43 /* PhotoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04DC202D236AE5CA0004FC43 /* PhotoCollectionViewCell.xib */; };
+		04E1A3F723A8C25400427513 /* UMCommonLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E1A3EB23A8C25300427513 /* UMCommonLog.framework */; };
+		04E1A3F823A8C25400427513 /* UMCommonLog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 04E1A3EC23A8C25300427513 /* UMCommonLog.bundle */; };
+		04E1A3F923A8C25400427513 /* UTDID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E1A3EF23A8C25300427513 /* UTDID.framework */; };
+		04E1A3FA23A8C25400427513 /* UMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E1A3F323A8C25300427513 /* UMCommon.framework */; };
+		04E1A3FB23A8C25400427513 /* UMAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E1A3F623A8C25300427513 /* UMAnalytics.framework */; };
+		04E1A3FD23A8C29C00427513 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E1A3FC23A8C29C00427513 /* CoreTelephony.framework */; };
+		04E1A40123A8C2D600427513 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E1A40023A8C2D600427513 /* SystemConfiguration.framework */; };
 		04E5331020D21DD30058F80C /* PingLunCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04E5330E20D21DD30058F80C /* PingLunCollectionViewCell.m */; };
 		04E5331120D21DD30058F80C /* PingLunCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04E5330F20D21DD30058F80C /* PingLunCollectionViewCell.xib */; };
 		04E5331320D261220058F80C /* WechatIMG2.png in Resources */ = {isa = PBXBuildFile; fileRef = 04E5331220D261220058F80C /* WechatIMG2.png */; };
@@ -1768,6 +1775,15 @@
 		04DC202B236AE5CA0004FC43 /* PhotoCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoCollectionViewCell.h; sourceTree = "<group>"; };
 		04DC202C236AE5CA0004FC43 /* PhotoCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoCollectionViewCell.m; sourceTree = "<group>"; };
 		04DC202D236AE5CA0004FC43 /* PhotoCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoCollectionViewCell.xib; sourceTree = "<group>"; };
+		04E1A3EB23A8C25300427513 /* UMCommonLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMCommonLog.framework; sourceTree = "<group>"; };
+		04E1A3EC23A8C25300427513 /* UMCommonLog.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UMCommonLog.bundle; sourceTree = "<group>"; };
+		04E1A3EF23A8C25300427513 /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
+		04E1A3F323A8C25300427513 /* UMCommon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMCommon.framework; sourceTree = "<group>"; };
+		04E1A3F623A8C25300427513 /* UMAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMAnalytics.framework; sourceTree = "<group>"; };
+		04E1A3FC23A8C29C00427513 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		04E1A3FE23A8C2A900427513 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		04E1A3FF23A8C2BA00427513 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		04E1A40023A8C2D600427513 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		04E5330D20D21DD30058F80C /* PingLunCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PingLunCollectionViewCell.h; sourceTree = "<group>"; };
 		04E5330E20D21DD30058F80C /* PingLunCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PingLunCollectionViewCell.m; sourceTree = "<group>"; };
 		04E5330F20D21DD30058F80C /* PingLunCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PingLunCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -1956,11 +1972,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04E1A3F723A8C25400427513 /* UMCommonLog.framework in Frameworks */,
+				04E1A3FA23A8C25400427513 /* UMCommon.framework in Frameworks */,
+				04E1A3FD23A8C29C00427513 /* CoreTelephony.framework in Frameworks */,
 				0496FFD1233B1D2000339568 /* libssl.a in Frameworks */,
 				0474E5372230A9860051328B /* libipay88sdk.a in Frameworks */,
 				0496772A21100EA20080D920 /* MapKit.framework in Frameworks */,
+				04E1A40123A8C2D600427513 /* SystemConfiguration.framework in Frameworks */,
 				0496FFD0233B1D2000339568 /* libcrypto.a in Frameworks */,
+				04E1A3F923A8C25400427513 /* UTDID.framework in Frameworks */,
 				C8280936ED9E8DBFFC73CE35 /* libPods-Cleanpro.a in Frameworks */,
+				04E1A3FB23A8C25400427513 /* UMAnalytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3914,6 +3936,90 @@
 			path = cellPhoto;
 			sourceTree = "<group>";
 		};
+		04E1A3E823A8C25300427513 /* 友盟统计iOS */ = {
+			isa = PBXGroup;
+			children = (
+				04E1A3E923A8C25300427513 /* umcommonlog */,
+				04E1A3ED23A8C25300427513 /* thirdparties */,
+				04E1A3F023A8C25300427513 /* common */,
+				04E1A3F423A8C25300427513 /* analytics */,
+			);
+			path = "友盟统计iOS";
+			sourceTree = "<group>";
+		};
+		04E1A3E923A8C25300427513 /* umcommonlog */ = {
+			isa = PBXGroup;
+			children = (
+				04E1A3EA23A8C25300427513 /* umcommonlog_ios_1.0.0 */,
+			);
+			path = umcommonlog;
+			sourceTree = "<group>";
+		};
+		04E1A3EA23A8C25300427513 /* umcommonlog_ios_1.0.0 */ = {
+			isa = PBXGroup;
+			children = (
+				04E1A3EB23A8C25300427513 /* UMCommonLog.framework */,
+				04E1A3EC23A8C25300427513 /* UMCommonLog.bundle */,
+			);
+			path = umcommonlog_ios_1.0.0;
+			sourceTree = "<group>";
+		};
+		04E1A3ED23A8C25300427513 /* thirdparties */ = {
+			isa = PBXGroup;
+			children = (
+				04E1A3EE23A8C25300427513 /* thirdparties_ios_1.0.5 */,
+			);
+			path = thirdparties;
+			sourceTree = "<group>";
+		};
+		04E1A3EE23A8C25300427513 /* thirdparties_ios_1.0.5 */ = {
+			isa = PBXGroup;
+			children = (
+				04E1A3EF23A8C25300427513 /* UTDID.framework */,
+			);
+			path = thirdparties_ios_1.0.5;
+			sourceTree = "<group>";
+		};
+		04E1A3F023A8C25300427513 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				04E1A3F123A8C25300427513 /* common_ios_2.1.1 */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		04E1A3F123A8C25300427513 /* common_ios_2.1.1 */ = {
+			isa = PBXGroup;
+			children = (
+				04E1A3F223A8C25300427513 /* normal */,
+			);
+			path = common_ios_2.1.1;
+			sourceTree = "<group>";
+		};
+		04E1A3F223A8C25300427513 /* normal */ = {
+			isa = PBXGroup;
+			children = (
+				04E1A3F323A8C25300427513 /* UMCommon.framework */,
+			);
+			path = normal;
+			sourceTree = "<group>";
+		};
+		04E1A3F423A8C25300427513 /* analytics */ = {
+			isa = PBXGroup;
+			children = (
+				04E1A3F523A8C25300427513 /* analytics_ios_6.0.5 */,
+			);
+			path = analytics;
+			sourceTree = "<group>";
+		};
+		04E1A3F523A8C25300427513 /* analytics_ios_6.0.5 */ = {
+			isa = PBXGroup;
+			children = (
+				04E1A3F623A8C25300427513 /* UMAnalytics.framework */,
+			);
+			path = analytics_ios_6.0.5;
+			sourceTree = "<group>";
+		};
 		04E5330C20D21D8C0058F80C /* 首页评论cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -4009,6 +4115,7 @@
 		04F95E2B20C661E700984A6B /* 第三方库 */ = {
 			isa = PBXGroup;
 			children = (
+				04E1A3E823A8C25300427513 /* 友盟统计iOS */,
 				04CBBCE0239A634F00103F7A /* 图片剪切 */,
 				0440C163238677A1000FA7DF /* 日志打印 */,
 				0440C14323863D7B000FA7DF /* 横向滑动菜单 */,
@@ -4386,6 +4493,10 @@
 		B71A9CBDD34F5157FAD69D05 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				04E1A40023A8C2D600427513 /* SystemConfiguration.framework */,
+				04E1A3FF23A8C2BA00427513 /* libsqlite3.tbd */,
+				04E1A3FE23A8C2A900427513 /* libz.tbd */,
+				04E1A3FC23A8C29C00427513 /* CoreTelephony.framework */,
 				0496772921100EA20080D920 /* MapKit.framework */,
 				6567C9BD8D249FBCB448B463 /* libPods-Cleanpro.a */,
 				2246EDBCC0BF1FD853A9FCAE /* libPods-CleanproTests.a */,
@@ -4616,6 +4727,7 @@
 				04C4D4D221E729360097B3BD /* logup_bear@2x.png in Resources */,
 				04B10C4421F03319001A9E8B /* nav_feedback@3x.png in Resources */,
 				049A8C6322A5010D00E17425 /* location_mark_app@2x.png in Resources */,
+				04E1A3F823A8C25400427513 /* UMCommonLog.bundle in Resources */,
 				04F95EAE20C664DC00984A6B /* LICENSE in Resources */,
 				04CBBCF4239A636E00103F7A /* cycle_bottom_left.png in Resources */,
 				04FFAEEE22379F75009707F4 /* nav_close@3x.png in Resources */,
@@ -5680,6 +5792,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Cleanpro/蓝牙模块SDK",
+					"$(PROJECT_DIR)/Cleanpro/第三方库/友盟统计iOS/umcommonlog/umcommonlog_ios_1.0.0",
+					"$(PROJECT_DIR)/Cleanpro/第三方库/友盟统计iOS/thirdparties/thirdparties_ios_1.0.5",
+					"$(PROJECT_DIR)/Cleanpro/第三方库/友盟统计iOS/common/common_ios_2.1.1/normal",
+					"$(PROJECT_DIR)/Cleanpro/第三方库/友盟统计iOS/analytics/analytics_ios_6.0.5",
 				);
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PREFIX_HEADER = Cleanpro/CleanproHeader.pch;
@@ -5758,6 +5874,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Cleanpro/蓝牙模块SDK",
+					"$(PROJECT_DIR)/Cleanpro/第三方库/友盟统计iOS/umcommonlog/umcommonlog_ios_1.0.0",
+					"$(PROJECT_DIR)/Cleanpro/第三方库/友盟统计iOS/thirdparties/thirdparties_ios_1.0.5",
+					"$(PROJECT_DIR)/Cleanpro/第三方库/友盟统计iOS/common/common_ios_2.1.1/normal",
+					"$(PROJECT_DIR)/Cleanpro/第三方库/友盟统计iOS/analytics/analytics_ios_6.0.5",
 				);
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PREFIX_HEADER = Cleanpro/CleanproHeader.pch;

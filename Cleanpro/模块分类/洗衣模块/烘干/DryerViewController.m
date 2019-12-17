@@ -15,6 +15,7 @@
     CreateOrder * order_c;
 }
 @property (nonatomic ,strong)NSMutableArray * arrPrice;
+
 @property (nonatomic ,strong)NSString * MoRen_time_str;
 @property (nonatomic ,strong)NSString * Price_str;
 @property (nonatomic ,strong)NSString * continue_price_str;
@@ -22,7 +23,7 @@
 @end
 
 @implementation DryerViewController
-@synthesize TimeTeger;
+@synthesize TimeTeger,morenTimeSj;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -68,6 +69,7 @@
 
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    morenTimeSj=23;
     [self getPriceMache];
     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     //    [appDelegate.appdelegate1 dataSendWithNameStr:@"Pakpobox"];
@@ -260,6 +262,7 @@
                 NSDictionary * prop=prop_valuesArr[cout];
                 NSNumber * DryerValue =[prop objectForKey:@"value"];
                 self.MoRen_time_str=[NSString stringWithFormat:@"%d",[DryerValue intValue]];
+                    self->morenTimeSj = [DryerValue integerValue];
                 self->order_c.goods_info= @{@"time":self.MoRen_time_str};
                 self->TimeTeger=[self.MoRen_time_str integerValue];
                 }
@@ -277,7 +280,7 @@
 -(void)updateText
 {
     [self setmoney_label_text:[self.Price_str floatValue]];
-    [self setTimeLabel_text:TimeTeger];
+    [self setTimeLabel_text:morenTimeSj];
     
 }
 
@@ -288,14 +291,14 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)Jian_Min_touch:(id)sender {
-    if(TimeTeger==23)
+    if(TimeTeger==morenTimeSj)
     {
          [self setbtn_jian_NO];
         [self setbtn_jia_yes];
     }else
     {
         TimeTeger-=5;
-        if(TimeTeger==23)
+        if(TimeTeger==morenTimeSj)
         {
             [self setbtn_jian_NO];
             [self setbtn_jia_yes];

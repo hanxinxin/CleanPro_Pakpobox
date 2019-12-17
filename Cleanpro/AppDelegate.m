@@ -15,9 +15,13 @@
 #import <MessageUI/MFMailComposeViewController.h>
 #import <MessageUI/MessageUI.h>
 #import <AVKit/AVKit.h>
+#import <UMCommon/UMCommon.h>
+#import <UMCommonLog/UMCommonLogHeaders.h>
+
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 #import <UserNotifications/UserNotifications.h>
 #endif
+#define UMAppKey @"5df88e760cafb25f3400037a"
 
 #define sendNotification(key)  [[NSNotificationCenter defaultCenter] postNotificationName:key object:self userInfo:nil];//发送通知
 //#define sendMessage(key)  [[NSNotificationCenter defaultCenter] postNotificationName:key object:self userInfo:nil];//发送通知
@@ -159,8 +163,10 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     self.ManagerBLE = [HXBleManager sharedInstance];
 //    [self.appdelegate1 setMesh];
 //    self.appdelegate1.connection
-
-    
+    ////友盟崩溃统计
+    [UMConfigure initWithAppkey:UMAppKey channel:@"App Store"];
+    //开发者需要显式的调用此函数，日志系统才能工作
+    [UMCommonLogManager setUpUMCommonLogManager];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDidConnect:) name:@"bearerDidConnect" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerClose:) name:@"bearerClose" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDeliverData:) name:@"bearerDeliverData" object:nil];

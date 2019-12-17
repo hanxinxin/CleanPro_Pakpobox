@@ -24,7 +24,7 @@
 
 //// 定义选择分钟数  默认是23分钟
 @property (assign, nonatomic) NSInteger TimeTeger;
-
+@property (assign, nonatomic)NSInteger morenTimeSj;
 @property(nonatomic,strong)NSArray * arrayList;
 
 //@property(nonatomic,strong)Device * DeviceStr;///蓝牙设备
