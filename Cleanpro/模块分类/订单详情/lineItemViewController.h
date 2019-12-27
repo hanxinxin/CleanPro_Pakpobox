@@ -33,6 +33,9 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *price;
 @property (weak, nonatomic) IBOutlet UILabel *PriceLabel;
+@property (strong, nonatomic) IBOutlet UIButton *AddTimeBtn;
+
+//@property (assign, nonatomic) NSInteger overtimeFlag;///"overtimeFlag": false //false不可以加时，true可以加时
 
 -(NSDictionary *)Json_returnDict:(NSString *)responseString;
 @end

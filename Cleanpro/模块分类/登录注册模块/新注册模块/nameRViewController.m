@@ -9,6 +9,7 @@
 #import "nameRViewController.h"
 #import "InformationViewController.h"
 #import "BirthdayRViewController.h"
+#import "PhoneRViewController.h"
 
 @interface nameRViewController ()<UIGestureRecognizerDelegate,UITextFieldDelegate>
 
@@ -132,11 +133,25 @@
 - (IBAction)Next_touch:(id)sender {
     if(self.index==1)
     {
+        /* 12月20日 修改 只用填写姓名，屏蔽以前的生日
     UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
     BirthdayRViewController *vc=[main instantiateViewControllerWithIdentifier:@"BirthdayRViewController"];
     vc.hidesBottomBarWhenPushed = YES;
     vc.Nextmode = self.Nextmode;
     [self.navigationController pushViewController:vc animated:YES];
+         
+         */
+        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        PhoneRViewController *vc=[main instantiateViewControllerWithIdentifier:@"PhoneRViewController"];
+        vc.hidesBottomBarWhenPushed = YES;
+        userIDMode * Nextmode = [[userIDMode alloc] init];
+        Nextmode.firstName=self.Nextmode.firstName;
+        Nextmode.lastName=self.Nextmode.lastName;
+        Nextmode.birthday=@"";
+        Nextmode.gender=@"MALE";
+        Nextmode.postCode=@"";
+        vc.Nextmode=Nextmode;
+        [self.navigationController pushViewController:vc animated:YES];
     }else if (self.index==2)
     {
         [self postUpdateINFO:self.first_nameText.text lastName:self.last_nameText.text];

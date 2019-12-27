@@ -9,8 +9,14 @@
 #import "PostcodeRViewController.h"
 #import "PhoneRViewController.h"
 #import "InformationViewController.h"
-@interface PostcodeRViewController ()<UIGestureRecognizerDelegate,UITextFieldDelegate>
+#import "timelineAddressView.h"
+@interface PostcodeRViewController ()<UIGestureRecognizerDelegate,UITextFieldDelegate,timelineDelegate>
+{
+    timelineAddressView * timeViewA;
+}
 
+@property (nonatomic,strong)SaveUserIDMode * ModeUser;
+@property (nonatomic,strong)NSArray * CityArray;
 @end
 
 @implementation PostcodeRViewController
@@ -23,6 +29,13 @@
     self.textfield.layer.cornerRadius=4;
     self.textfield.delegate=self;
     self.textfield.keyboardType = UIKeyboardTypeDefault;
+    self.AddressTextfield.layer.cornerRadius=4;
+    self.AddressTextfield.delegate=self;
+    self.AddressTextfield.keyboardType = UIKeyboardTypeDefault;
+    self.AreaTextfield.tag = 1000;
+    UITapGestureRecognizer * tapATextfield= [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureTouch:)];
+    tapATextfield.delegate = self;
+    [self.AreaTextfield addGestureRecognizer:tapATextfield];
     self.next_btn.backgroundColor=[UIColor colorWithRed:172/255.0 green:220/255.0 blue:251/255.0 alpha:1.0];
     [self.next_btn setUserInteractionEnabled:NO];
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
@@ -31,7 +44,7 @@
         
     });
     //    设置点击任何其他位置 键盘回收
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapBG:)];
+    UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapBG:)];
     tapGesture.delegate=self;
     tapGesture.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:tapGesture];
@@ -50,6 +63,9 @@
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]}; // title颜色
 //    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];;
+    NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+    self.ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    self.CityArray=[[NSArray alloc] init];
     if(self.index==1)
     {
         [self.next_btn setTitle:@"Next" forState:UIControlStateNormal];
@@ -61,6 +77,7 @@
     }
     [self.navigationController.navigationBar setHidden:NO];
     [self addNoticeForKeyboard];
+    [self getUserAddressInfo];/// 获取用户的详细地址
     [super viewWillAppear:animated];
 }
 - (void)viewWillDisappear:(BOOL)animated {
@@ -117,6 +134,64 @@
             self.view.frame = CGRectMake(0, kNavBarAndStatusBarHeight, SCREEN_WIDTH, SCREEN_HEIGHT);
     }];
 }
+
+- (void)tapGestureTouch:(UITapGestureRecognizer *)gesture {
+    [self tapBG:nil];
+    [HudViewFZ labelExample:self.view];
+    [self Get_AddressSelectList:nil parentIdStr:nil index:1];
+//    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    timelineAddressViewController *vc=[main instantiateViewControllerWithIdentifier:@"timelineAddressViewController"];
+//    timeViewA = vc.view;
+    
+}
+-(void)setTimeLineArray:(NSArray*)array
+{
+    UINib *nib = [UINib nibWithNibName:@"timelineAddressView" bundle:nil];
+        NSArray *objs = [nib instantiateWithOwner:nil options:nil];
+        timeViewA=objs[0];
+        timeViewA.frame=CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 0);
+        timeViewA.delegate = self;
+    //    NSArray * array = @[@[@"11",@"12",@"13",@"14",@"15",@"16"],@[@"21",@"22",@"23",@"24",@"25",@"26"],@[@"31",@"32",@"33",@"34",@"35",@"36"]];
+        [timeViewA setArrayTable:array];
+        [self.view addSubview:timeViewA];
+        [self show_Timeview];
+}
+-(void)show_Timeview
+{
+    [UIView animateWithDuration:(0.5)/*动画持续时间*/animations:^{
+        //执行的动画
+        self->timeViewA.frame=self.view.bounds;
+    }];
+    
+}
+-(void)hidden_Timeview
+{
+    [UIView animateWithDuration:0.6/*动画持续时间*/animations:^{
+        //执行的动画
+        self->timeViewA.frame =CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 0);
+    }completion:^(BOOL finished){
+        //动画执行完毕后的操作
+        [self->timeViewA removeFromSuperview];
+    }];
+}
+
+////点击别的区域收起键盘
+- (void)timeViewABG:(UITapGestureRecognizer *)gesture {
+    
+    [self hidden_Timeview];
+}
+
+-(void)CancelDelegate:(NSInteger)time
+{
+    if(time==1)
+    {
+        [self hidden_Timeview];
+    }else if(time==1)
+    {
+       
+    }
+}
+
 
 - (IBAction)Next_touch:(id)sender {
     if(self.index==1)
@@ -213,6 +288,76 @@
     }];
 }
 
+///获取用户的详细地址
+-(void)getUserAddressInfo
+{
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:[NSString stringWithFormat:@"%@%@%@",FuWuQiUrl,GetUserAddress,self.ModeUser.yonghuID] parameters:nil progress:^(id progress) {
+        
+    } success:^(id responseObject) {
+        NSLog(@"responseObject== %@",responseObject);
+        
+        
+    } failure:^(NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+        [HudViewFZ HiddenHud];
+    }];
+}
+
+/// 根据区号获取地址
+-(void)Get_AddressSelectList:(NSString *)postcode parentIdStr:(NSString *)parentId index:(NSInteger)Index
+{
+    NSString * GetURLStr;
+    if(postcode!=nil)
+    {
+        if(parentId!=nil)
+        {
+            GetURLStr=[NSString stringWithFormat:@"%@%@?postcode=%@&parentId=%@",FuWuQiUrl,Get_AddressSelect,postcode,parentId] ;
+        }else
+        {
+            GetURLStr=[NSString stringWithFormat:@"%@%@?postcode=%@&parentId=%@",FuWuQiUrl,Get_AddressSelect,postcode,parentId];
+        }
+    }else
+    {
+        if(parentId!=nil)
+        {
+            GetURLStr=[NSString stringWithFormat:@"%@%@?parentId=%@",FuWuQiUrl,Get_AddressSelect,parentId] ;
+        }else
+        {
+            GetURLStr=[NSString stringWithFormat:@"%@%@",FuWuQiUrl,Get_AddressSelect];
+        }
+    }
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:GetURLStr parameters:nil progress:^(id progress) {
+        
+    } success:^(id responseObject) {
+        NSLog(@"responseObject== %@",responseObject);
+        [HudViewFZ HiddenHud];
+        NSArray * arrayZong = (NSArray *)responseObject;
+        if(postcode==nil && parentId==nil && Index==1)
+        {
+            NSMutableArray * KBArray = [NSMutableArray arrayWithCapacity:0];
+            for (int i =0; i<arrayZong.count; i++) {
+                NSDictionary * dict =arrayZong[i];
+                OneCityMode* mode = [[OneCityMode alloc] init];
+                mode.idStr=[dict objectForKey:@"id"];
+                mode.regionLevel=[dict objectForKey:@"regionLevel"];
+                mode.regionName=[dict objectForKey:@"regionName"];
+                mode.regionShortName=[dict objectForKey:@"regionShortName"];
+                [KBArray addObject:mode];
+            }
+//            NSArray * array = @[KBArray];
+            self.CityArray= KBArray;
+//            [self->timeViewA setArrayTable:self.CityArray];
+            [self setTimeLineArray:self.CityArray];
+        }
+        
+    } failure:^(NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+        [HudViewFZ HiddenHud];
+    }];
+}
+
 /*
 #pragma mark - Navigation
 
@@ -223,6 +368,20 @@
 }
 */
 #define UITextFieldDelete  -------- - -------
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    if(textField.tag==1000)
+    {
+        return NO;
+    }else
+    {
+        return YES;
+    }
+    return YES;
+}
+
+
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
     if (textField == self.textfield) {
@@ -232,7 +391,7 @@
             
             dispatch_after(delayTime, dispatch_get_main_queue(), ^{
                 self.Nextmode.postCode=self.textfield.text;
-                if (self.textfield.text.length >0) {
+                if (self.textfield.text.length >0 && self.AreaTextfield.text.length>0) {
                     [self.next_btn setUserInteractionEnabled:YES];
                     self.next_btn.backgroundColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
                 }else
@@ -242,14 +401,14 @@
                 }
             });
             return YES;
-        }else if (self.textfield.text.length >= 10) {
-            self.textfield.text = [[textField.text stringByAppendingString:string] substringToIndex:11];
+        }else if (self.textfield.text.length>=5) {
+            self.textfield.text = [[textField.text stringByAppendingString:string] substringToIndex:(self.textfield.text.length+1)];
             //            NSLog(@"self.phone_textfiled.text =  %@",self.phone_textfiled.text );
             dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.03/*延迟执行时间*/ * NSEC_PER_SEC));
             
             dispatch_after(delayTime, dispatch_get_main_queue(), ^{
                 self.Nextmode.postCode=self.textfield.text;
-            if (self.textfield.text.length >0) {
+            if (self.textfield.text.length >0 && self.AreaTextfield.text.length>0) {
                 [self.next_btn setUserInteractionEnabled:YES];
                 self.next_btn.backgroundColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
                 
@@ -262,11 +421,15 @@
             return NO;
         }else
         {
+            if (self.textfield.text.length>=4) {
+                [self Get_AddressSelectList:self.AreaTextfield.text parentIdStr:nil index:0];
+            }else
+            {
             dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.03/*延迟执行时间*/ * NSEC_PER_SEC));
             
             dispatch_after(delayTime, dispatch_get_main_queue(), ^{
                 self.Nextmode.postCode=self.textfield.text;
-                if (self.textfield.text.length >0) {
+                if (self.textfield.text.length >0 && self.AreaTextfield.text.length>0) {
                     [self.next_btn setUserInteractionEnabled:YES];
                     self.next_btn.backgroundColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
                     
@@ -276,6 +439,7 @@
                     self.next_btn.backgroundColor=[UIColor colorWithRed:172/255.0 green:220/255.0 blue:251/255.0 alpha:1.0];
                 }
             });
+            }
             
         }
         

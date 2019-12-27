@@ -587,6 +587,8 @@
 //    vc.taskCommandStr = taskCommandStr;
     vc.arrayList = self.arrayList;
     vc.addrStr = self.addrStr;
+    vc.OrderAndRenewal = self.OrderAndRenewal;
+    vc.OrderIdTime=self.OrderIdTime;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -771,6 +773,91 @@
     }];
     
 }
+////// 新创建烘干续时订单
+-(void)postOrderOrderRenewal
+{
+    NSDictionary *dict = @{@"mainOrderId":self.OrderIdTime,
+                            @"total_amount":self.order_c.total_amount,
+                            @"pay_amount":self.order_c.pay_amount,
+                            @"goods_info":[jiamiStr convertToJSONData:self.order_c.goods_info],
+                            @"credits":self.order_c.credits
+    };
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,Post_Ordertime] parameters:dict progress:^(id progress) {
+        
+    } Success:^(NSInteger statusCode, id responseObject) {
+                NSLog(@"responseObject = %@",responseObject);
+        //        [HudViewFZ HiddenHud];
+                if(statusCode==200)
+                {
+                    
+                    NSDictionary * resp=(NSDictionary *)responseObject;
+                    NSNumber * code= [resp objectForKey:@"statusCode"];
+                    NSString * errorMessage= [resp objectForKey:@"errorMessage"];
+                    self->payAndSet=0;
+                    if([code intValue]==500){
+                        [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
+                    }else if([code intValue]==400509)
+                    {
+                        [HudViewFZ showMessageTitle:errorMessage andDelay:2.8];
+                        [self hidden_TCview];
+                        self->payAndSet=1;
+                        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.7/*延迟执行时间*/ * NSEC_PER_SEC));
+                        
+                        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                            [self addselect_view:1];
+                        });
+                        
+                    }else
+                    {
+                        if([code intValue]==0)
+                        {
+                            if([self.payment isEqualToString:@"1"])
+                            {
+                                [self Touch_two:nil];
+                        //                        NSString * pay_req_no= [resp objectForKey:@"pay_req_no"];
+                        //                        NSString * notify_url= [resp objectForKey:@"notify_url"];
+                        //                        NSString * pay_order_no= [resp objectForKey:@"pay_order_no"];
+                        //                        NSString * strOrderID = [resp objectForKey:@"pay_order_id"];
+                        //                        self.order_noStr = strOrderID;
+                        //                        [self push_IPay:pay_req_no UrlStr:notify_url Remark:pay_order_no Amount:self.order_c.pay_amount];
+                            }else if([self.payment isEqualToString:@"2"])
+                            {
+                                NSDictionary * orderDic = [resp objectForKey:@"order"];
+                                NSString * order_no = [orderDic objectForKey:@"order_no"];
+                                self.order_noStr = order_no;
+//                                [self pushView:order_no];
+                                [self pushView:self.order_noStr taskCommandStr:nil];
+                        //                        [self Touch_two:nil];
+                        //                        [self get_order_task_ZL:order_no];
+                            }
+                        }else
+                        {
+                            [HudViewFZ HiddenHud];
+                            [HudViewFZ showMessageTitle:errorMessage andDelay:2.5];
+                            [self Touch_two:nil];
+                        }
+                                        
+                    }
+                }
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"44444   %@",error);
+        [HudViewFZ HiddenHud];
+        if(statusCode==401)
+        {
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+            //创建一个消息对象
+            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
+            //发送消息
+            [[NSNotificationCenter defaultCenter]postNotification:notice];
+            
+        }else{
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+            
+        }
+    }];
+
+}
+
 -(void)nextPushView
 {
     [HudViewFZ labelExample:self.view];
@@ -788,8 +875,13 @@
                 self.order_c.payment_platform=@"WALLET";
                 self.order_c.coupon_code=@"";
             }
-            
-            [self postOrder];
+            if(self.OrderAndRenewal==1)
+            {
+                [self postOrder];
+            }else if (self.OrderAndRenewal==2)
+            {
+                [self postOrderOrderRenewal];
+            }
         }else
         {
             if([appDelegate.ManagerBLE returnConnect])
@@ -804,7 +896,13 @@
                     self.order_c.payment_platform=@"WALLET";
                     self.order_c.coupon_code=@"";
                 }
-                [self postOrder];
+                if(self.OrderAndRenewal==1)
+                {
+                    [self postOrder];
+                }else if (self.OrderAndRenewal==2)
+                {
+                    [self postOrderOrderRenewal];
+                }
             }else
             {
                 dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.1/*延迟执行时间*/ * NSEC_PER_SEC));

@@ -108,6 +108,10 @@
         //        [HudViewFZ showMessageTitle:@"Bluetooth connection failed" andDelay:2.5];
     }
      */
+     // 禁用返回手势
+       if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+           self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+       }  
     [super viewWillAppear:animated];
 }
 -(void)viewDidAppear:(BOOL)animated {

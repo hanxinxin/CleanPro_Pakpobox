@@ -201,8 +201,8 @@
     NSData *data  =[advertisementData objectForKey:@"kCBAdvDataManufacturerData"];
     
     NSString * uuid = [advertisementData objectForKey:@"kCBAdvDataServiceUUIDs"];
-    NSLog(@"\n Nsdata：%@",data);
-    NSLog(@"uuid= %@",uuid);
+//    NSLog(@"\n Nsdata：%@",data);
+//    NSLog(@"uuid= %@",uuid);
     NSNotification *notification =[NSNotification notificationWithName:@"bearerNSLog" object:nil userInfo:advertisementData];
     //通过通知中心发送通知
     [[NSNotificationCenter defaultCenter] postNotification:notification];

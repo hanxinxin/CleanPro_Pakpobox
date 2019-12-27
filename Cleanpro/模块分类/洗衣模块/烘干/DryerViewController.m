@@ -9,10 +9,16 @@
 #import "DryerViewController.h"
 #import "LaundryDetailsViewController.h"
 #import "AppDelegate.h"
+#import "NewAddTimeView.h"
 
-@interface DryerViewController ()
+@interface DryerViewController ()<UIGestureRecognizerDelegate>
 {
     CreateOrder * order_c;
+    
+//    /////全屏透明色view和 button Lable
+//    UIView * backgroundView;
+//    UITapGestureRecognizer *tapSuperGesture22;
+//    NewAddTimeView * CenterView;
 }
 @property (nonatomic ,strong)NSMutableArray * arrPrice;
 
@@ -91,6 +97,11 @@
 //        [HudViewFZ showMessageTitle:@"Bluetooth connection failed" andDelay:2.5];
     }
      */
+    
+     // 禁用返回手势
+       if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+           self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+       }  
     [super viewWillAppear:animated];
 }
 -(void)zuwang:(NSString*)contentStr
@@ -218,6 +229,8 @@
     vc.order_c=order_c;
     vc.arrayList=self.arrayList;
     vc.addrStr = self.addrStr;
+    vc.OrderAndRenewal = self.OrderAndRenewal;
+    vc.OrderIdTime=self.OrderIdTime;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -252,19 +265,38 @@
             NSArray * prop_valuesArr = [zong_Dict objectForKey:@"prop_values"];
 //            [blockSelf.arrPrice addObject:[NSString stringWithFormat:@"%.2f",[priceNumber floatValue]]];
             
-            self.Price_str=[NSString stringWithFormat:@"%.2f",[priceNumber floatValue]];
+            
+            
             self.continue_price_str=[NSString stringWithFormat:@"%.2f",[continue_price floatValue]];
             self.continue_value_str=[NSString stringWithFormat:@"%.2f",[continue_value floatValue]];
-            self->order_c.total_amount=[NSString stringWithFormat:@"%.2f",[priceNumber floatValue]];
+            
+            if(self.OrderAndRenewal==1)
+            {
+                self.Price_str=[NSString stringWithFormat:@"%.2f",[priceNumber floatValue]];
+                self->order_c.total_amount=[NSString stringWithFormat:@"%.2f",[priceNumber floatValue]];
+            }else if(self.OrderAndRenewal==2)
+            {
+                self.Price_str=self.continue_price_str;
+                self->order_c.total_amount=self.continue_price_str;
+            }
             for (int cout=0; cout<prop_valuesArr.count; cout++) {
                 if(cout==1)
                 {
                 NSDictionary * prop=prop_valuesArr[cout];
                 NSNumber * DryerValue =[prop objectForKey:@"value"];
-                self.MoRen_time_str=[NSString stringWithFormat:@"%d",[DryerValue intValue]];
-                    self->morenTimeSj = [DryerValue integerValue];
-                self->order_c.goods_info= @{@"time":self.MoRen_time_str};
-                self->TimeTeger=[self.MoRen_time_str integerValue];
+                    if(self.OrderAndRenewal==1)
+                    {
+                        self.MoRen_time_str=[NSString stringWithFormat:@"%d",[DryerValue intValue]];
+                    
+                        self->morenTimeSj = [DryerValue integerValue];
+                    }else if(self.OrderAndRenewal==2)
+                    {
+                        self.MoRen_time_str=self.continue_value_str;
+                        self->morenTimeSj =[self.continue_value_str integerValue];
+                    }
+                        self->order_c.goods_info= @{@"time":self.MoRen_time_str};
+                    self->TimeTeger=[self.MoRen_time_str integerValue];
+                    
                 }
             }
         }
@@ -399,5 +431,7 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+
 
 @end

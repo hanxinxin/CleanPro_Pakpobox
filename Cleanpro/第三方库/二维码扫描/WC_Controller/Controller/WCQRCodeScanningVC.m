@@ -404,6 +404,7 @@
             vc.hidesBottomBarWhenPushed = YES;
             vc.arrayList=array;
             vc.addrStr = self.addr;
+            vc.OrderAndRenewal=1;
             [self.navigationController pushViewController:vc animated:YES];
         }
     }else {

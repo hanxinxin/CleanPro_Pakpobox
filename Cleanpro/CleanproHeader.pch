@@ -50,6 +50,8 @@
 //#import <luckysdk/Manager.h>
 //#import <luckysdk/NetworkConfig.h>
 
+//#import <CocoaLumberjack/CocoaLumberjack.h>
+//static const DDLogLevel ddLogLevel = DDLogLevelDebug;
 ///// tabbar 消息红点类
 #import "UITabBar+badge.h"
 //// 自定义 viewcontroller
@@ -145,6 +147,11 @@
 #define post_UpdateInfo @"member/updateProfile" ////更新用户信息
 #define UploadHeadImage @"member/uploadHeadImage"   ////更新用户头像
 #define get_downImage @"member/downloadHeadImage/"   //// 获取用户头像
+#define Post_updateAddress @"member/updateAddress" ///更新用户的详细地址 PostCode
+#define Get_AddressSelect @"clean/address/region/select" ///区域选择查询接口
+#define GetUserAddress @"clean/address/info/" ///获取用户的详细地址
+
+
 
 #define Get_wallet @"member/wallet"   /////获取用户钱包
 #define Get_UserQuery @"member/walletLog/query"////获取用户钱包流水
@@ -153,7 +160,13 @@
 #define Post_order @"cleanpro/order/create"   //生成订单
 #define post_payZhifu @"payment/checkout"  ////订单支付
 #define Pay_Newzhifu @"cleanpro/order/checkout" ///// 新接口  订单支付
+#define Post_Ordertime @"cleanpro/order/overtime"  /// 烘干订单加时提交订单接口
 #define Post_userOrder @"cleanpro/order/query"  ////查询用户订单
+#define Get_OrderDetail @"cleanpro/order/detail/"  ///获取订单详情
+
+
+ 
+
 
 #define Post_refund_apply @"cleanpro/order/refund/apply"///订单问题反馈
 #define Post_refund_Image @"file/uploadImage" ///订单反馈图片上传
@@ -184,7 +197,7 @@
 
 #define get_ZuwangMessage @"bluetooth/group/" /////获取组网信息
 
-#define get_BLEmacAddress @"bluetooth/getBluetoothInfo?macheNo="
+#define get_BLEmacAddress @"bluetooth/getBluetoothInfo?macheNo=" /// 获取蓝牙模块的地址
 
 
 #define get_version @"faq/loadAppVersion"

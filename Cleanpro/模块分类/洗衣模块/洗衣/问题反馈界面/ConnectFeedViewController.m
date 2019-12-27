@@ -61,7 +61,7 @@
     self.imageViewArr = [NSMutableArray arrayWithCapacity:0];
     self.refundIDArr = [NSMutableArray arrayWithCapacity:0];
 //    [collectionArray addObject:@[@"Laundry",@"Dryer",@"Price",@"Quality",@"Use Process",@"Others"]];
-    [collectionArray addObject:@[FGGetStringWithKeyFromTable(@"Machine can'r start", @"Language"),FGGetStringWithKeyFromTable(@"Failed on machine", @"Language"),FGGetStringWithKeyFromTable(@"Others", @"Language")]];
+    [collectionArray addObject:@[FGGetStringWithKeyFromTable(@"Machine can't start", @"Language"),FGGetStringWithKeyFromTable(@"Failed on machine", @"Language"),FGGetStringWithKeyFromTable(@"Others", @"Language")]];
     [self.Amount_label setText:FGGetStringWithKeyFromTable(@"Select an option", @"Language")];
     [self.Submit_btn setTitle:FGGetStringWithKeyFromTable(@"Confirm", @"Language") forState:(UIControlStateNormal)];
     NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];

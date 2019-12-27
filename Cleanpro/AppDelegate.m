@@ -175,6 +175,7 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDidConnectHX:) name:@"bearerDidConnectHX" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerCloseHX:) name:@"bearerCloseHX" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDidOpenHX:) name:@"bearerDidOpenHX" object:nil];
+ 
     return YES;
 }
 

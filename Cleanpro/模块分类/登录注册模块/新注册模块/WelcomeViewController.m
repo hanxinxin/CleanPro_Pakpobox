@@ -61,12 +61,12 @@
     [super viewWillDisappear:animated];
 }
 - (IBAction)Next_touch:(id)sender {
-//    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    nameRViewController *vc=[main instantiateViewControllerWithIdentifier:@"nameRViewController"];
-//    vc.index=1;
-//    vc.hidesBottomBarWhenPushed = YES;
-//    [self.navigationController pushViewController:vc animated:YES];
-    
+    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    nameRViewController *vc=[main instantiateViewControllerWithIdentifier:@"nameRViewController"];
+    vc.index=1;
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+    /*  12月20日 修改 业务需求 需要填写名字
     UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
     PhoneRViewController *vc=[main instantiateViewControllerWithIdentifier:@"PhoneRViewController"];
     vc.hidesBottomBarWhenPushed = YES;
@@ -78,6 +78,7 @@
     Nextmode.postCode=@"";
     vc.Nextmode=Nextmode;
     [self.navigationController pushViewController:vc animated:YES];
+     */
 }
 - (IBAction)select_touch:(id)sender {
     

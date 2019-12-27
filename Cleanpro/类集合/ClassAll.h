@@ -122,3 +122,25 @@
 
 @end
 
+@interface OneCityMode : NSObject
+@property (nonatomic,strong)NSString * idStr ;
+@property (nonatomic,strong)NSString * regionLevel ;
+@property (nonatomic,strong)NSString * regionName ;
+@property (nonatomic,strong)NSString * regionShortName ;
+
+@end
+
+@interface TwoCityMode : NSObject
+@property (nonatomic,strong)NSString * idStrTwo ;
+@property (nonatomic,strong)OneCityMode * parentRegion ;
+@property (nonatomic,strong)NSString * regionLevel ;
+@property (nonatomic,strong)NSString * regionName ;
+@end
+
+@interface ThreeCityMode : NSObject
+@property (nonatomic,strong)NSString * idStrThree ;
+@property (nonatomic,strong)TwoCityMode * parentRegion ;
+@property (nonatomic,strong)NSString * postcode ;
+@property (nonatomic,strong)NSString * regionLevel ;
+@property (nonatomic,strong)NSString * regionName ;
+@end

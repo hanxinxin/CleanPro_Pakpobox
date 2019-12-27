@@ -632,10 +632,20 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyyMMdd"];
 //    [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:8]];//解决8小时时间差问题
-    NSString * strda=[NSString stringWithFormat:@"%@",self.ModeUser.birthday];
-    NSDate *birthdayDate = [dateFormatter dateFromString:strda];
-//    NSLog(@"date = %@,  date1 = %@",birthdayDate,[NSDate date]);
-    [self.date_picker setDate:birthdayDate];/////设置默认显示时间
+    NSLog(@"self.ModeUser.birthday === %@",self.ModeUser.birthday);
+//    NSString * strda;
+    if(self.ModeUser.birthday!=nil){
+        NSString * strda = [NSString stringWithFormat:@"%@",self.ModeUser.birthday];
+        NSDate *birthdayDate = [dateFormatter dateFromString:strda];
+        //    NSLog(@"date = %@,  date1 = %@",birthdayDate,[NSDate date]);
+        [self.date_picker setDate:birthdayDate];/////设置默认显示时间
+    }else
+    {
+        NSDate *datenow = [NSDate date];
+        [self.date_picker setDate:datenow];/////设置默认显示时间
+    }
+    
+    
     //设置最大值时间
     self.date_picker.maximumDate= [NSDate date];//今天
     [self.whiteView addSubview:self.CancelBtn];

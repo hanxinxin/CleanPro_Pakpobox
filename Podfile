@@ -18,7 +18,7 @@ target 'Cleanpro' do
       pod 'FBSDKCoreKit'
       pod 'FBSDKLoginKit'
       pod 'FBSDKShareKit'
-      pod 'CocoaLumberjack'
+#      pod 'CocoaLumberjack'
   target 'CleanproTests' do
     inherit! :search_paths
     # Pods for testing

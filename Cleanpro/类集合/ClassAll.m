@@ -41,4 +41,12 @@
 @implementation bannerMode
 
 @end
+@implementation OneCityMode
 
+@end
+@implementation TwoCityMode
+
+@end
+@implementation ThreeCityMode
+
+@end

@@ -13,6 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PostcodeRViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UILabel *title_label;
 @property (weak, nonatomic) IBOutlet HQTextField *textfield;
+@property (strong, nonatomic) IBOutlet HQTextField *AreaTextfield;
+@property (strong, nonatomic) IBOutlet HQTextField *AddressTextfield;
+
+
 
 @property (weak, nonatomic) IBOutlet UIButton *next_btn;
 @property (weak, nonatomic) IBOutlet UIButton *Skip_btn;

@@ -832,22 +832,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "CA20164F-3678-46B5-ADE1-61AC4DD10D75"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x4e2a;&#x4eba;&#x4e2d;&#x5fc3;/MyAccountViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "519"
-            endingLineNumber = "519"
-            landmarkName = "-tableView:numberOfRowsInSection:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "95B7BE4E-9DDE-4191-A6BB-B29CF10AA615"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
