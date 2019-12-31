@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol timelineDelegate <NSObject>
 @optional
 
-- (void)CancelDelegate:(NSInteger)time; // 1是取消  2是 保存
+- (void)CancelDelegate:(NSInteger)time SelectArray:(NSMutableArray *)array; // 1是取消  2是 保存
 - (void)TagTouch;
 @end
 
@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 
--(void)setArrayTable:(NSArray *)arr;
+-(void)setArrayTable:(NSMutableArray*)arr selectArr:(NSMutableArray *)Selectarray index:(NSInteger)Index;// index 0是没有输入postcode查询 1是输入postcode查询
 
 @end
 

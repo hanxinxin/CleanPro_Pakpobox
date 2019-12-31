@@ -193,7 +193,7 @@
  @param RSSI 信号强度
  */
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary<NSString *,id> *)advertisementData RSSI:(NSNumber *)RSSI {
-    NSLog(@"\n设备名称：%@",peripheral.name);
+//    NSLog(@"\n设备名称：%@",peripheral.name);
 //    kCBAdvDataManufacturerData
     //TODO: 使用mac地址判断
 //    NSData *data  =[advertisementData objectForKey:@"kCBAdvDataManufacturerData"];

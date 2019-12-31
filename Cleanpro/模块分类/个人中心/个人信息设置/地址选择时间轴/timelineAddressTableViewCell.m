@@ -84,7 +84,7 @@ NSString *const CCContentCellID = @"timelineAddressTableViewCell";
     [_cellTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self->_pointView.mas_right).offset(23);
         make.width.mas_offset(100);
-        make.height.mas_offset(15);
+        make.height.mas_offset(20);
         make.centerY.equalTo(self->_pointView);
     }];
 }

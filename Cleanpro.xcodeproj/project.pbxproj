@@ -5941,7 +5941,7 @@
 				CODE_SIGN_ENTITLEMENTS = Cleanpro/Cleanpro.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.17;
+				CURRENT_PROJECT_VERSION = 1.1.19;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = LUUCB5LGP5;
 				ENABLE_BITCODE = NO;
@@ -5966,7 +5966,7 @@
 					"$(PROJECT_DIR)/Cleanpro/第三方库/IPay88/SDK/library",
 					"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/lib",
 				);
-				MARKETING_VERSION = 1.1.17;
+				MARKETING_VERSION = 1.1.19;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",
@@ -6023,7 +6023,7 @@
 				CODE_SIGN_ENTITLEMENTS = Cleanpro/Cleanpro.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.17;
+				CURRENT_PROJECT_VERSION = 1.1.19;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = LUUCB5LGP5;
 				ENABLE_BITCODE = NO;
@@ -6048,7 +6048,7 @@
 					"$(PROJECT_DIR)/Cleanpro/第三方库/IPay88/SDK/library",
 					"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/lib",
 				);
-				MARKETING_VERSION = 1.1.17;
+				MARKETING_VERSION = 1.1.19;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",

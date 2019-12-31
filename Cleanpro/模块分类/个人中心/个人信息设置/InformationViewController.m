@@ -33,7 +33,7 @@
     // Do any additional setup after loading the view.
     arrtitle=[NSMutableArray arrayWithCapacity:0];
     [arrtitle addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"Profile Picture", @"Language"),FGGetStringWithKeyFromTable(@"Name", @"Language"),FGGetStringWithKeyFromTable(@"Phone number", @"Language"),FGGetStringWithKeyFromTable(@"Gender", @"Language"),FGGetStringWithKeyFromTable(@"Birthday", @"Language"),FGGetStringWithKeyFromTable(@"Email", @"Language"), nil]];
-    [arrtitle addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"Post code", @"Language"), nil]];
+    [arrtitle addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"Address", @"Language"), nil]];
     
     
     self.view.backgroundColor=[UIColor colorWithRed:240/255.0 green:241/255.0 blue:242/255.0 alpha:1];;
@@ -202,10 +202,10 @@
         }
     }else if (indexPath.section==1)
     {
-        if(indexPath.row==0)
-        {
-        cell.detailTextLabel.text=self.ModeUser.postCode;
-        }
+//        if(indexPath.row==0)
+//        {
+//        cell.detailTextLabel.text=self.ModeUser.postCode;
+//        }
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
     }
     
@@ -705,13 +705,22 @@
 
 -(void)ConfirmTouch:(id)sender
 {
-    if(![self.DateStr isEqualToString:self.ModeUser.birthday])
+    if(self.ModeUser.birthday!=nil)
     {
-        [self postUpdateINFO_Birthday:self.DateStr];
+        if(![self.DateStr isEqualToString:self.ModeUser.birthday])
+        {
+            [self postUpdateINFO_Birthday:self.DateStr];
+        }else
+        {
+            
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Same as before", @"Language") andDelay:2.0];
+        }
     }else
     {
-        
-        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Same as before", @"Language") andDelay:2.0];
+        if(![self.DateStr isEqualToString:@""])
+        {
+            [self postUpdateINFO_Birthday:self.DateStr];
+        }
     }
 }
 -(void)CancelBtnTouch:(id)sender

@@ -18,12 +18,16 @@
 
 @end
 
+
+static BOOL selectOne_two=NO;
+
 //@interface timelineAddressViewController ()<UITableViewDelegate,UITableViewDataSource>
 @interface timelineAddressView ()<UITableViewDelegate,UITableViewDataSource>
 {
     NSInteger ASelect;///tableviewA的选择界面；
     NSInteger SelectInteger; ///tableviewB的选择界面
     BOOL AAndB_bool;
+   
 }
 @end
 
@@ -57,6 +61,8 @@
 //        layer.frame = CGRectMake(0, self.topBarView.frame.size.height - 0, SCREEN_WIDTH, 1);
 //    layer.backgroundColor = [UIColor colorWithRed:221/255.0 green:221/255.0 blue:221/255.0 alpha:1].CGColor;
 //        [self.topBarView.layer addSublayer:layer];
+    [self.CancelBtn setTitle:FGGetStringWithKeyFromTable(@"Cancel", @"Language") forState:(UIControlStateNormal)];
+    [self.SaveBtn setTitle:FGGetStringWithKeyFromTable(@"Save", @"Language") forState:(UIControlStateNormal)];
     [self.tableviewA registerNib:[UINib nibWithNibName:@"timelineAddressTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:tableID];
 //    self.ArrayCity = [[NSArray alloc] init];
     self.ArrayCity = [NSMutableArray arrayWithCapacity:0];
@@ -70,16 +76,47 @@
         [super awakeFromNib];
         
 }
--(void)setArrayTable:(NSMutableArray*)arr
+-(void)setArrayTable:(NSMutableArray*)arr selectArr:(NSMutableArray *)Selectarray index:(NSInteger)Index
 {
-    self.ArrayCity = arr;
-    [self.tableviewA reloadData];
-    [self.tableviewB reloadData];
+    if(arr==nil && Selectarray==nil && Index==0)
+    {
+        ASelect=0;
+        [self Get_AddressSelectList:nil parentIdStr:nil index:0];
+    }else if (arr!=nil && Selectarray==nil && Index==0)
+    {
+        self.ArrayCity = arr;
+        [self.tableviewA reloadData];
+        [self.tableviewB reloadData];
+    }else if (arr==nil && Selectarray!=nil && Index==1)
+    {
+        ASelect=2;
+        ThreeCityMode * mode3=Selectarray[0];
+        TwoCityMode * mode2 = mode3.parentRegion;
+        OneCityMode * mode1 = mode2.parentRegion;
+        [self.OneArray addObject:mode1];
+        [self.OneArray addObject:mode2];
+        [self.OneArray addObject:mode3];
+        [self setTableviewFrame];
+        [self Get_AddressSelectList:nil parentIdStr:mode2.idStrTwo index:0];
+    }
+    else if (arr==nil && Selectarray!=nil && Index==0)
+    {
+        ASelect=2;
+        ThreeCityMode * mode3=Selectarray[2];
+        TwoCityMode * mode2 = mode3.parentRegion;
+        OneCityMode * mode1 = mode2.parentRegion;
+        [self.OneArray addObject:mode1];
+        [self.OneArray addObject:mode2];
+        [self.OneArray addObject:mode3];
+        [self setTableviewFrame];
+        [self Get_AddressSelectList:nil parentIdStr:mode2.idStrTwo index:0];
+    }
 }
 
 /// 根据区号获取地址
 -(void)Get_AddressSelectList:(NSString *)postcode parentIdStr:(NSString *)parentId index:(NSInteger)Index
 {
+    [HudViewFZ labelExample:self];
     NSString * GetURLStr;
     if(postcode!=nil)
     {
@@ -104,7 +141,10 @@
         
     } success:^(id responseObject) {
         NSLog(@"responseObject== %@",responseObject);
-       
+        [HudViewFZ HiddenHud];
+       if(responseObject!=nil)
+       {
+           [self.ArrayCity removeAllObjects];
         if(self->ASelect==0)
         {
             NSArray * arrayZong = (NSArray *)responseObject;
@@ -118,6 +158,7 @@
                mode.regionShortName=[dict objectForKey:@"regionShortName"];
                [KBArray addObject:mode];
            }
+            self.ArrayCity = KBArray;
         }else if(self->ASelect==1)
         {
             NSMutableArray * Muarray = [NSMutableArray arrayWithCapacity:0];
@@ -168,7 +209,7 @@
         }
             [self.tableviewA reloadData];
             [self.tableviewB reloadData];
-        
+       }
     } failure:^(NSError *error) {
         NSLog(@"error = %@",error);
         [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
@@ -178,13 +219,13 @@
 
 
 - (IBAction)Cancel_touch:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(CancelDelegate:)]) {
-        [self.delegate CancelDelegate:1];
+    if ([self.delegate respondsToSelector:@selector(CancelDelegate:SelectArray:)]) {
+        [self.delegate CancelDelegate:1 SelectArray:self.OneArray];
     }
 }
 - (IBAction)Save_touch:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(CancelDelegate:)]) {
-        [self.delegate CancelDelegate:2];
+    if ([self.delegate respondsToSelector:@selector(CancelDelegate:SelectArray:)]) {
+        [self.delegate CancelDelegate:2 SelectArray:self.OneArray];
     }
 }
 
@@ -235,6 +276,13 @@
 //        }else{
     
             if (indexPath.row == 0) {
+                if(self.OneArray.count==1)
+                {
+                    cell.lineView.hidden=YES;
+                }else
+                {
+                    cell.lineView.hidden=NO;
+                }
                 [cell.lineView mas_remakeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(cell.pointView.mas_bottom);
                     make.bottom.equalTo(cell);
@@ -298,48 +346,63 @@
 //            [cell.contentView addSubview:lbl];
             //cell选中效果
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//            cell.textLabel.text = [NSString stringWithFormat:@"cell %ld",(long)indexPath.row];;
+            cell.textLabel.textColor = [UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
             
 //            NSArray * arr= self.ArrayCity[ASelect];
             if(ASelect==0)
             {
                 OneCityMode * mode = self.ArrayCity[indexPath.row];
                 cell.textLabel.text = [NSString stringWithFormat:@"%@",mode.regionName];;
+                if(self.OneArray.count>=1)
+                {
+                OneCityMode * mode1 =self.OneArray[0];
+                [self setCellImage:[mode1.idStr isEqualToString:mode.idStr] Tabelcell:cell];
+                }else
+                {
+                    UIImageView *imgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+                    imgV.frame = CGRectMake(0,0,20,20);
+                    cell.accessoryView = imgV;
+                    cell.textLabel.textColor = [UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
+                }
             }else if(ASelect==1)
             {
                 TwoCityMode * mode2 = self.ArrayCity[indexPath.row];
                 cell.textLabel.text = [NSString stringWithFormat:@"%@",mode2.regionName];;
+                if(self.OneArray.count>=2)
+                {
+                TwoCityMode * mode22 =self.OneArray[1];
+                [self setCellImage:[mode22.idStrTwo isEqualToString:mode2.idStrTwo] Tabelcell:cell];
+                }else
+                {
+                    UIImageView *imgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+                    imgV.frame = CGRectMake(0,0,20,20);
+                    cell.accessoryView = imgV;
+                    cell.textLabel.textColor = [UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
+                }
             }
             else if(ASelect==2)
             {
+                ThreeCityMode * mode3 = self.ArrayCity[indexPath.row];
+                cell.textLabel.text = [NSString stringWithFormat:@"%@",mode3.regionName];;
                 
+                if(self.OneArray.count>=3)
+                {
+                ThreeCityMode * mode33 =self.OneArray[2];
+                [self setCellImage:[mode33.idStrThree isEqualToString:mode3.idStrThree] Tabelcell:cell];
+                }else
+                {
+                    UIImageView *imgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+                    imgV.frame = CGRectMake(0,0,20,20);
+                    cell.accessoryView = imgV;
+                    cell.textLabel.textColor = [UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
+                }
             }
-//            cell.textLabel.textColor = [UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
-            //    NSLog(@"%ld",(long)indexPath.row);
-            if(indexPath.row==SelectInteger)
-            {
-//                cell.imageView.image=[UIImage imageNamed:@"check-circle-fill"];
-                UIImageView *imgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check-circle-fill"]];
-                imgV.frame = CGRectMake(0,0,20,20);
-                cell.accessoryView = imgV;
-                cell.textLabel.textColor = [UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
-            }else
-            {
-                UIImageView *imgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
-                imgV.frame = CGRectMake(0,0,20,20);
-                cell.accessoryView = imgV;
-                cell.textLabel.textColor = [UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
-            }
-            /*else if (indexPath.row==1)
-            {
-                cell.imageView.image=[UIImage imageNamed:@"me_settings"];
-            }
-             */
+//            cell.textLabel.textColor = [UIColor darkGrayColor];
             //    if(indexPath.row!=3)
             //    {
 //            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
             //    }
-            cell.textLabel.textColor = [UIColor darkGrayColor];
+//            cell.textLabel.textColor = [UIColor darkGrayColor];
             //    cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
             //    cell.layer.cornerRadius=4;
             return cell;
@@ -350,6 +413,24 @@
     //使用Masonry进行布局的话，这里要设置为NO
     cell.fd_enforceFrameLayout = NO;
 }
+
+-(void)setCellImage:(BOOL)boolCell Tabelcell:(UITableViewCell*)cell
+{
+    if(boolCell)
+    {
+        UIImageView *imgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check-circle-fill"]];
+                           imgV.frame = CGRectMake(0,0,20,20);
+                           cell.accessoryView = imgV;
+                           cell.textLabel.textColor = [UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
+    }else
+    {
+        UIImageView *imgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+        imgV.frame = CGRectMake(0,0,20,20);
+        cell.accessoryView = imgV;
+        cell.textLabel.textColor = [UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
+    }
+}
+
 ////行高
 //- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 //
@@ -382,6 +463,7 @@
 //选中时 调用的方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     if(tableView.tag==5000)
     {
         ASelect = indexPath.row;
@@ -390,49 +472,98 @@
 //        AAndB_bool=YES;
         if(ASelect==0)
         {
+//            [self.OneArray removeAllObjects];
             [self Get_AddressSelectList:nil parentIdStr:nil index:0];
+            selectOne_two=YES;
         }else if (ASelect==1)
         {
+//            OneCityMode * mode =self.OneArray[0];
+//            [self.OneArray removeAllObjects];
+//            [self.OneArray addObject:mode];
+//            [self Get_AddressSelectList:nil parentIdStr:mode.idStr index:0];
             OneCityMode * mode =self.OneArray[0];
-            [self.OneArray removeAllObjects];
-            [self.OneArray addObject:mode];
             [self Get_AddressSelectList:nil parentIdStr:mode.idStr index:0];
+            selectOne_two=YES;
         }else if (ASelect==2)
         {
-            OneCityMode * mode1 =self.OneArray[0];
+//            OneCityMode * mode1 =self.OneArray[0];
             TwoCityMode * mode2 =self.OneArray[1];
-            [self.OneArray removeAllObjects];
-            [self.OneArray addObject:mode1];
-            [self.OneArray addObject:mode2];
+//            [self.OneArray removeAllObjects];
+//            [self.OneArray addObject:mode1];
+//            [self.OneArray addObject:mode2];
             [self Get_AddressSelectList:nil parentIdStr:mode2.idStrTwo index:0];
+            selectOne_two=YES;
         }
-        [self.tableviewA reloadData];
-        [self.tableviewB reloadData];
+//        [self.tableviewA reloadData];
+//        [self.tableviewB reloadData];
     }else if(tableView.tag==5001)
     {
             if(ASelect==0)
             {
-                ASelect=1;
-                OneCityMode * mode = self.ArrayCity[indexPath.row];
-                [self Get_AddressSelectList:nil parentIdStr:mode.idStr index:0];
-                [self.OneArray removeAllObjects];
-                [self.OneArray addObject:mode];
+                if(selectOne_two==YES)
+                {
+                    OneCityMode * mode = self.ArrayCity[indexPath.row];
+                    [self.OneArray removeAllObjects];
+                    [self.OneArray addObject:mode];
+                    ASelect=1;
+                    [self Get_AddressSelectList:nil parentIdStr:mode.idStr index:0];
+                }else{
                 
+                    OneCityMode * mode = self.ArrayCity[indexPath.row];
+                    [self.OneArray removeAllObjects];
+                    [self.OneArray addObject:mode];
+                    ASelect=1;
+                    [self Get_AddressSelectList:nil parentIdStr:mode.idStr index:0];
+                
+                }
+                selectOne_two=NO;
             }else if (ASelect==1)
             {
-                ASelect=2;
-                TwoCityMode * mode = self.ArrayCity[indexPath.row];
-                [self Get_AddressSelectList:nil parentIdStr:mode.idStrTwo index:0];
-                [self.OneArray addObject:mode];
-                
+                if(selectOne_two==YES)
+                {
+                    TwoCityMode * mode = self.ArrayCity[indexPath.row];
+                    [self.OneArray replaceObjectAtIndex:1 withObject:mode];
+                    if(self.OneArray.count==3)
+                    {
+                        [self.OneArray removeObjectAtIndex:2];
+                    }
+                    ASelect=2;
+                    [self Get_AddressSelectList:nil parentIdStr:mode.idStrTwo index:0];
+                }else
+                {
+                    ASelect=2;
+                    TwoCityMode * mode = self.ArrayCity[indexPath.row];
+                    [self.OneArray addObject:mode];
+                    [self Get_AddressSelectList:nil parentIdStr:mode.idStrTwo index:0];
+                     
+                }
+                selectOne_two=NO;
             }else if (ASelect==2)
             {
-                ASelect=2;
-                ThreeCityMode * mode = self.ArrayCity[indexPath.row];
-                [self.OneArray addObject:mode];
+                if(selectOne_two==YES)
+                {
+                    ThreeCityMode * mode = self.ArrayCity[indexPath.row];
+                   [self.OneArray replaceObjectAtIndex:2 withObject:mode];
+                    ASelect=2;
+                }else
+                {
+                    ASelect=2;
+                    ThreeCityMode * mode = self.ArrayCity[indexPath.row];
+                    if(self.OneArray.count==3)
+                    {
+                        [self.OneArray replaceObjectAtIndex:2 withObject:mode];
+                    }else
+                    {
+    //                    ThreeCityMode * mode = self.ArrayCity[indexPath.row];
+                        [self.OneArray addObject:mode];
+                    }
+                }
+                selectOne_two=NO;
+                [self.tableviewA reloadData];
+                [self.tableviewB reloadData];
             }
             
-        
+       
     }
     
     
@@ -454,8 +585,8 @@
 //        make.height.mas_offset(SCREEN_HEIGHT-(self.OneArray.count*40+200));
 //        make.top.mas_offset(self.tableviewA.bottom);
 //    }];
-    self.tableviewA.frame = CGRectMake(self.topBarView.left, self.topBarView.bottom, SCREEN_WIDTH, (self.OneArray.count*40.f));
-    self.tableviewB.frame = CGRectMake(self.topBarView.left, self.tableviewA.bottom, SCREEN_WIDTH, SCREEN_HEIGHT-(self.OneArray.count*40.f+self.topBarView.height+150.f));
+    self.tableviewA.frame = CGRectMake(self.topBarView.left, self.topBarView.bottom, SCREEN_WIDTH, (self.OneArray.count*44.f));
+    self.tableviewB.frame = CGRectMake(self.topBarView.left, self.tableviewA.bottom, SCREEN_WIDTH, SCREEN_HEIGHT-(self.OneArray.count*44.f+self.topBarView.height+150.f+(kNavBarAndStatusBarHeight)));
 }
 
 

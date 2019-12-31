@@ -10,6 +10,7 @@
 #import "InformationViewController.h"
 #import "BirthdayRViewController.h"
 #import "PhoneRViewController.h"
+#import "GenderRViewController.h"
 
 @interface nameRViewController ()<UIGestureRecognizerDelegate,UITextFieldDelegate>
 
@@ -21,12 +22,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.next_btn.layer.cornerRadius=4;
-    self.first_nameText.keyboardType = UIKeyboardTypeDefault;
+    self.first_nameText.keyboardType = UIKeyboardTypeAlphabet;
     self.first_nameText.delegate=self;
     self.first_nameText.layer.cornerRadius=4;
     self.last_nameText.layer.cornerRadius=4;
     self.last_nameText.delegate=self;
-    self.last_nameText.keyboardType = UIKeyboardTypeDefault;
+    self.last_nameText.keyboardType = UIKeyboardTypeAlphabet;
     self.next_btn.backgroundColor=[UIColor colorWithRed:172/255.0 green:220/255.0 blue:251/255.0 alpha:1.0];
     [self.next_btn setUserInteractionEnabled:NO];
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
@@ -72,6 +73,7 @@
     }
     [self.navigationController.navigationBar setHidden:NO];
     [self addNoticeForKeyboard];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardWillShowNotification object:nil];
     [super viewWillAppear:animated];
 //    self.navigationController.navigationBar.translucent = YES;
 }
@@ -84,6 +86,43 @@
     [self.navigationController setNavigationBarHidden:NO animated:animated];
 //    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [super viewWillDisappear:animated];
+}
+-(void)keyboardWasShown:(NSNotification *)notif
+{
+
+    NSDictionary *info = [notif userInfo];
+
+    NSValue *value = [info objectForKey:UIKeyboardFrameBeginUserInfoKey];
+
+    CGSize keyboardSize = [value CGRectValue].size;
+
+    NSLog(@"keyBoard:%f", keyboardSize.height);
+    if (keyboardSize.height>0 && self.last_nameText.secureTextEntry == YES) {
+        //不让换键盘的textField的
+        self.last_nameText.secureTextEntry = NO;
+
+    }
+    if (keyboardSize.height>0 && self.first_nameText.secureTextEntry == YES) {
+        //不让换键盘的textField的
+        self.first_nameText.secureTextEntry = NO;
+
+    }
+}
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+
+ //判断一下，哪个是不让换键盘的textField
+
+    if (textField == self.first_nameText) {
+
+        self.first_nameText.secureTextEntry = YES;
+
+    }
+    if (textField == self.last_nameText) {
+
+        self.last_nameText.secureTextEntry = YES;
+
+    }
 }
 #pragma mark - 键盘通知
 - (void)addNoticeForKeyboard {
@@ -103,7 +142,7 @@
     CGFloat kbHeight = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
     
     //计算出键盘顶端到inputTextView panel底端的距离(加上自定义的缓冲距离INTERVAL_KEYBOARD)
-    CGFloat offheight = SCREEN_HEIGHT-(kNavBarAndStatusBarHeight);
+//    CGFloat offheight = SCREEN_HEIGHT-(kNavBarAndStatusBarHeight);
     CGFloat offset = (self.next_btn.top+self.next_btn.height+kbHeight+(kNavBarAndStatusBarHeight)) - SCREEN_HEIGHT;
     NSLog(@"duibi  = %f，%f",SCREEN_HEIGHT,kNavBarAndStatusBarHeight);
     // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
@@ -125,7 +164,7 @@
     //视图下沉恢复原状
     [UIView animateWithDuration:duration animations:^{
     //        self.view.frame = [UIScreen mainScreen].bounds;
-            self.view.frame = CGRectMake(0, kNavBarAndStatusBarHeight, SCREEN_WIDTH, SCREEN_HEIGHT);
+            self.view.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     }];
 }
 
@@ -141,6 +180,7 @@
     [self.navigationController pushViewController:vc animated:YES];
          
          */
+//        12月30日屏蔽 直接进入号码填写页面
         UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
         PhoneRViewController *vc=[main instantiateViewControllerWithIdentifier:@"PhoneRViewController"];
         vc.hidesBottomBarWhenPushed = YES;
@@ -152,6 +192,21 @@
         Nextmode.postCode=@"";
         vc.Nextmode=Nextmode;
         [self.navigationController pushViewController:vc animated:YES];
+         
+        
+        /*
+        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        GenderRViewController *vc=[main instantiateViewControllerWithIdentifier:@"GenderRViewController"];
+        vc.hidesBottomBarWhenPushed = YES;
+        userIDMode * Nextmode = [[userIDMode alloc] init];
+        Nextmode.firstName=self.Nextmode.firstName;
+        Nextmode.lastName=self.Nextmode.lastName;
+        Nextmode.birthday=@"";
+        Nextmode.gender=@"";
+        Nextmode.postCode=@"";
+        vc.Nextmode=Nextmode;
+        [self.navigationController pushViewController:vc animated:YES];
+        */
     }else if (self.index==2)
     {
         [self postUpdateINFO:self.first_nameText.text lastName:self.last_nameText.text];
@@ -256,8 +311,8 @@
                 }
             });
             return YES;
-        }else if (self.first_nameText.text.length >= 10) {
-            self.first_nameText.text = [[textField.text stringByAppendingString:string] substringToIndex:11];
+        }else if (self.first_nameText.text.length >= 200) {
+            self.first_nameText.text = [[textField.text stringByAppendingString:string] substringToIndex:(self.first_nameText.text.length+1)];
             //            NSLog(@"self.phone_textfiled.text =  %@",self.phone_textfiled.text );
             
                 if (self.last_nameText.text.length >0) {
@@ -309,9 +364,9 @@
             });
                 
             return YES;
-        }else if (self.last_nameText.text.length >=10) {
+        }else if (self.last_nameText.text.length >=200) {
             //            NSLog(@"Length= %ld",self.Verification_number.text.length);
-            self.last_nameText.text = [[textField.text stringByAppendingString:string] substringToIndex:11];
+            self.last_nameText.text = [[textField.text stringByAppendingString:string] substringToIndex:(self.last_nameText.text.length+1)];
             
             if (self.first_nameText.text.length >0 && self.last_nameText.text.length >0) {
                 [self.next_btn setUserInteractionEnabled:YES];
