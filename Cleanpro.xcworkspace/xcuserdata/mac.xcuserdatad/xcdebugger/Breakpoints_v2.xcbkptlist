@@ -124,55 +124,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "54FCFA73-E943-44CA-829D-AD568D2C51E9"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d88;&#x606f;&#x6a21;&#x5757;/IMessageViewController.m"
-            timestampString = "587963011.2304209"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "381"
-            endingLineNumber = "381"
-            landmarkName = "-Get_Message_delete:indexPath:"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "54FCFA73-E943-44CA-829D-AD568D2C51E9 - 20a94c6b9d602469"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[IMessageViewController Get_Message_delete:indexPath:]"
-                  moduleName = "Cleanpro"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9D%97/IMessageViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "383"
-                  endingLineNumber = "383"
-                  offsetFromSymbolStart = "1744">
-               </Location>
-               <Location
-                  uuid = "54FCFA73-E943-44CA-829D-AD568D2C51E9 - 2f80041d97209208"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__55-[IMessageViewController Get_Message_delete:indexPath:]_block_invoke_2"
-                  moduleName = "Cleanpro"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9D%97/IMessageViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "383"
-                  endingLineNumber = "383"
-                  offsetFromSymbolStart = "720">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "F538E788-EE1B-495A-B43D-BFF243461E1A"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -181,9 +132,9 @@
             timestampString = "587963011.230939"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "584"
-            endingLineNumber = "584"
-            landmarkName = "-tableView:editingStyleForRowAtIndexPath:"
+            startingLineNumber = "583"
+            endingLineNumber = "583"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -198,8 +149,8 @@
             timestampString = "587963011.230992"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "364"
-            endingLineNumber = "364"
+            startingLineNumber = "363"
+            endingLineNumber = "363"
             landmarkName = "-Get_Message_delete:indexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -215,9 +166,9 @@
             timestampString = "587963011.231035"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "350"
-            endingLineNumber = "350"
-            landmarkName = "-Get_Message_delete:indexPath:"
+            startingLineNumber = "349"
+            endingLineNumber = "349"
+            landmarkName = "-Get_MessageList_arr"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -232,9 +183,9 @@
             timestampString = "587963011.231073"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "346"
-            endingLineNumber = "346"
-            landmarkName = "-Get_Message_delete:indexPath:"
+            startingLineNumber = "345"
+            endingLineNumber = "345"
+            landmarkName = "-Get_MessageList_arr"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -249,10 +200,10 @@
             timestampString = "587963011.231112"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "633"
-            endingLineNumber = "633"
-            landmarkName = "-swipeCell:editActionsForRowAtIndexPath:"
-            landmarkType = "7">
+            startingLineNumber = "632"
+            endingLineNumber = "632"
+            landmarkName = "IMessageViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -938,6 +889,70 @@
             startingLineNumber = "298"
             endingLineNumber = "298"
             landmarkName = "-updateUserAddress:detailedAddress:region:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1E66D3CD-ECEE-465B-B578-50D34A79B624"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x8ba2;&#x5355;&#x8be6;&#x60c5;/lineItemViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "-Json_returnDict:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7B53A770-9E57-4E4C-A185-4EDC81550C8A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x8ba2;&#x5355;&#x8be6;&#x60c5;/lineItemViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "-Json_returnDict:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9F1A918F-9558-4AC9-AD4E-B57590AD31E4"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x8ba2;&#x5355;&#x8be6;&#x60c5;/lineItemViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
+            landmarkName = "-Json_returnDict:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CDA87DC6-9358-4886-A147-1A700BE02699"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x8ba2;&#x5355;&#x8be6;&#x60c5;/lineItemViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "-setLabelText"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

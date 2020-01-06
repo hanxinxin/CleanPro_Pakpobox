@@ -473,7 +473,9 @@
     vc.order_c=self->order_c;
     vc.arrayList=self.arrayList;
     vc.addrStr = self.addrStr;
+    vc.OrderAndRenewal=1;
 //    vc.DeviceStr = self.DeviceStr;
+    vc.NewOrderType=1;///洗衣
     [self.navigationController pushViewController:vc animated:YES];
 }
 

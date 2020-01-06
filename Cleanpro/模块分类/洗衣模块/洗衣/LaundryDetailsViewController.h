@@ -10,6 +10,7 @@
 
 @interface LaundryDetailsViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIView *topView;
+
 @property (weak, nonatomic) IBOutlet UILabel *Order_type;
 @property (weak, nonatomic) IBOutlet UILabel *machineNo;
 @property (weak, nonatomic) IBOutlet UILabel *machineNo_label;
@@ -38,9 +39,13 @@
 
 //@property(nonatomic,strong)Device * DeviceStr;///蓝牙设备
 @property(nonatomic,strong)NSString * addrStr;  ///加密字节
-
 @property(nonatomic,assign)NSInteger overtimeYN;  ///加密字节
 
 @property(nonatomic,assign)NSInteger OrderAndRenewal;  ///判断是正常下单还是加时烘干 1:正常下单 2:烘干加时
 @property(nonatomic,strong)NSString *  OrderIdTime;
+
+@property(nonatomic,assign)NSInteger NewOrderType;  ///判断是洗衣还是贩卖机 1:洗衣 2:贩卖机
+@property (nonatomic, strong)NSArray * FMJArray; ///贩卖机物品数组
+
+
 @end

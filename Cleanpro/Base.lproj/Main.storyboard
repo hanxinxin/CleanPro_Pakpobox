@@ -1996,6 +1996,24 @@
             </objects>
             <point key="canvasLocation" x="4671" y="1695"/>
         </scene>
+        <!--Hx Shop Cart View Controller-->
+        <scene sceneID="qu7-j7-NFz">
+            <objects>
+                <viewController storyboardIdentifier="HxShopCartViewController" id="FTc-pw-mBF" customClass="HxShopCartViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="CNS-ku-f5v"/>
+                        <viewControllerLayoutGuide type="bottom" id="xn3-d7-nnz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="eqq-md-FSq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lVo-L3-jFs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5479" y="4772"/>
+        </scene>
         <!--Forget Pay Password View Controller-->
         <scene sceneID="mMv-iu-VOx">
             <objects>
@@ -2884,14 +2902,6 @@ to verify your identity</string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gbA-Hi-Fe6">
-                                <rect key="frame" x="49" y="49" width="277" height="150"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="277" id="c24-ui-lAO"/>
-                                    <constraint firstAttribute="height" constant="150" id="f6v-7j-hEZ"/>
-                                </constraints>
-                                <state key="normal" image="illustrator_laundry.png"/>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Success!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xcd-eC-jCa">
                                 <rect key="frame" x="49" y="231" width="277" height="30"/>
                                 <constraints>
@@ -2950,21 +2960,28 @@ to verify your identity</string>
                                     <action selector="Machine_touch:" destination="hQk-PP-pEk" eventType="touchUpInside" id="xHF-47-ic4"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gbA-Hi-Fe6">
+                                <rect key="frame" x="91" y="57" width="193" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="MTJ-PL-sL5"/>
+                                    <constraint firstAttribute="width" constant="193" id="hZQ-Fw-fsA"/>
+                                </constraints>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="TNQ-xa-X8z" firstAttribute="top" secondItem="xcd-eC-jCa" secondAttribute="bottom" constant="4" id="1E4-9z-FAg"/>
-                            <constraint firstItem="gbA-Hi-Fe6" firstAttribute="centerX" secondItem="8gD-Dk-RCd" secondAttribute="centerX" id="1sF-aQ-6Rv"/>
                             <constraint firstItem="ahP-d8-WLD" firstAttribute="leading" secondItem="8gD-Dk-RCd" secondAttribute="leadingMargin" constant="18" id="6el-Kb-bis"/>
                             <constraint firstItem="53u-zT-nKh" firstAttribute="leading" secondItem="8gD-Dk-RCd" secondAttribute="leadingMargin" constant="91" id="9cb-L3-s6q"/>
                             <constraint firstItem="TNQ-xa-X8z" firstAttribute="centerX" secondItem="8gD-Dk-RCd" secondAttribute="centerX" id="EUx-ve-R7T"/>
+                            <constraint firstItem="gbA-Hi-Fe6" firstAttribute="centerX" secondItem="8gD-Dk-RCd" secondAttribute="centerX" id="Hnk-Rs-1DT"/>
                             <constraint firstItem="1yg-sA-ZX7" firstAttribute="top" secondItem="53u-zT-nKh" secondAttribute="bottom" constant="20" id="Lix-2L-UA4"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ahP-d8-WLD" secondAttribute="trailing" constant="19" id="PiK-8v-ghT"/>
+                            <constraint firstItem="gbA-Hi-Fe6" firstAttribute="top" secondItem="T6R-Oe-LUb" secondAttribute="bottom" constant="57" id="SEP-fK-3N5"/>
                             <constraint firstItem="xcd-eC-jCa" firstAttribute="centerX" secondItem="8gD-Dk-RCd" secondAttribute="centerX" id="Z5B-sD-E1E"/>
                             <constraint firstAttribute="trailingMargin" secondItem="1yg-sA-ZX7" secondAttribute="trailing" constant="92" id="bgB-Rl-Rkp"/>
+                            <constraint firstItem="xcd-eC-jCa" firstAttribute="top" secondItem="gbA-Hi-Fe6" secondAttribute="bottom" constant="24" id="gh7-bQ-d9y"/>
                             <constraint firstItem="ahP-d8-WLD" firstAttribute="top" secondItem="1yg-sA-ZX7" secondAttribute="bottom" constant="20" id="h0y-KA-kew"/>
-                            <constraint firstItem="gbA-Hi-Fe6" firstAttribute="top" secondItem="T6R-Oe-LUb" secondAttribute="bottom" constant="49" id="iAF-JH-ynh"/>
-                            <constraint firstItem="xcd-eC-jCa" firstAttribute="top" secondItem="gbA-Hi-Fe6" secondAttribute="bottom" constant="32" id="iG8-R9-Hg4"/>
                             <constraint firstAttribute="trailingMargin" secondItem="53u-zT-nKh" secondAttribute="trailing" constant="92" id="jXK-zn-1NY"/>
                             <constraint firstItem="Ekm-4o-Cov" firstAttribute="top" secondItem="ahP-d8-WLD" secondAttribute="bottom" constant="72" id="nPj-pf-U25"/>
                             <constraint firstItem="1yg-sA-ZX7" firstAttribute="leading" secondItem="8gD-Dk-RCd" secondAttribute="leadingMargin" constant="91" id="ndG-N6-5rg"/>
@@ -2975,6 +2992,8 @@ to verify your identity</string>
                         <outlet property="MachineCan" destination="ahP-d8-WLD" id="ga4-GH-9v2"/>
                         <outlet property="Reconnect" destination="1yg-sA-ZX7" id="goh-Kq-vcw"/>
                         <outlet property="iamge_set" destination="gbA-Hi-Fe6" id="mzo-wb-16Z"/>
+                        <outlet property="imageHeight" destination="MTJ-PL-sL5" id="ytG-wW-Vgg"/>
+                        <outlet property="imageWidth" destination="hZQ-Fw-fsA" id="dBy-fk-hUx"/>
                         <outlet property="tips_text" destination="TNQ-xa-X8z" id="xpi-Vw-F9T"/>
                         <outlet property="title_text" destination="xcd-eC-jCa" id="ncq-fS-9bj"/>
                     </connections>
@@ -4726,7 +4745,6 @@ to verify your identity</string>
         <image name="icon_laundry_1.png" width="20.5" height="18.5"/>
         <image name="icon_pay.png" width="33" height="33"/>
         <image name="icon_warm.png" width="21" height="40"/>
-        <image name="illustrator_laundry.png" width="175.5" height="136.5"/>
         <image name="laundryNew.png" width="75" height="92"/>
         <image name="location_mark_app.png" width="33" height="33"/>
         <image name="logo" width="16" height="16"/>

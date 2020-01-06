@@ -163,22 +163,40 @@
     // 注册某个重用标识 对应的 Cell类型
     [self.tableViewT registerNib:[UINib nibWithNibName:@"ImessageTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:tableID];
     //    [self.tableViewT setEditing:YES animated:NO];
+    
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
+    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    // 隐藏时间
+    header.lastUpdatedTimeLabel.hidden = YES;
+    // 隐藏状态
+    header.stateLabel.hidden = NO;
+    // 设置文字
+    [header setTitle:@"Pull down to refresh" forState:MJRefreshStateIdle];
+    [header setTitle:@"Release to refresh" forState:MJRefreshStatePulling];
+    [header setTitle:@"Loading ..." forState:MJRefreshStateRefreshing];
+    
+    // 设置字体
+    header.stateLabel.font = [UIFont systemFontOfSize:15];
+    header.lastUpdatedTimeLabel.font = [UIFont systemFontOfSize:14];
+    
+    // 设置颜色
+    header.stateLabel.textColor = [UIColor blackColor];
+    header.lastUpdatedTimeLabel.textColor = [UIColor blackColor];
     self.tableViewT.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         // 进入刷新状态后会自动调用这个block
     }];
-    self.tableViewT.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-        
-    }];
+    self.tableViewT.mj_header=header;
     MJRefreshAutoNormalFooter * footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadNewData_foot)];
     // 设置文字
     [footer setTitle:@"" forState:MJRefreshStateIdle];
     [footer setTitle:@"" forState:MJRefreshStatePulling];
     [footer setTitle:@"" forState:MJRefreshStateRefreshing];
     // 设置回调（一旦进入刷新状态，就调用 target 的 action，也就是调用 self 的 loadNewData 方法）
-    self.tableViewT.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+//    self.tableViewT.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     self.tableViewT.mj_footer =footer;
     // 马上进入刷新状态
     //    [self.tableViewT.mj_header beginRefreshing];
+    
 }
 -(void)loadNewData
 {

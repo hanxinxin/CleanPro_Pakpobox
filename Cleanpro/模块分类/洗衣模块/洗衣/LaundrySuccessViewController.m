@@ -20,6 +20,10 @@
 {
     NSInteger countTZ;
 }
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *imageHeight;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *imageWidth;
+
+
 @end
 
 @implementation LaundrySuccessViewController
@@ -31,7 +35,7 @@
 //    [self postOrder];
     self.Compelet_btn.layer.cornerRadius = 18;//2.0是圆角的弧度，根据需求自己更改
     self.Reconnect.layer.cornerRadius = 18;//2.0是圆角的弧度，根据需求自己更改
-    [self setimage];
+//    [self setimage];
     [self.title_text setText:FGGetStringWithKeyFromTable(@"Success!", @"Language")];
     [self.tips_text setText:FGGetStringWithKeyFromTable(@"Please click start on the machine!", @"Language")];
     [self.Compelet_btn setTitle:FGGetStringWithKeyFromTable(@"Complete", @"Language") forState:(UIControlStateNormal)];
@@ -53,7 +57,20 @@
     //        [HudViewFZ HiddenHud];
             [self get_order_task_ZL]; ////停止获取指令
         });
-    
+    if (self.NewOrderType==1){
+        [self setimage];
+    }else if (self.NewOrderType==2)
+    {
+        dispatch_time_t delayTime2 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
+            
+            dispatch_after(delayTime2, dispatch_get_main_queue(), ^{
+                [HudViewFZ HiddenHud];
+//                self.iamge_set.frame = CGRectMake((SCREEN_WIDTH-110)/2, self.iamge_set.top, 110, 110);
+                self.imageHeight.constant=110;
+                self.imageWidth.constant=110;
+                [self.iamge_set setImage:[UIImage imageNamed:@"ShopOver"] forState:UIControlStateNormal];
+         });
+    }
 }
 -(void)setimage
 {
@@ -84,6 +101,23 @@
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]}; // title颜色
     //    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1];
     self.navigationController.navigationBar.tintColor=[UIColor whiteColor];
+    self.iamge_set.imageView.contentMode = UIViewContentModeScaleToFill;
+//    [self.iamge_set setImage:[UIImage imageNamed:@"ShopOver"] forState:UIControlStateNormal];
+     if(self.NewOrderType==1)
+     {
+     }else if (self.NewOrderType==2)
+     {
+         self.tips_text.text=[NSString stringWithFormat:@"Please take your goods away!"];
+         self.Reconnect.hidden=YES;
+         self.MachineCan.hidden=YES;
+         dispatch_time_t delayTime2 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
+             
+             dispatch_after(delayTime2, dispatch_get_main_queue(), ^{
+                 [HudViewFZ HiddenHud];
+             });
+         
+         self.title =FGGetStringWithKeyFromTable(@"Retail Machine", @"Language");
+     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(NotificationRead:) name:@"NotificationRead" object:nil];
     [super viewWillAppear:animated];

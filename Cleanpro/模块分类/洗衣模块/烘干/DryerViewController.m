@@ -231,6 +231,7 @@
     vc.addrStr = self.addrStr;
     vc.OrderAndRenewal = self.OrderAndRenewal;
     vc.OrderIdTime=self.OrderIdTime;
+    vc.NewOrderType=1;///洗衣
     [self.navigationController pushViewController:vc animated:YES];
 }
 

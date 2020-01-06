@@ -17,10 +17,15 @@
 #import "newPhoneViewController.h"
 #import "ExistingPayViewController.h"
 #import "AppDelegate.h"
+#import "VendingMachineView.h"
+#import "WPListTableViewCell.h"
+#import "GoodsModel.h"
 
 
 #define SelectTableViewCellID @"SelectTableViewCell"
 #define integralTableViewCellID @"integralTableViewCell"
+
+#define WPListTableViewCellID @"WPListTableViewCell"
 @interface LaundryDetailsViewController ()<UIGestureRecognizerDelegate,UITableViewDelegate,UITableViewDataSource,integralTableViewCellCellDelegate,PaymentResultDelegate>
 {
     /////全屏透明色view和 button Lable
@@ -54,6 +59,10 @@
 
 @property (nonatomic, strong)NSString * order_noStr; ////支付成功的订单ID
 
+///贩卖机订单列表
+@property (strong, nonatomic) VendingMachineView * ShopCartTopView;
+@property (nonatomic, strong)NSString * FMJPriceStr; ///贩卖机的订单总额
+
 @end
 
 @implementation LaundryDetailsViewController
@@ -64,15 +73,33 @@
     self.arr_title = [NSMutableArray arrayWithCapacity:0];
 //    [self.arr_title addObject:[NSArray arrayWithObjects:@"Payment method",@"Payment online",@"Wallet", nil]];
     [self.arr_title addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"Payment method", @"Language"),FGGetStringWithKeyFromTable(@"Wallet", @"Language"), nil]];
+
+    [self.arr_title addObject:[NSArray arrayWithObjects:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Credits", @"Language")], nil]];
     payAndSet=0;
     payCheck=0;
-    [self.arr_title addObject:[NSArray arrayWithObjects:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Credits", @"Language")], nil]];
     self.credit=[[NSNumber alloc] initWithInt:0];
     self.balance=[[NSNumber alloc] initWithInt:0];
     self.payment=@"2";
     self.credit_yn=@"1";////默认不使用积分
     self.order_noStr = @"";////默认是空字符串
-    [self settopViewText];
+    self.FMJPriceStr=@"0";
+    if(self.NewOrderType==1)
+    {
+        [self settopViewText];
+    }else if (self.NewOrderType==2)
+    {
+        if(self.FMJArray==nil)
+        {
+            self.FMJArray=[[NSArray alloc] init];
+        }
+        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
+        
+        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            [self ShopCartTopView];
+        });
+        
+        
+    }
     
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     
@@ -90,19 +117,26 @@
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]}];
 //    self.title = self.order_c.order_type;
-    [self.machineNo setText:[NSString stringWithFormat:@"%@ :", FGGetStringWithKeyFromTable(@"Machine No.", @"Language")]];
-    if([self.order_c.order_type isEqualToString:@"LAUNDRY"])
+    if(self.NewOrderType==1)
     {
-        self.title =FGGetStringWithKeyFromTable(@"Washer", @"Language");
-        [self.Order_type setText:@"Washer"];
-        [self.Temperature setText:[NSString stringWithFormat:@"%@ :", FGGetStringWithKeyFromTable(@"Temperature", @"Language")]];
-    }else if([self.order_c.order_type isEqualToString:@"DRYER"])
-    {
-        self.title =FGGetStringWithKeyFromTable(@"Dryer", @"Language");
-        [self.Temperature setText:[NSString stringWithFormat:@"%@ :", FGGetStringWithKeyFromTable(@"Duration", @"Language")]];
-        [self.Order_type setText:self.order_c.order_type];
-    }
+        [self.topView setHidden:NO];
+        [self.machineNo setText:[NSString stringWithFormat:@"%@ :", FGGetStringWithKeyFromTable(@"Machine No.", @"Language")]];
+        if([self.order_c.order_type isEqualToString:@"LAUNDRY"])
+        {
+            self.title =FGGetStringWithKeyFromTable(@"Washer", @"Language");
+            [self.Order_type setText:@"Washer"];
+            [self.Temperature setText:[NSString stringWithFormat:@"%@ :", FGGetStringWithKeyFromTable(@"Temperature", @"Language")]];
+        }else if([self.order_c.order_type isEqualToString:@"DRYER"])
+        {
+            self.title =FGGetStringWithKeyFromTable(@"Dryer", @"Language");
+            [self.Temperature setText:[NSString stringWithFormat:@"%@ :", FGGetStringWithKeyFromTable(@"Duration", @"Language")]];
+            [self.Order_type setText:self.order_c.order_type];
+        }
     
+     }else if (self.NewOrderType==2)
+     {
+         [self.topView setHidden:YES];
+     }
     [self hidden_TCview];
     [self Get_wallet_A];
     
@@ -116,16 +150,54 @@
     [super viewDidDisappear:animated];
 }
 
+#pragma mark ------  贩卖机支付界面 ------
+-(void)addFMJPayUI
+{
+//    self.ShopCartTopView = [[UIView alloc] initWithFrame:CGRectMake(self.topView.left, self.topView.top, self.topView.width, self.FMJArray.count*90+100)];
+    
+}
+- (VendingMachineView *)ShopCartTopView {
+    if (!_ShopCartTopView) {
+        self.ShopCartTopView = [[VendingMachineView alloc]initWithFrame:CGRectMake(self.topView.left, self.topView.top, self.topView.width, self.FMJArray.count*100+100) inView:self.view listArray:self.FMJArray];
+        [self.view addSubview:_ShopCartTopView];
+        //_shopCartView.orderArray = [NSMutableArray new];
+        _ShopCartTopView.CommodityView.delegate = self;
+        _ShopCartTopView.CommodityView.dataSource = self;
+        _ShopCartTopView.CommodityView.tag=1500;
+        _ShopCartTopView.layer.cornerRadius=4;
+        double totalPrice = 0.0;
+        for (int i =0; i<self.FMJArray.count; i++) {
+            GoodsModel *goods = self.FMJArray[i];
+            totalPrice = totalPrice + goods.goodsSalePrice;
+        }
+//        _ShopCartTopView.PriceLabel.text=[NSString stringWithFormat:@"%@%.2f",@"Price：",totalPrice];
+        [_ShopCartTopView setLableTextPriceLabel:[NSString stringWithFormat:@"%.2f",totalPrice]];
+        [_ShopCartTopView.CommodityView registerNib:[UINib nibWithNibName:NSStringFromClass([WPListTableViewCell class]) bundle:nil] forCellReuseIdentifier:WPListTableViewCellID];
+        [self updatePostValue];;
+    }
+
+    return _ShopCartTopView;
+}
+
+
+
 -(void)AddtableView
 {
     self.tableViewDonw = [[UITableView alloc] init];
-    self.tableViewDonw.frame=CGRectMake(self.topView.left, self.topView.bottom+8, SCREEN_WIDTH-self.topView.left*2, 3*56+8);
+    if(self.NewOrderType==1)
+    {
+        self.tableViewDonw.frame=CGRectMake(self.topView.left, self.topView.bottom+8, SCREEN_WIDTH-self.topView.left*2, 3*56+8);
+    }else if (self.NewOrderType==2)
+    {
+        self.tableViewDonw.frame=CGRectMake(self.ShopCartTopView.left, self.ShopCartTopView.bottom+8, SCREEN_WIDTH-self.ShopCartTopView.left*2, 3*56+8);
+    }
     self.tableViewDonw.delegate=self;
     self.tableViewDonw.dataSource=self;
     //     self.Set_tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     //    self.Set_tableView.separatorInset=UIEdgeInsetsMake(0,10, 0, 10);           //top left bottom right 左右边距相同
     self.tableViewDonw.scrollEnabled = NO;  ////设置tableview不上下滑动
     self.tableViewDonw.separatorStyle=UITableViewCellSeparatorStyleNone;
+    self.tableViewDonw.tag=1600;
     //    self.Set_tableView.separatorColor = [UIColor blackColor];
     //    [self.view addSubview:self.Down_tableView];
     self.tableViewDonw.layer.cornerRadius = 4;
@@ -208,6 +280,14 @@
 
 -(void)updatePostValue
 {
+    double totalPrice = 0.0;
+    for (int i =0; i<self.FMJArray.count; i++) {
+        GoodsModel *goods = self.FMJArray[i];
+        totalPrice = totalPrice + goods.goodsSalePrice;
+    }
+    
+    if(self.NewOrderType==1)
+    {
     if([self.credit_yn isEqualToString:@"1"])
     {
         self.order_c.pay_amount=self.order_c.total_amount;
@@ -227,7 +307,24 @@
         
     }
 //    [self setprice_labelText:self.order_c.pay_amount];
-    [self.pay_btn setTitle:[NSString stringWithFormat:@"%@ %@",FGGetStringWithKeyFromTable(@"Pay", @"Language"),self.order_c.pay_amount] forState:UIControlStateNormal];
+
+       [self.pay_btn setTitle:[NSString stringWithFormat:@"%@ %@",FGGetStringWithKeyFromTable(@"Pay", @"Language"),self.order_c.pay_amount] forState:UIControlStateNormal];
+    }else if (self.NewOrderType==2)
+    {
+        if([self.credit_yn isEqualToString:@"1"])
+        {
+            self.FMJPriceStr =[NSString stringWithFormat:@"%.2f",totalPrice];
+        }else if([self.credit doubleValue]/100 >=totalPrice)
+        {
+            //            self.order_c.pay_amount = [NSString stringWithFormat:@"%.2f",[self.credit doubleValue]/100-[self.order_c.total_amount doubleValue]];
+            self.FMJPriceStr=@"0";
+        }else
+        {
+            self.FMJPriceStr =[NSString stringWithFormat:@"%.2f",totalPrice];
+        }
+         
+        [self.pay_btn setTitle:[NSString stringWithFormat:@"%@ %@",FGGetStringWithKeyFromTable(@"Pay", @"Language"),self.FMJPriceStr] forState:UIControlStateNormal];
+    }
 }
 
 -(void)setprice_labelText:(NSString *)str
@@ -279,6 +376,8 @@
 //        [self push_IPay];
     }else if([self.payment isEqualToString:@"2"])
     {
+        if(self.NewOrderType==1)
+        {
         NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
         SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
         if([ModeUser.payPassword isEqualToString:@""] && ModeUser.payPassword != nil)
@@ -288,6 +387,10 @@
         }else
         {
             [self addtextView_view];
+        }
+        }else if(self.NewOrderType==2)
+        {
+            [self FMJpushViewController];
         }
         
     }
@@ -300,11 +403,13 @@
 //    [self addselect_view];
     
 }
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-
+-(void)FMJpushViewController
+{
+    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LaundrySuccessViewController *vc=[main instantiateViewControllerWithIdentifier:@"LaundrySuccessViewController"];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.NewOrderType=2;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 
@@ -589,6 +694,7 @@
     vc.addrStr = self.addrStr;
     vc.OrderAndRenewal = self.OrderAndRenewal;
     vc.OrderIdTime=self.OrderIdTime;
+    vc.NewOrderType=1;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -1191,15 +1297,32 @@
 */
 #pragma mark -------- Tableview -------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if(tableView.tag==1600)
+    {
     NSArray * arr = arr_title[section];
     return arr.count;
+    }else if(tableView.tag==1500)
+    {
+        return 1;
+    }
+    return 0;
 }
 //4、设置组数
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return arr_title.count;
+    if(tableView.tag==1600)
+    {
+        return arr_title.count;
+    }else if(tableView.tag==1500)
+    {
+        return self.FMJArray.count;
+    }
+    return 0;
 }
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if(tableView.tag==1600)
+    {
+     
     if(indexPath.section==0 && indexPath.row==0)
     {
     
@@ -1308,21 +1431,44 @@
         return cell1;
     }
     
+     }else if(tableView.tag==1500)
+     {
+         WPListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:WPListTableViewCellID];
+         GoodsModel *goods = self.FMJArray[indexPath.row];
+         [cell.SPImage setImage:[UIImage imageNamed:goods.goodsIcon]];
+         cell.SPCount.text=[NSString stringWithFormat:@"X %d",goods.orderCount];
+         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+         return cell;
+     }
     return nil;
 }
 
 //行高
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    if(tableView.tag==1600)
+    {
+        return 56;
+    }else if(tableView.tag==1500)
+    {
+        return 100;
+    }
     return 56;
 }
 //设置间隔高度
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if(section==0)
-    {
-        return 0;
-    }
-    return 8.f;
+   if(tableView.tag==1600)
+   {
+     
+        if(section==0)
+        {
+            return 0;
+        }
+        return 8.f;
+   }else if(tableView.tag==1500)
+   {
+       return 0;
+   }
+    return 0;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     if (section == 0) {
@@ -1334,49 +1480,63 @@
     return 0;//机器不可识别，然后自动返回默认高度
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    if(tableView.tag==1600)
+    {
+     
     //自定义间隔view，可以不写默认用系统的
     UIView * view_c= [[UIView alloc] init];
     view_c.frame=CGRectMake(0, 0, 0, 0);
     view_c.backgroundColor=[UIColor colorWithRed:241/255.0 green:242/255.0 blue:240/255.0 alpha:1];
     return view_c;
+    }else if(tableView.tag==1500)
+    {
+        return nil;
+    }
+       return nil;
 }
 //选中时 调用的方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    integralTableViewCell * cell1 = (integralTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    if(indexPath.section==0)
+    if(tableView.tag==1600)
     {
-        if(indexPath.row==1)
+    //    integralTableViewCell * cell1 = (integralTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+        if(indexPath.section==0)
         {
-            /*
-            self.payment = @"1";
-            [self.tableViewDonw reloadData];
-            
-        }else if(indexPath.row==2)
-        {*/
-            self.payment = @"2";
-            
-            [self.tableViewDonw reloadData];
-            /////屏蔽
-//            NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
-//            SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-//            if([ModeUser.payPassword isEqualToString:@""] && ModeUser.payPassword != nil)
-//            {
-////                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-////                newPhoneViewController *vc=[main instantiateViewControllerWithIdentifier:@"newPhoneViewController"];
-////                vc.hidesBottomBarWhenPushed = YES;
-////                [self.navigationController pushViewController:vc animated:YES];
-//                payAndSet=2;
-//                [self addselect_view:2];
-//            }else
-//            {
-            
-                payAndSet=0;
-//            }
-        }
-    }else if (indexPath.section==1)
+            if(indexPath.row==1)
+            {
+                /*
+                self.payment = @"1";
+                [self.tableViewDonw reloadData];
+                
+            }else if(indexPath.row==2)
+            {*/
+                self.payment = @"2";
+                
+                [self.tableViewDonw reloadData];
+                /////屏蔽
+    //            NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+    //            SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    //            if([ModeUser.payPassword isEqualToString:@""] && ModeUser.payPassword != nil)
+    //            {
+    ////                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ////                newPhoneViewController *vc=[main instantiateViewControllerWithIdentifier:@"newPhoneViewController"];
+    ////                vc.hidesBottomBarWhenPushed = YES;
+    ////                [self.navigationController pushViewController:vc animated:YES];
+    //                payAndSet=2;
+    //                [self addselect_view:2];
+    //            }else
+    //            {
+                
+                    payAndSet=0;
+    //            }
+            }
+            }else if (indexPath.section==1)
+            {
+               
+            }
+    }else if(tableView.tag==1500)
     {
-       
+    
     }
 }
 

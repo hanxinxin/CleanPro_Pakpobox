@@ -14,6 +14,7 @@
 #import "NSString+AES256.h"
 //#import <luckysdk/Manager.h>
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "HxShopCartViewController.h"
 //#import <luckysdk/NetworkConfig.h>
 @interface WCQRCodeScanningVC () <SGQRCodeScanManagerDelegate, SGQRCodeAlbumManagerDelegate,CBCentralManagerDelegate>
 {
@@ -294,6 +295,12 @@
             NSArray *array = [self.orderStr componentsSeparatedByString:@"#"];
 //            [self get_zuwangmessage:array[0]];
             [self getBLEMac:array[0] NumberStr:array[1]];
+        }else if(array.count==2)
+        {
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            HxShopCartViewController *vc=[main instantiateViewControllerWithIdentifier:@"HxShopCartViewController"];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
         }else
         {
             NSLog(@"暂未识别出扫描的二维码1");
