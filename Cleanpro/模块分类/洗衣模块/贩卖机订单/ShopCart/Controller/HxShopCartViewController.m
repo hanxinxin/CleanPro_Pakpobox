@@ -16,6 +16,8 @@
 #import "DetailListCell.h"
 #import "LaundryDetailsViewController.h"
 
+#import "AppDelegate.h"
+
 #define ZXColor(r,g,b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
 
 
@@ -68,6 +70,18 @@ static NSString * const ListCellID = @"DetailListCell";
        if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
            self.navigationController.interactivePopGestureRecognizer.enabled = NO;
        }
+    
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    //    [appDelegate.appdelegate1 dataSendWithNameStr:@"Pakpobox"];
+    if([appDelegate.appdelegate1 isConnected_to])
+    {
+        NSLog(@"已连接蓝牙");
+    }else
+    {
+        NSLog(@"未连接蓝牙");
+    }
+    
+    
     [super viewWillAppear:animated];
 }
 -(void)viewDidAppear:(BOOL)animated {
@@ -82,6 +96,20 @@ static NSString * const ListCellID = @"DetailListCell";
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     };
 }
+
+// 点击back按钮后调用 引用的他人写的一个extension
+- (BOOL)navigationShouldPopOnBackButton {
+    NSLog(@"点击返回按钮");
+    //    [self.navigationController popToRootViewControllerAnimated:YES];
+//    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    [appDelegate.appdelegate1 closeConnected];
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [appDelegate.ManagerBLE closeConnected];
+    [appDelegate hiddenFCViewNO];
+    return YES;
+}
+
+
 -(void)addUIBarButtonItem
 {
     UIButton * btn1 = [[UIButton alloc] init];

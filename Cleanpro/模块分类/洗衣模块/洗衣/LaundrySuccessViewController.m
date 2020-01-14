@@ -52,7 +52,6 @@
         });
     [HudViewFZ labelExample:self.view];
         dispatch_time_t delayTime2 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2/*延迟执行时间*/ * NSEC_PER_SEC));
-        
         dispatch_after(delayTime2, dispatch_get_main_queue(), ^{
     //        [HudViewFZ HiddenHud];
             [self get_order_task_ZL]; ////停止获取指令
@@ -62,10 +61,8 @@
     }else if (self.NewOrderType==2)
     {
         dispatch_time_t delayTime2 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
-            
-            dispatch_after(delayTime2, dispatch_get_main_queue(), ^{
+        dispatch_after(delayTime2, dispatch_get_main_queue(), ^{
                 [HudViewFZ HiddenHud];
-//                self.iamge_set.frame = CGRectMake((SCREEN_WIDTH-110)/2, self.iamge_set.top, 110, 110);
                 self.imageHeight.constant=110;
                 self.imageWidth.constant=110;
                 [self.iamge_set setImage:[UIImage imageNamed:@"ShopOver"] forState:UIControlStateNormal];
@@ -111,11 +108,9 @@
          self.Reconnect.hidden=YES;
          self.MachineCan.hidden=YES;
          dispatch_time_t delayTime2 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5/*延迟执行时间*/ * NSEC_PER_SEC));
-             
-             dispatch_after(delayTime2, dispatch_get_main_queue(), ^{
+         dispatch_after(delayTime2, dispatch_get_main_queue(), ^{
                  [HudViewFZ HiddenHud];
-             });
-         
+         });
          self.title =FGGetStringWithKeyFromTable(@"Retail Machine", @"Language");
      }
     

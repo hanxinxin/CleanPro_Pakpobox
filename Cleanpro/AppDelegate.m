@@ -187,7 +187,7 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 -(void)bearerClose:(NSNotification *)noti {
 //    NSDictionary *dic = [noti userInfo];
     NSLog(@"蓝牙关闭");
-    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙关闭", @"Language") andDelay:1.5];
+//    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙关闭", @"Language") andDelay:1.5];
 }
 -(void)bearerDeliverData:(NSNotification *)noti {
     NSDictionary *dic = [noti userInfo];
@@ -198,7 +198,7 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 -(void)bearerDidOpen:(NSNotification *)noti {
 //    NSDictionary *dic = [noti userInfo];
     NSLog(@"蓝牙连接成功");
-    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙连接成功", @"Language") andDelay:1.5];
+//    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙连接成功", @"Language") andDelay:1.5];
 }
 
 -(void)bearerDidConnectHX:(NSNotification *)noti {
@@ -208,13 +208,13 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 -(void)bearerCloseHX:(NSNotification *)noti {
 //    NSDictionary *dic = [noti userInfo];
     NSLog(@"蓝牙关闭");
-    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙已断开", @"Language") andDelay:1.5];
+//    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙已断开", @"Language") andDelay:1.5];
 }
 
 -(void)bearerDidOpenHX:(NSNotification *)noti {
 //    NSDictionary *dic = [noti userInfo];
     NSLog(@"蓝牙连接成功");
-    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙连接成功", @"Language") andDelay:1.5];
+//    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙连接成功", @"Language") andDelay:1.5];
 }
 
 

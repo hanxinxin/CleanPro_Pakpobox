@@ -297,10 +297,10 @@
             [self getBLEMac:array[0] NumberStr:array[1]];
         }else if(array.count==2)
         {
-            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            HxShopCartViewController *vc=[main instantiateViewControllerWithIdentifier:@"HxShopCartViewController"];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
+//            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//            HxShopCartViewController *vc=[main instantiateViewControllerWithIdentifier:@"HxShopCartViewController"];
+//            vc.hidesBottomBarWhenPushed = YES;
+//            [self.navigationController pushViewController:vc animated:YES];
         }else
         {
             NSLog(@"暂未识别出扫描的二维码1");

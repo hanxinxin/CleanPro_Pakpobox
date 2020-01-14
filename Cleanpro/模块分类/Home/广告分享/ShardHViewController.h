@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ShardHViewController : UIViewController
-
+@property (nonatomic,strong )bannerMode *modeA;
 @end
 
 NS_ASSUME_NONNULL_END

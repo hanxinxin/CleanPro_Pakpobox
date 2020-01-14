@@ -40,7 +40,11 @@
 {
     imageScr = [[UIImageView alloc] init];
 //    imageScr.image = [UIImage imageNamed:@"banner01-neiye.jpg"];
-    imageScr.image = [UIImage imageNamed:@"GGshare.jpeg"];
+    imageScr.image = [UIImage imageNamed:@"ShareImage.jpeg"];
+    NSDictionary * dict = self.modeA.picture;
+    NSString * ImageID = [dict objectForKey:@"id"];
+    NSLog(@"imageurl====  %@",[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",FuWuQiUrl,get_huoquPhoto,ImageID]]);
+    [imageScr sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",FuWuQiUrl,get_huoquPhoto,ImageID]]];
 //    self.imageScr.frame=CGRectMake(0, kNavBarAndStatusBarHeight, SCREEN_WIDTH,SCREEN_HEIGHT-(kNavBarAndStatusBarHeight));
     self.imageScr.frame=self.view.frame;
 //    if(self.view.width==375.000000 && self.view.height>=812.000000)

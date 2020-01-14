@@ -146,7 +146,7 @@
         [self setprice_labelText:[NSString stringWithFormat:@"￥ %0.2f", self.inTotal] LabelText:self.totalPriceLabel];
         
         self.payButton.enabled = YES;
-        [self.payButton setTitle:@"Pay" forState:UIControlStateNormal];
+        [self.payButton setTitle:@"Next" forState:UIControlStateNormal];
 //        [self.payButton setBackgroundColor:[UIColor redColor]];
         [self.payButton setBackgroundColor:[UIColor colorWithRed:26/255.0 green:114/255.0 blue:229/255.0 alpha:1.0]];
         [self.shopCartBtn setUserInteractionEnabled:YES];

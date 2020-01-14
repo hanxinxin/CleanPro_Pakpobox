@@ -263,6 +263,7 @@
                     mode.pageName = [dictObject objectForKey:@"pageName"];
                     mode.sequence = [dictObject objectForKey:@"sequence"];
                     mode.subPageType = [dictObject objectForKey:@"subPageType"];
+                    mode.picture = [dictObject objectForKey:@"picture"];
                     NSDictionary * dict = mode.mainPage;
                     NSString * ImageIDA = [dict objectForKey:@"id"];
                     for (int j=0; j<arrayUser.count; j++) {
@@ -277,6 +278,7 @@
                         mode2.pageName = [dictObject2 objectForKey:@"pageName"];
                         mode2.sequence = [dictObject2 objectForKey:@"sequence"];
                         mode2.subPageType = [dictObject2 objectForKey:@"subPageType"];
+                        mode2.picture = [dictObject objectForKey:@"picture"];
                         NSDictionary * dict2 = mode2.mainPage;
                         NSString * ImageIDB = [dict2 objectForKey:@"id"];
                         if([ImageIDA isEqualToString:ImageIDB])
@@ -335,6 +337,7 @@
                 mode.pageName = [dictObject objectForKey:@"pageName"];
                 mode.sequence = [dictObject objectForKey:@"sequence"];
                 mode.subPageType = [dictObject objectForKey:@"subPageType"];
+                mode.picture = [dictObject objectForKey:@"picture"];
                 if([advertType isEqualToString:@"BANNER"])
                 {
                     [self.imgArr addObject:mode];
@@ -382,7 +385,7 @@
 {
 //     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 //    NSString * tokenStr = [userDefaults objectForKey:@"Token"];
-    NSLog(@"Login url===%@",[NSString stringWithFormat:@"%@%@?userToken=%@",FuWuQiUrl,get_tokenUser,TokenStr]);
+//    NSLog(@"Login url===%@",[NSString stringWithFormat:@"%@%@?userToken=%@",FuWuQiUrl,get_tokenUser,TokenStr]);
     [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?userToken=%@",FuWuQiUrl,get_tokenUser,TokenStr] parameters:nil progress:^(id progress) {
 //        NSLog(@"请求成功 = %@",progress);
     } success:^(id responseObject) {
@@ -1171,6 +1174,7 @@
     }else if([mode.subPageType isEqualToString:@"PICTURE"]){
         ShardHViewController * avc = [[ShardHViewController alloc] init];
         avc.hidesBottomBarWhenPushed = YES;
+        avc.modeA = mode;
         [self.navigationController pushViewController:avc animated:YES];
     }
     

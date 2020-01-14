@@ -267,7 +267,6 @@
 		0440C162238644ED000FA7DF /* BalanceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0440C160238644ED000FA7DF /* BalanceTableViewCell.xib */; };
 		0440C1712387CCB4000FA7DF /* Time.png in Resources */ = {isa = PBXBuildFile; fileRef = 0440C1702387CCB3000FA7DF /* Time.png */; };
 		0440C1732387CCFC000FA7DF /* fasdfdaf.png in Resources */ = {isa = PBXBuildFile; fileRef = 0440C1722387CCFC000FA7DF /* fasdfdaf.png */; };
-		0440C1DF238FE589000FA7DF /* GGshare.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 0440C1DE238FE589000FA7DF /* GGshare.jpeg */; };
 		044130FE224B4E6B00F58689 /* ImessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 044130FC224B4E6B00F58689 /* ImessageTableViewCell.m */; };
 		044130FF224B4E6B00F58689 /* ImessageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 044130FD224B4E6B00F58689 /* ImessageTableViewCell.xib */; };
 		04413102224B4E9300F58689 /* ImessageDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04413101224B4E9300F58689 /* ImessageDetailsViewController.m */; };
@@ -723,6 +722,7 @@
 		04E1A3FB23A8C25400427513 /* UMAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E1A3F623A8C25300427513 /* UMAnalytics.framework */; };
 		04E1A3FD23A8C29C00427513 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E1A3FC23A8C29C00427513 /* CoreTelephony.framework */; };
 		04E1A40123A8C2D600427513 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E1A40023A8C2D600427513 /* SystemConfiguration.framework */; };
+		04E5218623CD639100794FB6 /* ShareImage.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 04E5218523CD639000794FB6 /* ShareImage.jpeg */; };
 		04E5331020D21DD30058F80C /* PingLunCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04E5330E20D21DD30058F80C /* PingLunCollectionViewCell.m */; };
 		04E5331120D21DD30058F80C /* PingLunCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04E5330F20D21DD30058F80C /* PingLunCollectionViewCell.xib */; };
 		04E5331320D261220058F80C /* WechatIMG2.png in Resources */ = {isa = PBXBuildFile; fileRef = 04E5331220D261220058F80C /* WechatIMG2.png */; };
@@ -1172,7 +1172,6 @@
 		0440C160238644ED000FA7DF /* BalanceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BalanceTableViewCell.xib; sourceTree = "<group>"; };
 		0440C1702387CCB3000FA7DF /* Time.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Time.png; sourceTree = "<group>"; };
 		0440C1722387CCFC000FA7DF /* fasdfdaf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fasdfdaf.png; sourceTree = "<group>"; };
-		0440C1DE238FE589000FA7DF /* GGshare.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = GGshare.jpeg; sourceTree = "<group>"; };
 		044130FB224B4E6B00F58689 /* ImessageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImessageTableViewCell.h; sourceTree = "<group>"; };
 		044130FC224B4E6B00F58689 /* ImessageTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImessageTableViewCell.m; sourceTree = "<group>"; };
 		044130FD224B4E6B00F58689 /* ImessageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImessageTableViewCell.xib; sourceTree = "<group>"; };
@@ -1918,6 +1917,7 @@
 		04E1A3FE23A8C2A900427513 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		04E1A3FF23A8C2BA00427513 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		04E1A40023A8C2D600427513 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		04E5218523CD639000794FB6 /* ShareImage.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ShareImage.jpeg; sourceTree = "<group>"; };
 		04E5330D20D21DD30058F80C /* PingLunCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PingLunCollectionViewCell.h; sourceTree = "<group>"; };
 		04E5330E20D21DD30058F80C /* PingLunCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PingLunCollectionViewCell.m; sourceTree = "<group>"; };
 		04E5330F20D21DD30058F80C /* PingLunCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PingLunCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -3243,7 +3243,7 @@
 		048EC1DC2275826800AB473B /* bannerPhoto */ = {
 			isa = PBXGroup;
 			children = (
-				0440C1DE238FE589000FA7DF /* GGshare.jpeg */,
+				04E5218523CD639000794FB6 /* ShareImage.jpeg */,
 				0440C1722387CCFC000FA7DF /* fasdfdaf.png */,
 				0440C1702387CCB3000FA7DF /* Time.png */,
 				0438992E237273C60029CAAE /* banner01-neiye.jpg */,
@@ -5177,10 +5177,10 @@
 				04F73F6A22C4CF9800234FD8 /* inbox_off@2x.png in Resources */,
 				04820AC723BF1FC800CBECC8 /* OrangeR@3x.png in Resources */,
 				04B10C2421F02F14001A9E8B /* scan@3x.png in Resources */,
+				04E5218623CD639100794FB6 /* ShareImage.jpeg in Resources */,
 				04B3925A23B1A93800D5A1AA /* timelineAddressTableViewCell.xib in Resources */,
 				04FFAEE622379E0B009707F4 /* bg_shaking.png in Resources */,
 				04B10C7521F084AF001A9E8B /* lab_home_on@3x.png in Resources */,
-				0440C1DF238FE589000FA7DF /* GGshare.jpeg in Resources */,
 				04FFAEED22379F75009707F4 /* nav_close@2x.png in Resources */,
 				04B10C1F21F02EA5001A9E8B /* collections_2@3x.png in Resources */,
 				04F8557021E34EA40059707E /* balance@2x.png in Resources */,
@@ -6157,7 +6157,7 @@
 				CODE_SIGN_ENTITLEMENTS = Cleanpro/Cleanpro.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.19;
+				CURRENT_PROJECT_VERSION = 1.1.23;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = LUUCB5LGP5;
 				ENABLE_BITCODE = NO;
@@ -6182,7 +6182,7 @@
 					"$(PROJECT_DIR)/Cleanpro/第三方库/IPay88/SDK/library",
 					"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/lib",
 				);
-				MARKETING_VERSION = 1.1.19;
+				MARKETING_VERSION = 1.1.23;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",
@@ -6239,7 +6239,7 @@
 				CODE_SIGN_ENTITLEMENTS = Cleanpro/Cleanpro.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.19;
+				CURRENT_PROJECT_VERSION = 1.1.23;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = LUUCB5LGP5;
 				ENABLE_BITCODE = NO;
@@ -6264,7 +6264,7 @@
 					"$(PROJECT_DIR)/Cleanpro/第三方库/IPay88/SDK/library",
 					"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/lib",
 				);
-				MARKETING_VERSION = 1.1.19;
+				MARKETING_VERSION = 1.1.23;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",

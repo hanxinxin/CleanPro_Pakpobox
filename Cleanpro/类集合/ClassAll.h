@@ -119,7 +119,7 @@
 @property (nonatomic,strong)NSString * pageName ;
 @property (nonatomic,strong)NSString * sequence ;
 @property (nonatomic,strong)NSString * subPageType ;
-
+@property (nonatomic,strong)NSDictionary * picture ;
 @end
 
 @interface OneCityMode : NSObject

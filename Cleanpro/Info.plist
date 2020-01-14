@@ -50,21 +50,21 @@
 		<true/>
 	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Need to link the washing machine</string>
+	<string>Need to turn on Bluetooth to operate the washing machine</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Need to link the washing machine</string>
+	<string>Need to turn on Bluetooth to operate the washing machine</string>
 	<key>NSCameraUsageDescription</key>
-	<string>You need access to your camera to scan</string>
+	<string>Need your consent to use the camera to scan the QR code</string>
 	<key>NSLocationAlwaysAndWhenInUsageDescription</key>
-	<string>You need to get your location to find the store</string>
+	<string>Need your consent to show nearby stores</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>You need to get your location to find the store</string>
+	<string>Need your consent to show nearby stores</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>You need to get your location to find the store</string>
+	<string>Need your consent to show nearby stores</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Please allow access to the album</string>
+	<string>Need your consent to use the camera to scan the QR code</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Please allow access to the album</string>
+	<string>Need your consent to use the camera to scan the QR code</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
