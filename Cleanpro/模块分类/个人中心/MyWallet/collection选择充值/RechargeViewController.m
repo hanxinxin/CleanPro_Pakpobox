@@ -12,6 +12,17 @@
 #import "Ipay.h"
 #import "IpayPayment.h"
 
+#import <AlipaySDK/AlipaySDK.h>
+
+#import "APAuthInfo.h"
+#import "APOrderInfo.h"
+#import "APRSASigner.h"
+
+#import "WXApi.h"
+
+#import "BraintreeCore.h"
+#import "BraintreeDropIn.h"
+
 #define CollectionViewCellID @"TopCollectionViewCell"
 #define cout_Number 15
 
@@ -206,12 +217,14 @@
 
 
 - (IBAction)pay_touch:(id)sender {
-//    [self addtextView_view];
-    NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
-    SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+////    [self addtextView_view];
+//    NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+//    SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+//    [self post_pay_chongzhi_touch:self.payNumber member_id:ModeUser.yonghuID];
     
-    [self post_pay_chongzhi_touch:self.payNumber member_id:ModeUser.yonghuID];
-    
+    ///// 用于测试PayPal支付页面
+    NSString *clientToken = @"CLIENT_TOKEN_FROM_SERVER";
+    [self showDropIn:clientToken];
 }
 
 -(void)post_pay_chongzhi_touch:(NSString*)amount member_id:(NSString*)member_id
@@ -649,4 +662,248 @@
 
 
 
+
+
+
+#pragma mark   ==============点击订单模拟支付行为==============
+//
+// 选中商品调用支付宝极简支付
+//
+- (void)doAPPay
+{
+    // 重要说明
+    // 这里只是为了方便直接向商户展示支付宝的整个支付流程；所以Demo中加签过程直接放在客户端完成；
+    // 真实App里，privateKey等数据严禁放在客户端，加签过程务必要放在服务端完成；
+    // 防止商户私密数据泄露，造成不必要的资金损失，及面临各种安全风险；
+    /*============================================================================*/
+    /*=======================需要填写商户app申请的===================================*/
+    /*============================================================================*/
+    NSString *appID = @"";
+    
+    // 如下私钥，rsa2PrivateKey 或者 rsaPrivateKey 只需要填入一个
+    // 如果商户两个都设置了，优先使用 rsa2PrivateKey
+    // rsa2PrivateKey 可以保证商户交易在更加安全的环境下进行，建议使用 rsa2PrivateKey
+    // 获取 rsa2PrivateKey，建议使用支付宝提供的公私钥生成工具生成，
+    // 工具地址：https://doc.open.alipay.com/docs/doc.htm?treeId=291&articleId=106097&docType=1
+    NSString *rsa2PrivateKey = @"";
+    NSString *rsaPrivateKey = @"";
+    /*============================================================================*/
+    /*============================================================================*/
+    /*============================================================================*/
+    
+    //partner和seller获取失败,提示
+    if ([appID length] == 0 ||
+        ([rsa2PrivateKey length] == 0 && [rsaPrivateKey length] == 0))
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示"
+                                                                       message:@"缺少appId或者私钥,请检查参数设置"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"知道了"
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction *action){
+                                                           
+                                                       }];
+        [alert addAction:action];
+        [self presentViewController:alert animated:YES completion:^{ }];
+        return;
+    }
+    
+    /*
+     *生成订单信息及签名
+     */
+    //将商品信息赋予AlixPayOrder的成员变量
+    APOrderInfo* order = [APOrderInfo new];
+    
+    // NOTE: app_id设置
+    order.app_id = appID;
+    
+    // NOTE: 支付接口名称
+    order.method = @"alipay.trade.app.pay";
+    
+    // NOTE: 参数编码格式
+    order.charset = @"utf-8";
+    
+    // NOTE: 当前时间点
+    NSDateFormatter* formatter = [NSDateFormatter new];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    order.timestamp = [formatter stringFromDate:[NSDate date]];
+    
+    // NOTE: 支付版本
+    order.version = @"1.0";
+    
+    // NOTE: sign_type 根据商户设置的私钥来决定
+    order.sign_type = (rsa2PrivateKey.length > 1)?@"RSA2":@"RSA";
+    
+    // NOTE: 商品数据
+    order.biz_content = [APBizContent new];
+    order.biz_content.body = @"我是测试数据";
+    order.biz_content.subject = @"1";
+    order.biz_content.out_trade_no = [self generateTradeNO]; //订单ID（由商家自行制定）
+    order.biz_content.timeout_express = @"30m"; //超时时间设置
+    order.biz_content.total_amount = [NSString stringWithFormat:@"%.2f", 0.01]; //商品价格
+    
+    //将商品信息拼接成字符串
+    NSString *orderInfo = [order orderInfoEncoded:NO];
+    NSString *orderInfoEncoded = [order orderInfoEncoded:YES];
+    NSLog(@"orderSpec = %@",orderInfo);
+    
+    // NOTE: 获取私钥并将商户信息签名，外部商户的加签过程请务必放在服务端，防止公私钥数据泄露；
+    //       需要遵循RSA签名规范，并将签名字符串base64编码和UrlEncode
+    NSString *signedString = nil;
+    APRSASigner* signer = [[APRSASigner alloc] initWithPrivateKey:((rsa2PrivateKey.length > 1)?rsa2PrivateKey:rsaPrivateKey)];
+    if ((rsa2PrivateKey.length > 1)) {
+        signedString = [signer signString:orderInfo withRSA2:YES];
+    } else {
+        signedString = [signer signString:orderInfo withRSA2:NO];
+    }
+    
+    // NOTE: 如果加签成功，则继续执行支付
+    if (signedString != nil) {
+        //应用注册scheme,在AliSDKDemo-Info.plist定义URL types
+        NSString *appScheme = @"alisdkdemo";
+        
+        // NOTE: 将签名成功字符串格式化为订单字符串,请严格按照该格式
+        NSString *orderString = [NSString stringWithFormat:@"%@&sign=%@",
+                                 orderInfoEncoded, signedString];
+        
+        // NOTE: 调用支付结果开始支付
+        [[AlipaySDK defaultService] payOrder:orderString fromScheme:appScheme callback:^(NSDictionary *resultDic) {
+            NSLog(@"reslut = %@",resultDic);
+        }];
+    }
+}
+#pragma mark   ==============产生随机订单号==============
+
+- (NSString *)generateTradeNO
+{
+    static int kNumber = 15;
+    NSString *sourceStr = @"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    NSMutableString *resultStr = [[NSMutableString alloc] init];
+    srand((unsigned)time(0));
+    for (int i = 0; i < kNumber; i++)
+    {
+        unsigned index = rand() % [sourceStr length];
+        NSString *oneStr = [sourceStr substringWithRange:NSMakeRange(index, 1)];
+        [resultStr appendString:oneStr];
+    }
+    return resultStr;
+}
+
+
+
+
+
+
+#pragma mark 微信支付方法
+- (void)WXPay:(NSDictionary*)DictOder{
+    NSString * appid = [DictOder objectForKey:@"appid"];
+//    NSString * device_info = [DictOder objectForKey:@"device_info"];
+    NSString * partnerid = [DictOder objectForKey:@"partnerid"];
+    NSString * noncestr = [DictOder objectForKey:@"noncestr"];
+    NSString * prepayid = [DictOder objectForKey:@"prepayid"];
+//    NSString * result_code = [DictOder objectForKey:@"result_code"];
+    NSString * package = [DictOder objectForKey:@"package"];
+//    NSString * return_msg = [DictOder objectForKey:@"return_msg"];
+    NSString * sign = [DictOder objectForKey:@"sign"];
+//    NSString * trade_type = [DictOder objectForKey:@"trade_type"];
+     NSString * timestamp = [DictOder objectForKey:@"timestamp"];
+//     NSString * trade_type = [DictOder objectForKey:@"trade_type"];
+    //需要创建这个支付对象
+    PayReq *req   = [[PayReq alloc] init];
+    //由用户微信号和AppID组成的唯一标识，用于校验微信用户
+    req.openID = appid;
+    
+    // 商家id，在注册的时候给的
+    req.partnerId = partnerid;
+    
+    // 预支付订单这个是后台跟微信服务器交互后，微信服务器传给你们服务器的，你们服务器再传给你
+    req.prepayId  = prepayid;
+    
+    // 根据财付通文档填写的数据和签名
+    //这个比较特殊，是固定的，只能是即req.package = Sign=WXPay
+    req.package   = package;
+    
+    // 随机编码，为了防止重复的，在后台生成
+    req.nonceStr  = noncestr;
+//    NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+//    NSTimeInterval a=[dat timeIntervalSince1970]*1000;
+//    NSString *stamp = [NSString stringWithFormat:@"%f", a];//转为字符型
+    // 这个是时间戳，也是在后台生成的，为了验证支付的
+//    NSString * stamp = @"";
+    req.timeStamp = timestamp.intValue;
+    
+    // 这个签名也是后台做的
+    req.sign = sign;
+    
+    //发送请求到微信，等待微信返回onResp
+//    [WXApi sendReq:req];
+    [WXApi sendReq:req completion:^(BOOL success) {
+        
+    }];
+}
++ (NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString
+{
+    if (jsonString == nil) {
+        return nil;
+    }
+    
+    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *err;
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                        options:NSJSONReadingMutableContainers
+                                                          error:&err];
+    if(err)
+    {
+        NSLog(@"json解析失败：%@",err);
+        return nil;
+    }
+    return dic;
+}
+
+
+
+
+#pragma mark    ----------- Paypal -----------
+- (void)showDropIn:(NSString *)clientTokenOrTokenizationKey {
+//    BTDropInRequest *request = [[BTDropInRequest alloc] init];
+//    BTDropInController *dropIn = [[BTDropInController alloc] initWithAuthorization:clientTokenOrTokenizationKey request:request handler:^(BTDropInController * _Nonnull controller, BTDropInResult * _Nullable result, NSError * _Nullable error) {
+//
+//        if (error != nil) {
+//            NSLog(@"ERROR");
+//        } else if (result.cancelled) {
+//            NSLog(@"CANCELLED");
+//        } else {
+//            // Use the BTDropInResult properties to update your UI
+//            // result.paymentOptionType
+//            // result.paymentMethod
+//            // result.paymentIcon
+//            // result.paymentDescription
+//        }
+//    }];
+//    [self presentViewController:dropIn animated:YES completion:nil];
+    
+    BTDropInRequest *dropInRequest = [[BTDropInRequest alloc] init];
+    BTDropInController *dropIn = [[BTDropInController alloc] initWithAuthorization:@"sandbox_9dbg82cq_dcpspy2brwdjr3qn" request:dropInRequest handler:^(BTDropInController * _Nonnull dropInController, BTDropInResult * _Nullable result, NSError * _Nullable error) {
+        if (error) {
+            
+            NSLog(@"Error: %@", error);
+        } else if (result.isCancelled) {
+            NSLog(@"Cancelled🎲");
+        } else {
+            if (result.paymentOptionType == BTUIKPaymentOptionTypeApplePay) {
+//                self.progressBlock(@"Ready for checkout...");
+                NSLog(@"Ready for checkout...1");
+            } else {
+//                self.useApplePay = NO;
+//                self.selectedNonce = result.paymentMethod;
+//                self.progressBlock(@"Ready for checkout...");
+//                [self updatePaymentMethod:self.selectedNonce];
+                NSLog(@"Ready for checkout...2");
+            }
+        }
+        [dropInController dismissViewControllerAnimated:YES completion:nil];
+    }];
+    
+    [self presentViewController:dropIn animated:YES completion:nil];
+}
 @end

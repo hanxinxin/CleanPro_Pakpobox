@@ -15,8 +15,15 @@
 #import <MessageUI/MFMailComposeViewController.h>
 #import <MessageUI/MessageUI.h>
 #import <AVKit/AVKit.h>
-#import <UMCommon/UMCommon.h>
-#import <UMCommonLog/UMCommonLogHeaders.h>
+//#import <UMCommon/UMCommon.h>
+//PayPal
+#import "BraintreeCore.h"
+//#import "BraintreeD"
+
+// AliPay
+#import <AlipaySDK/AlipaySDK.h>
+//微信Pay
+#import "WXApi.h"
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 #import <UserNotifications/UserNotifications.h>
@@ -30,7 +37,7 @@
 
 @import Firebase;
 //@import FIRMessaging;
-@interface AppDelegate ()<UNUserNotificationCenterDelegate,FIRMessagingDelegate,MFMailComposeViewControllerDelegate>
+@interface AppDelegate ()<WXApiDelegate,UNUserNotificationCenterDelegate,FIRMessagingDelegate,MFMailComposeViewControllerDelegate>
 @property (nonatomic, strong, nullable) UIVisualEffectView *visualEffectView;
 @property (strong,nonatomic)AFHTTPSessionManager *manager;
 @property (nullable,strong)ChangeLanguage * Change;
@@ -55,9 +62,16 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     [[UINavigationBar appearance] setTintColor:[UIColor clearColor]];
 //    self.navigationController.navigationBar.barTintColor = tintColor;
     [[UINavigationBar appearance] setTranslucent:NO];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-
+//    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+//    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+    UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent;
+    UIApplication.sharedApplication.statusBarHidden = NO;
+    
+    #if defined(__IPHONE_13_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_0
+    if(@available(iOS 13.0,*)){
+    self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+    }
+    #endif
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     
     NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary];
@@ -89,6 +103,15 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     {
         //不是第一次启动
     }
+    ///微信支付
+    BOOL start = [WXApi registerApp:@"wxa5b4d72832f02f2c" universalLink:@""];
+    if(start)
+    {
+        NSLog(@"微信注册成功");
+    }else
+    {
+         NSLog(@"微信注册失败");
+    }
     ////// 谷歌推送
     [FIRApp configure];
     // [START set_messaging_delegate]
@@ -116,6 +139,7 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     } else {
         // Fallback on earlier versions
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+        
     }
     
     [application registerForRemoteNotifications];
@@ -131,12 +155,6 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     }
 //    NSLog(@"app  userInfo =%@",userInfo);
     
-
-        
-    // 启动图片延时: 1秒
-   
-////    //然后再跳转到播放视频的画面
-   
     //自定义图标
     UIApplicationShortcutIcon * icon1 = [UIApplicationShortcutIcon iconWithTemplateImageName:@"3D-touch_scan"];
     
@@ -162,11 +180,10 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     self.appdelegate1 = [[MeshNetworkManagerAppdelegate alloc] instanceMeshApp];
     self.ManagerBLE = [HXBleManager sharedInstance];
 //    [self.appdelegate1 setMesh];
-//    self.appdelegate1.connection
     ////友盟崩溃统计
-    [UMConfigure initWithAppkey:UMAppKey channel:@"App Store"];
+//    [UMConfigure initWithAppkey:UMAppKey channel:@"App Store"];
     //开发者需要显式的调用此函数，日志系统才能工作
-    [UMCommonLogManager setUpUMCommonLogManager];
+//    [UMCommonLogManager setUpUMCommonLogManager];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDidConnect:) name:@"bearerDidConnect" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerClose:) name:@"bearerClose" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDeliverData:) name:@"bearerDeliverData" object:nil];
@@ -346,6 +363,9 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 {
     
 }
+
+
+
 - (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler
 {
     // 1.获得shortcutItem的type type就是初始化shortcutItem的时候传入的唯一标识符
@@ -370,9 +390,41 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 }
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
     
-    BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application openURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey] annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
-    // Add any custom logic here.
-    return handled;
+    
+    if ([url.host isEqualToString:@"safepay"]) {
+        // 支付跳转支付宝钱包进行支付，处理支付结果
+        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            NSLog(@"result = %@",resultDic);
+        }];
+        
+        // 授权跳转支付宝钱包进行支付，处理支付结果
+        [[AlipaySDK defaultService] processAuth_V2Result:url standbyCallback:^(NSDictionary *resultDic) {
+            NSLog(@"result = %@",resultDic);
+            // 解析 auth code
+            NSString *result = resultDic[@"result"];
+            NSString *authCode = nil;
+            if (result.length>0) {
+                NSArray *resultArr = [result componentsSeparatedByString:@"&"];
+                for (NSString *subResult in resultArr) {
+                    if (subResult.length > 10 && [subResult hasPrefix:@"auth_code="]) {
+                        authCode = [subResult substringFromIndex:10];
+                        break;
+                    }
+                }
+            }
+            NSLog(@"授权结果 authCode = %@", authCode?:@"");
+        }];
+    }else if ([url.host isEqualToString:@"pay"]) // 微信的支付回调
+    {
+        //这里判断是否发起的请求为微信支付，如果是的话，用WXApi的方法调起微信客户端的支付页面（://pay 之前的那串字符串就是你的APPID，）
+        return  [WXApi handleOpenURL:url delegate:self];
+    }else
+    {
+        BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application openURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey] annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+           // Add any custom logic here.
+           return handled;
+    }
+    return YES;
 
 }
 
@@ -700,6 +752,51 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 }
 
 
+
+
+
+
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return  [WXApi handleOpenURL:url delegate:self];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    
+    
+    return [WXApi handleOpenURL:url delegate:self];
+}
+
+
+
+//微信SDK自带的方法，处理从微信客户端完成操作后返回程序之后的回调方法,显示支付结果的
+-(void) onResp:(BaseResp*)resp
+{
+    //启动微信支付的response
+    NSString *payResoult = [NSString stringWithFormat:@"errcode:%d", resp.errCode];
+    if([resp isKindOfClass:[PayResp class]]){
+        //支付返回结果，实际支付结果需要去微信服务器端查询
+        if(resp.errCode==0) {
+                payResoult = @"支付结果：成功！";
+            //创建通知
+            NSNotification *notification =[NSNotification notificationWithName:@"MessageZHIFU" object:@"0"];
+            //通过通知中心发送通知
+            [[NSNotificationCenter defaultCenter] postNotification:notification];
+        }else if(resp.errCode==-1) {
+                payResoult = @"支付结果：失败！";
+            NSNotification *notification =[NSNotification notificationWithName:@"MessageZHIFU" object:@"-1"];
+            //通过通知中心发送通知
+            [[NSNotificationCenter defaultCenter] postNotification:notification];
+        }else if(resp.errCode==-2) {
+                payResoult = @"用户已经退出支付！";
+            NSNotification *notification =[NSNotification notificationWithName:@"MessageZHIFU" object:@"-2"];
+            //通过通知中心发送通知
+            [[NSNotificationCenter defaultCenter] postNotification:notification];
+        }else{
+                payResoult = [NSString stringWithFormat:@"支付结果：失败！retcode = %d, retstr = %@", resp.errCode,resp.errStr];
+        }
+    }
+}
 
 
 

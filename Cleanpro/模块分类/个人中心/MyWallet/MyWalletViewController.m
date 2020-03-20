@@ -311,6 +311,7 @@
     {
         cell.imageView.image=[UIImage imageNamed:@"wallet_recharge"];
     }
+    cell.backgroundColor = [UIColor whiteColor];
     /*else if (indexPath.row==1)
     {
         cell.imageView.image=[UIImage imageNamed:@"me_settings"];
@@ -321,6 +322,7 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
     //    }
     cell.textLabel.textColor = [UIColor darkGrayColor];
+    
     //    cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     //    cell.layer.cornerRadius=4;
     return cell;

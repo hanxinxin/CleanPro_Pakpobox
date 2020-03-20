@@ -35,6 +35,9 @@
 	<string>Cleanpro</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>com.braintreepayments.Demo.payments</string>
+		<string>com.venmo.touch.v2</string>
+		<string>paypal</string>
 		<string>fbapi</string>
 		<string>fb-messenger-api</string>
 		<string>fb-messenger-share-api</string>
@@ -65,6 +68,8 @@
 	<string>Need your consent to use the camera to scan the QR code</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Need your consent to use the camera to scan the QR code</string>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -86,8 +91,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIUserInterfaceStyle</key>
-	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>

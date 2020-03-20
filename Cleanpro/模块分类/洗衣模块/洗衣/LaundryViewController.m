@@ -10,6 +10,10 @@
 #import "AppDelegate.h"
 #import "LaundryDetailsViewController.h"
 
+@implementation PriceModeSS
+
+@end
+
 @interface LaundryViewController ()
 {
     
@@ -40,6 +44,9 @@
     order_c.goods_info= @{@"temperature":@"Warm"};
     [self.miaoshu_label setText:FGGetStringWithKeyFromTable(@"Choose water temperature", @"Language")];
     [self.next_btn setTitle:FGGetStringWithKeyFromTable(@"Next", @"Language") forState:(UIControlStateNormal)];
+    [left_view setHidden:YES];
+    [center_view setHidden:YES];
+    [right_view setHidden:YES];
     UITapGestureRecognizer *tap_left = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(left_viewTouch:)];
     tap_left.numberOfTapsRequired = 1;
     [left_view addGestureRecognizer:tap_left];
@@ -212,7 +219,7 @@
     [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:escapedPathURL parameters:nil progress:^(id progress) {
         
     } success:^(id responseObject) {
-//        NSLog(@"responseObject=  %@",responseObject);
+        NSLog(@"responseObject=  %@",responseObject);
         [HudViewFZ HiddenHud];
         //        NSDictionary * dictionary = (NSDictionary*)responseObject;
         //
@@ -224,8 +231,22 @@
                     
                     NSDictionary * zong_Dict=sku_list_Arr[j];
                     NSNumber * priceNumber =[zong_Dict objectForKey:@"price"];
+                     NSArray * prop_values =[zong_Dict objectForKey:@"prop_values"];
+                    for (int M=0; M<prop_values.count; M++) {
+                        if(M==1)
+                        {
+                        NSDictionary * SumDict=prop_values[M];
+//                        value = Cold;
+                        NSString*  alias_value = [SumDict objectForKey:@"alias_value"];
+                        PriceModeSS * mode = [[PriceModeSS alloc] init];
+                        mode.PriceStr=[NSString stringWithFormat:@"%.2f",[priceNumber floatValue]];
+                        mode.TemperatureStr = alias_value;
+                        [blockSelf.arrPrice addObject:mode];
+                        }
+
+                    }
+//                    [blockSelf.arrPrice addObject:[NSString stringWithFormat:@"%.2f",[priceNumber floatValue]]];
                     
-                    [blockSelf.arrPrice addObject:[NSString stringWithFormat:@"%.2f",[priceNumber floatValue]]];
 //                    NSLog(@"arrPrice = %@",blockSelf.arrPrice);
 //                    NSLog(@"price===  %@",priceNumber);
                 }
@@ -239,20 +260,153 @@
 }
 -(void)updateText
 {
-    [self center_viewTouch:nil];
+//    for (int i =0 ; i<self.arrPrice.count; i++) {
+//        PriceModeSS * mode1 =self.arrPrice[i];
+//            if([mode1.TemperatureStr isEqualToString:@"Cold"])
+//            {
+//                [self setSelectViewHidden];
+//
+//            }else if([mode1.TemperatureStr isEqualToString:@"Warm"])
+//            {
+//
+//                [center_view setHidden:NO];
+//            }else if([mode1.TemperatureStr isEqualToString:@"Hot"])
+//            {
+//
+//                [right_view setHidden:NO];
+//            }else
+//            {
+//                [left_view setHidden:YES];
+//                [center_view setHidden:YES];
+//                [right_view setHidden:YES];
+//            }
+//    }
+    
+    [self setSelectViewHidden];
     
 }
-
+-(void)setSelectViewHidden
+{
+    if(self.arrPrice.count==3)
+    {
+        [left_view setHidden:NO];
+        [center_view setHidden:NO];
+        [right_view setHidden:NO];
+//        [self center_viewTouch:nil];
+        [self left_viewTouch:nil];
+    }else if(self.arrPrice.count==2)
+    {
+//        [self left_viewTouch:nil];
+        for (int i =0 ; i<self.arrPrice.count; i++) {
+            PriceModeSS * mode1 =self.arrPrice[i];
+                if([mode1.TemperatureStr isEqualToString:@"Cold"])
+                {
+                    [left_view setHidden:NO];
+                                    
+                }else if([mode1.TemperatureStr isEqualToString:@"Warm"])
+                {
+                    [center_view setHidden:NO];
+                    
+                }else if([mode1.TemperatureStr isEqualToString:@"Hot"])
+                {
+                    [right_view setHidden:NO];
+                }
+        }
+        if(left_view.isHidden==NO)
+        {
+           [self left_viewTouch:nil];
+           if(center_view.isHidden==NO)
+            {
+                
+            }else
+            {
+                if(right_view.isHidden==NO)
+                {
+                    right_view.frame=center_view.frame;
+                }
+            }
+        }else
+        {
+            if(center_view.isHidden==NO)
+            {
+                if(right_view.isHidden==NO)
+                {
+                    right_view.frame=center_view.frame;
+                }
+               [self center_viewTouch:nil];
+            }else
+            {
+               
+            }
+        }
+    }else if(self.arrPrice.count==1)
+    {
+//        [self left_viewTouch:nil];
+        for (int i =0 ; i<self.arrPrice.count; i++) {
+            PriceModeSS * mode1 =self.arrPrice[i];
+                if([mode1.TemperatureStr isEqualToString:@"Cold"])
+                {
+                    [left_view setHidden:NO];
+                                    
+                }else if([mode1.TemperatureStr isEqualToString:@"Warm"])
+                {
+                    [center_view setHidden:NO];
+                    
+                }else if([mode1.TemperatureStr isEqualToString:@"Hot"])
+                {
+                    [right_view setHidden:NO];
+                }
+        }
+        if(left_view.isHidden==NO)
+        {
+           [self left_viewTouch:nil];
+        }else
+        {
+            if(center_view.isHidden==NO)
+            {
+                center_view.frame=left_view.frame;
+               [self center_viewTouch:nil];
+            }else
+            {
+                if(right_view.isHidden==NO)
+                {
+                    right_view.frame=left_view.frame;
+                   [self right_viewTouch:nil];
+                }
+            }
+        }
+    }
+}
+-(void)setpriceLabel
+{
+    
+    
+}
 -(void)left_viewTouch:(UIGestureRecognizer*)tag
 {
     NSLog(@"left");
-    [self setLeft_label_Text_Z:self.arrPrice[0]];
-    [self setCenter_label_Text_black:self.arrPrice[1]];
-    [self setRight_label_Text_black:self.arrPrice[2]];
+//    [self setLeft_label_Text_Z:self.arrPrice[0]];
+//    [self setCenter_label_Text_black:self.arrPrice[1]];
+//    [self setRight_label_Text_black:self.arrPrice[2]];
+    for (int i =0 ; i<self.arrPrice.count; i++) {
+        PriceModeSS * mode1 =self.arrPrice[i];
+            if([mode1.TemperatureStr isEqualToString:@"Cold"])
+            {
+                [self setLeft_label_Text_Z:mode1.PriceStr];
+            }else if([mode1.TemperatureStr isEqualToString:@"Warm"])
+            {
+                [self setCenter_label_Text_black:mode1.PriceStr];
+            }else if([mode1.TemperatureStr isEqualToString:@"Hot"])
+            {
+                [self setRight_label_Text_black:mode1.PriceStr];
+            }
+    }
     xuandian.frame=CGRectMake(left_view.left+(left_view.width-6)/2, left_view.top-9, 6, 6);
     [self.topView addSubview:xuandian];
     self.Select_teger=0;
-    order_c.total_amount=self.arrPrice[self.Select_teger];
+//    order_c.total_amount=self.arrPrice[self.Select_teger];
+    PriceModeSS * modeS =self.arrPrice[self.Select_teger];
+    order_c.total_amount=modeS.PriceStr;
 }
 
 -(void)setLeft_label_Text_Z:(NSString*)price_3
@@ -304,13 +458,32 @@
 -(void)center_viewTouch:(UIGestureRecognizer*)tag
 {
     NSLog(@"center");
-    [self setLeft_label_Text_black:self.arrPrice[0]];
-    [self setCenter_label_Text_Z:self.arrPrice[1]];
-    [self setRight_label_Text_black:self.arrPrice[2]];
+//    PriceModeSS * mode1 =self.arrPrice[0];
+//    PriceModeSS * mode1 =self.arrPrice[1];
+//    PriceModeSS * mode1 =self.arrPrice[2];
+    
+    for (int i =0 ; i<self.arrPrice.count; i++) {
+        PriceModeSS * mode1 =self.arrPrice[i];
+            if([mode1.TemperatureStr isEqualToString:@"Cold"])
+            {
+                [self setLeft_label_Text_black:mode1.PriceStr];
+            }else if([mode1.TemperatureStr isEqualToString:@"Warm"])
+            {
+                [self setCenter_label_Text_Z:mode1.PriceStr];
+            }else if([mode1.TemperatureStr isEqualToString:@"Hot"])
+            {
+                [self setRight_label_Text_black:mode1.PriceStr];
+            }
+    }
+//            [self setLeft_label_Text_black:self.arrPrice[0]];
+//            [self setCenter_label_Text_Z:self.arrPrice[1]];
+//            [self setRight_label_Text_black:self.arrPrice[2]];
     xuandian.frame=CGRectMake(center_view.left+(center_view.width-6)/2, center_view.top-9, 6, 6);
     [self.topView addSubview:xuandian];
     self.Select_teger=1;
-    order_c.total_amount=self.arrPrice[self.Select_teger];
+//    order_c.total_amount=self.arrPrice[self.Select_teger];
+    PriceModeSS * modeS =self.arrPrice[self.Select_teger];
+    order_c.total_amount=modeS.PriceStr;
 }
 
 -(void)setCenter_label_Text_Z:(NSString*)price_3
@@ -361,13 +534,28 @@
 -(void)right_viewTouch:(UIGestureRecognizer*)tag
 {
     NSLog(@"right");
-    [self setLeft_label_Text_black:self.arrPrice[0]];
-    [self setCenter_label_Text_black:self.arrPrice[1]];
-    [self setRight_label_Text_Z:self.arrPrice[2]];
+//    [self setLeft_label_Text_black:self.arrPrice[0]];
+//    [self setCenter_label_Text_black:self.arrPrice[1]];
+//    [self setRight_label_Text_Z:self.arrPrice[2]];
+    for (int i =0 ; i<self.arrPrice.count; i++) {
+        PriceModeSS * mode1 =self.arrPrice[i];
+            if([mode1.TemperatureStr isEqualToString:@"Cold"])
+            {
+                [self setLeft_label_Text_black:mode1.PriceStr];
+            }else if([mode1.TemperatureStr isEqualToString:@"Warm"])
+            {
+                [self setCenter_label_Text_black:mode1.PriceStr];
+            }else if([mode1.TemperatureStr isEqualToString:@"Hot"])
+            {
+                [self setRight_label_Text_Z:mode1.PriceStr];
+            }
+    }
     xuandian.frame=CGRectMake(right_view.left+(right_view.width-6)/2, right_view.top-9, 6, 6);
     [self.topView addSubview:xuandian];
     self.Select_teger=2;
-    order_c.total_amount=self.arrPrice[self.Select_teger];
+//    order_c.total_amount=self.arrPrice[self.Select_teger];
+    PriceModeSS * modeS =self.arrPrice[self.Select_teger];
+    order_c.total_amount=modeS.PriceStr;
 }
 
 -(void)setRight_label_Text_Z:(NSString*)price_3

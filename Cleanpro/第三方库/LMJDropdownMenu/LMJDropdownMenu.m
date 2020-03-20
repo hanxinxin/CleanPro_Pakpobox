@@ -230,7 +230,7 @@
         [cell addSubview:line];
         //---------------------------------------------------------------------------
     }
-    
+    cell.backgroundColor = [UIColor whiteColor];
     cell.textLabel.text =[_titleArr objectAtIndex:indexPath.row];
     
     return cell;

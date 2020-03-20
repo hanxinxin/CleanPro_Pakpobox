@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>897476337998-l8cr1lmj07tfdhdotleaml88mi2jck2n.apps.googleusercontent.com</string>
+	<string>897476337998-evgpbt1rkhjkvkigh382lran569d36j8.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.897476337998-l8cr1lmj07tfdhdotleaml88mi2jck2n</string>
+	<string>com.googleusercontent.apps.897476337998-evgpbt1rkhjkvkigh382lran569d36j8</string>
 	<key>API_KEY</key>
 	<string>AIzaSyB6QMGrkMXiVtbsRBesiXy6_NjGvEDbISs</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.pakpobox.Cleanpro.Once</string>
+	<string>com.venolink.Cleanpro.Once</string>
 	<key>PROJECT_ID</key>
 	<string>cleanpro-70887</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:897476337998:ios:038ed1e633a455c9</string>
+	<string>1:897476337998:ios:a19c2419065a0d7b5ebe1f</string>
 	<key>DATABASE_URL</key>
 	<string>https://cleanpro-70887.firebaseio.com</string>
 </dict>

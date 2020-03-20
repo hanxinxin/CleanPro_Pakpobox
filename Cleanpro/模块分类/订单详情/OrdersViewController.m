@@ -339,6 +339,7 @@
 //    cell.OrderNo.text=[NSString stringWithFormat:@"%@",[OrdersViewController nsdateToString:[OrdersViewController changeSpToTime:[mode.createTime stringValue]]]];
     cell.Paid.text=[NSString stringWithFormat:@"%@",mode.pay_status];
     cell.totalAmount.text=[NSString stringWithFormat:@"%.2f",[mode.total_amount floatValue]];
+    cell.backgroundColor = [UIColor whiteColor];
     return cell;
 }
 

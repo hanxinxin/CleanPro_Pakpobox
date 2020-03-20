@@ -165,6 +165,7 @@
 //        cell1.imageView.image=[UIImage imageNamed:@"me_settings"];
         cell1.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
         cell1.textLabel.textColor = [UIColor darkGrayColor];
+        cell.backgroundColor = [UIColor whiteColor];
         return cell1;
     }else if(indexPath.section==1)
     {
@@ -187,6 +188,7 @@
 
 //    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
     cell.textLabel.textColor = [UIColor darkGrayColor];
+    cell.backgroundColor = [UIColor whiteColor];
     return cell;
 }
 

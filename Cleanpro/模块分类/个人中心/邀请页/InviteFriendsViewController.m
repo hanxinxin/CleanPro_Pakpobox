@@ -10,14 +10,14 @@
 #import "FriendsView.h"
 #import <FBSDKShareKit/FBSDKShareLinkContent.h>
 #import <FBSDKShareKit/FBSDKShareDialog.h>
-#import <FBSDKShareKit/FBSDKShareMessengerURLActionButton.h>
-#import <FBSDKShareKit/FBSDKShareMessengerGenericTemplateElement.h>
+//#import <FBSDKShareKit/FBSDKShareMessengerURLActionButton.h>
+//#import <FBSDKShareKit/FBSDKShareMessengerGenericTemplateElement.h>
 #import <FBSDKShareKit/FBSDKMessageDialog.h>
 #import <FBSDKShareKit/FBSDKSharingContent.h>
-#import <FBSDKShareKit/FBSDKShareMessengerGenericTemplateContent.h>
+//#import <FBSDKShareKit/FBSDKShareMessengerGenericTemplateContent.h>
 #import <FBSDKShareKit/FBSDKSendButton.h>
 #import <FBSDKShareKit/FBSDKShareButton.h>
-#import <FBSDKShareKit/FBSDKShareMessengerOpenGraphMusicTemplateContent.h>
+//#import <FBSDKShareKit/FBSDKShareMessengerOpenGraphMusicTemplateContent.h>
 @interface InviteFriendsViewController ()<FriendsViewDelegate,UIGestureRecognizerDelegate,UITextFieldDelegate,FBSDKSharingDelegate>
 {
     UIImageView * image_top;
@@ -484,11 +484,13 @@
      NSURL *whatsappURL = [NSURL URLWithString: url];
      
      if ([[UIApplication sharedApplication] canOpenURL: whatsappURL]) {
+         NSLog(@"安装WhatsApp");
      [[UIApplication sharedApplication] openURL:whatsappURL options:@{} completionHandler:^(BOOL success) {
      
      }];
      } else {
      // Cannot open whatsapp
+         NSLog(@"未安装WhatsApp");
      }
      
     
@@ -496,6 +498,7 @@
 - (IBAction)FacebookTouch:(id)sender {
     /////Facebook分享
 //     Example content. Replace with content from your app.
+    
         FBSDKShareLinkContent *content = [[FBSDKShareLinkContent alloc] init];
         content.contentURL = [NSURL URLWithString:@"https://apps.apple.com/us/app/cleanpro/id1464618101?l=zh&ls=1"];
     

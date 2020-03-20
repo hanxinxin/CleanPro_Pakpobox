@@ -281,6 +281,7 @@
         cell.right_label.text=[NSString stringWithFormat:@"+%.f",[mode.amount floatValue]/100];
         cell.right_label.textColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
     }
+    cell.backgroundColor = [UIColor whiteColor];
     return cell;
 }
 

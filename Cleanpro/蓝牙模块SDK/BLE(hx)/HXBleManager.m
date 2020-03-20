@@ -218,6 +218,12 @@
     if((self.macDZ!=nil) && (data!=nil))
     {
             NSLog(@"MAC == =%@   self.macDZ = %@",mac,self.macDZ);
+        static int CC=0;
+        if(CC<100){
+//            [HudViewFZ showMessageTitle:[NSString stringWithFormat:@"A= %@, B=%@",mac,self.macDZ] andDelay:2];
+            CC++;
+        }
+        
         if([mac isEqualToString:self.macDZ])
         {
             [self connectToPeripheral:peripheral];

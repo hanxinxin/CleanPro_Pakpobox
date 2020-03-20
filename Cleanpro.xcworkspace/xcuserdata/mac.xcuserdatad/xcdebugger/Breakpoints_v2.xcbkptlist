@@ -124,23 +124,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F538E788-EE1B-495A-B43D-BFF243461E1A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d88;&#x606f;&#x6a21;&#x5757;/IMessageViewController.m"
-            timestampString = "587963011.230939"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "583"
-            endingLineNumber = "583"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "823DCD37-D3EF-48AD-9024-61D4ECB5B83C"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -237,72 +220,6 @@
             startingLineNumber = "140"
             endingLineNumber = "140"
             landmarkName = "-getOrderList"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "7209180F-A9EE-460C-BF76-ABA482656A2A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x4e2a;&#x4eba;&#x4e2d;&#x5fc3;/MyWallet/collection&#x9009;&#x62e9;&#x5145;&#x503c;/RechargeViewController.m"
-            timestampString = "586340973.056656"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "229"
-            endingLineNumber = "229"
-            landmarkName = "-post_pay_chongzhi_touch:member_id:"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "7209180F-A9EE-460C-BF76-ABA482656A2A - 946d00977ac6edce"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[RechargeViewController post_pay_chongzhi_touch:member_id:]"
-                  moduleName = "Cleanpro"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83/MyWallet/collection%E9%80%89%E6%8B%A9%E5%85%85%E5%80%BC/RechargeViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "229"
-                  endingLineNumber = "229"
-                  offsetFromSymbolStart = "436">
-               </Location>
-               <Location
-                  uuid = "7209180F-A9EE-460C-BF76-ABA482656A2A - 15ea3a8f6178e540"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__60-[RechargeViewController post_pay_chongzhi_touch:member_id:]_block_invoke"
-                  moduleName = "Cleanpro"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83/MyWallet/collection%E9%80%89%E6%8B%A9%E5%85%85%E5%80%BC/RechargeViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "230"
-                  endingLineNumber = "230"
-                  offsetFromSymbolStart = "48">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "54219873-EFF6-46AE-A4B9-DEDD10FF6B9A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x4e2a;&#x4eba;&#x4e2d;&#x5fc3;/MyWallet/collection&#x9009;&#x62e9;&#x5145;&#x503c;/RechargeViewController.m"
-            timestampString = "586340973.0567"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "246"
-            endingLineNumber = "246"
-            landmarkName = "-post_pay_chongzhi_touch:member_id:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -774,8 +691,8 @@
             filePath = "Cleanpro/&#x84dd;&#x7259;&#x6a21;&#x5757;SDK/BLE(hx)/HXBleManager.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "280"
-            endingLineNumber = "280"
+            startingLineNumber = "285"
+            endingLineNumber = "285"
             landmarkName = "-centralManager:didFailToConnectPeripheral:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -895,65 +812,225 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1E66D3CD-ECEE-465B-B578-50D34A79B624"
+            uuid = "B0A4B667-5B3B-409B-871F-EE6EDD279A9F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x8ba2;&#x5355;&#x8be6;&#x60c5;/lineItemViewController.m"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d17;&#x8863;&#x6a21;&#x5757;/&#x6d17;&#x8863;/LaundryDetailsViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
-            landmarkName = "-Json_returnDict:"
+            startingLineNumber = "370"
+            endingLineNumber = "370"
+            landmarkName = "-pay_touch:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "7B53A770-9E57-4E4C-A185-4EDC81550C8A"
+            uuid = "1F2A131D-BAB5-4FC7-8EB3-EB9209A7FBE0"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x8ba2;&#x5355;&#x8be6;&#x60c5;/lineItemViewController.m"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d17;&#x8863;&#x6a21;&#x5757;/&#x6d17;&#x8863;/LaundryDetailsViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
-            landmarkName = "-Json_returnDict:"
+            startingLineNumber = "801"
+            endingLineNumber = "801"
+            landmarkName = "-postOrder"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "1F2A131D-BAB5-4FC7-8EB3-EB9209A7FBE0 - ead0c90e4a5e3a3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[LaundryDetailsViewController postOrder]"
+                  moduleName = "Cleanpro"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E6%B4%97%E8%A1%A3%E6%A8%A1%E5%9D%97/%E6%B4%97%E8%A1%A3/LaundryDetailsViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "801"
+                  endingLineNumber = "801"
+                  offsetFromSymbolStart = "1208">
+               </Location>
+               <Location
+                  uuid = "1F2A131D-BAB5-4FC7-8EB3-EB9209A7FBE0 - bfa4a7efe916fc2a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__41-[LaundryDetailsViewController postOrder]_block_invoke"
+                  moduleName = "Cleanpro"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E6%B4%97%E8%A1%A3%E6%A8%A1%E5%9D%97/%E6%B4%97%E8%A1%A3/LaundryDetailsViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "802"
+                  endingLineNumber = "802"
+                  offsetFromSymbolStart = "48">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C57D4DAB-BBAD-4615-AFFA-8BC126EB7D67"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d17;&#x8863;&#x6a21;&#x5757;/&#x6d17;&#x8863;/LaundryDetailsViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "789"
+            endingLineNumber = "789"
+            landmarkName = "-postOrder"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9F1A918F-9558-4AC9-AD4E-B57590AD31E4"
+            uuid = "27B15295-A51B-4BEF-9128-310D43BBF053"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x8ba2;&#x5355;&#x8be6;&#x60c5;/lineItemViewController.m"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d17;&#x8863;&#x6a21;&#x5757;/&#x6d17;&#x8863;/LaundryDetailsViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
-            landmarkName = "-Json_returnDict:"
+            startingLineNumber = "1069"
+            endingLineNumber = "1069"
+            landmarkName = "-CycleNextPushView"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "CDA87DC6-9358-4886-A147-1A700BE02699"
+            uuid = "BD9B66F8-219C-40D2-A1D9-89F4B831AB9B"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x8ba2;&#x5355;&#x8be6;&#x60c5;/lineItemViewController.m"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d17;&#x8863;&#x6a21;&#x5757;/&#x6d17;&#x8863;/LaundryDetailsViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "-setLabelText"
+            startingLineNumber = "1072"
+            endingLineNumber = "1072"
+            landmarkName = "-CycleNextPushView"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4B5EB475-14D7-471A-AD52-BC7A8BFB12B5"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d17;&#x8863;&#x6a21;&#x5757;/&#x6d17;&#x8863;/LaundryDetailsViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1076"
+            endingLineNumber = "1076"
+            landmarkName = "-CycleNextPushView"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2EFE3E93-919B-4C5F-B452-DD46A9FAFE4B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d17;&#x8863;&#x6a21;&#x5757;/&#x6d17;&#x8863;/LaundryDetailsViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1018"
+            endingLineNumber = "1018"
+            landmarkName = "-nextPushView"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "14E8731D-6329-4E6D-8A38-6761DE184C32"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d17;&#x8863;&#x6a21;&#x5757;/&#x6d17;&#x8863;/LaundryDetailsViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1011"
+            endingLineNumber = "1011"
+            landmarkName = "-nextPushView"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5EC5BA2F-5649-4547-9D17-9C5B4545D8E8"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d17;&#x8863;&#x6a21;&#x5757;/&#x6d17;&#x8863;/LaundryDetailsViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1014"
+            endingLineNumber = "1014"
+            landmarkName = "-nextPushView"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3842860D-04DD-43CB-8C95-34F78D4AC528"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x4e2a;&#x4eba;&#x4e2d;&#x5fc3;/MyWallet/MyWalletViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
+            landmarkName = "-getToken"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "3842860D-04DD-43CB-8C95-34F78D4AC528 - 8c02100007230d1a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[MyWalletViewController getToken]"
+                  moduleName = "Cleanpro"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83/MyWallet/MyWalletViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "114"
+                  endingLineNumber = "114"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  uuid = "3842860D-04DD-43CB-8C95-34F78D4AC528 - ce74f2974eaafc55"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__34-[MyWalletViewController getToken]_block_invoke"
+                  moduleName = "Cleanpro"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83/MyWallet/MyWalletViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "115"
+                  endingLineNumber = "115"
+                  offsetFromSymbolStart = "48">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

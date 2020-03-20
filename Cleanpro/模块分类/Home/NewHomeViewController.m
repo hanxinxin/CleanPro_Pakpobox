@@ -21,6 +21,8 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "ShardHViewController.h"
 #import "InviteFriendsViewController.h"
+#import "EWashViewController.h"
+#import "StaffViewController.h"
 //#import <luckysdk/utils.h>
 
 
@@ -284,7 +286,7 @@
                         if([ImageIDA isEqualToString:ImageIDB])
                         {
                             counterImage++;
-                            NSLog(@"counterImage == %d",counterImage);
+//                            NSLog(@"counterImage == %d",counterImage);
                         }
                     }
                 }
@@ -685,6 +687,15 @@
 }
 -(void)btnViewAll:(id)sender
 {
+    
+    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    EWashViewController *vc=[main instantiateViewControllerWithIdentifier:@"EWashViewController"];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+//        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        StaffViewController *vc=[main instantiateViewControllerWithIdentifier:@"StaffViewController"];
+//        vc.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:vc animated:YES];
     
 }
 -(void)tableviewDSet
@@ -1159,16 +1170,37 @@
     {
         if([mode.pageName isEqualToString:@"Invite friend"])
         {
+            
+            
+            NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"];
+            if([strPhoen isEqualToString:@"1"])
+            {
+                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                LoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"LoginViewController"];
+                vc.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else
+            {
             UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
             InviteFriendsViewController *vc=[main instantiateViewControllerWithIdentifier:@"InviteFriendsViewController"];
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
-            
+            }
         }else if([mode.pageName isEqualToString:@"My Wallet"]){
+            NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"];
+            if([strPhoen isEqualToString:@"1"])
+            {
+                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                LoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"LoginViewController"];
+                vc.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else
+            {
                 UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
                    MyWalletViewController *vc=[main instantiateViewControllerWithIdentifier:@"MyWalletViewController"];
                    vc.hidesBottomBarWhenPushed = YES;
                    [self.navigationController pushViewController:vc animated:YES];
+            }
         }
         
     }else if([mode.subPageType isEqualToString:@"PICTURE"]){

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="296" id="KGk-i7-Jjw" customClass="PriceWashTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="296"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="296"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ShopOver.png" translatesAutoresizingMaskIntoConstraints="NO" id="hT8-gQ-8If">
+                        <rect key="frame" x="105" y="51" width="110" height="110"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="110" id="B8h-p8-dPf"/>
+                            <constraint firstAttribute="height" constant="110" id="Lhz-oS-PAN"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label 122" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZZc-kx-RTE">
+                        <rect key="frame" x="16" y="179" width="288" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="5bl-dR-X8e"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                        <color key="textColor" red="0.62970989942550659" green="0.68191581964492798" blue="0.71950870752334595" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RM19" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H6b-i2-qbM">
+                        <rect key="frame" x="16" y="244" width="288" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="adl-24-8bM"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                        <color key="textColor" red="0.10642091184854507" green="0.58622807264328003" blue="0.88542026281356812" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="H6b-i2-qbM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="AVb-TB-Wnv"/>
+                    <constraint firstItem="ZZc-kx-RTE" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="B7L-ym-2hf"/>
+                    <constraint firstItem="ZZc-kx-RTE" firstAttribute="top" secondItem="hT8-gQ-8If" secondAttribute="bottom" constant="18" id="ELU-Xo-Y5J"/>
+                    <constraint firstItem="hT8-gQ-8If" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="Pap-7v-COu"/>
+                    <constraint firstItem="H6b-i2-qbM" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="RjI-rT-bpa"/>
+                    <constraint firstItem="H6b-i2-qbM" firstAttribute="top" secondItem="ZZc-kx-RTE" secondAttribute="bottom" constant="35" id="YfO-LD-xYC"/>
+                    <constraint firstItem="hT8-gQ-8If" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="51" id="a8U-yV-CLO"/>
+                    <constraint firstItem="ZZc-kx-RTE" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="tbt-Jd-4zg"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="MSTitle" destination="ZZc-kx-RTE" id="4Yd-V9-AWe"/>
+                <outlet property="PriceTitle" destination="H6b-i2-qbM" id="UTg-ot-6Kg"/>
+                <outlet property="imageTX" destination="hT8-gQ-8If" id="T20-CS-Xrr"/>
+            </connections>
+            <point key="canvasLocation" x="133.33333333333334" y="129.91071428571428"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ShopOver.png" width="220" height="220"/>
+    </resources>
+</document>

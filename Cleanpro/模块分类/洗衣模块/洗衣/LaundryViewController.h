@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@interface PriceModeSS : NSObject
+@property(nonatomic,strong)NSString * PriceStr;  ///价格
+@property(nonatomic,strong)NSString * TemperatureStr;  ///温度
+@end
+
+
 @interface LaundryViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIView *topView;

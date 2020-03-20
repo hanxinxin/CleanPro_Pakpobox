@@ -26,7 +26,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor clearColor];
+
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     if(self.movieURL==nil)
@@ -34,6 +35,11 @@
             NSString *path =  [[NSBundle mainBundle] pathForResource:@"LaundryHome.mp4" ofType:nil];
             self.movieURL = [NSURL fileURLWithPath:path];
     }
+    //    UIImageView * imageview = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"loading_1242x2208"]];
+    UIImageView * imageview = [[UIImageView alloc] initWithImage:[self getVideoPreViewImage:self.movieURL]];
+    
+    imageview.frame=self.view.bounds;
+    [self.view addSubview:imageview];
     //初始化AVPlayer
     [self setMoviePlayer];
     [self Top_leftButton_add];
@@ -171,7 +177,21 @@
     }];
 }
 
-
+// 获取视频第一帧
+- (UIImage*) getVideoPreViewImage:(NSURL *)path
+{
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:path options:nil];
+    AVAssetImageGenerator *assetGen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+    
+    assetGen.appliesPreferredTrackTransform = YES;
+    CMTime time = CMTimeMakeWithSeconds(0.0, 600);
+    NSError *error = nil;
+    CMTime actualTime;
+    CGImageRef image = [assetGen copyCGImageAtTime:time actualTime:&actualTime error:&error];
+    UIImage *videoImage = [[UIImage alloc] initWithCGImage:image];
+    CGImageRelease(image);
+    return videoImage;
+}
 
 - (void)enterMainAction:(UIButton *)btn {
     

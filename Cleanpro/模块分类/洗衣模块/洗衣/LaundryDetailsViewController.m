@@ -812,9 +812,11 @@
             NSString * errorMessage= [resp objectForKey:@"errorMessage"];
             self->payAndSet=0;
             if([code intValue]==500){
+                [HudViewFZ HiddenHud];
                 [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
             }else if([code intValue]==400509)
             {
+                [HudViewFZ HiddenHud];
                 [HudViewFZ showMessageTitle:errorMessage andDelay:2.8];
                 [self hidden_TCview];
                 self->payAndSet=1;
@@ -828,9 +830,11 @@
             {
                 if([code intValue]==0)
                 {
-                    
+                    ///订单创建成功取消loding
+                    [HudViewFZ HiddenHud];
                     if([self.payment isEqualToString:@"1"])
                     {
+                        
                         [self Touch_two:nil];
 //                        NSString * pay_req_no= [resp objectForKey:@"pay_req_no"];
 //                        NSString * notify_url= [resp objectForKey:@"notify_url"];
@@ -1037,8 +1041,14 @@
                 self.order_c.payment_platform=@"WALLET";
                 self.order_c.coupon_code=@"";
             }
-            
-            [self postOrder];
+            if(self.OrderAndRenewal==1)
+            {
+                [self postOrder];
+            }else if (self.OrderAndRenewal==2)
+            {
+                [self postOrderOrderRenewal];
+            }
+//            [self postOrder];
         }else
         {
             if([appDelegate.ManagerBLE returnConnect])
@@ -1053,7 +1063,14 @@
                     self.order_c.payment_platform=@"WALLET";
                     self.order_c.coupon_code=@"";
                 }
-                [self postOrder];
+//                [self postOrder];
+                if(self.OrderAndRenewal==1)
+                {
+                    [self postOrder];
+                }else if (self.OrderAndRenewal==2)
+                {
+                    [self postOrderOrderRenewal];
+                }
             }else
             {
                 dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.1/*延迟执行时间*/ * NSEC_PER_SEC));

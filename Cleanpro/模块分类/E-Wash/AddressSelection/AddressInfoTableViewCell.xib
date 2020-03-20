@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="80" id="KGk-i7-Jjw" customClass="AddressInfoTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BUX-O8-cll">
+                        <rect key="frame" x="16" y="30" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="E1A-6y-Lbg"/>
+                            <constraint firstAttribute="height" constant="20" id="O6U-2v-L6C"/>
+                        </constraints>
+                        <state key="normal" title="Button" image="circleNil.png"/>
+                        <connections>
+                            <action selector="SelectTouch:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ceb-9R-JdB"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cleanpro Express Laundry                       " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fji-YO-KBg">
+                        <rect key="frame" x="54" y="8" width="215" height="30"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="V42-OL-LEg"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.65713387727737427" green="0.70921343564987183" blue="0.75509768724441528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="43300, 2, Persiaran Impian, Taman Impian Ehsan." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="58H-8r-smx">
+                        <rect key="frame" x="54" y="42" width="215" height="30"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="sND-Fl-qhj"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" red="0.60414469242095947" green="0.59193044900894165" blue="0.60419011116027832" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.6km" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p7t-8D-3YB">
+                        <rect key="frame" x="272" y="8" width="48" height="30"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="48" id="5om-dc-smw"/>
+                            <constraint firstAttribute="height" constant="30" id="c8C-yI-QtM"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.6571197509765625" green="0.70913439989089966" blue="0.75916486978530884" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="58H-8r-smx" secondAttribute="trailing" constant="51" id="0Lr-52-NN0"/>
+                    <constraint firstItem="p7t-8D-3YB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="1rc-2L-AUB"/>
+                    <constraint firstItem="BUX-O8-cll" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="5T6-c2-rDc"/>
+                    <constraint firstItem="fji-YO-KBg" firstAttribute="leading" secondItem="BUX-O8-cll" secondAttribute="trailing" constant="18" id="D7v-fP-pzq"/>
+                    <constraint firstItem="58H-8r-smx" firstAttribute="leading" secondItem="BUX-O8-cll" secondAttribute="trailing" constant="18" id="EIm-39-dru"/>
+                    <constraint firstItem="BUX-O8-cll" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Lan-KP-VQq"/>
+                    <constraint firstAttribute="trailing" secondItem="p7t-8D-3YB" secondAttribute="trailing" id="Spd-ci-TMh"/>
+                    <constraint firstItem="fji-YO-KBg" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="VrY-v5-3rj"/>
+                    <constraint firstItem="58H-8r-smx" firstAttribute="top" secondItem="fji-YO-KBg" secondAttribute="bottom" constant="4" id="XFE-pq-9Cb"/>
+                    <constraint firstItem="p7t-8D-3YB" firstAttribute="leading" secondItem="fji-YO-KBg" secondAttribute="trailing" constant="3" id="jHm-Rk-r13"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="DownTitle" destination="58H-8r-smx" id="HTN-IM-QqZ"/>
+                <outlet property="JLLabel" destination="p7t-8D-3YB" id="THy-Bp-Icf"/>
+                <outlet property="TopTitle" destination="fji-YO-KBg" id="wHH-vD-bDb"/>
+                <outlet property="selectBtn" destination="BUX-O8-cll" id="6zR-ch-XA0"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="141.29464285714286"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="circleNil.png" width="20" height="20"/>
+    </resources>
+</document>

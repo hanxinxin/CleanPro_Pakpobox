@@ -213,6 +213,7 @@
     cell.textLabel.textColor = [UIColor darkGrayColor];
     //    cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     //    cell.layer.cornerRadius=4;
+    cell.backgroundColor = [UIColor whiteColor];
     return cell;
 }
 

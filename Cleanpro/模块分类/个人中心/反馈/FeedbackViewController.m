@@ -70,7 +70,7 @@
     [self.navigationController.navigationBar setTranslucent:NO];
     
     [self addtextPhone];
-    
+    self.feedback_textView.backgroundColor = [UIColor whiteColor];
     //    设置点击任何其他位置 键盘回收
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapBG:)];
     tapGesture.delegate=self;

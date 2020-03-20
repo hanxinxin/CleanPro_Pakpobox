@@ -175,6 +175,7 @@ typedef void(^cancelBlock)(void);
     cell.titleLabel.text = self.options[indexPath.row];
     cell.titleLabel.textColor = ZGQ_OPTION_COLOR;
     cell.titleLabel.font = [UIFont systemFontOfSize:self.fontSize];
+    cell.backgroundColor = [UIColor whiteColor];
     return cell;
 
 }

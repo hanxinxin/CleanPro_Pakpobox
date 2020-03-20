@@ -15,6 +15,8 @@
 #import "InviteFriendsViewController.h"
 #import "VIPjfViewController.h"
 #import "IntroductionViewController.h"
+#import "StaffViewController.h"
+
 
 #import "NewMyWalletViewController.h"
 #import "IMessageViewController.h"
@@ -22,14 +24,14 @@
 #import "AppDelegate.h"
 #import <FBSDKShareKit/FBSDKShareLinkContent.h>
 #import <FBSDKShareKit/FBSDKShareDialog.h>
-#import <FBSDKShareKit/FBSDKShareMessengerURLActionButton.h>
-#import <FBSDKShareKit/FBSDKShareMessengerGenericTemplateElement.h>
-#import <FBSDKShareKit/FBSDKMessageDialog.h>
-#import <FBSDKShareKit/FBSDKSharingContent.h>
-#import <FBSDKShareKit/FBSDKShareMessengerGenericTemplateContent.h>
-#import <FBSDKShareKit/FBSDKSendButton.h>
-#import <FBSDKShareKit/FBSDKShareButton.h>
-#import <FBSDKShareKit/FBSDKShareMessengerOpenGraphMusicTemplateContent.h>
+//#import <FBSDKShareKit/FBSDKShareMessengerURLActionButton.h>
+//#import <FBSDKShareKit/FBSDKShareMessengerGenericTemplateElement.h>
+//#import <FBSDKShareKit/FBSDKMessageDialog.h>
+//#import <FBSDKShareKit/FBSDKSharingContent.h>
+//#import <FBSDKShareKit/FBSDKShareMessengerGenericTemplateContent.h>
+//#import <FBSDKShareKit/FBSDKSendButton.h>
+//#import <FBSDKShareKit/FBSDKShareButton.h>
+//#import <FBSDKShareKit/FBSDKShareMessengerOpenGraphMusicTemplateContent.h>
 
 
 @interface MyAccountViewController ()<UITableViewDelegate,UITableViewDataSource,FBSDKSharingDelegate>
@@ -577,6 +579,7 @@
             cell.imageView.image=[UIImage imageNamed:@"me_settings"];
         }
     }
+    cell.backgroundColor = [UIColor whiteColor];
     //    if(!(indexPath.section == 1 && indexPath.row==0))
     //    {
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
