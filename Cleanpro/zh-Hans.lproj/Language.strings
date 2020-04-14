@@ -1,0 +1,207 @@
+/* 
+  Language.strings
+  Cleanpro
+
+  Created by mac on 2019/7/30.
+  Copyright © 2019 mac. All rights reserved.
+*/
+///
+"Home"="主页";
+"Nearby"="附近门店";
+"Inbox"="信息";
+"Me"="我的";
+"Cancel"="取消";
+"Confirm"="确认";
+//
+"Balance"="余额";
+"CouPons"="优惠券";
+"Reward Points"="积分";
+"Collections for you！"="为您推荐！";
+"View all"="全部查看";
+////
+//""="";
+////
+"Click here to login"="单击此处登录";
+"My Wallet"="我的钱包";
+"History"="历史";
+"Invite Friends"="邀请朋友";
+"Introduction"="介绍";
+"Feedback"="反馈";
+"Settings"="设置";
+///
+"Personal Infomation"="个人信息";
+"Profile Picture"="个人头像";
+"Name"="姓名";
+"Phone number"="电话号码";
+"Gender"="性别";
+"Birthday"="生日";
+"Email"="电子邮件";
+"Post code"="邮政编码";
+"MALE"="男性";
+"FEMALE"="女性";
+"Take New Profile Picture"="拍摄新的个人资料照片";
+"Select Profile Picture"="选择个人资料图片";
+///
+"Reload"="重新加载";
+"Account balance"="账户余额";
+"Details"="详细信息";
+"Washer"="洗衣机";
+"Amount"="数量";
+"*There is no refundable after payment"="*付款后不退款";
+"Pay"="支付";
+"Press again to exit"="再按一次退出";
+"Save"="保存";
+"No Record!"="无记录";
+"Data loading…"="数据加载...";
+"Error loading!\n\nClick retry…"="加载时出错！\n\n单击“重试”…";
+// setting
+"Laundry"="洗衣店";
+"Dryer"="烘干机";
+"Service"="服务";
+"Price"="价格";
+"Promotion"="促销";
+"Quality"="质量";
+"Use Process"="使用过程";
+"Others"="其他";
+"Add a comment"="添加评论";
+"24 hours Customer Careline: 03-2770 0100"="24小时客户服务热线：03-2770 0100";
+"Submit"="提交";
+"Select an option"="选择一个选项";
+//////
+"Invite friends"="邀请朋友";
+"Invite your friends to Cleanpro & get free incentives"="邀请您的朋友参加Cleanpro并获得免费奖励";
+"Use your invitation code"="使用邀请码";
+"The person that share will get RM2 for the 1st person that register"="分享的人将为第一位注册人获得RM2";
+"The person that share will get RM2 for the 2nd person that register"="分享的人将为第二人注册获得RM2";
+"The person that share will get RM7 for the 3rd person that register"="分享的人将为注册的第三人获得RM7";
+"For the 4th person that register, the structure for the amount of RM that the person that share will reset back to Point a (as above)."="对于第四个人注册，共享者的RM金额结构将重置为Point a（如上所述）。";
+"Copy successful!"="复制成功！";
+"Invite friends to Cleanpro -  you will get 300 credits after your friend uses your invitation code to register! "="邀请朋友使用Cleanpro-您的朋友使用您的邀请码注册后，您将获得300积分！";
+
+////   ”\n“  Translation  ///////////
+"Q1: How to use machine?\n"="问题1：如何使用机器？\n";
+"There is a QR code attached on the machine,click “scan” function at the bottom of HomePage,just scan the QR code.\n\n"="机器上附有二维码，点击首页下方的“扫描”功能，即可扫描二维码。\n\n";
+"Q2: How to recharge?\n"="问题2：如何支付？\n";
+"There is a wallet in My Account, you can recharge by using  IPay 88.\n\n"="我的帐户里有一个钱包，你可以用IPay 88充值。\n\n";
+"Q3: How to set payment password?\n"="Q3:如何设置支付密码？\n";
+"In wallet, you can set your payment password,If you forget or want to change it, still here.\n\n"="在钱包中，您可以设置您的支付密码，如果您忘记需更改也在此处。\n\n";
+"Q4: How to add extra time for dryer machine?\n"="问4：如何增加烘干机的额外时间？\n";
+"In  orders, click the order of dryer, there is a button that you can add time.\n\n"="在订单中，点击烘干机的订单，有一个可以添加时间的按钮。\n\n";
+"Address\n"="地址\n";
+"No. 24, Jalan Puchong Permai 2,\nTaman Puchong Permai,\n47150 Puchong,\nSelangor Darul Ehsan Malaysia.\n\n"="No. 24, Jalan Puchong Permai 2,\nTaman Puchong Permai,\n47150 Puchong,\nSelangor Darul Ehsan Malaysia.\n\n";
+"Tel\n"="电话\n";
+"+6 03-5879 1228 / 03-5879 1268\n\n"="+6 03-5879 1228 / 03-5879 1268\n\n";
+"Careline Number\n"="Careline Number\n";
+"+603-2770 0100\n\n"="+603-2770 0100\n\n";
+"Email\n"="电子邮件\n";
+"info@cleanproexpress.com\n\n"="info@cleanproexpress.com\n\n";
+"CLEANPRO EXPRESS SDN BHD\n"="CLEANPRO EXPRESS SDN BHD\n";
+//////
+"Log out"="注销";
+///
+"Please enter original password"="请输入原始密码";
+"Password"="密码";
+"Forget password?"="忘记密码？";
+"Next"="下一步";
+"Verify Phone Number:"="验证电话号码：";
+"Verification"="验证";
+"Next Step"="下一步";
+"Get code"="获取代码";
+"Please set 6 digits password"="请设置6位密码";
+"Please enter again"="请重新输入";
+///// History
+"Transaction NO. "="交易编号";
+"Duration"="持续时间";
+"Temperature"="温度";
+"Outlet"="门店";
+"Machine No. "="机器号";
+"Time"="时间";
+"Charges"="收费";
+"Order No"="订单号";
+"Location"="定位";
+"Machine No"="机器号";
+"no APP available"="没有可用的APP";
+"APP available"="APP可用";
+/////
+"Tips"="提示";
+"Bluetooth connection"="蓝牙连接";
+"Time(MIN)"="时间（MIN）";
+"Credits"="信誉";
+"Payment method"="付款方式";
+"Wallet"="钱包";
+"discount"="折扣";
+"Success!"="成功!";
+"Please click start on the machine!"="请单击机器上的“开始”!";
+"Complete"="完成";
+"Choose water temperature"="选择水温";
+"Cold"="冷水";
+"Warm"="温水";
+"Hot"="热水";
+/////
+"Welcome"="欢迎";
+"Join Cleanpro"="加入Cleanpro";
+"We'll help you create a new account in a few easy step."="我们将通过几个简单的步骤来帮助您创建一个新帐户。";
+"I agree to the personal data protection terms of Cleanpro."="我同意Cleanpro的个人数据保护条款。";
+"Enter Your Mobile Number"="输入您的手机号码";
+"Mobile No."="手机号码";
+"Choose a Password"="选择密码";
+"At least 6 digit numbers"="至少6位数";
+"Enter code from your friends!"="输入你朋友的密码！";
+"Code"="代码";
+"Skip"="跳过";
+"Privacy policy"="隐私政策";
+"Register"="注册";
+"Sign in"="登录";
+"Please set your login password"="请设置登录密码";
+///////
+"No more messages."="没有更多讯息.";
+"Request timed out!"="请求超时!";
+"You have no message"="您没有消息";
+"Token expired"="令牌已过期";
+"Get error"="获取错误";
+"Data acquisition failure"="数据采集失败";
+"Send a success"="发送成功";
+"Check success"="检查成功";
+"statusCode error"="状态码错误";
+"Password mistake"="密码错误";
+"Cannot be the same as the old password"="不能与旧密码相同";
+"The passwords do not match"="密码不匹配";
+"Post error"="请求错误";
+"Set up the success"="建立成功";
+"SendVerifyCode Success"="发送验证码成功";
+"Phone number error"="电话号码错误";
+"Network error"="网络错误";
+"Registered successfully"="注册成功";
+"Wrong password"="密码错误";
+"Two password inconsistencies"="两次密码不一致";
+"Modify successfully"="修改成功";
+"Login successful"="登陆成功";
+"Bluetooth connection failed"="蓝牙连接失败";
+"There's no more data"="没有更多数据";
+"Copy successful!"="复制成功！";
+"Same as before"="和之前一样";
+"Email format error"="电子邮件格式错误";
+"Please enter the correct email address"="请输入正确的电子邮件地址";
+"Payment success"="付款成功";
+"Feedback successful!"="反馈成功！";
+"The scanned qr code has not been identified yet"="扫描的二维码尚未被识别";
+"The machine has not been found"="找不到机器";
+"Total"="总";
+"it can be used if it’s more than 450"="如果超过450，则可以使用";
+"Recharge"="充值";
+"Later"="以后";
+"Update"="更新";
+
+"Payment Setting"="付款设置";
+"Version"="版本";
+"Contact us"="联系我们";
+
+"You balance is insufficient,please recharge"="您的余额不足，请充值";
+"Please set your payment password!"="请设置您的付款密码！";
+
+
+"Language"="语言";
+"English"="英语";
+"Malay"="马来语";
+"Thai"="泰语";
+"Chinese"="中文";

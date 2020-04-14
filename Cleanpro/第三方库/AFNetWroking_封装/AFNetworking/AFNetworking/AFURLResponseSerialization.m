@@ -34,6 +34,13 @@
 NSString * const AFURLResponseSerializationErrorDomain = @"com.alamofire.error.serialization.response";
 NSString * const AFNetworkingOperationFailingURLResponseErrorKey = @"com.alamofire.serialization.response.error.response";
 NSString * const AFNetworkingOperationFailingURLResponseDataErrorKey = @"com.alamofire.serialization.response.error.data";
+#ifdef DEBUG
+
+NSString *constAFNetworkingOperationFailingURLResponseStringErrorKey =@"com.alamofire.serialization.response.error.string";
+
+#endif
+
+
 
 static NSError * AFErrorWithUnderlyingError(NSError *error, NSError *underlyingError) {
     if (!error) {

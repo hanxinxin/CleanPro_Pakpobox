@@ -23,6 +23,7 @@
 #import "InviteFriendsViewController.h"
 #import "EWashViewController.h"
 #import "StaffViewController.h"
+#import "NewLoginViewController.h"
 //#import <luckysdk/utils.h>
 
 
@@ -51,17 +52,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor=[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1];
-    
+    self.automaticallyAdjustsScrollViewInsets = NO;
     if (@available(iOS 11.0, *)) {
         ShowScrollview.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         globalScrollview.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     } else {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
-    iamgeCC=0;
     
     self.edgesForExtendedLayout = UIRectEdgeTop;
+    
+    
+    iamgeCC=0;
+    self.view.backgroundColor=[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1];
+    
     self.balanceStr=@"0";
     self.creditStr=@"0";
     self.currencyUnitStr=@"0";
@@ -69,36 +73,33 @@
     self.imgArr=[NSMutableArray arrayWithCapacity:0];
     self.imageViewArr = [NSMutableArray arrayWithCapacity:0];
     NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SYbanner"];
-       NSArray * arrayUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    NSArray * arrayUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
        ///  对比请求下来的图片和本地是否一样
-       if(arrayUser!=nil)
-       {
-           [self UpdateGuanggao:arrayUser];
-       }else
-       {
-           
-           [self.imgArr addObject:[UIImage imageNamed:@"banner01"]];
-           [self.imgArr addObject:[UIImage imageNamed:@"banner02"]];
-           
-           [self.imageViewArr addObject:[UIImage imageNamed:@"collects_registration1"]];
-           [self.imageViewArr addObject:[UIImage imageNamed:@"collections_invite-friends"]];
-           [self.imageViewArr addObject:[UIImage imageNamed:@"collections_get-credits"]];
-       }
+//       if(arrayUser!=nil)
+//       {
+//           [self UpdateGuanggao:arrayUser];
+//       }else
+//       {
+//        [self.imgArr addObject:[UIImage imageNamed:@"banner01"]];
+        [self.imgArr addObject:[UIImage imageNamed:@"888paper.jpg"]];
+        [self.imgArr addObject:[UIImage imageNamed:@"WashingTo.jpg"]];
+     
+        [self.imageViewArr addObject:[UIImage imageNamed:@"banner-EWASH.png"]];
+        [self.imageViewArr addObject:[UIImage imageNamed:@"promotion2.jpeg"]];
+//           [self.imageViewArr addObject:[UIImage imageNamed:@"WashingTo.jpg"]];
+//       }
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
         NSLog(@"宽度：%f ，高度：%f",SCREEN_WIDTH,SCREEN_HEIGHT);
+        
+        self.navigationController.navigationBar.translucent = YES;
+        self.navigationController.navigationBar.subviews[0].alpha = 0.0;
         [self addglobalScrollview];
         [self topviewset];
         [self downviewset];
-        self.navigationController.navigationBar.translucent = YES;
-        self.navigationController.navigationBar.subviews[0].alpha = 0.0;
-        
     });
-    
-//    NSString * abc = @"88";
-//    Byte bte = (Byte)abc;
-//    NSLog(@"%d",bte);
+ 
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -106,18 +107,18 @@
 //    self.title=@"Cleapro";
     self.navigationController.title=FGGetStringWithKeyFromTable(@"Home", @"Language");
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]}];
-   
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.07/*延迟执行时间*/ * NSEC_PER_SEC));
+       
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        [self getGuanggao];
-        [self getToken];
-        [self updateMessage];
+//        [self getGuanggao];
+//        [self getToken];
+//        [self updateMessage];
+//        [self.navigationController.navigationBar setHidden:YES];
     });
 //    [self addRightBtn];  ///// 修改为切换语言的按钮
+    
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.translucent = YES;
-    // 第二种办法：在隐藏导航栏的时候要添加动画
-//    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 //get_Guanggao
@@ -133,6 +134,7 @@
         NSLog(@"890890");
     });
     
+    
     [super viewDidAppear:animated];
     
 }
@@ -146,8 +148,6 @@
     // 设置导航栏 为不透明
 //    self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.subviews[0].alpha = 1.0;
-//    [self.navigationController setNavigationBarHidden:NO animated:animated];
-    //    [self.rotateTimer setFireDate:[NSDate distantFuture]];
     [self.rotateTimer fire];
     [super viewWillDisappear:animated];
     // 第二种办法：在显示导航栏的时候要添加动画
@@ -376,6 +376,7 @@
             [self addScrollerView];
     //        [self downviewset];
             self.downView.frame = CGRectMake(0, self->topView.bottom+8, SCREEN_WIDTH, 160*self.imageViewArr.count+8*self.imageViewArr.count+60);
+    NSLog(@"self->globalScrollview.contentSize === %lf",(self->topView.height+160*self.imageViewArr.count+8*self.imageViewArr.count+60+64));
             self->globalScrollview.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self->topView.height+160*self.imageViewArr.count+8*self.imageViewArr.count+60+64);
             self.tableViewD.frame = CGRectMake(15, self.title_View.height, SCREEN_WIDTH-30,160*self.imageViewArr.count+8*self.imageViewArr.count);
             [self.tableViewD reloadData];
@@ -516,7 +517,8 @@
 
 -(void)topviewset
 {
-    topView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 214*autoSizeScaleX+68*autoSizeScaleX)];
+//    topView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 214*autoSizeScaleX+68*autoSizeScaleX)];
+    topView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 214*autoSizeScaleX)];
 //    topView.backgroundColor=[UIColor redColor];
 //    [self.view addSubview:topView];
     [globalScrollview addSubview:topView];
@@ -582,7 +584,7 @@
     [self.button_view addSubview:self.buttonOne];
     [self.button_view addSubview:self.buttonTwo];
     [self.button_view addSubview:self.buttonThree];
-    [topView addSubview:self.button_view];
+//    [topView addSubview:self.button_view];
     
 }
 
@@ -673,10 +675,11 @@
     //粗体
     [promos.titleLabel setFont:[UIFont fontWithName : @"Helvetica-Bold" size : 16 ]];
     UIButton * ViewAll = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH-80-7, 0, 80, 40)];
-    [ViewAll setTitle:FGGetStringWithKeyFromTable(@"View all", @"Language") forState:UIControlStateNormal];
+//    [ViewAll setTitle:FGGetStringWithKeyFromTable(@"View all", @"Language") forState:UIControlStateNormal];
+    [ViewAll setTitle:FGGetStringWithKeyFromTable(@"", @"Language") forState:UIControlStateNormal];
     [ViewAll setTitleColor:[UIColor colorWithRed:25/255.0 green:181/255.0 blue:239/255.0 alpha:1.0] forState:UIControlStateNormal];
     [ViewAll.titleLabel setFont:[UIFont systemFontOfSize:15.f]];
-    [ViewAll addTarget:self action:@selector(btnViewAll:) forControlEvents:UIControlEventTouchDown];
+//    [ViewAll addTarget:self action:@selector(btnViewAll:) forControlEvents:UIControlEventTouchDown];
     UILabel * labelX = [[UILabel alloc] initWithFrame:CGRectMake(0, 39, SCREEN_WIDTH, 1)];
     labelX.backgroundColor=[UIColor colorWithRed:241/255.0 green:242/255.0 blue:240/255.0 alpha:1];
     [self.title_View addSubview:promos];
@@ -688,13 +691,25 @@
 -(void)btnViewAll:(id)sender
 {
     
-    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    EWashViewController *vc=[main instantiateViewControllerWithIdentifier:@"EWashViewController"];
-    vc.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:vc animated:YES];
+    NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"];
+    if([strPhoen isEqualToString:@"1"])
+    {
+        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        NewLoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewLoginViewController"];
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else
+    {
+        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        EWashViewController *vc=[main instantiateViewControllerWithIdentifier:@"EWashViewController"];
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
 //        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
 //        StaffViewController *vc=[main instantiateViewControllerWithIdentifier:@"StaffViewController"];
 //        vc.hidesBottomBarWhenPushed = YES;
+//        vc.StatusList=1;
 //        [self.navigationController pushViewController:vc animated:YES];
     
 }
@@ -727,6 +742,7 @@
     // 马上进入刷新状态
     //    [self.tableViewTop.mj_header beginRefreshing];
     [self.downView addSubview:self.tableViewD];
+    NSLog(@"contentSize===== %f",(topView.height+160*self.imageViewArr.count+8*self.imageViewArr.count+60+64));
     globalScrollview.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), topView.height+160*self.imageViewArr.count+8*self.imageViewArr.count+60+64);
     
 }
@@ -844,10 +860,10 @@
     //启动定时器
     if(self.rotateTimer==nil)
     {
-        self.rotateTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(changeView) userInfo:nil repeats:YES];
+        self.rotateTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(changeView) userInfo:nil repeats:YES];
     }else
     {
-        [self.rotateTimer setFireDate:[NSDate dateWithTimeInterval:4.0 sinceDate:[NSDate date]]];
+        [self.rotateTimer setFireDate:[NSDate dateWithTimeInterval:5.0 sinceDate:[NSDate date]]];
     }
         ShowScrollview.tag = 1000;
         //    X= 375.000000,812.000000
@@ -970,7 +986,7 @@
         //视图静止之后，过1.5秒在开启定时器
         //    [NSDate dateWithTimeInterval:1.5 sinceDate:[NSDate date]]  返回值为从现在时刻开始 再过1.5秒的时刻。
         //        NSLog(@"开启定时器");
-        [self.rotateTimer setFireDate:[NSDate dateWithTimeInterval:4.0 sinceDate:[NSDate date]]];
+        [self.rotateTimer setFireDate:[NSDate dateWithTimeInterval:5.0 sinceDate:[NSDate date]]];
         
     }else if(scrollView.tag==1001)
     {
@@ -1065,6 +1081,10 @@
             [self.navigationController pushViewController:avc animated:YES];
         }
     */
+    if(self.myPageControl.currentPage==0)
+    {
+//        [self btnViewAll:nil];
+    }
 }
 
 /*
@@ -1114,6 +1134,7 @@
             NSString * ImageID = [dict objectForKey:@"id"];
 //            NSLog(@"%@,%ld",[NSString stringWithFormat:@"%@%@%@",FuWuQiUrl,get_huoquPhoto,ImageID],indexPath.section);
 //            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",FuWuQiUrl,get_huoquPhoto,ImageID]] placeholderImage:nil];
+//            NSLog(@"url == %@",[NSString stringWithFormat:@"%@%@%@",FuWuQiUrl,get_huoquPhoto,ImageID]);
             [cell.ImageViewG sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",FuWuQiUrl,get_huoquPhoto,ImageID]]];
         }
     return cell;
@@ -1164,6 +1185,9 @@
 //       vc.hidesBottomBarWhenPushed = YES;
 //       [self.navigationController pushViewController:vc animated:YES];
     
+    
+    
+    /*
      bannerMode *mode=self.imageViewArr[indexPath.section];
 //    NSArray * arrTitle = @[@"Invite friend",@"My Wallet"];
     if([mode.subPageType isEqualToString:@"NATIVE_PAGE"])
@@ -1209,7 +1233,11 @@
         avc.modeA = mode;
         [self.navigationController pushViewController:avc animated:YES];
     }
-    
+    */
+    if(indexPath.section==0)
+    {
+        [self btnViewAll:nil];
+    }
 }
 
 

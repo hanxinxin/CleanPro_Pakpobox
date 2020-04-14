@@ -26,7 +26,7 @@
 @property (nonatomic,strong)UITableView* DownTable;
 @property (nonatomic,strong)NSMutableArray* ArrayTable;
 @property (nonatomic,strong)UIButton* NextButton;
-@property (assign, nonatomic) NSInteger SelectWay;///1.是store  2.是 上门取
+@property (assign, nonatomic) NSInteger SelectWay;///1.是 上门取  2.是store
 @end
 
 @implementation EWashNextViewController

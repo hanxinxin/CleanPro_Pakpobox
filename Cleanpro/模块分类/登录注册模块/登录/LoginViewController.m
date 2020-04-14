@@ -184,6 +184,7 @@
     self.diquStr=self.DQNumber[0];
     // 控件的创建
     LMJDropdownMenu * dropdownMenu = [[LMJDropdownMenu alloc] init];
+    dropdownMenu.Style=1;
     [dropdownMenu setFrame:self.quhao_btn.frame];
     [UIBezierPathView setCornerOnLeft:4 view_b:dropdownMenu.mainBtn];
     [dropdownMenu setMenuTitles:self.DQNumber rowHeight:40];

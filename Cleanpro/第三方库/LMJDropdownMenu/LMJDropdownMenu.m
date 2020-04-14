@@ -92,7 +92,7 @@
     [_mainBtn setTitle:@"" forState:UIControlStateNormal];
     [_mainBtn addTarget:self action:@selector(clickMainBtn:) forControlEvents:UIControlEventTouchUpInside];
     _mainBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    _mainBtn.titleLabel.font    = [UIFont systemFontOfSize:14.f];
+    _mainBtn.titleLabel.font    = [UIFont systemFontOfSize:15.f];
     _mainBtn.titleEdgeInsets    = UIEdgeInsetsMake(0, 15, 0, 0);
     _mainBtn.selected           = NO;
     _mainBtn.backgroundColor    = [UIColor whiteColor];
@@ -101,18 +101,26 @@
 
     [self addSubview:_mainBtn];
     
+    if(_Style==1)
+    {
     
-    // 旋转尖头
-    _arrowMark = [[UIImageView alloc] initWithFrame:CGRectMake(_mainBtn.frame.size.width - 15, 0, 9, 9)];
-    _arrowMark.center = CGPointMake(VIEW_CENTER_X(_arrowMark), VIEW_HEIGHT(_mainBtn)/2);
-    _arrowMark.image  = [UIImage imageNamed:@"dropdownMenu_cornerIcon.png"];
-    [_mainBtn addSubview:_arrowMark];
-
+        // 旋转尖头
+        _arrowMark = [[UIImageView alloc] initWithFrame:CGRectMake(_mainBtn.frame.size.width - 15, 0, 9, 9)];
+        _arrowMark.center = CGPointMake(VIEW_CENTER_X(_arrowMark), VIEW_HEIGHT(_mainBtn)/2);
+        _arrowMark.image  = [UIImage imageNamed:@"dropdownMenu_cornerIcon.png"];
+        [_mainBtn addSubview:_arrowMark];
+    }else if (_Style==2)
+    {
+        // 旋转尖头
+        _arrowMark = [[UIImageView alloc] initWithFrame:CGRectMake(_mainBtn.frame.size.width - 15, 0, 14, 10)];
+        _arrowMark.center = CGPointMake(VIEW_CENTER_X(_arrowMark), VIEW_HEIGHT(_mainBtn)/2);
+        _arrowMark.image  = [UIImage imageNamed:@"icon_right1111"];
+        _mainBtn.selected=NO;
+        [_mainBtn addSubview:_arrowMark];
+    }
 }
-
-
-- (void)setMenuTitles:(NSArray *)titlesArr rowHeight:(CGFloat)rowHeight{
-    
+- (void)setMenuTitles:(NSArray *)titlesArr rowHeight:(CGFloat)rowHeight
+{
     if (self == nil) {
         return;
     }
@@ -139,6 +147,41 @@
     [_listView addSubview:_tableView];
 }
 
+- (void)setMenuTitles:(NSArray *)titlesArr rowHeight:(CGFloat)rowHeight Selectindex:(NSInteger)index{
+    
+    if (self == nil) {
+        return;
+    }
+    
+    _titleArr  = [NSArray arrayWithArray:titlesArr];
+    _rowHeight = rowHeight;
+    [_mainBtn setTitle:_titleArr[index] forState:UIControlStateNormal];
+    
+    // 下拉列表背景View
+    _listView = [[UIView alloc] init];
+    _listView.frame = CGRectMake(VIEW_X(self) , VIEW_Y_Bottom(self), VIEW_WIDTH(self),  0);
+    _listView.clipsToBounds       = YES;
+    _listView.layer.masksToBounds = NO;
+    _listView.layer.borderColor   = [UIColor lightTextColor].CGColor;
+    _listView.layer.borderWidth   = 0.5f;
+
+    
+    // 下拉列表TableView
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0,VIEW_WIDTH(_listView), VIEW_HEIGHT(_listView))];
+    _tableView.delegate        = self;
+    _tableView.dataSource      = self;
+    _tableView.separatorStyle  = UITableViewCellSeparatorStyleNone;
+    _tableView.bounces         = NO;
+    [_listView addSubview:_tableView];
+}
+
+-(void)setmenuTitleText:(NSInteger)index
+{
+    
+    [_mainBtn setTitle:[_titleArr objectAtIndex:index] forState:UIControlStateNormal];
+}
+
+
 - (void)clickMainBtn:(UIButton *)button{
     
     [self.superview addSubview:_listView]; // 将下拉视图添加到控件的俯视图上
@@ -164,9 +207,24 @@
     
     [UIView animateWithDuration:AnimateTime animations:^{
         
-        _arrowMark.transform = CGAffineTransformMakeRotation(M_PI);
-        _listView.frame  = CGRectMake(VIEW_X(_listView), VIEW_Y(_listView), VIEW_WIDTH(_listView), _rowHeight *_titleArr.count);
-        _tableView.frame = CGRectMake(0, 0, VIEW_WIDTH(_listView), VIEW_HEIGHT(_listView));
+        if(self->_Style==1)
+        {
+            self->_arrowMark.transform = CGAffineTransformMakeRotation(M_PI);
+        }else if (self->_Style==2)
+        {
+//           if(self.mainBtn.selected==NO)
+//           {
+//            self->_arrowMark.image  = [UIImage imageNamed:@"icon_rightDown12"];
+//               self.mainBtn.selected=YES;
+//           }else{
+//               self->_arrowMark.image  = [UIImage imageNamed:@"icon_right12"];
+//               self.mainBtn.selected=NO;
+//           }
+            self->_arrowMark.image  = [UIImage imageNamed:@"icon_right1111"];
+        }
+        
+        self->_listView.frame  = CGRectMake(VIEW_X(self->_listView), VIEW_Y(self->_listView), VIEW_WIDTH(self->_listView), self->_rowHeight *self->_titleArr.count);
+        self->_tableView.frame = CGRectMake(0, 0, VIEW_WIDTH(self->_listView), VIEW_HEIGHT(self->_listView));
         
     }completion:^(BOOL finished) {
         
@@ -189,7 +247,22 @@
     
     [UIView animateWithDuration:AnimateTime animations:^{
         
-        self->_arrowMark.transform = CGAffineTransformIdentity;
+        
+        if(self->_Style==1)
+        {
+            self->_arrowMark.transform = CGAffineTransformIdentity;
+        }else if (self->_Style==2)
+        {
+//           if(self.mainBtn.selected==NO)
+//           {
+//            self->_arrowMark.image  = [UIImage imageNamed:@"icon_rightDown12"];
+//               self.mainBtn.selected=YES;
+//           }else{
+//               self->_arrowMark.image  = [UIImage imageNamed:@"icon_right12"];
+//               self.mainBtn.selected=NO;
+//           }
+            self->_arrowMark.image  = [UIImage imageNamed:@"icon_right1111"];
+        }
         self->_listView.frame  = CGRectMake(VIEW_X(self->_listView), VIEW_Y(self->_listView), VIEW_WIDTH(self->_listView), 0);
         self->_tableView.frame = CGRectMake(0, 0, VIEW_WIDTH(self->_listView), VIEW_HEIGHT(self->_listView));
         

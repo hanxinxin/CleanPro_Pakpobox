@@ -72,6 +72,11 @@
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (error) {
+        NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+        NSString * receive = [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+        NSLog(@"error.receive=%@",receive);
+        }
         failure(error);
     }];
 }
@@ -84,13 +89,23 @@
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         Success(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (error) {
+        NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+        NSString * receive = [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+        NSLog(@"error.receive=%@",receive);
+                
+                }
         failure(error);
     }];
 }
 
 
 ///// 获取 statusCode
--(void)PostURL_Code:(NSString *)URLString parameters:(id)parameters progress:(void(^)(id progress))Progress Success:(void (^)(NSInteger statusCode,id responseObject))Success failure:(void (^)(NSError *error))failure
+-(void)PostURL_Code:(NSString *)URLString
+         parameters:(id)parameters
+           progress:(void(^)(id progress))Progress
+            Success:(void (^)(NSInteger statusCode,id responseObject))Success
+            failure:(void (^)(NSError *error))failure
 {
     self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPENORMAL];
     [self.manager POST:URLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -101,9 +116,101 @@
         NSLog(@"statusCode == %ld",    responses.statusCode );
         Success(responses.statusCode,responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSString * receive=@"";
+        if (error) {
+            NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+             receive= [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+            NSLog(@"error.receive=%@",receive);
+            
+        }
         failure(error);
     }];
 }
+///// 获取 statusCode
+-(void)PostURL_Code_error:(NSString *)URLString
+         parameters:(id)parameters
+           progress:(void(^)(id progress))Progress
+            Success:(void (^)(NSInteger statusCode,id responseObject))Success
+            failure:(void (^)(id receive,NSError *error))failure
+{
+    self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPENORMAL];
+    [self.manager POST:URLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //        NSLog(@"task===  %@",task);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)task.response;
+//        statusCode(responses.statusCode);
+        NSLog(@"statusCode == %ld",    responses.statusCode );
+        Success(responses.statusCode,responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSString * receive=@"";
+        if (error) {
+            NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+             receive= [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+            NSLog(@"error.receive=%@",receive);
+            
+        }
+        failure(receive,error);
+    }];
+}
+
+///// E-Wash 获取 请求头加token
+-(void)PostURL_E_washToken:(NSString*)TokenE_wash URL:(NSString *)URLString parameters:(id)parameters progress:(void(^)(id progress))Progress Success:(void (^)(NSInteger statusCode,id responseObject))Success failure:(void (^)(NSInteger statusCode,NSError *error))failure
+{
+    self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPENORMAL];
+    [self.manager.requestSerializer setValue: TokenE_wash forHTTPHeaderField:@"X-MEMBER-TOKEN"];
+    [self.manager.requestSerializer setValue: TokenE_wash forHTTPHeaderField:@"X-USER-TOKEN"];
+    [self.manager POST:URLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //        NSLog(@"task===  %@",task);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)task.response;
+        //        statusCode(responses.statusCode);
+//        NSLog(@"statusCode == %ld",    responses.statusCode );
+        Success(responses.statusCode,responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)task.response;
+        //        statusCode(responses.statusCode);
+//        NSLog(@"statusCode == %ld",    responses.statusCode );
+        if (error) {
+        NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+        NSString * receive = [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+            NSLog(@"error.receive=%@",receive);
+//            //字符串再生成NSData
+//            NSData *data = [receive dataUsingEncoding:NSUTF8StringEncoding];
+//            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
+            }
+        failure(responses.statusCode,error);
+    }];
+}
+///// E-Wash 获取 请求头加token
+-(void)PostURL_E_washToken_error:(NSString*)TokenE_wash
+                             URL:(NSString *)URLString
+                      parameters:(id)parameters
+                        progress:(void(^)(id progress))Progress
+                         Success:(void (^)(NSInteger statusCode,id responseObject))Success
+                         failure:(void (^)(id, NSInteger, NSError *))failure
+{
+    self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPENORMAL];
+    [self.manager.requestSerializer setValue: TokenE_wash forHTTPHeaderField:@"X-MEMBER-TOKEN"];
+    [self.manager.requestSerializer setValue: TokenE_wash forHTTPHeaderField:@"X-USER-TOKEN"];
+    [self.manager POST:URLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //        NSLog(@"task===  %@",task);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)task.response;
+        //        statusCode(responses.statusCode);
+//        NSLog(@"statusCode == %ld",    responses.statusCode );
+        Success(responses.statusCode,responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)task.response;
+        NSString * receive=@"";
+        if (error) {
+            NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+             receive= [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+            NSLog(@"error.receive=%@",receive);
+        }
+        failure(receive,responses.statusCode,error);
+    }];
+}
+
 
 ///// 获取 请求头加token
 -(void)PostURL_Token:(NSString *)URLString parameters:(id)parameters progress:(void(^)(id progress))Progress Success:(void (^)(NSInteger statusCode,id responseObject))Success failure:(void (^)(NSInteger statusCode,NSError *error))failure
@@ -121,18 +228,26 @@
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)task.response;
         //        statusCode(responses.statusCode);
 //        NSLog(@"statusCode == %ld",    responses.statusCode );
+        if (error) {
+                NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+                NSString * receive = [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+                    NSLog(@"error.receive=%@",receive);
+                    
+                    }
         failure(responses.statusCode,error);
     }];
 }
 
 /////请求头加token
--(void)GETWithCompleteURL_token:(NSString *)URLString
+-(void)GETWithCompleteURL_token:(NSString*)tokenStrA URLString:(NSString *)URLString
                parameters:(id)parameters
                  progress:(void(^)(id progress))progress
                   success:(void (^)(id responseObject))success
                   failure:(void (^)(NSInteger statusCode,NSError *error))failure{
     // 设置请求头
-    [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"userToken"];
+    [self.manager.requestSerializer setValue: tokenStrA forHTTPHeaderField:@"X-MEMBER-TOKEN"];
+    [self.manager.requestSerializer setValue: tokenStrA forHTTPHeaderField:@"X-USER-TOKEN"];
+//    [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"X-MEMBER-TOKEN"];
     //    _manager.securityPolicy=[self customSecurityPolicy];
     _manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPENORMAL];
     
@@ -145,6 +260,45 @@
         success(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)task.response;
+        if (error) {
+        NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+        NSString * receive = [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+            NSLog(@"error.receive=%@",receive);
+            
+            }
+        failure(responses.statusCode,error);
+    }];
+}
+
+
+/////请求头加token
+-(void)GETWithCompleteURL_token:(NSString *)URLString
+               parameters:(id)parameters
+                 progress:(void(^)(id progress))progress
+                  success:(void (^)(id responseObject))success
+                  failure:(void (^)(NSInteger statusCode,NSError *error))failure{
+    // 设置请求头
+//    [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"userToken"];
+    [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"X-MEMBER-TOKEN"];
+    [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"X-USER-TOKEN"];
+    //    _manager.securityPolicy=[self customSecurityPolicy];
+    _manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPENORMAL];
+    
+    [_manager GET:URLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
+        progress(downloadProgress);
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //        NSLog(@"success");
+        //        NSDictionary *responseObject1 = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        //        success(responseObject1);
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)task.response;
+        if (error) {
+        NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+        NSString * receive = [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+            NSLog(@"error.receive=%@",receive);
+            
+            }
         failure(responses.statusCode,error);
     }];
 }

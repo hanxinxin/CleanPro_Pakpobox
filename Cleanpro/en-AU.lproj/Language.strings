@@ -16,8 +16,7 @@
 //
 "Balance"="";
 "Reward Points"="";
-"Collections for you!"="";
-"Viwe all"="";
+
 ////
 //""="";
 ////
@@ -112,6 +111,8 @@
 "Order No"="";
 "Location"="";
 "Machine No"="";
+"no APP available"="";
+"APP available"="";
 /////
 "Tips"="";
 "Bluetooth connection"="";
@@ -191,3 +192,4 @@
 "English"="";
 "Malay"="";
 "Thai"="";
+"Chinese"="";

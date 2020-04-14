@@ -91,7 +91,7 @@ static MBProgressHUD* HUD;
     
     // 将加密后的文件存储到桌面
     //    [base64Data writeToFile:@"/Users/wangpengfei/Desktop/IDNumber" atomically:YES];
-     NSLog(@"测试断点33");
+//     NSLog(@"测试断点33");
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:base64Data forKey:@"YonghuID"];
     return nil;

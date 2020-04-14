@@ -36,4 +36,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *mendianMiaoShu;
 @property (weak, nonatomic) IBOutlet UIButton *daohangBtn;
 
+@property (strong, nonatomic) IBOutlet UILabel *NoAppLabel;
+@property (strong, nonatomic) IBOutlet UILabel *YesAppLabel;
+
+
+
 @end

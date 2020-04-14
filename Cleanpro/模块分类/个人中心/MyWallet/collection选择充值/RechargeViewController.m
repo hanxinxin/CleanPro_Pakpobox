@@ -218,13 +218,13 @@
 
 - (IBAction)pay_touch:(id)sender {
 ////    [self addtextView_view];
-//    NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
-//    SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-//    [self post_pay_chongzhi_touch:self.payNumber member_id:ModeUser.yonghuID];
+    NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+    SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    [self post_pay_chongzhi_touch:self.payNumber member_id:ModeUser.yonghuID];
     
-    ///// 用于测试PayPal支付页面
-    NSString *clientToken = @"CLIENT_TOKEN_FROM_SERVER";
-    [self showDropIn:clientToken];
+//    ///// 用于测试PayPal支付页面
+//    NSString *clientToken = @"CLIENT_TOKEN_FROM_SERVER";
+//    [self showDropIn:clientToken];
 }
 
 -(void)post_pay_chongzhi_touch:(NSString*)amount member_id:(NSString*)member_id
