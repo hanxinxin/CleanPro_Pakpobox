@@ -55,14 +55,14 @@
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "C0B2837A-9A3B-40FF-8808-EB4F1237C270 - c7df01d95f5521db"
+                  uuid = "C0B2837A-9A3B-40FF-8808-EB4F1237C270 - 6e2a67ade60b8062"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "-[TPPasswordTextView setElementCount:]"
                   moduleName = "Cleanpro"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93/TPPasswordTextView/TPPasswordTextView.m"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0(4.5%E6%97%A5)/Cleanpro/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93/TPPasswordTextView/TPPasswordTextView.m"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "69"
@@ -70,14 +70,14 @@
                   offsetFromSymbolStart = "164">
                </Location>
                <Location
-                  uuid = "C0B2837A-9A3B-40FF-8808-EB4F1237C270 - 24a9fb1884c61eea"
+                  uuid = "C0B2837A-9A3B-40FF-8808-EB4F1237C270 - 8d5c9d6c3d98bf53"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "__38-[TPPasswordTextView setElementCount:]_block_invoke"
                   moduleName = "Cleanpro"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93/TPPasswordTextView/TPPasswordTextView.m"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0(4.5%E6%97%A5)/Cleanpro/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93/TPPasswordTextView/TPPasswordTextView.m"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "71"
@@ -119,74 +119,6 @@
             endingLineNumber = "241"
             landmarkName = "-textField:shouldChangeCharactersInRange:replacementString:"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "823DCD37-D3EF-48AD-9024-61D4ECB5B83C"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d88;&#x606f;&#x6a21;&#x5757;/IMessageViewController.m"
-            timestampString = "587963011.230992"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "363"
-            endingLineNumber = "363"
-            landmarkName = "-Get_Message_delete:indexPath:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3AF75B80-C07C-440D-BC22-494F5E34FB4A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d88;&#x606f;&#x6a21;&#x5757;/IMessageViewController.m"
-            timestampString = "587963011.231035"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "349"
-            endingLineNumber = "349"
-            landmarkName = "-Get_MessageList_arr"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "6B858C86-B2DA-44B8-B353-C9BCAC5B7C06"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d88;&#x606f;&#x6a21;&#x5757;/IMessageViewController.m"
-            timestampString = "587963011.231073"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "345"
-            endingLineNumber = "345"
-            landmarkName = "-Get_MessageList_arr"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "0EDCC4AB-4A67-4443-8AA6-CCFAABA97D21"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d88;&#x606f;&#x6a21;&#x5757;/IMessageViewController.m"
-            timestampString = "587963011.231112"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "632"
-            endingLineNumber = "632"
-            landmarkName = "IMessageViewController"
-            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -713,33 +645,33 @@
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "95B7BE4E-9DDE-4191-A6BB-B29CF10AA615 - 586867e1c2dd1f77"
+                  uuid = "95B7BE4E-9DDE-4191-A6BB-B29CF10AA615 - ce847a1e11db2262"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "-[ForgetPasswordViewController getVode_touch:]"
                   moduleName = "Cleanpro"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E6%A8%A1%E5%9D%97/%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81/ForgetPasswordViewController.m"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0(4.5%E6%97%A5)/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E6%A8%A1%E5%9D%97/%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81/ForgetPasswordViewController.m"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "160"
-                  endingLineNumber = "160"
+                  startingLineNumber = "161"
+                  endingLineNumber = "161"
                   offsetFromSymbolStart = "548">
                </Location>
                <Location
-                  uuid = "95B7BE4E-9DDE-4191-A6BB-B29CF10AA615 - 301b66526777585"
+                  uuid = "95B7BE4E-9DDE-4191-A6BB-B29CF10AA615 - 95edab9af5714890"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "__46-[ForgetPasswordViewController getVode_touch:]_block_invoke"
                   moduleName = "Cleanpro"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E6%A8%A1%E5%9D%97/%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81/ForgetPasswordViewController.m"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0(4.5%E6%97%A5)/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E6%A8%A1%E5%9D%97/%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81/ForgetPasswordViewController.m"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "161"
-                  endingLineNumber = "161"
+                  startingLineNumber = "162"
+                  endingLineNumber = "162"
                   offsetFromSymbolStart = "48">
                </Location>
             </Locations>
@@ -822,70 +754,6 @@
             startingLineNumber = "370"
             endingLineNumber = "370"
             landmarkName = "-pay_touch:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "1F2A131D-BAB5-4FC7-8EB3-EB9209A7FBE0"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d17;&#x8863;&#x6a21;&#x5757;/&#x6d17;&#x8863;/LaundryDetailsViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "801"
-            endingLineNumber = "801"
-            landmarkName = "-postOrder"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "1F2A131D-BAB5-4FC7-8EB3-EB9209A7FBE0 - ead0c90e4a5e3a3"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[LaundryDetailsViewController postOrder]"
-                  moduleName = "Cleanpro"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E6%B4%97%E8%A1%A3%E6%A8%A1%E5%9D%97/%E6%B4%97%E8%A1%A3/LaundryDetailsViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "801"
-                  endingLineNumber = "801"
-                  offsetFromSymbolStart = "1208">
-               </Location>
-               <Location
-                  uuid = "1F2A131D-BAB5-4FC7-8EB3-EB9209A7FBE0 - bfa4a7efe916fc2a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__41-[LaundryDetailsViewController postOrder]_block_invoke"
-                  moduleName = "Cleanpro"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E6%B4%97%E8%A1%A3%E6%A8%A1%E5%9D%97/%E6%B4%97%E8%A1%A3/LaundryDetailsViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "802"
-                  endingLineNumber = "802"
-                  offsetFromSymbolStart = "48">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "C57D4DAB-BBAD-4615-AFFA-8BC126EB7D67"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d17;&#x8863;&#x6a21;&#x5757;/&#x6d17;&#x8863;/LaundryDetailsViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "789"
-            endingLineNumber = "789"
-            landmarkName = "-postOrder"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1001,14 +869,14 @@
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "3842860D-04DD-43CB-8C95-34F78D4AC528 - 8c02100007230d1a"
+                  uuid = "3842860D-04DD-43CB-8C95-34F78D4AC528 - a343b93aedd4b075"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "-[MyWalletViewController getToken]"
                   moduleName = "Cleanpro"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83/MyWallet/MyWalletViewController.m"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0(4.5%E6%97%A5)/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83/MyWallet/MyWalletViewController.m"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "114"
@@ -1016,14 +884,14 @@
                   offsetFromSymbolStart = "36">
                </Location>
                <Location
-                  uuid = "3842860D-04DD-43CB-8C95-34F78D4AC528 - ce74f2974eaafc55"
+                  uuid = "3842860D-04DD-43CB-8C95-34F78D4AC528 - e1355bada45d413a"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "__34-[MyWalletViewController getToken]_block_invoke"
                   moduleName = "Cleanpro"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83/MyWallet/MyWalletViewController.m"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0(4.5%E6%97%A5)/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83/MyWallet/MyWalletViewController.m"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "115"
@@ -1031,6 +899,70 @@
                   offsetFromSymbolStart = "48">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4EBD71AE-26C7-4FAF-91FC-AFB202608119"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/E-Wash/E-WashLogin/NewLoginViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
+            landmarkName = "-navigationShouldPopOnBackButton"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "4EBD71AE-26C7-4FAF-91FC-AFB202608119 - 8613b3702ff1a09f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[NewLoginViewController navigationShouldPopOnBackButton]"
+                  moduleName = "Cleanpro"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0(4.5%E6%97%A5)/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/E-Wash/E-WashLogin/NewLoginViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "175"
+                  endingLineNumber = "175"
+                  offsetFromSymbolStart = "60">
+               </Location>
+               <Location
+                  uuid = "4EBD71AE-26C7-4FAF-91FC-AFB202608119 - 8613b3702ff1a09f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[NewLoginViewController navigationShouldPopOnBackButton]"
+                  moduleName = "Cleanpro"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0(4.5%E6%97%A5)/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/E-Wash/E-WashLogin/NewLoginViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "175"
+                  endingLineNumber = "175"
+                  offsetFromSymbolStart = "92">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "14D519D2-0E4A-4D19-8BBB-F2F020D3A504"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x4e2a;&#x4eba;&#x4e2d;&#x5fc3;/EwashMyViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "208"
+            endingLineNumber = "208"
+            landmarkName = "-updateMessage"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

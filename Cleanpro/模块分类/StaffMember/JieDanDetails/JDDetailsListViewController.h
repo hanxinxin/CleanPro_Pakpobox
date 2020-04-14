@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JDDetailsListViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UITableView *STable;
-
+@property (nonatomic, nonatomic) OrderListMode*mode;
 @end
 
 NS_ASSUME_NONNULL_END

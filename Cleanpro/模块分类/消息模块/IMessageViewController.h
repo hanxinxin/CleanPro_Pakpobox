@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface IMessageViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITableView *tableViewT;
-
+@property (assign, nonatomic) NSInteger MessageStyle;
 @end
 
 NS_ASSUME_NONNULL_END

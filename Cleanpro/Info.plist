@@ -68,8 +68,6 @@
 	<string>Need your consent to use the camera to scan the QR code</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Need your consent to use the camera to scan the QR code</string>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

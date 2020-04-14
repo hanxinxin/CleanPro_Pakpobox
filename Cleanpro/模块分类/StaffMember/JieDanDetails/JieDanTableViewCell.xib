@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,7 +23,7 @@
                             <constraint firstAttribute="height" constant="30" id="0gJ-Cl-cgQ"/>
                             <constraint firstAttribute="width" constant="110" id="6mO-f7-3Nd"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" red="0.078418947756290436" green="0.078440062701702118" blue="0.078416161239147186" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -34,9 +34,13 @@
                             <constraint firstAttribute="height" constant="25" id="JLn-xT-K5L"/>
                             <constraint firstAttribute="width" constant="65" id="dBC-Dz-bhd"/>
                         </constraints>
-                        <state key="normal" title="Cfm">
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <state key="normal" title="Confirm">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
+                        <connections>
+                            <action selector="Cfm_touch:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="5VX-F8-7kA"/>
+                        </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nyA-9S-Pid">
                         <rect key="frame" x="16" y="12.5" width="25" height="25"/>
@@ -46,6 +50,12 @@
                         </constraints>
                         <state key="normal" title="Button" image="coupons.png"/>
                     </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Courier collect" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8P1-Wi-dxV">
+                        <rect key="frame" x="45" y="10" width="60" height="31"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="nyA-9S-Pid" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="78X-l7-gLX"/>
@@ -54,6 +64,10 @@
                     <constraint firstItem="7Ao-Kg-qNk" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="9fA-y1-UPO"/>
                     <constraint firstItem="nyA-9S-Pid" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="JyQ-9a-0kf"/>
                     <constraint firstAttribute="trailing" secondItem="7Ao-Kg-qNk" secondAttribute="trailing" constant="16" id="lAZ-MT-tNJ"/>
+                    <constraint firstItem="R67-4u-Jq1" firstAttribute="leading" secondItem="8P1-Wi-dxV" secondAttribute="trailing" id="qjH-4J-Pvz"/>
+                    <constraint firstItem="8P1-Wi-dxV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="v6y-2D-c2G"/>
+                    <constraint firstItem="8P1-Wi-dxV" firstAttribute="leading" secondItem="nyA-9S-Pid" secondAttribute="trailing" constant="4" id="wZX-vU-uBj"/>
+                    <constraint firstAttribute="bottom" secondItem="8P1-Wi-dxV" secondAttribute="bottom" constant="9" id="wgS-nQ-sXE"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
@@ -61,6 +75,7 @@
                 <outlet property="CenterLabel" destination="R67-4u-Jq1" id="GKB-50-aoz"/>
                 <outlet property="Cfmbtn" destination="7Ao-Kg-qNk" id="bbD-IR-kVb"/>
                 <outlet property="Imagebtn" destination="nyA-9S-Pid" id="Iov-Sa-eSd"/>
+                <outlet property="leftTitle" destination="8P1-Wi-dxV" id="NHM-7A-wvm"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="132.58928571428572"/>
         </tableViewCell>

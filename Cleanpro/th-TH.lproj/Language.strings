@@ -15,8 +15,7 @@
 //    //
 "Balance"="สมดุล";
 "Reward Points"="คะแนนสะสม";
-"Collections for you!"="คอลเล็กชันสำหรับคุณ!";
-"Viwe all"="Viwe all";
+
 ////    ////
 //""=// "";
 ////    ////
@@ -110,7 +109,9 @@
 "Charges"="ค่าใช้จ่าย";
 "Order No"="หมายเลขสั่งซื้อ";
 "Location"="สถานที่";
-"Machine No"="Machine No";
+"no APP available"="ไม่มีแอปให้บริการ";
+"APP available"="แอพที่มีอยู่";
+"Machine No"="หมายเลขเครื่อง";
 /////    /////
 "Tips"="เคล็ดลับ";
 "Bluetooth connection"="การเชื่อมต่อบลูทู ธ ";
@@ -193,3 +194,4 @@
 "English"="อังกฤษ";
 "Malay"="ภาษามลายู";
 "Thai"="ไทย";
+"Chinese"="จีน";

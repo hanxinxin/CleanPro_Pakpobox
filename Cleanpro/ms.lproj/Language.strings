@@ -16,8 +16,7 @@
 //
 "Balance"="Baki";
 "Reward Points"="Mata Ganjaran";
-"Collections for you!"="Koleksi untuk anda";
-"Viwe all"="Lihat Semua";
+
 ////
 //""="";
 ////
@@ -111,6 +110,8 @@
 "Charges"="Caj";
 "Order No"="Nombor pesanan";
 "Location"="Lokasi";
+"no APP available"="tiada APP tersedia";
+"APP available"="APP tersedia";
 "Machine No"="Nombor mesin";
 /////
 "Tips"="Tips";
@@ -193,3 +194,4 @@
 "English"="Bahasa Inggeris";
 "Malay"="Melayu";
 "Thai"="Thai";
+"Chinese"="Cina";

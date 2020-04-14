@@ -117,10 +117,41 @@
     
     
     [HudViewFZ labelExample:self.view];
+//    NSDictionary * dict=@{@"token":self.TokenString,
+//                          @"password":self.setPassword_textField.text};
+//    //        NSLog(@"url=== %@",[NSString stringWithFormat:@"%@%@",FuWuQiUrl,P_sendVerifyCode]);
+//    [[AFNetWrokingAssistant shareAssistant] PostURL_Code:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,P_zhaohuiPasswordCZ] parameters:dict progress:^(id progress) {
+//        NSLog(@"请求成功 = %@",progress);
+//    }Success:^(NSInteger statusCode,id responseObject) {
+//        [HudViewFZ HiddenHud];
+//        if(statusCode==200)
+//        {
+//            for (UIViewController *temp in self.navigationController.viewControllers) {
+//                if ([temp isKindOfClass:[HomeViewController class]]) {
+//                    [self.navigationController popToViewController:temp animated:YES];
+//
+//                }
+//            }
+//            for (UIViewController *temp in self.navigationController.viewControllers) {
+//                if ([temp isKindOfClass:[MyAccountViewController class]]) {
+//                    [self.navigationController popToViewController:temp animated:YES];
+//                    ////            return NO;//这里要设为NO，不是会返回两次。返回到主界面。
+//                }
+//            }
+//        }else
+//        {
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"statusCode error", @"Language") andDelay:2.0];
+//        }
+//    } failure:^(NSError *error) {
+//        NSLog(@"error = %@",error);
+//        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+//        [HudViewFZ HiddenHud];
+//    }];
+    
     NSDictionary * dict=@{@"token":self.TokenString,
                           @"password":self.setPassword_textField.text};
     //        NSLog(@"url=== %@",[NSString stringWithFormat:@"%@%@",FuWuQiUrl,P_sendVerifyCode]);
-    [[AFNetWrokingAssistant shareAssistant] PostURL_Code:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,P_zhaohuiPasswordCZ] parameters:dict progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Code:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_retrievePasswordReset] parameters:dict progress:^(id progress) {
         NSLog(@"请求成功 = %@",progress);
     }Success:^(NSInteger statusCode,id responseObject) {
         [HudViewFZ HiddenHud];
@@ -147,8 +178,6 @@
         [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
         [HudViewFZ HiddenHud];
     }];
-    
-    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -60,7 +60,8 @@
         [self presentViewController:alert animated:YES completion:nil];
     }
 //    self.title=FGGetStringWithKeyFromTable(@"Nearby_A", @"Language");
-    //    设置-隐私-定位服务”打开定位服务，并允许StorHub使用定位服务的提示窗口
+    self.NoAppLabel.text = FGGetStringWithKeyFromTable(@"No APP available", @"Language");
+    self.YesAppLabel.text = FGGetStringWithKeyFromTable(@"APP available", @"Language");
     airAnnotation = [[AircraftAnnotation alloc] init];
     [self addMapView_c];
     

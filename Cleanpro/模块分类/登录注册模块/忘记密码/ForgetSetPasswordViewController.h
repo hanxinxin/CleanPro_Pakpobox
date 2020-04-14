@@ -15,4 +15,5 @@
 @property (weak, nonatomic) IBOutlet HQTextField *setPassword_textField;
 @property (weak, nonatomic) IBOutlet UIButton *Complete;
 @property (strong, nonatomic)NSString * TokenString;///// 验证token
+
 @end
