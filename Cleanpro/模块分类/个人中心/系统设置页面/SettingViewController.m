@@ -14,6 +14,7 @@
 #import "newPhoneViewController.h"
 #import "ExistingPayViewController.h"
 #import "ZGQActionSheetView.h"
+#import "EwashMyViewController.h"
 
 @interface SettingViewController ()<UITableViewDelegate,UITableViewDataSource,ZGQActionSheetViewDelegate>
 @property (nonatomic,strong)NSArray * arrtitle;
@@ -34,7 +35,8 @@
     self.edgesForExtendedLayout = UIRectEdgeTop;
     
     
-    arrtitle=@[FGGetStringWithKeyFromTable(@"Payment Setting", @"Language"),FGGetStringWithKeyFromTable(@"Language", @"Language"),FGGetStringWithKeyFromTable(@"Version", @"Language"),FGGetStringWithKeyFromTable(@"Contact us", @"Language")];
+//    arrtitle=@[FGGetStringWithKeyFromTable(@"Payment Setting", @"Language"),FGGetStringWithKeyFromTable(@"Language", @"Language"),FGGetStringWithKeyFromTable(@"Version", @"Language"),FGGetStringWithKeyFromTable(@"Contact us", @"Language")];
+    arrtitle=@[FGGetStringWithKeyFromTable(@"Language", @"Language"),FGGetStringWithKeyFromTable(@"Version", @"Language")];
 //    [self addsetTableView];
     [self.NextSetp setTitle:FGGetStringWithKeyFromTable(@"Log out", @"Language") forState:(UIControlStateNormal)];
     [self.navigationController.navigationBar setTranslucent:NO];
@@ -97,17 +99,25 @@
 - (IBAction)Logout_touch:(id)sender {
      NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:@"1" forKey:@"Token"];
+    [userDefaults setObject:@"1" forKey:@"memberId"];
+    [userDefaults setObject:@"1" forKey:@"mobile"];
     [jiamiStr base64Data_encrypt:@"1"];
-    [userDefaults setObject:@"1" forKey:@"YHToken"];
+//    [userDefaults setObject:@"1" forKey:@"YHToken"];// 不能屏蔽  不然登录有问题。
     [userDefaults setObject:@"1" forKey:@"phoneNumber"];
     [userDefaults setObject:nil forKey:@"SaveUserMode"];
     [userDefaults setObject:@"1" forKey:@"logCamera"];
+    [userDefaults setObject:@"1" forKey:@"userId"];
 //    [defaults synchronize];
     NSNotification *notification =[NSNotification notificationWithName:@"UIshuaxinLog" object: nil];
     //通过通知中心发送通知
     [[NSNotificationCenter defaultCenter] postNotification:notification];
     for (UIViewController *temp in self.navigationController.viewControllers) {
         if ([temp isKindOfClass:[MyAccountViewController class]]) {
+            [self.navigationController popToViewController:temp animated:YES];
+        }
+    }
+    for (UIViewController *temp in self.navigationController.viewControllers) {
+        if ([temp isKindOfClass:[EwashMyViewController class]]) {
             [self.navigationController popToViewController:temp animated:YES];
         }
     }
@@ -122,13 +132,13 @@
 
 #pragma mark -------- Tableview -------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-//    return arrtitle.count;
-    return 1;
+    return arrtitle.count;
+//    return 1;
 }
 //4、设置组数
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-//    return 1;
-    return arrtitle.count;
+    return 1;
+//    return arrtitle.count;
 }
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -145,6 +155,7 @@
     [cell.contentView addSubview:lbl];
     //cell选中效果
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    /*
     if(indexPath.section == 0)
     {
         
@@ -184,8 +195,21 @@
         cell.textLabel.text = [arrtitle objectAtIndex:indexPath.section];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
     }
-        NSLog(@"%ld",(long)indexPath.row);
-
+*/
+    if(indexPath.row==0)
+    {
+        cell.textLabel.text = [arrtitle objectAtIndex:indexPath.row];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
+    }else if(indexPath.row==1)
+    {
+        cell.textLabel.text = [arrtitle objectAtIndex:indexPath.row];
+        NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary];
+        // app版本
+        NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+        [cell.detailTextLabel setText:app_Version];
+        [cell.detailTextLabel setTextColor:[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0]];
+    }
+     NSLog(@"%ld",(long)indexPath.row);
 //    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
     cell.textLabel.textColor = [UIColor darkGrayColor];
     cell.backgroundColor = [UIColor whiteColor];
@@ -224,6 +248,7 @@
 //选中时 调用的方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    /*
     NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"];
     if(indexPath.section==0)
     {
@@ -253,7 +278,7 @@
         }
     }else if(indexPath.section==1)
     {
-        NSArray *optionArray = @[FGGetStringWithKeyFromTable(@"English", @"Language"),FGGetStringWithKeyFromTable(@"Malay", @"Language"),FGGetStringWithKeyFromTable(@"Thai", @"Language")];
+        NSArray *optionArray = @[FGGetStringWithKeyFromTable(@"English", @"Language"),FGGetStringWithKeyFromTable(@"Malay", @"Language"),FGGetStringWithKeyFromTable(@"Thai", @"Language"),FGGetStringWithKeyFromTable(@"Chinese", @"Language")];
         ZGQActionSheetView *sheetView = [[ZGQActionSheetView alloc] initWithOptions:optionArray];
         sheetView.tag=202;
         sheetView.delegate = self;
@@ -271,7 +296,15 @@
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
-    
+     */
+    if(indexPath.row==0)
+    {
+        NSArray *optionArray = @[FGGetStringWithKeyFromTable(@"English", @"Language")];
+        ZGQActionSheetView *sheetView = [[ZGQActionSheetView alloc] initWithOptions:optionArray];
+        sheetView.tag=202;
+        sheetView.delegate = self;
+        [sheetView show];
+    }
 }
 
 
@@ -295,6 +328,11 @@
         {
              NSLog(@"泰文");
             [Change setNewLanguage:TaiWen];
+        }
+        else if(index==3)
+        {
+             NSLog(@"中文");
+            [Change setNewLanguage:CNS];
         }
     }
 }

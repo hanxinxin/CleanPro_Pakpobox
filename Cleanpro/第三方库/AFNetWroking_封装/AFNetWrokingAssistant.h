@@ -33,6 +33,7 @@
 ///// 获取 statusCode
 //-(void)PostURL:(NSString *)URLString parameters:(id)parameters progress:(void(^)(id progress))Progress statusCode:(void (^)(NSInteger statusCode))success Success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
 -(void)PostURL_Code:(NSString *)URLString parameters:(id)parameters progress:(void(^)(id progress))Progress Success:(void (^)(NSInteger statusCode,id responseObject))Success failure:(void (^)(NSError *error))failure;
+-(void)PostURL_Code_error:(NSString *)URLString parameters:(id)parameters progress:(void(^)(id progress))Progress Success:(void (^)(NSInteger statusCode,id responseObject))Success failure:(void (^)(id receive,NSError *error))failure;
 
 ///// 获取 请求头加token   error 也返回 statusCode
 //-(void)PostURL_Token:(NSString *)URLString parameters:(id)parameters progress:(void(^)(id progress))Progress Success:(void (^)(NSInteger statusCode,id responseObject))Success failure:(void (^)(NSError *error))failure;
@@ -44,6 +45,16 @@
                        progress:(void(^)(id progress))progress
                         success:(void (^)(id responseObject))success
                         failure:(void (^)(NSInteger statusCode,NSError *error))failure;
+/////E-Wash 请求头加token
+-(void)GETWithCompleteURL_token:(NSString*)tokenStrA URLString:(NSString *)URLString
+               parameters:(id)parameters
+                 progress:(void(^)(id progress))progress
+                  success:(void (^)(id responseObject))success
+                        failure:(void (^)(NSInteger statusCode,NSError *error))failure;
+///// E-Wash 获取 请求头加token
+-(void)PostURL_E_washToken:(NSString*)TokenE_wash URL:(NSString *)URLString parameters:(id)parameters progress:(void(^)(id progress))Progress Success:(void (^)(NSInteger statusCode,id responseObject))Success failure:(void (^)(NSInteger statusCode,NSError *error))failure;
+///错误显示的
+-(void)PostURL_E_washToken_error:(NSString*)TokenE_wash URL:(NSString *)URLString parameters:(id)parameters progress:(void(^)(id progress))Progress Success:(void (^)(NSInteger statusCode,id responseObject))Success failure:(void (^)(id receive,NSInteger statusCode,NSError *error))failure;
 //常用Get网络请求方法
 -(void)GETWithCompleteURL:(NSString *)URLString
                parameters:(id)parameters

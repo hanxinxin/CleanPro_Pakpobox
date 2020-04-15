@@ -219,6 +219,7 @@
         UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
         IMessageViewController *vc=[main instantiateViewControllerWithIdentifier:@"IMessageViewController"];
         vc.hidesBottomBarWhenPushed = YES;
+        vc.MessageStyle=2;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -237,6 +238,7 @@
         UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
         IMessageViewController *vc=[main instantiateViewControllerWithIdentifier:@"IMessageViewController"];
         vc.hidesBottomBarWhenPushed = YES;
+        vc.MessageStyle=2;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

@@ -10,6 +10,7 @@
 #define CleanproHeader_pch
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
+#define rgba(r,g,b,A) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:A]
 #define NAVIGATION_HEIGHT (CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]) + CGRectGetHeight(self.navigationController.navigationBar.frame))
 
 #define kIs_iphone (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
@@ -58,11 +59,11 @@
 #import "DryerViewController.h"
 #import "LaundryViewController.h"
 
-
+#import "EWashHeader.h"
 #import "ClassAll.h"
 #import "SaveUserIDMode.h"
-
-
+#import "MJExtension.h"
+#import "DataModel.h"
 
 
 ////加载语言的宏
@@ -84,6 +85,7 @@
 
 #define phoneNumberString [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"]]
 #define TokenStr [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"]]
+#define userIdStr [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"userId"]]
 #define getRectNavAndStatusHight self.navigationController.navigationBar.frame.size.height+[[UIApplication sharedApplication] statusBarFrame].size.height
 
 

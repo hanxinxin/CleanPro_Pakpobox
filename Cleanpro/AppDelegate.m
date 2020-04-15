@@ -89,8 +89,13 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
         
         [userDefaults setObject:@"1" forKey:@"Token"];
         [userDefaults setObject:@"1" forKey:@"phoneNumber"];
+        [userDefaults setObject:@"1" forKey:@"mobile"];
+        [userDefaults setObject:@"1" forKey:@"memberId"];
+        [userDefaults setObject:@"1" forKey:@"nickname"];
+        [userDefaults setObject:@"1" forKey:@"username"];
         [userDefaults setObject:@"1" forKey:@"logCamera"];
         [userDefaults setObject:@"100" forKey:@"TokenError"];
+        [userDefaults setObject:@"1" forKey:@"userId"];
         [userDefaults setObject:nil forKey:@"SaveUserMode"];
         [jiamiStr base64Data_encrypt:@"1"];
         [userDefaults setObject:@"0" forKey:@"Message"];
@@ -117,7 +122,7 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     // [START set_messaging_delegate]
     [FIRMessaging messaging].delegate = self;
     if (@available(iOS 10.0, *)) {
-        if ([UNUserNotificationCenter class] != nil) {
+          if ([UNUserNotificationCenter class] != nil) {
             // iOS 10 or later
             // For iOS 10 display notification (sent via APNS)
             [UNUserNotificationCenter currentNotificationCenter].delegate = self;
@@ -176,10 +181,12 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 //    self.window.rootViewController = KNVC;
     [[FBSDKApplicationDelegate sharedInstance] application:application
                              didFinishLaunchingWithOptions:launchOptions];
-    
+    ///暂时没有用到蓝牙，需要把它先屏蔽 20年 4.7日
+    /*
     self.appdelegate1 = [[MeshNetworkManagerAppdelegate alloc] instanceMeshApp];
-    self.ManagerBLE = [HXBleManager sharedInstance];
-//    [self.appdelegate1 setMesh];
+    self.ManagerBLE = [HXBleManager sharedInstance];*/
+    
+    
     ////友盟崩溃统计
 //    [UMConfigure initWithAppkey:UMAppKey channel:@"App Store"];
     //开发者需要显式的调用此函数，日志系统才能工作
@@ -436,6 +443,9 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     //    NSLog(@"FCM registration token: %@", fcmToken1);
     // TODO: If necessary send token to application server.
     // Note: This callback is fired at each app startup and whenever a new token is generated.
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:fcmToken forKey:@"YHToken"];
+    /* ///暂时屏蔽上传token  4.1
     NSString * YonghuID = [jiamiStr base64Data_decrypt];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString * tokenStr = [userDefaults objectForKey:@"YHToken"];
@@ -448,6 +458,19 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
             [self Post_Message_Token:YonghuID token:fcmToken];
         }
     }
+     */
+}
+
+// [START ios_10_data_message]
+// Receive data messages on iOS 10+ directly from FCM (bypassing APNs) when the app is in the foreground.
+// To enable direct data messages, you can set [Messaging messaging].shouldEstablishDirectChannel to YES.
+-(void)messaging:(FIRMessaging *)messaging didReceiveMessage:(FIRMessagingRemoteMessage *)remoteMessage {
+    NSLog(@"Received data message: %@", remoteMessage.appData);
+}
+// [END ios_10_data_message]
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    NSLog(@"Unable to register for remote notifications: %@", error);
 }
 
 -(void)Post_Message_Token:(NSString*)YonghuID token:(NSString *)token
@@ -676,10 +699,8 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     if (application.applicationState == UIApplicationStateActive) {
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:@"1" forKey:@"Message"];
-        //        [AGPushNoteView showWithNotificationMessage:title completion:^{
-        //
-        //        }];
-        application.applicationIconBadgeNumber = 1;
+     
+//        application.applicationIconBadgeNumber = 1;
         sendNotification(@"chanegeMessage_upadte");
         sendMessage(kRegisterMessage)
     }
@@ -694,7 +715,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
         sendMessage(kRegisterMessage)
     }else if (application.applicationState == UIApplicationStateBackground){
         //......
-        application.applicationIconBadgeNumber = 1;
+//        application.applicationIconBadgeNumber = 1;
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:@"1" forKey:@"Message"];
         sendNotification(@"chanegeMessage_upadte");

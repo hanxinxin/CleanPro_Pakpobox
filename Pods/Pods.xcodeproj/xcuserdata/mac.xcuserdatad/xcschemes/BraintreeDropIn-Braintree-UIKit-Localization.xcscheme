@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FCB11C4DD6EFE1213D18A1976F69056A"
+               BlueprintIdentifier = "600973CE212C72CB2C3B7197A9B4CE18"
                BuildableName = "Braintree-UIKit-Localization.bundle"
                BlueprintName = "BraintreeDropIn-Braintree-UIKit-Localization"
                ReferencedContainer = "container:Pods.xcodeproj">

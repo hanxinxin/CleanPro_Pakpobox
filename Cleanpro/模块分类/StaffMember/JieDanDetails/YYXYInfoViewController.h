@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface YYXYInfoViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UITableView *STable;
-
+@property (strong, nonatomic) OrderListMode* ModeZ;
 @end
 
 NS_ASSUME_NONNULL_END

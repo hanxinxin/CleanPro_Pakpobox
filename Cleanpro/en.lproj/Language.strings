@@ -15,8 +15,7 @@
 //
 "Balance"="Balance";
 "Reward Points"="Reward Points";
-"Collections for you!"="Collections for you!";
-"Viwe all"="Viwe all";
+
 ////
 //""="";
 ////
@@ -112,6 +111,8 @@
 "Order No"="Order No";
 "Location"="Location";
 "Machine No"="Machine No";
+"no APP available"="no APP available";
+"APP available"="APP available";
 /////
 "Tips"="Tips";
 "Bluetooth connection"="Bluetooth connection";
@@ -195,3 +196,4 @@
 "English"="English";
 "Malay"="Malay";
 "Thai"="Thai";
+"Chinese"="Chinese";

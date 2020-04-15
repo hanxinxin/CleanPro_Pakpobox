@@ -69,6 +69,7 @@
     self.diquStr=self.DQNumber[0];
     // 控件的创建
     LMJDropdownMenu * dropdownMenu = [[LMJDropdownMenu alloc] init];
+    dropdownMenu.Style=1;
     [dropdownMenu setFrame:self.phone_region.frame];
     [dropdownMenu setMenuTitles:self.DQNumber rowHeight:30];
     dropdownMenu.delegate = self;

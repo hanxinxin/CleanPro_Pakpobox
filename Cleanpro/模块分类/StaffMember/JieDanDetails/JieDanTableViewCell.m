@@ -14,6 +14,12 @@
     [super awakeFromNib];
     // Initialization code
     self.Cfmbtn.layer.cornerRadius = 4;
+    
+}
+- (IBAction)Cfm_touch:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(CfmTouch:)]) {
+        [self.delegate CfmTouch:self];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

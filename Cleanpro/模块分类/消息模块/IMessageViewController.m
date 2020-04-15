@@ -11,7 +11,11 @@
 #import "ImessageDetailsViewController.h"
 #import "MGSwipeTableCell.h"
 #import "TMSwipeCell.h"
+#import "EwashMessageTableViewCell.h"
+
 #define tableID @"ImessageTableViewCell"
+#define tableID1 @"EwashMessageTableViewCell"
+
 @interface IMessageViewController ()<UITableViewDelegate,UITableViewDataSource, MGSwipeTableCellDelegate, UIActionSheetDelegate,TMSwipeCellDelegate>
 {
     UIButton * right_btn;
@@ -37,6 +41,13 @@
         
         self.automaticallyAdjustsScrollViewInsets = NO;
         
+    }
+    if(self.MessageStyle==1)
+    {
+        self.view.backgroundColor=[UIColor whiteColor];
+    }else if(self.MessageStyle==2)
+    {
+        self.view.backgroundColor=[UIColor colorWithRed:241/255.0 green:242/255.0 blue:240/255.0 alpha:1];
     }
     [self.navigationController.navigationBar setTranslucent:NO];
     self.flag_bitStr=@"0";
@@ -151,7 +162,9 @@
 
 -(void)addTableView_table
 {
-    self.tableViewT.frame=CGRectMake(0, 64+8, SCREEN_WIDTH,SCREEN_HEIGHT-64);
+    if(self.MessageStyle==1)
+    {
+    self.tableViewT.frame=CGRectMake(0, kNavBarAndStatusBarHeight+8, SCREEN_WIDTH,SCREEN_HEIGHT-(kNavBarAndStatusBarHeight));
     self.tableViewT.delegate=self;
     self.tableViewT.dataSource=self;
     self.tableViewT.showsVerticalScrollIndicator=NO;
@@ -160,8 +173,28 @@
     //    self.Set_tableView.separatorColor = [UIColor blackColor];
     [self.view addSubview:self.tableViewT];
     self.tableViewT.tableFooterView = [[UIView alloc]init];
-    // 注册某个重用标识 对应的 Cell类型
-    [self.tableViewT registerNib:[UINib nibWithNibName:@"ImessageTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:tableID];
+        // 注册某个重用标识 对应的 Cell类型
+        [self.tableViewT registerNib:[UINib nibWithNibName:@"ImessageTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:tableID];
+    }else if(self.MessageStyle==2)
+    {
+        self.tableViewT.frame=CGRectMake(15, kNavBarAndStatusBarHeight+8, SCREEN_WIDTH-(15*2),SCREEN_HEIGHT-(kNavBarAndStatusBarHeight-8-kTabBarHeight));
+        self.tableViewT.delegate=self;
+        self.tableViewT.dataSource=self;
+        self.tableViewT.showsVerticalScrollIndicator=NO;
+        self.tableViewT.backgroundColor=[UIColor colorWithRed:241/255.0 green:242/255.0 blue:240/255.0 alpha:1];
+        //    self.tableViewT.separatorStyle=UITableViewCellSeparatorStyleNone;
+        //    self.Set_tableView.separatorColor = [UIColor blackColor];
+        [self.view addSubview:self.tableViewT];
+        self.tableViewT.tableFooterView = [[UIView alloc]init];
+        // 注册某个重用标识 对应的 Cell类型
+        [self.tableViewT registerNib:[UINib nibWithNibName:@"EwashMessageTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:tableID1];
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.06/*延迟执行时间*/ * NSEC_PER_SEC));
+            
+            dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [self.tableViewT.mj_header beginRefreshing];
+            });
+            
+    }
     //    [self.tableViewT setEditing:YES animated:NO];
     
     // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
@@ -195,94 +228,40 @@
 //    self.tableViewT.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     self.tableViewT.mj_footer =footer;
     // 马上进入刷新状态
-    //    [self.tableViewT.mj_header beginRefreshing];
+    
     
 }
 -(void)loadNewData
 {
-    
-    [self Get_MessageList_arr];
-    //    // 结束刷新状态
-    //    [self.tableViewT.mj_header  endRefreshing];
-    //    [self.tableViewT reloadData];
+    if(self.MessageStyle==1)
+    {
+
+        [self Get_MessageList_arr];
+        //    // 结束刷新状态
+        //    [self.tableViewT.mj_header  endRefreshing];
+        //    [self.tableViewT reloadData];
+    }else if(self.MessageStyle==2)
+    {
+        [self NewGet_MessageList_arr];
+    }
+            
+        
 }
 -(void)loadNewData_foot
 {
-    [self Get_MessageList_arr_foot];
-}
--(void)Get_MessageList_arr_foot
-{
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@Page=%ld&PageSize=%@",FuWuQiUrl,get_queryMessage,(long)self.Page_intager+1,@"10"] parameters:nil progress:^(id progress) {
-        
-        //    [NSString stringWithFormat:@"%@%@CustomerID=%@&Page=%ld&PageSize=%@",XJP_China(DIQU_Number),Get_MessageList,YonghuID,(long)self.Page_intager,@"20"] parameters:nil progress:^(id progress) {
-        
-    } success:^(id responseObject) {
-        NSLog(@"成功kkk =%@",responseObject);
-        if(self.HUD!=nil){
-            [self.HUD hideAnimated:YES];
-        }
-//        [self->_ListArray removeAllObjects];
-        NSArray * dictARR=[responseObject objectForKey:@"resultList"];
-        NSLog(@"cout=== %ld",(unsigned long)dictARR.count);
-        if(dictARR.count>0)
+        if(self.MessageStyle==1)
         {
-            self.Page_intager+=1;
-            
-            for (int i=0; i<dictARR.count;i++) {
-                NSDictionary * dict1 = (NSDictionary *)dictARR[i];
-                NSLog(@"dict1 = %@",dict1);
-                messageMode * mode = [[messageMode alloc] init];
-                mode.sendTime = [dict1 objectForKey:@"sendTime"];
-                mode.message = [dict1 objectForKey:@"message"];;
-                mode.ID = [dict1 objectForKey:@"id"];;
-                mode.messageType = [dict1 objectForKey:@"messageType"];;
-                mode.sendTo = [dict1 objectForKey:@"sendTo"];
-                mode.pushStatus = [dict1 objectForKey:@"pushStatus"];
-                mode.header = [dict1 objectForKey:@"header"];
-                mode.memberId = [dict1 objectForKey:@"memberId"];
-                mode.createTime = [dict1 objectForKey:@"createTime"];
-                mode.deleted = [dict1 objectForKey:@"deleted"];
-                mode.status = [dict1 objectForKey:@"status"];
-                mode.generatedDateTime = [dict1 objectForKey:@"generatedDateTime"];
-                [self->_ListArray addObject:mode];
-            }
+            [self Get_MessageList_arr_foot];
   
-        if(self->_ListArray.count>0)
-        {
-           
-            // 结束刷新状态
-            
-            [self.tableViewT.mj_footer  endRefreshing];
-            [self.tableViewT reloadData];
-        }else
-        {
-            // 结束刷新状态
-            
-            [self.tableViewT.mj_footer  endRefreshing];
-            [self.tableViewT reloadData];
-            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No more messages.", @"Language") andDelay:2.0];
-        }
-            
-        }else
-        {
-            [self.tableViewT.mj_footer  endRefreshing];
-            [self.tableViewT reloadData];
-            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No more messages.", @"Language") andDelay:2.0];
-        }
-    }  failure:^(NSInteger statusCode, NSError *error) {
-        //        [self textExample:@"请求失败!"];
-        NSLog(@"error =  %@",error);
-        if(self.HUD!=nil){
-            [self.HUD hideAnimated:YES];
-        }
-        // 结束刷新状态
-        [self.tableViewT.mj_header  endRefreshing];
-        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Request timed out!", @"Language") andDelay:1.5];
-    }];
-    
+        }else if(self.MessageStyle==2)
+       {
+           [self NewGet_MessageList_arr_foot];
+       }
 }
 -(void)Get_MessageList_arr
 {
+    if(self.MessageStyle==1)
+    {
     self.Page_intager = 0;
     NSLog(@"url = %@",[NSString stringWithFormat:@"%@%@Page=%ld&PageSize=%@",FuWuQiUrl,get_queryMessage,(long)self.Page_intager,@"10"]);
     [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@Page=%ld&PageSize=%@",FuWuQiUrl,get_queryMessage,(long)self.Page_intager,@"10"] parameters:nil progress:^(id progress) {
@@ -351,7 +330,266 @@
         [self.tableViewT.mj_header  endRefreshing];
         [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Request timed out!", @"Language") andDelay:2.0];
     }];
+    }else if(self.MessageStyle==2)
+    {
+    
+    }
+    
 }
+-(void)Get_MessageList_arr_foot
+{
+    if(self.MessageStyle==1)
+    {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@Page=%ld&PageSize=%@",FuWuQiUrl,get_queryMessage,(long)self.Page_intager+1,@"10"] parameters:nil progress:^(id progress) {
+        
+        //    [NSString stringWithFormat:@"%@%@CustomerID=%@&Page=%ld&PageSize=%@",XJP_China(DIQU_Number),Get_MessageList,YonghuID,(long)self.Page_intager,@"20"] parameters:nil progress:^(id progress) {
+        
+    } success:^(id responseObject) {
+        NSLog(@"成功kkk1 =%@",responseObject);
+        if(self.HUD!=nil){
+            [self.HUD hideAnimated:YES];
+        }
+//        [self->_ListArray removeAllObjects];
+        NSArray * dictARR=[responseObject objectForKey:@"resultList"];
+        NSLog(@"cout=== %ld",(unsigned long)dictARR.count);
+        if(dictARR.count>0)
+        {
+            self.Page_intager+=1;
+            
+            for (int i=0; i<dictARR.count;i++) {
+                NSDictionary * dict1 = (NSDictionary *)dictARR[i];
+                NSLog(@"dict1 = %@",dict1);
+                messageMode * mode = [[messageMode alloc] init];
+                mode.sendTime = [dict1 objectForKey:@"sendTime"];
+                mode.message = [dict1 objectForKey:@"message"];;
+                mode.ID = [dict1 objectForKey:@"id"];;
+                mode.messageType = [dict1 objectForKey:@"messageType"];;
+                mode.sendTo = [dict1 objectForKey:@"sendTo"];
+                mode.pushStatus = [dict1 objectForKey:@"pushStatus"];
+                mode.header = [dict1 objectForKey:@"header"];
+                mode.memberId = [dict1 objectForKey:@"memberId"];
+                mode.createTime = [dict1 objectForKey:@"createTime"];
+                mode.deleted = [dict1 objectForKey:@"deleted"];
+                mode.status = [dict1 objectForKey:@"status"];
+                mode.generatedDateTime = [dict1 objectForKey:@"generatedDateTime"];
+                [self->_ListArray addObject:mode];
+            }
+  
+        if(self->_ListArray.count>0)
+        {
+           
+            // 结束刷新状态
+            
+            [self.tableViewT.mj_footer  endRefreshing];
+            [self.tableViewT reloadData];
+        }else
+        {
+            // 结束刷新状态
+            
+            [self.tableViewT.mj_footer  endRefreshing];
+            [self.tableViewT reloadData];
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No more messages.", @"Language") andDelay:2.0];
+        }
+            
+        }else
+        {
+            [self.tableViewT.mj_footer  endRefreshing];
+            [self.tableViewT reloadData];
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No more messages.", @"Language") andDelay:2.0];
+        }
+    }  failure:^(NSInteger statusCode, NSError *error) {
+        //        [self textExample:@"请求失败!"];
+        NSLog(@"error =  %@",error);
+        if(self.HUD!=nil){
+            [self.HUD hideAnimated:YES];
+        }
+        // 结束刷新状态
+        [self.tableViewT.mj_header  endRefreshing];
+        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Request timed out!", @"Language") andDelay:1.5];
+    }];
+    }else if(self.MessageStyle==2)
+    {
+    
+    }
+    
+}
+
+-(void)NewGet_MessageList_arr
+{
+//    if(self.MessageStyle==1)
+//    {
+    self.Page_intager = 0;
+    NSLog(@"url = %@",[NSString stringWithFormat:@"%@%@?page=%ld&size=%@",E_FuWuQiUrl,E_MessageList,(long)self.Page_intager,@"10"]);
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?page=%ld&size=%@",E_FuWuQiUrl,E_MessageList,(long)self.Page_intager,@"10"] parameters:nil progress:^(id progress) {
+        
+//    [NSString stringWithFormat:@"%@%@CustomerID=%@&Page=%ld&PageSize=%@",XJP_China(DIQU_Number),Get_MessageList,YonghuID,(long)self.Page_intager,@"20"] parameters:nil progress:^(id progress) {
+    
+    } success:^(id responseObject) {
+        NSLog(@"get_queryMessage  =%@",responseObject);
+        if(self.HUD!=nil){
+            [self.HUD hideAnimated:YES];
+        }
+        [self->_ListArray removeAllObjects];
+        NSDictionary * messageDict=(NSDictionary *)responseObject;
+        NSArray * dictARR=[messageDict objectForKey:@"content"];
+        NSLog(@"cout=== %ld",(unsigned long)dictARR.count);
+        if(dictARR.count>0)
+        {
+            
+            
+            for (int i=0; i<dictARR.count;i++) {
+                NSDictionary * dict1 = (NSDictionary *)dictARR[i];
+                NSLog(@"dict1 = %@",dict1);
+                E_NessageMode * mode = [[E_NessageMode alloc] init];
+                mode.content = [dict1 objectForKey:@"content"];
+                mode.messageId = [dict1 objectForKey:@"messageId"];
+                mode.title = [dict1 objectForKey:@"title"];
+                [self->_ListArray addObject:mode];
+            }
+            
+        }
+        if(self->_ListArray.count>0)
+        {
+            if(self.HUD!=nil){
+                [self.HUD hideAnimated:YES];
+            }
+            // 结束刷新状态
+            
+            [self.tableViewT.mj_header  endRefreshing];
+            [self.tableViewT.mj_footer  endRefreshing];
+            [self.tableViewT reloadData];
+        }else
+        {
+            if(self.HUD!=nil){
+                [self.HUD hideAnimated:YES];
+            }
+            // 结束刷新状态
+            
+            [self.tableViewT.mj_header  endRefreshing];
+            [self.tableViewT.mj_footer  endRefreshing];
+            [self.tableViewT reloadData];
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"You have no message", @"Language") andDelay:2.0];
+        }
+    }  failure:^(NSInteger statusCode, NSError *error) {
+        //        [self textExample:@"请求失败!"];
+        NSLog(@"error =  %@",error);
+        
+        if(self.HUD!=nil){
+            [self.HUD hideAnimated:YES];
+        }
+        
+        // 结束刷新状态
+        [self.tableViewT.mj_header  endRefreshing];
+        [self.tableViewT.mj_footer  endRefreshing];
+        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Request timed out!", @"Language") andDelay:2.0];
+        if(statusCode==401)
+        {
+            [self setDefaults];
+        }
+    }];
+//    }else if(self.MessageStyle==2)
+//    {
+//
+//    }
+    
+}
+-(void)setDefaults
+{
+         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:@"1" forKey:@"Token"];
+        [userDefaults setObject:@"1" forKey:@"memberId"];
+        [userDefaults setObject:@"1" forKey:@"mobile"];
+        [jiamiStr base64Data_encrypt:@"1"];
+//        [userDefaults setObject:@"1" forKey:@"YHToken"];
+        [userDefaults setObject:@"1" forKey:@"phoneNumber"];
+        [userDefaults setObject:nil forKey:@"SaveUserMode"];
+        [userDefaults setObject:@"1" forKey:@"logCamera"];
+        [userDefaults setObject:@"1" forKey:@"userId"];
+    //    [defaults synchronize];
+    //通过通知中心发送通知
+//    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"tongzhi_UpdateTabbar" object: nil]];
+    
+    
+}
+
+-(void)NewGet_MessageList_arr_foot
+{
+    if(self.MessageStyle==1)
+    {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?page=%ld&size=%@",E_FuWuQiUrl,E_MessageList,(long)self.Page_intager,@"10"] parameters:nil progress:^(id progress) {
+        
+        //    [NSString stringWithFormat:@"%@%@CustomerID=%@&Page=%ld&PageSize=%@",XJP_China(DIQU_Number),Get_MessageList,YonghuID,(long)self.Page_intager,@"20"] parameters:nil progress:^(id progress) {
+        
+    } success:^(id responseObject) {
+        NSLog(@"get_queryMessageFoot =%@",responseObject);
+        if(self.HUD!=nil){
+            [self.HUD hideAnimated:YES];
+        }
+//        [self->_ListArray removeAllObjects];
+        NSDictionary * messageDict=(NSDictionary *)responseObject;
+        NSArray * dictARR=[messageDict objectForKey:@"content"];
+        NSLog(@"cout=== %ld",(unsigned long)dictARR.count);
+        if(dictARR.count>0)
+        {
+            self.Page_intager+=1;
+            
+            for (int i=0; i<dictARR.count;i++) {
+                NSDictionary * dict1 = (NSDictionary *)dictARR[i];
+                NSLog(@"dict1 = %@",dict1);
+                E_NessageMode * mode = [[E_NessageMode alloc] init];
+                mode.content = [dict1 objectForKey:@"content"];
+                mode.messageId = [dict1 objectForKey:@"messageId"];
+                mode.title = [dict1 objectForKey:@"title"];
+                [self->_ListArray addObject:mode];
+            }
+  
+        if(self->_ListArray.count>0)
+        {
+           
+            // 结束刷新状态
+            
+            [self.tableViewT.mj_footer  endRefreshing];
+            [self.tableViewT reloadData];
+        }else
+        {
+            // 结束刷新状态
+            
+            [self.tableViewT.mj_footer  endRefreshing];
+            [self.tableViewT reloadData];
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No more messages.", @"Language") andDelay:2.0];
+        }
+            
+        }else
+        {
+            [self.tableViewT.mj_footer  endRefreshing];
+            [self.tableViewT reloadData];
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No more messages.", @"Language") andDelay:2.0];
+        }
+    }  failure:^(NSInteger statusCode, NSError *error) {
+        //        [self textExample:@"请求失败!"];
+        NSLog(@"error =  %@",error);
+        if(self.HUD!=nil){
+            [self.HUD hideAnimated:YES];
+        }
+        
+        // 结束刷新状态
+        [self.tableViewT.mj_header  endRefreshing];
+        [self.tableViewT.mj_footer  endRefreshing];
+        if(statusCode==401)
+        {
+            [self setDefaults];
+        }
+        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Request timed out!", @"Language") andDelay:1.5];
+    }];
+    }else if(self.MessageStyle==2)
+    {
+    
+    }
+    
+}
+
+
+
 -(void)get_read_message:(NSString *)messageID
 {
     
@@ -359,6 +597,8 @@
 
 -(void)Get_Message_delete:(NSString *)MessageID indexPath:(NSIndexPath*)indexPath
 {
+    if(self.MessageStyle==1)
+    {
     NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
     SaveUserIDMode *ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     NSDictionary * dict =
@@ -404,6 +644,10 @@
         }
         [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Request timed out!", @"Language") andDelay:1.5];
     }];
+    }else if(self.MessageStyle==2)
+    {
+    
+    }
 }
 
 
@@ -462,18 +706,33 @@
 #pragma mark -------- Tableview -------
 //4、设置组数
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    
+    if(self.MessageStyle==1)
+    {
+        return 1; /////设置多少个组
+    }else if(self.MessageStyle==2)
+    {
+        return _ListArray.count;; /////设置多少个组
+    }
     return 1; /////设置多少个组
 }
 /////cell个数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if(self.MessageStyle==1)
+    {
+        return _ListArray.count;
+    }else if(self.MessageStyle==2)
+    {
+        return 1;
+    }
     
-    return _ListArray.count;
-//    return 2;
+    return 0;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if(self.MessageStyle==1)
+    {
+     
     //    __weak MyMessageViewController *weakSelf = self;
     ImessageTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:tableID];
     if (cell == nil) {
@@ -519,6 +778,29 @@
     
     //    cell.select_btn.layer.cornerRadius=5;
     return cell;
+    
+     }else if(self.MessageStyle==2)
+     {
+         //    __weak MyMessageViewController *weakSelf = self;
+         EwashMessageTableViewCell* cell1 = [tableView dequeueReusableCellWithIdentifier:tableID1];
+         if (cell1 == nil) {
+             cell1 = [[EwashMessageTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:tableID1];
+             
+         }
+         UIView *lbl = [[UIView alloc] init]; //定义一个label用于显示cell之间的分割线（未使用系统自带的分割线），也可以用view来画分割线
+         lbl.frame = CGRectMake(cell1.frame.origin.x + 10, 0, self.view.width-1, 1);
+         lbl.backgroundColor =  [UIColor clearColor];
+         [cell1.contentView addSubview:lbl];
+         //cell选中效果
+         cell1.selectionStyle = UITableViewCellSelectionStyleNone;
+         cell1.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+         cell1.tag = indexPath.section;
+         E_NessageMode * mode  =self.ListArray[indexPath.section];
+         cell1.TopTitle.text=[NSString stringWithFormat:@"%@",mode.title];
+         cell1.ContentTitle.text=[NSString stringWithFormat:@"%@",mode.content];
+         return cell1;
+     }
+    return nil;
 }
 
 -(NSString *)Str_With_JQ:(NSString*)string
@@ -536,6 +818,14 @@
 
 //设置间隔高度
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    
+    if(self.MessageStyle==1)
+    {
+        return 0.f;
+    }else if(self.MessageStyle==2)
+    {
+        return 10.f;
+    }
     return 0.f;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -557,13 +847,25 @@
 //行高
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 80;
+    
+    if(self.MessageStyle==1)
+    {
+        return 80;
+    }else if(self.MessageStyle==2)
+    {
+        return 115;
+    }
+    return 0;
 }
 //选中时 调用的方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"row====== %ld",indexPath.row);
+    
+    
     //    self.tableViewT.editing=NO;
+    if(self.MessageStyle==1)
+    {
+        NSLog(@"row====== %ld",(long)indexPath.row);
     if(self.tableViewT.editing==NO)
     {
 //        MessageMode *mode=_ListArray[indexPath.row];
@@ -581,10 +883,15 @@
     vc.mode_Message = self.ListArray[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];
     }
+    }else if(self.MessageStyle==2)
+    {
+        NSLog(@"row====== %ld",(long)indexPath.section);
+        
+    }
 }
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
     //从选中中取消
-    NSLog(@"选中 = %ld",indexPath.row);
+    NSLog(@"选中 = %ld",(long)indexPath.row);
     
 }
 
