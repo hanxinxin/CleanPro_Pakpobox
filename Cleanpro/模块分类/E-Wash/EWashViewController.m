@@ -231,14 +231,14 @@ static int iCount=0;
 //    vc.hidesBottomBarWhenPushed = YES;
 //    [self.navigationController pushViewController:vc animated:YES];
 ////    [self.DownTable reloadData];
-    
-    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    AddressSViewController *vc=[main instantiateViewControllerWithIdentifier:@"AddressSViewController"];
-    vc.hidesBottomBarWhenPushed = YES;
-    vc.SelectWay=self.SelectWay;
-    vc.CommodityArr= self.CommodityArr;
-    
-    float total =0;
+    if(self.GetaddressArray.count>0)
+    {
+        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        AddressSViewController *vc=[main instantiateViewControllerWithIdentifier:@"AddressSViewController"];
+        vc.hidesBottomBarWhenPushed = YES;
+        vc.SelectWay=self.SelectWay;
+        vc.CommodityArr= self.CommodityArr;
+                float total =0;
                 for (int i=0; i<self.CommodityArr.count; i++) {
                     CommodityMode*mode=self.CommodityArr[i];
                     NSString* priceStr=[self ReturnPriceStr:mode];
@@ -252,9 +252,12 @@ static int iCount=0;
     //              total+=[self.doorstepCostStr floatValue];
                     total+=[self.selfPickupCostStr floatValue];
                 }
-        vc.TotalStr=[NSString stringWithFormat:@"%.2f",total];
-    
-    [self.navigationController pushViewController:vc animated:YES];
+                vc.TotalStr=[NSString stringWithFormat:@"%.2f",total];
+                [self.navigationController pushViewController:vc animated:YES];
+            }else
+            {
+                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No stores available near you", @"Language") andDelay:2.0];
+            }
 }
 
 
@@ -699,7 +702,15 @@ static int iCount=0;
     NSLog(@"row====== %ld",(long)indexPath.row);
     if(indexPath.section==(ArrayTable.count-1))
     {
-        [self pushNext];
+//
+        if(self.GetaddressArray.count>0)
+        {
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No stores available near you", @"Language") andDelay:2.0];
+            [self pushNext];
+        }else
+        {
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No stores available near you", @"Language") andDelay:2.0];
+        }
     }if (indexPath.section==0)
     {
         if(self.BZDArray.count>1)
