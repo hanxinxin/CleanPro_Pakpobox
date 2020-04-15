@@ -103,7 +103,6 @@ static int iCount=0;
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 //    [self.navigationController setNavigationBarHidden:NO animated:animated];
     [super viewWillDisappear:animated];
-<<<<<<< HEAD
 }
 -(void)returnLoction:(CLLocationCoordinate2D)CLLocation
 {
@@ -190,94 +189,6 @@ static int iCount=0;
     }
     
 }
-=======
-}
--(void)returnLoction:(CLLocationCoordinate2D)CLLocation
-{
-    
-    
-    if(iCount ==0)
-    {
-        NSLog(@"longitude = %f    latitude= %f",CLLocation.longitude,CLLocation.latitude);
-        [self GetQueryLocation:CLLocation.longitude lat:CLLocation.latitude];
-        iCount+=1;
-    }
-    
-}
--(void)GetQueryLocation:(CLLocationDegrees)longitude lat:(CLLocationDegrees)latitude
-{
-    
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?longitude=%f&latitude=%f",E_FuWuQiUrl,E_QueryLocation,longitude,latitude] parameters:nil progress:^(id progress) {
-            //        NSLog(@"请求成功 = %@",progress);
-        } success:^(id responseObject) {
-            NSLog(@"E_MenuList = %@",responseObject);
-            
-//            NSArray * array=(NSArray *)responseObject;
-            NSDictionary * dictObject= (NSDictionary *)responseObject;
-            NSArray * contentarr =[dictObject objectForKey:@"content"];
-            if(contentarr.count>0)
-            {
-                [self.GetaddressArray removeAllObjects];
-                for (int i =0; i<contentarr.count; i++) {
-                    NSDictionary * dictCon= contentarr[i];
-                    AddressListMode* mode = [[AddressListMode alloc] init];
-                    
-                    mode.siteId =[dictCon objectForKey:@"siteId"];;
-                    mode.siteName=[dictCon objectForKey:@"siteName"] ;
-                    mode.siteSerialNumber=[dictCon objectForKey:@"siteSerialNumber"];
-                    mode.siteType=[dictCon objectForKey:@"siteType"];
-                    mode.streetAddress=[dictCon objectForKey:@"streetAddress"];
-                    mode.latitude=[dictCon objectForKey:@"latitude"];
-                    mode.longitude=[dictCon objectForKey:@"longitude"];
-                    mode.distance=[dictCon objectForKey:@"distance"];
-                    [self.GetaddressArray addObject:mode];
-                    [self.DownTable reloadData];
-                }
-            }else
-            {
-                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No stores available nearby", @"Language") andDelay:2.0];
-            }
-            
-                    
-            
-        } failure:^(NSInteger statusCode, NSError *error) {
-            NSLog(@"error = %@",error);
-            if(statusCode==401)
-            {
-                [self setDefaults];
-            }
-            [HudViewFZ HiddenHud];
-                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
-        }];
-}
--(void)setDefaults
-{
-         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:@"1" forKey:@"Token"];
-        [userDefaults setObject:@"1" forKey:@"memberId"];
-        [userDefaults setObject:@"1" forKey:@"mobile"];
-        [jiamiStr base64Data_encrypt:@"1"];
-//        [userDefaults setObject:@"1" forKey:@"YHToken"];
-        [userDefaults setObject:@"1" forKey:@"phoneNumber"];
-        [userDefaults setObject:nil forKey:@"SaveUserMode"];
-        [userDefaults setObject:@"1" forKey:@"logCamera"];
-        [userDefaults setObject:@"1" forKey:@"userId"];
-    //    [defaults synchronize];
-    //通过通知中心发送通知
-    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"tongzhi_UpdateTabbar" object: nil]];
-    for (UIViewController *temp in self.navigationController.viewControllers) {
-        if ([temp isKindOfClass:[EwashMyViewController class]]) {
-            [self.navigationController popToViewController:temp animated:YES];
-        }
-    }
-    for (UIViewController *temp in self.navigationController.viewControllers) {
-        if ([temp isKindOfClass:[NewHomeViewController class]]) {
-            [self.navigationController popToViewController:temp animated:YES];
-        }
-    }
-    
-}
->>>>>>> 470a49023a8d20832a8fc214514ae665bfd6e6a7
 
 
 -(void)addDowntableUI
@@ -320,16 +231,6 @@ static int iCount=0;
 //    vc.hidesBottomBarWhenPushed = YES;
 //    [self.navigationController pushViewController:vc animated:YES];
 ////    [self.DownTable reloadData];
-<<<<<<< HEAD
-    
-    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    AddressSViewController *vc=[main instantiateViewControllerWithIdentifier:@"AddressSViewController"];
-    vc.hidesBottomBarWhenPushed = YES;
-    vc.SelectWay=self.SelectWay;
-    vc.CommodityArr= self.CommodityArr;
-    
-    float total =0;
-=======
     if(self.GetaddressArray.count>0)
     {
         UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -337,25 +238,26 @@ static int iCount=0;
         vc.hidesBottomBarWhenPushed = YES;
         vc.SelectWay=self.SelectWay;
         vc.CommodityArr= self.CommodityArr;
-                float total =0;
->>>>>>> 470a49023a8d20832a8fc214514ae665bfd6e6a7
-                for (int i=0; i<self.CommodityArr.count; i++) {
-                    CommodityMode*mode=self.CommodityArr[i];
-                    NSString* priceStr=[self ReturnPriceStr:mode];
-                    total+=[priceStr floatValue];
-                }
-                if(self.SelectWay==1)
-                {
-
-                    total+=[self.doorstepCostStr floatValue];
-                }else if(self.SelectWay==2){
-    //              total+=[self.doorstepCostStr floatValue];
-                    total+=[self.selfPickupCostStr floatValue];
-                }
-<<<<<<< HEAD
+        float total =0;
+        for (int i=0; i<self.CommodityArr.count; i++) {
+            CommodityMode*mode=self.CommodityArr[i];
+            NSString* priceStr=[self ReturnPriceStr:mode];
+            total+=[priceStr floatValue];
+        }
+        if(self.SelectWay==1)
+        {
+            total+=[self.doorstepCostStr floatValue];
+        }else if(self.SelectWay==2){
+        //              total+=[self.doorstepCostStr floatValue];
+            total+=[self.selfPickupCostStr floatValue];
+        }
         vc.TotalStr=[NSString stringWithFormat:@"%.2f",total];
-    
-    [self.navigationController pushViewController:vc animated:YES];
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }else
+    {
+        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No shops nearby", @"Language") andDelay:2.0];
+    }
 }
 
 
@@ -499,157 +401,6 @@ static int iCount=0;
         }];
 }
 
-=======
-                vc.TotalStr=[NSString stringWithFormat:@"%.2f",total];
-                [self.navigationController pushViewController:vc animated:YES];
-            }else
-            {
-                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No stores available near you", @"Language") andDelay:2.0];
-            }
-}
-
-
--(void)Get_E_MenuList
-{
-    [HudViewFZ labelExample:self.view];
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_MenuList] parameters:nil progress:^(id progress) {
-            //        NSLog(@"请求成功 = %@",progress);
-        } success:^(id responseObject) {
-            NSLog(@"E_MenuList = %@",responseObject);
-            NSArray * array=(NSArray *)responseObject;
-    //        NSNumber * statusCode =[dictObject objectForKey:@"statusCode"];
-            if(array.count>0)
-            {
-                NSDictionary * dict = array[0];
-                NSString * productMenuIdStr= [dict objectForKey:@"productMenuId"];
-                [self getCaiDanInfo:productMenuIdStr];
-            }else
-            {
-                [HudViewFZ HiddenHud];
-                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Quantity is 0", @"Language") andDelay:2.0];
-            }
-            
-        } failure:^(NSInteger statusCode, NSError *error) {
-            NSLog(@"error = %@",error);
-            if(statusCode==401)
-            {
-                [self setDefaults];
-            }
-            [HudViewFZ HiddenHud];
-            
-                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
-        }];
-}
-
--(void)getCaiDanInfo:(NSString*)IdStr
-{
-    
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?productMenuId=%@",E_FuWuQiUrl,E_MenuListMember,IdStr] parameters:nil progress:^(id progress) {
-            //        NSLog(@"请求成功 = %@",progress);
-        } success:^(id responseObject) {
-            NSLog(@"E_MenuListMember = %@",responseObject);
-            
-            NSArray * dictArr= (NSArray*)responseObject;
-            NSDictionary * dictz= (NSDictionary*)dictArr[0];
-            NSDictionary * products = [dictz objectForKey:@"products"];
-            self.doorstepCostStr = [dictz objectForKey:@"doorstepCost"];
-            self.selfPickupCostStr = [dictz objectForKey:@"selfPickupCost"];;
-            NSArray * array=[products objectForKey:@"content"];
-    //        NSNumber * statusCode =[dictObject objectForKey:@"statusCode"];
-            [self.PoubdArr removeAllObjects];
-            [self.CommodityArr  removeAllObjects];
-            if(array.count>0)
-            {
-                
-//                productsMode * ModeProducts = [productsMode mj_objectWithKeyValues:products];
-                
-                for(int i=0;i<array.count;i++)
-                {
-                    productsMode * ModeProducts = [[productsMode alloc] init];
-                    NSDictionary * dictA=array[i];
-                    NSArray * attributeList = [dictA objectForKey:@"attributeList"];
-                    NSArray * productVariantList = [dictA objectForKey:@"productVariantList"];
-                    ModeProducts.productId = [dictA objectForKey:@"productId"];
-                    ModeProducts.productName = [dictA objectForKey:@"productName"];
-                    ModeProducts.productNameEn = [dictA objectForKey:@"productNameEn"];
-                    ModeProducts.serviceId = [dictA objectForKey:@"serviceId"];
-                    for(int j=0;j<attributeList.count;j++)
-                    {
-                        NSDictionary * dictJ=attributeList[j];
-                        attributeListsMode * mode = [[attributeListsMode alloc] init];
-                        mode.attributeType = [dictJ objectForKey:@"attributeType"];
-                        mode.name = [dictJ objectForKey:@"name"];
-                        mode.productAttributeId = [dictJ objectForKey:@"productAttributeId"];
-                        NSArray * valueList = [dictJ objectForKey:@"valueList"];
-                        NSMutableArray * ArrayMu= [NSMutableArray arrayWithCapacity:0];
-                        NSMutableArray * ArrayvalueListMode= [NSMutableArray arrayWithCapacity:0];
-                        for(int B=0;B<valueList.count;B++)
-                        {
-                            NSDictionary * dictObject=valueList[B];
-                            
-                            valueListMode * modeValue = [[valueListMode alloc] init];
-                            modeValue.productAttributeValue=[dictObject objectForKey:@"productAttributeValue"];
-                            modeValue.productAttributeValueId=[dictObject objectForKey:@"productAttributeValueId"];
-                            [ArrayvalueListMode addObject:modeValue];
-                            
-                        }
-                        mode.valueList = ArrayvalueListMode;
-                        [ArrayMu addObject:mode];
-                        ModeProducts.attributeList=ArrayMu;
-                    }
-                    NSMutableArray * productArrayMu= [NSMutableArray arrayWithCapacity:0];
-                    for(int k=0;k<productVariantList.count;k++)
-                    {
-                        NSDictionary * dictJ=productVariantList[k];
-                        NSArray * productAttributeValueIds = [dictJ objectForKey:@"productAttributeValueIds"];
-                        
-                        productVariantListMode * modeP = [[productVariantListMode alloc] init];
-                        modeP.priceValue = [dictJ objectForKey:@"priceValue"];
-                        modeP.productAttributeValueName = [dictJ objectForKey:@"productAttributeValueName"];
-                        modeP.productVariantId = [dictJ objectForKey:@"productVariantId"];
-                        NSMutableArray * ValueIds= [NSMutableArray arrayWithCapacity:0];
-                        for(int B=0;B<productAttributeValueIds.count;B++)
-                        {
-                            NSString * productAttributeValueId=productAttributeValueIds[B];
-                            [ValueIds addObject:productAttributeValueId];
-                        }
-                        modeP.productAttributeValueIds = ValueIds;
-                        [productArrayMu addObject:modeP];
-                    }
-                    ModeProducts.productVariantList=productArrayMu;
-                    
-                    [self.PoubdArr addObject:ModeProducts];
-//                    [self.BZDArray addObject:ModeProducts];
-                }
-                CommodityMode * modeCCC= [[CommodityMode alloc] init];
-                productsMode*modePC=self.PoubdArr[0];
-                modeCCC.Ctype=modePC.productName;
-                modeCCC.Ctemperature=@"Cold";
-                modeCCC.Mode =modePC;
-                modeCCC.SelectTemperature=1;
-                modeCCC.SelectMenuPound=0;
-                [self.CommodityArr addObject:modeCCC];
-                [self.BZDArray addObject:@"1"];/// 刷新商品时，默认选择一个商品
-                [self.DownTable reloadData];
-//                NSLog(@"ModeProducts=== %@",ModeProducts);
-                [HudViewFZ HiddenHud];
-            }else{
-                [HudViewFZ HiddenHud];
-            }
-            
-        } failure:^(NSInteger statusCode, NSError *error) {
-            NSLog(@"error = %@",error);
-            if(statusCode==401)
-            {
-                [self setDefaults];
-            }
-            [HudViewFZ HiddenHud];
-            
-                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
-        }];
-}
-
->>>>>>> 470a49023a8d20832a8fc214514ae665bfd6e6a7
 #pragma mark -------- Tableview -------
 //4、设置组数
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -951,19 +702,14 @@ static int iCount=0;
     NSLog(@"row====== %ld",(long)indexPath.row);
     if(indexPath.section==(ArrayTable.count-1))
     {
-<<<<<<< HEAD
-        [self pushNext];
-=======
-//
         if(self.GetaddressArray.count>0)
         {
-//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No stores available near you", @"Language") andDelay:2.0];
-            [self pushNext];
+           [self pushNext];
         }else
         {
-            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No stores available near you", @"Language") andDelay:2.0];
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No shops nearby", @"Language") andDelay:2.0];
         }
->>>>>>> 470a49023a8d20832a8fc214514ae665bfd6e6a7
+        
     }if (indexPath.section==0)
     {
         if(self.BZDArray.count>1)
