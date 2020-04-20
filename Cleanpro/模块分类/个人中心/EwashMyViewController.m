@@ -381,6 +381,10 @@
             [self.Down_tableView reloadData];
 //            [self addDownScroller];
             
+        }else if([statusCode intValue] ==401)
+        {
+            NSString * errorMessage =[dictObject objectForKey:@"errorMessage"];;
+            [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
         }else{
             //            NSString * IDStr = [dictObject objectForKey:@"id"];
             NSDictionary * wallet = [dictObject objectForKey:@"wallet"];

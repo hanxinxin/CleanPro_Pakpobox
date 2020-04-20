@@ -36,13 +36,13 @@
     //透明设置为NO，显示白色，view的高度到tabbar顶部截止，YES的话到底部
     self.mcTabbar.translucent = NO;
     ///3.30修改屏蔽凸起的bar
-    /*
+    
     self.mcTabbar.position = MCTabBarCenterButtonPositionBulge;
     self.mcTabbar.centerWidth=70.f;
     self.mcTabbar.centerHeight=70.f;
     self.mcTabbar.centerImage = [UIImage imageNamed:@"scan"];
     self.mcDelegate = self;
-     */
+     
     // 改变分割线的颜色 禁止透明
 //    self.tabBar.layer.borderWidth = 0.20;
 //    self.tabBar.layer.borderColor = [UIColor colorWithRed:241/255.0 green:242/255.0 blue:240/255.0 alpha:1].CGColor;
@@ -61,17 +61,17 @@
 //    self.tabBar.barStyle = UIBarStyleBlackOpaque;
     
     /// 20年3.30日修改TabBar 展示屏蔽以前的洗衣的，只展示预约洗衣的。
-//    NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"];
-//
-//        if([strPhoen isEqualToString:@"1"])
-//        {
-//            [self setTitleAndview_lll];
-//        }else
-//        {
-//            [self setTitleAndview];
-//        }
+    NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"];
+
+        if([strPhoen isEqualToString:@"1"])
+        {
+            [self setTitleAndview_lll];
+        }else
+        {
+            [self setTitleAndview];
+        }
     
-    [self tongzhi_UpdateTabbar]; ///监测是否快递员
+//    [self tongzhi_UpdateTabbar]; ///监测是否快递员  4.17日屏蔽
 //    [self setTitleAndview];
     
     
@@ -91,93 +91,94 @@
 {
     /// 20年3.30日修改TabBar 展示屏蔽以前的洗衣的，只展示预约洗衣的。
     
-//    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-////    HomeViewController *HomeVc=[main instantiateViewControllerWithIdentifier:@"HomeViewController"];
-//    NewHomeViewController*HomeVc=[main instantiateViewControllerWithIdentifier:@"NewHomeViewController"];
-//    locationMapViewController *locationVC=[main instantiateViewControllerWithIdentifier:@"locationMapViewController"];
-//    WCQRCodeScanningVC *WCVC = [[WCQRCodeScanningVC alloc] init];
-////    WCVC.hidesBottomBarWhenPushed = YES;
-//    IMessageViewController *OrderVc=[main instantiateViewControllerWithIdentifier:@"IMessageViewController"];
-//    OrderVc.MessageStyle=2;
-//    MyAccountViewController *MyVc=[main instantiateViewControllerWithIdentifier:@"MyAccountViewController"];
-//    //为两个视图控制器添加导航栏控制器
-//    navHome = [[UINavigationController alloc]initWithRootViewController:HomeVc];
-//    location = [[UINavigationController alloc]initWithRootViewController:locationVC];
-//    WC = [[UINavigationController alloc]initWithRootViewController:WCVC];
-//    navMy = [[UINavigationController alloc]initWithRootViewController:MyVc];
-//    Massage = [[UINavigationController alloc]initWithRootViewController:OrderVc];
-////    GYHub = [[UINavigationController alloc]initWithRootViewController:GYHub_cc];
-//    navHome.tabBarItem.image=[[UIImage imageNamed:@"lab_home_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//    navHome.tabBarItem.selectedImage = [[UIImage imageNamed:@"lab_home_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//    location.tabBarItem.image=[[UIImage imageNamed:@"lab_Nearby_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//    location.tabBarItem.selectedImage = [[UIImage imageNamed:@"lab_Nearby_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//    Massage.tabBarItem.image=[[UIImage imageNamed:@"inbox_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//    Massage.tabBarItem.selectedImage = [[UIImage imageNamed:@"inbox_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//    navMy.tabBarItem.image=[[UIImage imageNamed:@"lab_me_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//    navMy.tabBarItem.selectedImage = [[UIImage imageNamed:@"lab_me_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//    //设置控制器文字
-//    navHome.title = FGGetStringWithKeyFromTable(@"Home", @"Language");
-//    location.title = FGGetStringWithKeyFromTable(@"Nearby", @"Language");
-//    Massage.title = FGGetStringWithKeyFromTable(@"Inbox", @"Language");
-//    navMy.title = FGGetStringWithKeyFromTable(@"Me", @"Language");
-//    //改变tabbarController 文字选中颜色(默认渲染为蓝色)
-//    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName:[UIColor lightGrayColor]} forState:UIControlStateNormal];
-//    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName:[UIColor colorWithRed:41/255.0 green:209/255.0 blue:255/255.0 alpha:1]} forState:UIControlStateSelected];
-//    //创建一个数组包含四个导航栏控制器
-//    NSArray *vcArry = [NSArray arrayWithObjects:navHome,location,WC,Massage,navMy,nil];
-//    //将数组传给UITabBarController
-//    self.viewControllers = vcArry;
-//    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3/*延迟执行时间*/ * NSEC_PER_SEC));
-//    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-//        sendMessage(@"ReturnMessage");//发送通知
-//    });
-//    self.navigationController.navigationBarHidden=YES;
-    
-    /// 3.30日添加的
     UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    //    HomeViewController *HomeVc=[main instantiateViewControllerWithIdentifier:@"HomeViewController"];
-        NewHomeViewController*HomeVc=[main instantiateViewControllerWithIdentifier:@"NewHomeViewController"];
-//        locationMapViewController *locationVC=[main instantiateViewControllerWithIdentifier:@"locationMapViewController"];
-//        WCQRCodeScanningVC *WCVC = [[WCQRCodeScanningVC alloc] init];
-//    //    WCVC.hidesBottomBarWhenPushed = YES;
-        IMessageViewController *OrderVc=[main instantiateViewControllerWithIdentifier:@"IMessageViewController"];
-        OrderVc.MessageStyle=2;
-//        MyAccountViewController *MyVc=[main instantiateViewControllerWithIdentifier:@"MyAccountViewController"];
-    EwashMyViewController *MyVc=[main instantiateViewControllerWithIdentifier:@"EwashMyViewController"];
-//    MyVc.QuAndUser=2;
-        //为两个视图控制器添加导航栏控制器
-        navHome = [[UINavigationController alloc]initWithRootViewController:HomeVc];
-//        location = [[UINavigationController alloc]initWithRootViewController:locationVC];
-//        WC = [[UINavigationController alloc]initWithRootViewController:WCVC];
-        navMy = [[UINavigationController alloc]initWithRootViewController:MyVc];
-        Massage = [[UINavigationController alloc]initWithRootViewController:OrderVc];
-    //    GYHub = [[UINavigationController alloc]initWithRootViewController:GYHub_cc];
-        navHome.tabBarItem.image=[[UIImage imageNamed:@"lab_home_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        navHome.tabBarItem.selectedImage = [[UIImage imageNamed:@"lab_home_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//        location.tabBarItem.image=[[UIImage imageNamed:@"lab_Nearby_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//        location.tabBarItem.selectedImage = [[UIImage imageNamed:@"lab_Nearby_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        Massage.tabBarItem.image=[[UIImage imageNamed:@"inbox_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        Massage.tabBarItem.selectedImage = [[UIImage imageNamed:@"inbox_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        navMy.tabBarItem.image=[[UIImage imageNamed:@"lab_me_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        navMy.tabBarItem.selectedImage = [[UIImage imageNamed:@"lab_me_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        //设置控制器文字
-        navHome.title = FGGetStringWithKeyFromTable(@"Home", @"Language");
-//        location.title = FGGetStringWithKeyFromTable(@"Nearby", @"Language");
-        Massage.title = FGGetStringWithKeyFromTable(@"Inbox", @"Language");
-        navMy.title = FGGetStringWithKeyFromTable(@"Me", @"Language");
-        //改变tabbarController 文字选中颜色(默认渲染为蓝色)
-        [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName:[UIColor lightGrayColor]} forState:UIControlStateNormal];
-        [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName:[UIColor colorWithRed:41/255.0 green:209/255.0 blue:255/255.0 alpha:1]} forState:UIControlStateSelected];
-        //创建一个数组包含四个导航栏控制器
-//        NSArray *vcArry = [NSArray arrayWithObjects:navHome,location,WC,Massage,navMy,nil];
-    NSArray *vcArry = [NSArray arrayWithObjects:navHome,Massage,navMy,nil];
-        //将数组传给UITabBarController
-        self.viewControllers = vcArry;
-        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3/*延迟执行时间*/ * NSEC_PER_SEC));
-        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-            sendMessage(@"ReturnMessage");//发送通知
-        });
-        self.navigationController.navigationBarHidden=YES;
+//    HomeViewController *HomeVc=[main instantiateViewControllerWithIdentifier:@"HomeViewController"];
+    NewHomeViewController*HomeVc=[main instantiateViewControllerWithIdentifier:@"NewHomeViewController"];
+    locationMapViewController *locationVC=[main instantiateViewControllerWithIdentifier:@"locationMapViewController"];
+    WCQRCodeScanningVC *WCVC = [[WCQRCodeScanningVC alloc] init];
+//    WCVC.hidesBottomBarWhenPushed = YES;
+    IMessageViewController *OrderVc=[main instantiateViewControllerWithIdentifier:@"IMessageViewController"];
+    OrderVc.MessageStyle=2;
+    MyAccountViewController *MyVc=[main instantiateViewControllerWithIdentifier:@"MyAccountViewController"];
+    //为两个视图控制器添加导航栏控制器
+    navHome = [[UINavigationController alloc]initWithRootViewController:HomeVc];
+    location = [[UINavigationController alloc]initWithRootViewController:locationVC];
+    WC = [[UINavigationController alloc]initWithRootViewController:WCVC];
+    navMy = [[UINavigationController alloc]initWithRootViewController:MyVc];
+    Massage = [[UINavigationController alloc]initWithRootViewController:OrderVc];
+//    GYHub = [[UINavigationController alloc]initWithRootViewController:GYHub_cc];
+    navHome.tabBarItem.image=[[UIImage imageNamed:@"lab_home_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    navHome.tabBarItem.selectedImage = [[UIImage imageNamed:@"lab_home_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    location.tabBarItem.image=[[UIImage imageNamed:@"lab_Nearby_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    location.tabBarItem.selectedImage = [[UIImage imageNamed:@"lab_Nearby_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    Massage.tabBarItem.image=[[UIImage imageNamed:@"inbox_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    Massage.tabBarItem.selectedImage = [[UIImage imageNamed:@"inbox_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    navMy.tabBarItem.image=[[UIImage imageNamed:@"lab_me_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    navMy.tabBarItem.selectedImage = [[UIImage imageNamed:@"lab_me_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    //设置控制器文字
+    navHome.title = FGGetStringWithKeyFromTable(@"Home", @"Language");
+    location.title = FGGetStringWithKeyFromTable(@"Nearby", @"Language");
+    Massage.title = FGGetStringWithKeyFromTable(@"Inbox", @"Language");
+    navMy.title = FGGetStringWithKeyFromTable(@"Me", @"Language");
+    //改变tabbarController 文字选中颜色(默认渲染为蓝色)
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName:[UIColor lightGrayColor]} forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName:[UIColor colorWithRed:41/255.0 green:209/255.0 blue:255/255.0 alpha:1]} forState:UIControlStateSelected];
+    //创建一个数组包含四个导航栏控制器
+    NSArray *vcArry = [NSArray arrayWithObjects:navHome,location,WC,Massage,navMy,nil];
+    //将数组传给UITabBarController
+    self.viewControllers = vcArry;
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        sendMessage(@"ReturnMessage");//发送通知
+    });
+    self.navigationController.navigationBarHidden=YES;
+    
+//    /// 3.30日添加的   4.17日屏蔽
+//    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+////    //    HomeViewController *HomeVc=[main instantiateViewControllerWithIdentifier:@"HomeViewController"];
+//        NewHomeViewController*HomeVc=[main instantiateViewControllerWithIdentifier:@"NewHomeViewController"];
+////        locationMapViewController *locationVC=[main instantiateViewControllerWithIdentifier:@"locationMapViewController"];
+////        WCQRCodeScanningVC *WCVC = [[WCQRCodeScanningVC alloc] init];
+////    //    WCVC.hidesBottomBarWhenPushed = YES;
+//        IMessageViewController *OrderVc=[main instantiateViewControllerWithIdentifier:@"IMessageViewController"];
+//        OrderVc.MessageStyle=2;
+////        MyAccountViewController *MyVc=[main instantiateViewControllerWithIdentifier:@"MyAccountViewController"];
+//    EwashMyViewController *MyVc=[main instantiateViewControllerWithIdentifier:@"EwashMyViewController"];
+////    MyVc.QuAndUser=2;
+//        //为两个视图控制器添加导航栏控制器
+//        navHome = [[UINavigationController alloc]initWithRootViewController:HomeVc];
+////        location = [[UINavigationController alloc]initWithRootViewController:locationVC];
+////        WC = [[UINavigationController alloc]initWithRootViewController:WCVC];
+//        navMy = [[UINavigationController alloc]initWithRootViewController:MyVc];
+//        Massage = [[UINavigationController alloc]initWithRootViewController:OrderVc];
+//    //    GYHub = [[UINavigationController alloc]initWithRootViewController:GYHub_cc];
+//        navHome.tabBarItem.image=[[UIImage imageNamed:@"lab_home_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//        navHome.tabBarItem.selectedImage = [[UIImage imageNamed:@"lab_home_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+////        location.tabBarItem.image=[[UIImage imageNamed:@"lab_Nearby_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+////        location.tabBarItem.selectedImage = [[UIImage imageNamed:@"lab_Nearby_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//        Massage.tabBarItem.image=[[UIImage imageNamed:@"inbox_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//        Massage.tabBarItem.selectedImage = [[UIImage imageNamed:@"inbox_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//        navMy.tabBarItem.image=[[UIImage imageNamed:@"lab_me_off"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//        navMy.tabBarItem.selectedImage = [[UIImage imageNamed:@"lab_me_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//        //设置控制器文字
+//        navHome.title = FGGetStringWithKeyFromTable(@"Home", @"Language");
+////        location.title = FGGetStringWithKeyFromTable(@"Nearby", @"Language");
+//        Massage.title = FGGetStringWithKeyFromTable(@"Inbox", @"Language");
+//        navMy.title = FGGetStringWithKeyFromTable(@"Me", @"Language");
+//        //改变tabbarController 文字选中颜色(默认渲染为蓝色)
+//        [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName:[UIColor lightGrayColor]} forState:UIControlStateNormal];
+//        [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName:[UIColor colorWithRed:41/255.0 green:209/255.0 blue:255/255.0 alpha:1]} forState:UIControlStateSelected];
+//        //创建一个数组包含四个导航栏控制器
+////        NSArray *vcArry = [NSArray arrayWithObjects:navHome,location,WC,Massage,navMy,nil];
+//    NSArray *vcArry = [NSArray arrayWithObjects:navHome,Massage,navMy,nil];
+//        //将数组传给UITabBarController
+//        self.viewControllers = vcArry;
+//        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3/*延迟执行时间*/ * NSEC_PER_SEC));
+//        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+//            sendMessage(@"ReturnMessage");//发送通知
+//        });
+//        self.navigationController.navigationBarHidden=YES;
+//
 }
 -(void)setTitleAndview_lll
 {

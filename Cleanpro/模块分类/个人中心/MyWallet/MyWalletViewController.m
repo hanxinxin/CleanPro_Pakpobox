@@ -140,6 +140,10 @@
             NSNotification *notification =[NSNotification notificationWithName:@"UIshuaxinLog" object: nil];
             //通过通知中心发送通知
             [[NSNotificationCenter defaultCenter] postNotification:notification];
+        }else if([statusCode intValue] ==401)
+        {
+            NSString * errorMessage =[dictObject objectForKey:@"errorMessage"];;
+            [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
         }else{
 //            NSDictionary * wallet = [dictObject objectForKey:@"wallet"];
 //            NSNumber * ba = [wallet objectForKey:@"balance"];

@@ -417,6 +417,10 @@
             [userDefaults setObject:@"1" forKey:@"logCamera"];
             //    [defaults synchronize];
             
+        }else if([statusCode intValue] ==500)
+        {
+            NSString * errorMessage =[dictObject objectForKey:@"errorMessage"];;
+            [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
         }else{
             self.IDStr = [dictObject objectForKey:@"id"];
             NSDictionary * wallet = [dictObject objectForKey:@"wallet"];
