@@ -184,7 +184,7 @@
             [self.navigationController popViewControllerAnimated:NO];
             return NO;
         }else if ([controller isKindOfClass:[EwashMyViewController class]]) {
-            [self.navigationController popToViewController:controller animated:YES];
+//            [self.navigationController popToViewController:controller animated:YES];
             
         }else if ([controller isKindOfClass:[NewHomeViewController class]]) {
             [self.navigationController popToViewController:controller animated:YES];
@@ -241,17 +241,17 @@
 
 
 - (IBAction)Register_touch:(id)sender {
-    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    NewRegisterViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewRegisterViewController"];
-    vc.hidesBottomBarWhenPushed = YES;
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
-    [self.navigationController pushViewController:vc animated:YES];
-    
-    
 //    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    WelcomeViewController *vc=[main instantiateViewControllerWithIdentifier:@"WelcomeViewController"];
+//    NewRegisterViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewRegisterViewController"];
 //    vc.hidesBottomBarWhenPushed = YES;
+//    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
 //    [self.navigationController pushViewController:vc animated:YES];
+    
+    
+    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    WelcomeViewController *vc=[main instantiateViewControllerWithIdentifier:@"WelcomeViewController"];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (IBAction)SignIn_touch:(id)sender {

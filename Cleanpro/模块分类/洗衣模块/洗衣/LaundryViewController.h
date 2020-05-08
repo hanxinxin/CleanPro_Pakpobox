@@ -44,7 +44,9 @@
 
 @property(nonatomic,strong)NSArray * arrayList;
 
+
 //@property(nonatomic,strong)Device * DeviceStr;///蓝牙设备
 
 @property(nonatomic,strong)NSString * addrStr;  ///加密字节
+@property (nonatomic, strong) NSString * siteIdStr; ///站点的id
 @end

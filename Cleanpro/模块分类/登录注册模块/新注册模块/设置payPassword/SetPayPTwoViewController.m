@@ -10,6 +10,8 @@
 #import "MyWalletViewController.h"
 #import "LaundryDetailsViewController.h"
 #import "SettingViewController.h"
+#import "EwashMyViewController.h"
+//#import "LaundryDetailsViewController.h"
 
 @interface SetPayPTwoViewController ()<UIGestureRecognizerDelegate,UITextFieldDelegate>
 
@@ -157,8 +159,11 @@
         }else if (self.index==2)
         {
             
-                [self setPostPasswrod];
-            
+//                [self setPostPasswrod];
+            [self ResetPostPasswrod];
+        }else if (self.index==3)
+        {
+            [self setPostPasswrod];
         }
     }else{
         [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"The passwords do not match", @"Language") andDelay:2.0];
@@ -175,25 +180,61 @@
 */
 
 
+//-(void)postRegister
+//{
+//    NSDictionary * dict=@{@"validateCode":self.validateCode,
+//                          @"payPassword":self.payStringTwo,
+//                          };
+//
+//    NSLog(@"dict=== %@",dict);
+//    [HudViewFZ labelExample:self.view];
+////    [[AFNetWrokingAssistant shareAssistant] PostURL_Code:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,setPay_password] parameters:dict progress:^(id progress) {
+//    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,setPay_password] parameters:dict progress:^(id progress) {
+//        NSLog(@"请求成功 = %@",progress);
+//    }Success:^(NSInteger statusCode,id responseObject) {
+//        [HudViewFZ HiddenHud];
+//        NSLog(@"responseObject = %@",responseObject);
+//        if(statusCode==200)
+//        {
+//            [self getToken];
+//
+//            //            [self.navigationController popToViewController:LoginViewController animated:YES];
+//
+//
+//        }else
+//        {
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"statusCode error", @"Language") andDelay:2.0];
+//        }
+//    } failure:^(NSInteger statusCode, NSError *error) {
+//        NSLog(@"error = %@",error);
+//        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+//        [HudViewFZ HiddenHud];
+//    }];
+//}
+
+
 -(void)postRegister
 {
     NSDictionary * dict=@{@"validateCode":self.validateCode,
-                          @"payPassword":self.payStringTwo,
+                          @"newPayPassword":self.payStringTwo,
                           };
+     
     NSLog(@"dict=== %@",dict);
     [HudViewFZ labelExample:self.view];
 //    [[AFNetWrokingAssistant shareAssistant] PostURL_Code:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,setPay_password] parameters:dict progress:^(id progress) {
-    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,setPay_password] parameters:dict progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_setPayPassword] parameters:dict progress:^(id progress) {
         NSLog(@"请求成功 = %@",progress);
     }Success:^(NSInteger statusCode,id responseObject) {
         [HudViewFZ HiddenHud];
-        NSLog(@"responseObject = %@",responseObject);
+        NSLog(@"responseObject1 = %@",responseObject);
         if(statusCode==200)
         {
-            [self getToken];
-            
-            //            [self.navigationController popToViewController:LoginViewController animated:YES];
-            
+            NSDictionary * dictObject=(NSDictionary *)responseObject;
+            NSNumber * result =[dictObject objectForKey:@"result"];
+            if([result integerValue]==1)
+            {
+                [self Get_existPassword];
+            }
             
         }else
         {
@@ -205,6 +246,58 @@
         [HudViewFZ HiddenHud];
     }];
 }
+
+-(void)Get_existPassword
+{
+    
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_existPassword] parameters:nil progress:^(id progress) {
+        //        NSLog(@"请求成功 = %@",progress);
+    } success:^(id responseObject) {
+        NSLog(@"existPassword = %@",responseObject);
+        [HudViewFZ HiddenHud];
+        NSDictionary * dictObject=(NSDictionary *)responseObject;
+        NSNumber * result =[dictObject objectForKey:@"result"];
+        if([result integerValue]==0)
+        {
+            NSData * data1 =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+            SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+            ModeUser.payPassword=@"";
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                       //存储到NSUserDefaults（转NSData存）
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: ModeUser];
+            [defaults setObject:data forKey:@"SaveUserMode"];
+            [defaults synchronize];
+        }else{
+            NSData * data1 =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+            SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+            ModeUser.payPassword=@"6666";
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                       //存储到NSUserDefaults（转NSData存）
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: ModeUser];
+            [defaults setObject:data forKey:@"SaveUserMode"];
+            [defaults synchronize];
+            
+        }
+        [self PopViewcontroller];
+    }failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ HiddenHud];
+        if(statusCode==401)
+        {
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+            //创建一个消息对象
+            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
+            //发送消息
+            [[NSNotificationCenter defaultCenter]postNotification:notice];
+            
+        }else{
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+            
+        }
+    }];
+        
+}
+/*
 -(void)getToken
 {
 //    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -304,10 +397,30 @@
         }
     }];
 }
+ */
 -(void)PopViewcontroller
 {
+    if(self.index==1)
+    {
+        for (UIViewController *controller in self.navigationController.viewControllers) {
+            if ([controller isKindOfClass:[EwashMyViewController class]]) {
+                [self.navigationController popToViewController:controller animated:YES];
+            }
+        }
+        for (UIViewController *controller in self.navigationController.viewControllers) {
+            if ([controller isKindOfClass:[LaundryDetailsViewController class]]) {
+                [self.navigationController popToViewController:controller animated:YES];
+            }
+        }
+    
+    }
     for (UIViewController *controller in self.navigationController.viewControllers) {
         if ([controller isKindOfClass:[MyWalletViewController class]]) {
+            [self.navigationController popToViewController:controller animated:YES];
+        }
+    }
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isKindOfClass:[EwashMyViewController class]]) {
             [self.navigationController popToViewController:controller animated:YES];
         }
     }
@@ -318,6 +431,7 @@
     }
     
 }
+/*
 -(void)setPostPasswrod
 {
     [HudViewFZ labelExample:self.view];
@@ -364,6 +478,87 @@
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
             
         }
+    }];
+}
+ */
+
+
+
+-(void)setPostPasswrod
+{
+    NSDictionary * dict=@{@"oldPayPassword":self.PayOldPassWordStr,
+                          @"newPayPassword":self.payStringTwo,
+                          };
+     
+    NSLog(@"dict=== %@",dict);
+    [HudViewFZ labelExample:self.view];
+//    [[AFNetWrokingAssistant shareAssistant] PostURL_Code:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,setPay_password] parameters:dict progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_updatePassword] parameters:dict progress:^(id progress) {
+        NSLog(@"请求成功 = %@",progress);
+    }Success:^(NSInteger statusCode,id responseObject) {
+        [HudViewFZ HiddenHud];
+        NSLog(@"responseObject2 = %@",responseObject);
+        if(statusCode==200)
+        {
+            
+            NSDictionary * dictObject=(NSDictionary *)responseObject;
+            NSNumber * result =[dictObject objectForKey:@"result"];
+            if([result integerValue]==1)
+            {
+            //            [self.navigationController popToViewController:LoginViewController animated:YES];
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Set up the success", @"Language") andDelay:2.0];
+            [self Get_existPassword];
+            
+            }
+            
+        }else
+        {
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"statusCode error", @"Language") andDelay:2.0];
+        }
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+        [HudViewFZ HiddenHud];
+    }];
+}
+
+
+
+-(void)ResetPostPasswrod
+{
+    NSDictionary * dict=@{@"validateCode":self.validateCode,
+                          @"newPayPassword":self.payStringTwo,
+    };
+     
+    NSLog(@"dict=== %@",dict);
+    [HudViewFZ labelExample:self.view];
+//    [[AFNetWrokingAssistant shareAssistant] PostURL_Code:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,setPay_password] parameters:dict progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_resetPassword] parameters:dict progress:^(id progress) {
+        NSLog(@"请求成功 = %@",progress);
+    }Success:^(NSInteger statusCode,id responseObject) {
+        [HudViewFZ HiddenHud];
+        NSLog(@"responseObject2 = %@",responseObject);
+        if(statusCode==200)
+        {
+            
+            NSDictionary * dictObject=(NSDictionary *)responseObject;
+            NSNumber * result =[dictObject objectForKey:@"result"];
+            if([result integerValue]==1)
+            {
+            //            [self.navigationController popToViewController:LoginViewController animated:YES];
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Set up the success", @"Language") andDelay:2.0];
+            [self Get_existPassword];
+            
+            }
+            
+        }else
+        {
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"statusCode error", @"Language") andDelay:2.0];
+        }
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+        [HudViewFZ HiddenHud];
     }];
 }
 #define UITextFieldDelete  -------- - -------

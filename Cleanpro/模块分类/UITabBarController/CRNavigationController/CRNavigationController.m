@@ -19,6 +19,12 @@
     [super viewDidLoad];
 //    [self.navigationController.navigationBar setTranslucent:NO];
 }
+
+
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    [super viewWillDisappear:animated];
+}
 - (id)init {
     self = [super initWithNavigationBarClass:[CRNavigationBar class] toolbarClass:nil];
     if(self) {

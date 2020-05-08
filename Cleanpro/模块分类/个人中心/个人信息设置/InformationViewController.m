@@ -138,7 +138,7 @@
     NSArray  * titleT=arrtitle[indexPath.section];
     cell.textLabel.text = [titleT objectAtIndex:indexPath.row];
     
-    //    NSLog(@"%ld",(long)indexPath.row);
+        NSLog(@"%ld",(long)indexPath.row);
     if(indexPath.section==0)
     {
         if(indexPath.row==0)
@@ -147,14 +147,13 @@
             dispatch_after(delayTime, dispatch_get_main_queue(), ^{
 //                UIButton * imageView_btn = [[UIButton alloc] initWithFrame:CGRectMake(cell.width-80, 15, 40, 40)];
                 UIImageView * imageView_btn = [[UIImageView alloc] initWithFrame:CGRectMake(cell.width-80, 15, 40, 40)];
-//                [imageView_btn setBackgroundImage:[UIImage imageNamed:@"icon_Avatar"] forState:UIControlStateNormal];
-//                [imageView_btn setBackgroundImage:[self getImage_touxiang]forState:UIControlStateNormal];
                 if(self.ModeUser!=nil)
                 {
                     if(self.ModeUser.headImageUrl!=nil)
                     {
-                        [imageView_btn sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",FuWuQiUrl,get_downImage,self.ModeUser.headImageUrl]] placeholderImage:[UIImage imageNamed:@"icon_Avatar"]];
-                        
+//                        [imageView_btn sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",FuWuQiUrl,get_downImage,self.ModeUser.headImageUrl]] placeholderImage:[UIImage imageNamed:@"icon_Avatar"]];
+                        [imageView_btn sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",E_FuWuQiUrl,E_DownliadHeaderImage,self.ModeUser.headImageUrl]] placeholderImage:[UIImage imageNamed:@"icon_Avatar"]];
+                    
 //                        return result;
                     }else
                     {
@@ -180,7 +179,12 @@
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
         }else if (indexPath.row==1)
         {
+            if(![self.ModeUser.firstName isEqual:[NSNull null]] && ![self.ModeUser.lastName isEqual:[NSNull null]]){
             cell.detailTextLabel.text=[NSString stringWithFormat:@"%@%@",self.ModeUser.firstName,self.ModeUser.lastName];
+            }else
+            {
+                cell.detailTextLabel.text=@"";
+            }
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
         }
         else if (indexPath.row==2)
@@ -189,15 +193,24 @@
 //            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }else if(indexPath.row==3)
         {
-            cell.detailTextLabel.text=self.ModeUser.gender;
+            if(![self.ModeUser.gender isEqual:[NSNull null]] )
+                {
+                    cell.detailTextLabel.text=self.ModeUser.gender;
+                }
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
         }else if(indexPath.row==4)
         {
-            cell.detailTextLabel.text=[self strDate:self.ModeUser.birthday];
+            if(![self.ModeUser.birthday isEqual:[NSNull null]] )
+            {
+                cell.detailTextLabel.text=[self strDate:self.ModeUser.birthday];
+            }
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
         }else if(indexPath.row==5)
         {
+            if(![self.ModeUser.EmailStr isEqual:[NSNull null]] )
+            {
             cell.detailTextLabel.text=self.ModeUser.EmailStr;
+            }
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
         }
     }else if (indexPath.section==1)
@@ -346,7 +359,8 @@
     NSDictionary * dict=@{@"gender":gender,};
     NSLog(@"dict=== %@",dict);
     
-    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,post_UpdateInfo] parameters:dict progress:^(id progress) {
+//    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,post_UpdateInfo] parameters:dict progress:^(id progress) {
+     [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_PostUserInfo] parameters:dict progress:^(id progress) {
         NSLog(@"请求成功 = %@",progress);
     }Success:^(NSInteger statusCode,id responseObject) {
         [HudViewFZ HiddenHud];
@@ -357,23 +371,24 @@
             //            用来储存用户信息
             
             SaveUserIDMode * mode = [[SaveUserIDMode alloc] init];
-            
-            mode.phoneNumber = [dictObject objectForKey:@"phoneNumber"];//   手机号码
-            mode.loginName = [dictObject objectForKey:@"loginName"];//   与手机号码相同
-            mode.yonghuID = [dictObject objectForKey:@"id"]; ////用户ID
-            //            mode.randomPassword = [dictObject objectForKey:@"randomPassword"];//  验证码
-            //            mode.password = [dictObject objectForKey:@"password"];//  登录密码
-            //            mode.payPassword = [dictObject objectForKey:@"payPassword"];//    支付密码
+            mode.phoneNumber = [dictObject objectForKey:@"mobile"];//   手机号码
+            mode.loginName = [dictObject objectForKey:@"username"];//   与手机号码相同
+            mode.yonghuID = [dictObject objectForKey:@"memberId"]; ////用户ID
             mode.firstName = [dictObject objectForKey:@"firstName"];//   first name
             mode.lastName = [dictObject objectForKey:@"lastName"];//   last name
-            NSNumber * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
-            mode.birthday = [birthdayNum stringValue];
+            NSString * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
+            if(![birthdayNum isEqual:[NSNull null]])
+            {
+                NSInteger num = [birthdayNum integerValue];
+                NSNumber * nums = @(num);
+                mode.birthday = [nums stringValue];;
+            }
             mode.gender = [dictObject objectForKey:@"gender"];//       MALE:男，FEMALE:女
             mode.postCode = [dictObject objectForKey:@"postCode"];//   Post Code inviteCode
             mode.EmailStr = [dictObject objectForKey:@"email"];//   email
             mode.inviteCode = [dictObject objectForKey:@"inviteCode"];//       我填写的邀请码
             mode.myInviteCode = [dictObject objectForKey:@"myInviteCode"];//       我的邀请码
-            mode.headImageUrl = [dictObject objectForKey:@"headImageUrl"];
+            mode.headImageUrl = [dictObject objectForKey:@"headImageId"];
             mode.payPassword = [dictObject objectForKey:@"payPassword"];
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             //存储到NSUserDefaults（转NSData存）
@@ -402,7 +417,8 @@
     NSDictionary * dict=@{@"birthday":Birthday,};
     NSLog(@"dict=== %@",dict);
     
-    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,post_UpdateInfo] parameters:dict progress:^(id progress) {
+//    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,post_UpdateInfo] parameters:dict progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_PostUserInfo] parameters:dict progress:^(id progress) {
         NSLog(@"请求成功 = %@",progress);
     }Success:^(NSInteger statusCode,id responseObject) {
         [HudViewFZ HiddenHud];
@@ -413,23 +429,24 @@
             //            用来储存用户信息
             
             SaveUserIDMode * mode = [[SaveUserIDMode alloc] init];
-            
-            mode.phoneNumber = [dictObject objectForKey:@"phoneNumber"];//   手机号码
-            mode.loginName = [dictObject objectForKey:@"loginName"];//   与手机号码相同
-            mode.yonghuID = [dictObject objectForKey:@"id"]; ////用户ID
-            //            mode.randomPassword = [dictObject objectForKey:@"randomPassword"];//  验证码
-            //            mode.password = [dictObject objectForKey:@"password"];//  登录密码
-            //            mode.payPassword = [dictObject objectForKey:@"payPassword"];//    支付密码
+            mode.phoneNumber = [dictObject objectForKey:@"mobile"];//   手机号码
+            mode.loginName = [dictObject objectForKey:@"username"];//   与手机号码相同
+            mode.yonghuID = [dictObject objectForKey:@"memberId"]; ////用户ID
             mode.firstName = [dictObject objectForKey:@"firstName"];//   first name
             mode.lastName = [dictObject objectForKey:@"lastName"];//   last name
-            NSNumber * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
-            mode.birthday = [birthdayNum stringValue];
+            NSString * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
+            if(![birthdayNum isEqual:[NSNull null]])
+            {
+                NSInteger num = [birthdayNum integerValue];
+                NSNumber * nums = @(num);
+                mode.birthday = [nums stringValue];;
+            }
             mode.gender = [dictObject objectForKey:@"gender"];//       MALE:男，FEMALE:女
             mode.postCode = [dictObject objectForKey:@"postCode"];//   Post Code inviteCode
             mode.EmailStr = [dictObject objectForKey:@"email"];//   email
             mode.inviteCode = [dictObject objectForKey:@"inviteCode"];//       我填写的邀请码
             mode.myInviteCode = [dictObject objectForKey:@"myInviteCode"];//       我的邀请码
-            mode.headImageUrl = [dictObject objectForKey:@"headImageUrl"];
+            mode.headImageUrl = [dictObject objectForKey:@"headImageId"];
             mode.payPassword = [dictObject objectForKey:@"payPassword"];
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             //存储到NSUserDefaults（转NSData存）
@@ -464,10 +481,11 @@
     NSArray * arr = [NSArray arrayWithObjects:image, nil];
     
     
-    [[AFNetWrokingAssistant shareAssistant] uploadImagesWihtImgArr:arr url:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,UploadHeadImage] Tokenbool:NO parameters:nil block:^(id objc, BOOL success) {
+//    [[AFNetWrokingAssistant shareAssistant] uploadImagesWihtImgArr:arr url:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,UploadHeadImage] Tokenbool:NO parameters:nil block:^(id objc, BOOL success) {
+    [[AFNetWrokingAssistant shareAssistant] uploadImagesWihtImgArr:arr url:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_PostHeaderImage] Tokenbool:YES parameters:nil block:^(id objc, BOOL success) {
         NSLog(@"objc=====  %@",objc);
         NSDictionary *dict= (NSDictionary*)objc;
-        NSString * strResult = [dict objectForKey:@"result"];
+        NSString * strResult = [dict objectForKey:@"imageId"];
         NSNumber * statusCode = [dict objectForKey:@"statusCode"];
         
         if(strResult!=nil)
@@ -635,7 +653,7 @@
 //    [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:8]];//解决8小时时间差问题
     NSLog(@"self.ModeUser.birthday === %@",self.ModeUser.birthday);
 //    NSString * strda;
-    if(self.ModeUser.birthday!=nil){
+    if(self.ModeUser.birthday!=nil && ![self.ModeUser.birthday isEqual:[NSNull null]]){
         NSString * strda = [NSString stringWithFormat:@"%@",self.ModeUser.birthday];
         NSDate *birthdayDate = [dateFormatter dateFromString:strda];
         //    NSLog(@"date = %@,  date1 = %@",birthdayDate,[NSDate date]);
@@ -643,6 +661,11 @@
     }else
     {
         NSDate *datenow = [NSDate date];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        // 格式化日期格式
+        formatter.dateFormat = @"yyyyMMdd";
+        NSString *date = [formatter stringFromDate:datenow];
+        self.DateStr=date;
         [self.date_picker setDate:datenow];/////设置默认显示时间
     }
     
@@ -706,7 +729,7 @@
 
 -(void)ConfirmTouch:(id)sender
 {
-    if(self.ModeUser.birthday!=nil)
+    if(self.ModeUser.birthday!=nil && ![self.ModeUser.birthday isEqual:[NSNull null]])
     {
         if(![self.DateStr isEqualToString:self.ModeUser.birthday])
         {
@@ -718,7 +741,7 @@
         }
     }else
     {
-        if(![self.DateStr isEqualToString:@""])
+        if(![self.DateStr isEqualToString:@""] && self.DateStr!=nil)
         {
             [self postUpdateINFO_Birthday:self.DateStr];
         }

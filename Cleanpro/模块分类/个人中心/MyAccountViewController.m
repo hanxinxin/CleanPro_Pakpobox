@@ -315,8 +315,8 @@
         [HudViewFZ HiddenHud];
         NSDictionary * dictObject=(NSDictionary *)responseObject;
         NSNumber * statusCode =[dictObject objectForKey:@"statusCode"];
-        
-        
+
+
         if([statusCode intValue] ==401)
         {
             //            [[NSUserDefaults standardUserDefaults] setObject:@"100" forKey:@"TokenError"];
@@ -334,12 +334,12 @@
             [userDefaults setObject:nil forKey:@"SaveUserMode"];
             [userDefaults setObject:@"1" forKey:@"logCamera"];
             //    [defaults synchronize];
-            
+
             [self updateText];;
-            
+
             [self.Down_tableView reloadData];
 //            [self addDownScroller];
-            
+
         }else if([statusCode intValue] ==500)
         {
             NSString * errorMessage =[dictObject objectForKey:@"errorMessage"];;
@@ -357,9 +357,9 @@
             NSNumber * coupon = [dictObject objectForKey:@"couponCount"];
             NSString *couponCountStr = [coupon stringValue];
             //            用来储存用户信息
-            
+
             SaveUserIDMode * mode = [[SaveUserIDMode alloc] init];
-            
+
             mode.phoneNumber = [dictObject objectForKey:@"phoneNumber"];//   手机号码
             mode.loginName = [dictObject objectForKey:@"loginName"];//   与手机号码相同
             mode.yonghuID = [dictObject objectForKey:@"id"]; ////用户ID
@@ -402,14 +402,13 @@
             NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
             //发送消息
             [[NSNotificationCenter defaultCenter]postNotification:notice];
-            
+
         }else{
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
-            
+
         }
     }];
 }
-
 
 
 - (IBAction)Login_touch:(id)sender {

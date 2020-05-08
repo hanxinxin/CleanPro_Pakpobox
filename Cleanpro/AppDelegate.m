@@ -66,7 +66,7 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 //    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
     UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent;
     UIApplication.sharedApplication.statusBarHidden = NO;
-    
+    [[NSUserDefaults standardUserDefaults] setValue:@(NO) forKey:@"_UIConstraintBasedLayoutLogUnsatisfiable"]; ///屏蔽控制台约束打印
     #if defined(__IPHONE_13_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_0
     if(@available(iOS 13.0,*)){
     self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
@@ -182,9 +182,9 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     [[FBSDKApplicationDelegate sharedInstance] application:application
                              didFinishLaunchingWithOptions:launchOptions];
     ///暂时没有用到蓝牙，需要把它先屏蔽 20年 4.7日
-    /*
+    
     self.appdelegate1 = [[MeshNetworkManagerAppdelegate alloc] instanceMeshApp];
-    self.ManagerBLE = [HXBleManager sharedInstance];*/
+    self.ManagerBLE = [HXBleManager sharedInstance];
     
     
     ////友盟崩溃统计
@@ -244,6 +244,8 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 
 -(void)addFCViewSet
 {
+//    if(self.FCViewLabel==nil)
+//    {
     self.FCViewLabel = [UIButton buttonWithType:UIButtonTypeCustom];
     self.FCViewLabel.frame = CGRectMake(SCREEN_WIDTH-90, 90, 90, 30);
     self.FCViewLabel.contentHorizontalAlignment =UIControlContentHorizontalAlignmentLeft;
@@ -260,15 +262,19 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     maskLayer.path = maskPath.CGPath;
     self.FCViewLabel.layer.mask = maskLayer;
     [self.window addSubview:self.FCViewLabel ];
+//    }
     [self JSTimer:900];
 }
 -(void)hiddenFCViewYES
 {
     self.FCViewLabel.hidden=NO;
+    [self addFCViewSet];
+    
 }
 -(void)hiddenFCViewNO
 {
     self.FCViewLabel.hidden=YES;
+    [self.FCViewLabel removeFromSuperview];
     [self stopTimer];
 }
 /**

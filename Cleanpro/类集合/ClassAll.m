@@ -50,3 +50,19 @@
 @implementation ThreeCityMode
 
 @end
+@implementation CitySelectMode
+
+@end
+
+
+@implementation upperGradeOneMode
+
+@end
+@implementation NewWalletListClass
+
+@end
+
+
+@implementation NewOrderList
+
+@end

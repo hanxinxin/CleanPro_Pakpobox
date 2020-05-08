@@ -370,6 +370,13 @@ static int iCount=0;
                     }
                     ModeProducts.productVariantList=productArrayMu;
                     
+//                        if([ModeProducts.productName isEqualToString:@"5 Pound"])
+//                        {
+//                            [self.PoubdArr addObject:ModeProducts];
+//                        }else if([ModeProducts.productName isEqualToString:@"10 Pound"])
+//                        {
+//                            [self.PoubdArr addObject:ModeProducts];
+//                        }
                     [self.PoubdArr addObject:ModeProducts];
 //                    [self.BZDArray addObject:ModeProducts];
                 }

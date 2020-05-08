@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,10 +26,10 @@
                         <state key="normal" image="icon_daizi.png"/>
                     </button>
                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0iN-5o-kUq">
-                        <rect key="frame" x="55" y="14" width="96" height="25"/>
+                        <rect key="frame" x="55" y="14" width="118" height="25"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="96" id="U2q-jg-akJ"/>
-                            <constraint firstAttribute="height" constant="25" id="udn-tQ-9PX"/>
+                            <constraint firstAttribute="height" constant="25" id="0h1-km-RfB"/>
+                            <constraint firstAttribute="width" constant="118" id="MOH-0P-kTV"/>
                         </constraints>
                         <state key="normal" title="5 poubd"/>
                     </button>
@@ -111,16 +111,16 @@
                     <constraint firstItem="p1G-dA-BWN" firstAttribute="top" secondItem="gn2-LQ-lEC" secondAttribute="bottom" constant="18" id="7Xn-g0-NxF"/>
                     <constraint firstItem="Wks-sb-IfX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="8JW-LA-JPd"/>
                     <constraint firstItem="p1G-dA-BWN" firstAttribute="leading" secondItem="tw8-pr-jnj" secondAttribute="trailing" constant="8" id="FVt-oV-igH"/>
-                    <constraint firstItem="0iN-5o-kUq" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="TCB-3f-a1p"/>
+                    <constraint firstItem="0iN-5o-kUq" firstAttribute="leading" secondItem="Wks-sb-IfX" secondAttribute="trailing" constant="14" id="PbA-wP-k3O"/>
                     <constraint firstItem="EIf-eW-qX8" firstAttribute="leading" secondItem="gn2-LQ-lEC" secondAttribute="trailing" id="Tql-Qa-VgU"/>
                     <constraint firstItem="Wks-sb-IfX" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="Xl4-wk-Kvp"/>
-                    <constraint firstItem="tw8-pr-jnj" firstAttribute="top" secondItem="0iN-5o-kUq" secondAttribute="bottom" constant="16" id="e4r-PF-TZy"/>
+                    <constraint firstItem="0iN-5o-kUq" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="cby-aM-Bc7"/>
                     <constraint firstItem="gn2-LQ-lEC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="ktA-5v-64g"/>
                     <constraint firstItem="cvL-pY-sgu" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="m8Z-77-9Lr"/>
                     <constraint firstItem="cvL-pY-sgu" firstAttribute="leading" secondItem="p1G-dA-BWN" secondAttribute="trailing" constant="8" id="nw7-yp-EMQ"/>
+                    <constraint firstItem="tw8-pr-jnj" firstAttribute="top" secondItem="0iN-5o-kUq" secondAttribute="bottom" constant="16" id="of7-rQ-Ohv"/>
                     <constraint firstAttribute="trailing" secondItem="3T3-fu-l9e" secondAttribute="trailing" constant="16" id="pm0-Yy-DCD"/>
                     <constraint firstAttribute="trailing" secondItem="EIf-eW-qX8" secondAttribute="trailing" constant="16" id="uGA-Zo-bjJ"/>
-                    <constraint firstItem="0iN-5o-kUq" firstAttribute="leading" secondItem="Wks-sb-IfX" secondAttribute="trailing" constant="14" id="wte-k4-YAA"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>

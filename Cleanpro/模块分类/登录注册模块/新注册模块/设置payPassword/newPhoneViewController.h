@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIButton *getCode_btn;
 @property (nonatomic, weak) HWTFCodeView   *Code_tuiguang1;
 @property (weak, nonatomic) IBOutlet UIButton *next_btn;
+@property (assign, nonatomic) NSInteger index;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -115,23 +115,46 @@
         //        [HudViewFZ showMessageTitle:@"Bluetooth connection failed" andDelay:2.5];
     }
      */
-     // 禁用返回手势
-       if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
-           self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-       }  
     [super viewWillAppear:animated];
 }
+
+
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     }
+    
+//    if ([self.navigationController.viewControllers indexOfObject:self]==2) {
+//        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//        [appDelegate.ManagerBLE closeConnected];
+//        [appDelegate hiddenFCViewNO];
+//    }
+     
 }
 -(void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];
+    backBtn.title = FGGetStringWithKeyFromTable(@"", @"Language");
+    //    [backBtn setImage:[UIImage imageNamed:@"icon_back_black"]];
+    self.navigationItem.backBarButtonItem = backBtn;
+    
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    
     if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     };
+    NSArray *viewControllers = self.navigationController.viewControllers;
+        if (viewControllers.count > 1 && [viewControllers objectAtIndex:viewControllers.count-2] == self) {
+            //push
+        } else if ([viewControllers indexOfObject:self] == NSNotFound) {
+            //pop
+            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+            [appDelegate.ManagerBLE closeConnected];
+            [appDelegate hiddenFCViewNO];
+        }
+
+    [super viewWillDisappear:animated];
+    
 }
 
 -(void)bearerNSLog:(NSNotification *)noti {
@@ -212,44 +235,72 @@
     [HudViewFZ labelExample:self.view];
     __block LaundryViewController *  blockSelf = self;
     [blockSelf.arrPrice removeAllObjects];
-    NSLog(@"URL=== %@",[NSString stringWithFormat:@"%@%@%@#%@",FuWuQiUrl,Get_PriceMache,self.arrayList[0],self.arrayList[1]]);
-    NSString *escapedPathURL = [[NSString stringWithFormat:@"%@%@%@#%@",FuWuQiUrl,Get_PriceMache,self.arrayList[0],self.arrayList[1]] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSLog(@"URL=== %@",[NSString stringWithFormat:@"%@%@%@",E_FuWuQiUrl,E_Getquery,self.siteIdStr]);
+    NSString *escapedPathURL = [[NSString stringWithFormat:@"%@%@%@",E_FuWuQiUrl,E_Getquery,self.siteIdStr] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
     NSLog(@"URL=== %@",escapedPathURL);
     [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:escapedPathURL parameters:nil progress:^(id progress) {
         
     } success:^(id responseObject) {
-        NSLog(@"responseObject=  %@",responseObject);
-        [HudViewFZ HiddenHud];
-        //        NSDictionary * dictionary = (NSDictionary*)responseObject;
-        //
-        //        NSArray * resultListArr=[dictionary objectForKey:@"resultList"];
-        NSArray * arrList = (NSArray *)responseObject;
-        NSDictionary * dictionary = arrList[0];
-                NSArray * sku_list_Arr=[dictionary objectForKey:@"sku_list"];
-                for (int j=0; j<sku_list_Arr.count; j++) {
-                    
-                    NSDictionary * zong_Dict=sku_list_Arr[j];
-                    NSNumber * priceNumber =[zong_Dict objectForKey:@"price"];
-                     NSArray * prop_values =[zong_Dict objectForKey:@"prop_values"];
-                    for (int M=0; M<prop_values.count; M++) {
-                        if(M==1)
-                        {
-                        NSDictionary * SumDict=prop_values[M];
-//                        value = Cold;
-                        NSString*  alias_value = [SumDict objectForKey:@"alias_value"];
-                        PriceModeSS * mode = [[PriceModeSS alloc] init];
-                        mode.PriceStr=[NSString stringWithFormat:@"%.2f",[priceNumber floatValue]];
-                        mode.TemperatureStr = alias_value;
-                        [blockSelf.arrPrice addObject:mode];
-                        }
-
+        NSLog(@"E_Getquery=  %@",responseObject);
+//        NSDictionary * dictA=(NSDictionary *)responseObject;
+        NSArray * dictArr= (NSArray*)responseObject;
+        NSDictionary * dictA= (NSDictionary*)dictArr[0];
+            if(dictA)
+            {
+                productsMode * ModeProducts = [[productsMode alloc] init];
+//                NSDictionary * dictA=array[i];
+                NSArray * attributeList = [dictA objectForKey:@"attributeList"];
+                NSArray * productVariantList = [dictA objectForKey:@"productVariantList"];
+                ModeProducts.productId = [dictA objectForKey:@"productId"];
+                ModeProducts.productName = [dictA objectForKey:@"productName"];
+                ModeProducts.productNameEn = [dictA objectForKey:@"productNameEn"];
+                ModeProducts.serviceId = [dictA objectForKey:@"serviceId"];
+                for(int j=0;j<attributeList.count;j++)
+                {
+                    NSDictionary * dictJ=attributeList[j];
+                    attributeListsMode * mode = [[attributeListsMode alloc] init];
+                    mode.attributeType = [dictJ objectForKey:@"attributeType"];
+                    mode.name = [dictJ objectForKey:@"name"];
+                    mode.productAttributeId = [dictJ objectForKey:@"productAttributeId"];
+                    NSArray * valueList = [dictJ objectForKey:@"valueList"];
+                    NSMutableArray * ArrayMu= [NSMutableArray arrayWithCapacity:0];
+                    NSMutableArray * ArrayvalueListMode= [NSMutableArray arrayWithCapacity:0];
+                    for(int B=0;B<valueList.count;B++)
+                    {
+                        NSDictionary * dictObject=valueList[B];
+                        valueListMode * modeValue = [[valueListMode alloc] init];
+                        modeValue.productAttributeValue=[dictObject objectForKey:@"productAttributeValue"];
+                        modeValue.productAttributeValueId=[dictObject objectForKey:@"productAttributeValueId"];
+                        [ArrayvalueListMode addObject:modeValue];
                     }
-//                    [blockSelf.arrPrice addObject:[NSString stringWithFormat:@"%.2f",[priceNumber floatValue]]];
-                    
-//                    NSLog(@"arrPrice = %@",blockSelf.arrPrice);
-//                    NSLog(@"price===  %@",priceNumber);
+                    mode.valueList = ArrayvalueListMode;
+                    [ArrayMu addObject:mode];
+                    ModeProducts.attributeList=ArrayMu;
                 }
+                NSMutableArray * productArrayMu= [NSMutableArray arrayWithCapacity:0];
+                for(int k=0;k<productVariantList.count;k++)
+                {
+                    NSDictionary * dictJ=productVariantList[k];
+                    NSArray * productAttributeValueIds = [dictJ objectForKey:@"productAttributeValueIds"];
+                    productVariantListMode * modeP = [[productVariantListMode alloc] init];
+                    modeP.priceValue = [dictJ objectForKey:@"priceValue"];
+                    modeP.productAttributeValueName = [dictJ objectForKey:@"productAttributeValueName"];
+                    modeP.productVariantId = [dictJ objectForKey:@"productVariantId"];
+                    NSMutableArray * ValueIds= [NSMutableArray arrayWithCapacity:0];
+                    for(int B=0;B<productAttributeValueIds.count;B++)
+                    {
+                        NSString * productAttributeValueId=productAttributeValueIds[B];
+                        [ValueIds addObject:productAttributeValueId];
+                    }
+                    modeP.productAttributeValueIds = ValueIds;
+                    [productArrayMu addObject:modeP];
+                }
+                ModeProducts.productVariantList=productArrayMu;
+                [self.arrPrice addObject:ModeProducts];
+                
+        [HudViewFZ HiddenHud];
+    }
         if(self.arrPrice.count>0)
         {
         [self updateText];
@@ -258,6 +309,57 @@
         [HudViewFZ HiddenHud];
     }];
 }
+//-(void)getPriceMache
+//{
+//    [HudViewFZ labelExample:self.view];
+//    __block LaundryViewController *  blockSelf = self;
+//    [blockSelf.arrPrice removeAllObjects];
+//    NSLog(@"URL=== %@",[NSString stringWithFormat:@"%@%@%@#%@",FuWuQiUrl,Get_PriceMache,self.arrayList[0],self.arrayList[1]]);
+//    NSString *escapedPathURL = [[NSString stringWithFormat:@"%@%@%@#%@",FuWuQiUrl,Get_PriceMache,self.arrayList[0],self.arrayList[1]] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+//
+//    NSLog(@"URL=== %@",escapedPathURL);
+//    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:escapedPathURL parameters:nil progress:^(id progress) {
+//
+//    } success:^(id responseObject) {
+//        NSLog(@"responseObject=  %@",responseObject);
+//        [HudViewFZ HiddenHud];
+//        //        NSDictionary * dictionary = (NSDictionary*)responseObject;
+//        //
+//        //        NSArray * resultListArr=[dictionary objectForKey:@"resultList"];
+//        NSArray * arrList = (NSArray *)responseObject;
+//        NSDictionary * dictionary = arrList[0];
+//                NSArray * sku_list_Arr=[dictionary objectForKey:@"sku_list"];
+//                for (int j=0; j<sku_list_Arr.count; j++) {
+//
+//                    NSDictionary * zong_Dict=sku_list_Arr[j];
+//                    NSNumber * priceNumber =[zong_Dict objectForKey:@"price"];
+//                     NSArray * prop_values =[zong_Dict objectForKey:@"prop_values"];
+//                    for (int M=0; M<prop_values.count; M++) {
+//                        if(M==1)
+//                        {
+//                        NSDictionary * SumDict=prop_values[M];
+////                        value = Cold;
+//                        NSString*  alias_value = [SumDict objectForKey:@"alias_value"];
+//                        PriceModeSS * mode = [[PriceModeSS alloc] init];
+//                        mode.PriceStr=[NSString stringWithFormat:@"%.2f",[priceNumber floatValue]];
+//                        mode.TemperatureStr = alias_value;
+//                        [blockSelf.arrPrice addObject:mode];
+//                        }
+//
+//                    }
+////                    [blockSelf.arrPrice addObject:[NSString stringWithFormat:@"%.2f",[priceNumber floatValue]]];
+//
+////                    NSLog(@"arrPrice = %@",blockSelf.arrPrice);
+////                    NSLog(@"price===  %@",priceNumber);
+//                }
+//        if(self.arrPrice.count>0)
+//        {
+//        [self updateText];
+//        }
+//    } failure:^(NSError *error) {
+//        [HudViewFZ HiddenHud];
+//    }];
+//}
 -(void)updateText
 {
 //    for (int i =0 ; i<self.arrPrice.count; i++) {
@@ -287,30 +389,35 @@
 }
 -(void)setSelectViewHidden
 {
-    if(self.arrPrice.count==3)
+    productsMode *mode=self.arrPrice[0];
+//    NSString* priceStr=[self ReturnPriceStr:mode];
+    if(mode.productVariantList.count==3)
     {
         [left_view setHidden:NO];
         [center_view setHidden:NO];
         [right_view setHidden:NO];
 //        [self center_viewTouch:nil];
         [self left_viewTouch:nil];
-    }else if(self.arrPrice.count==2)
+    }else if(mode.productVariantList.count==2)
     {
 //        [self left_viewTouch:nil];
-        for (int i =0 ; i<self.arrPrice.count; i++) {
-            PriceModeSS * mode1 =self.arrPrice[i];
-                if([mode1.TemperatureStr isEqualToString:@"Cold"])
+        for (int i =0 ; i<mode.attributeList.count; i++) {
+            attributeListsMode * mode1 =mode.attributeList[i];
+            for (int j =0 ; j<mode1.valueList.count; j++) {
+                valueListMode * mode2 =mode1.valueList[j];
+                if([mode2.productAttributeValue isEqualToString:@"Cold"])
                 {
                     [left_view setHidden:NO];
                                     
-                }else if([mode1.TemperatureStr isEqualToString:@"Warm"])
+                }else if([mode2.productAttributeValue isEqualToString:@"Warm"])
                 {
                     [center_view setHidden:NO];
                     
-                }else if([mode1.TemperatureStr isEqualToString:@"Hot"])
+                }else if([mode2.productAttributeValue isEqualToString:@"Hot"])
                 {
                     [right_view setHidden:NO];
                 }
+            }
         }
         if(left_view.isHidden==NO)
         {
@@ -339,23 +446,26 @@
                
             }
         }
-    }else if(self.arrPrice.count==1)
+    }else if(mode.productVariantList.count==1)
     {
 //        [self left_viewTouch:nil];
-        for (int i =0 ; i<self.arrPrice.count; i++) {
-            PriceModeSS * mode1 =self.arrPrice[i];
-                if([mode1.TemperatureStr isEqualToString:@"Cold"])
+        for (int i =0 ; i<mode.attributeList.count; i++) {
+            attributeListsMode * mode1 =mode.attributeList[i];
+            for (int j =0 ; j<mode1.valueList.count; j++) {
+                valueListMode * mode2 =mode1.valueList[j];
+                if([mode2.productAttributeValue isEqualToString:@"Cold"])
                 {
                     [left_view setHidden:NO];
                                     
-                }else if([mode1.TemperatureStr isEqualToString:@"Warm"])
+                }else if([mode2.productAttributeValue isEqualToString:@"Warm"])
                 {
                     [center_view setHidden:NO];
                     
-                }else if([mode1.TemperatureStr isEqualToString:@"Hot"])
+                }else if([mode2.productAttributeValue isEqualToString:@"Hot"])
                 {
                     [right_view setHidden:NO];
                 }
+            }
         }
         if(left_view.isHidden==NO)
         {
@@ -382,31 +492,56 @@
     
     
 }
+
+
+
+
+
 -(void)left_viewTouch:(UIGestureRecognizer*)tag
 {
+    
     NSLog(@"left");
 //    [self setLeft_label_Text_Z:self.arrPrice[0]];
 //    [self setCenter_label_Text_black:self.arrPrice[1]];
 //    [self setRight_label_Text_black:self.arrPrice[2]];
-    for (int i =0 ; i<self.arrPrice.count; i++) {
-        PriceModeSS * mode1 =self.arrPrice[i];
-            if([mode1.TemperatureStr isEqualToString:@"Cold"])
+//    for (int i =0 ; i<self.arrPrice.count; i++) {
+//        PriceModeSS * mode1 =self.arrPrice[i];
+//            if([mode1.TemperatureStr isEqualToString:@"Cold"])
+//            {
+//                [self setLeft_label_Text_Z:mode1.PriceStr];
+//            }else if([mode1.TemperatureStr isEqualToString:@"Warm"])
+//            {
+//                [self setCenter_label_Text_black:mode1.PriceStr];
+//            }else if([mode1.TemperatureStr isEqualToString:@"Hot"])
+//            {
+//                [self setRight_label_Text_black:mode1.PriceStr];
+//            }
+//    }
+    productsMode *mode=self.arrPrice[0];
+    for (int i =0 ; i<mode.attributeList.count; i++) {
+        attributeListsMode * mode1 =mode.attributeList[i];
+        for (int j =0 ; j<mode1.valueList.count; j++) {
+            valueListMode * mode2 =mode1.valueList[j];
+            if([mode2.productAttributeValue isEqualToString:@"Cold"])
             {
-                [self setLeft_label_Text_Z:mode1.PriceStr];
-            }else if([mode1.TemperatureStr isEqualToString:@"Warm"])
+                [self setLeft_label_Text_Z:[self ReturnPriceStr:mode SelectTemperature:1]];
+            }else if([mode2.productAttributeValue isEqualToString:@"Warm"])
             {
-                [self setCenter_label_Text_black:mode1.PriceStr];
-            }else if([mode1.TemperatureStr isEqualToString:@"Hot"])
+                [self setCenter_label_Text_black:[self ReturnPriceStr:mode SelectTemperature:2]];
+            }else if([mode2.productAttributeValue isEqualToString:@"Hot"])
             {
-                [self setRight_label_Text_black:mode1.PriceStr];
+                [self setRight_label_Text_black:[self ReturnPriceStr:mode SelectTemperature:3]];
             }
+
+    
+    self.Select_teger=0;
+//    order_c.total_amount=self.arrPrice[self.Select_teger];
+//    PriceModeSS * modeS =self.arrPrice[self.Select_teger];
+    order_c.total_amount=[self ReturnPriceStr:mode SelectTemperature:1];
+        }
     }
     xuandian.frame=CGRectMake(left_view.left+(left_view.width-6)/2, left_view.top-9, 6, 6);
     [self.topView addSubview:xuandian];
-    self.Select_teger=0;
-//    order_c.total_amount=self.arrPrice[self.Select_teger];
-    PriceModeSS * modeS =self.arrPrice[self.Select_teger];
-    order_c.total_amount=modeS.PriceStr;
 }
 
 -(void)setLeft_label_Text_Z:(NSString*)price_3
@@ -462,28 +597,29 @@
 //    PriceModeSS * mode1 =self.arrPrice[1];
 //    PriceModeSS * mode1 =self.arrPrice[2];
     
-    for (int i =0 ; i<self.arrPrice.count; i++) {
-        PriceModeSS * mode1 =self.arrPrice[i];
-            if([mode1.TemperatureStr isEqualToString:@"Cold"])
+    productsMode *mode=self.arrPrice[0];
+    for (int i =0 ; i<mode.attributeList.count; i++) {
+        attributeListsMode * mode1 =mode.attributeList[i];
+        for (int j =0 ; j<mode1.valueList.count; j++) {
+            valueListMode * mode2 =mode1.valueList[j];
+            if([mode2.productAttributeValue isEqualToString:@"Cold"])
             {
-                [self setLeft_label_Text_black:mode1.PriceStr];
-            }else if([mode1.TemperatureStr isEqualToString:@"Warm"])
+                [self setLeft_label_Text_black:[self ReturnPriceStr:mode SelectTemperature:1]];
+            }else if([mode2.productAttributeValue isEqualToString:@"Warm"])
             {
-                [self setCenter_label_Text_Z:mode1.PriceStr];
-            }else if([mode1.TemperatureStr isEqualToString:@"Hot"])
+                [self setCenter_label_Text_Z:[self ReturnPriceStr:mode SelectTemperature:2]];
+            }else if([mode2.productAttributeValue isEqualToString:@"Hot"])
             {
-                [self setRight_label_Text_black:mode1.PriceStr];
+                [self setRight_label_Text_black:[self ReturnPriceStr:mode SelectTemperature:3]];
             }
+    
+    
+    self.Select_teger=1;
+    order_c.total_amount=[self ReturnPriceStr:mode SelectTemperature:2];
+        }
     }
-//            [self setLeft_label_Text_black:self.arrPrice[0]];
-//            [self setCenter_label_Text_Z:self.arrPrice[1]];
-//            [self setRight_label_Text_black:self.arrPrice[2]];
     xuandian.frame=CGRectMake(center_view.left+(center_view.width-6)/2, center_view.top-9, 6, 6);
     [self.topView addSubview:xuandian];
-    self.Select_teger=1;
-//    order_c.total_amount=self.arrPrice[self.Select_teger];
-    PriceModeSS * modeS =self.arrPrice[self.Select_teger];
-    order_c.total_amount=modeS.PriceStr;
 }
 
 -(void)setCenter_label_Text_Z:(NSString*)price_3
@@ -537,25 +673,33 @@
 //    [self setLeft_label_Text_black:self.arrPrice[0]];
 //    [self setCenter_label_Text_black:self.arrPrice[1]];
 //    [self setRight_label_Text_Z:self.arrPrice[2]];
-    for (int i =0 ; i<self.arrPrice.count; i++) {
-        PriceModeSS * mode1 =self.arrPrice[i];
-            if([mode1.TemperatureStr isEqualToString:@"Cold"])
+    productsMode *mode=self.arrPrice[0];
+    for (int i =0 ; i<mode.attributeList.count; i++) {
+        attributeListsMode * mode1 =mode.attributeList[i];
+        for (int j =0 ; j<mode1.valueList.count; j++) {
+            valueListMode * mode2 =mode1.valueList[j];
+            if([mode2.productAttributeValue isEqualToString:@"Cold"])
             {
-                [self setLeft_label_Text_black:mode1.PriceStr];
-            }else if([mode1.TemperatureStr isEqualToString:@"Warm"])
+                [self setLeft_label_Text_black:[self ReturnPriceStr:mode SelectTemperature:1]];
+            }else if([mode2.productAttributeValue isEqualToString:@"Warm"])
             {
-                [self setCenter_label_Text_black:mode1.PriceStr];
-            }else if([mode1.TemperatureStr isEqualToString:@"Hot"])
+                [self setCenter_label_Text_black:[self ReturnPriceStr:mode SelectTemperature:2]];
+            }else if([mode2.productAttributeValue isEqualToString:@"Hot"])
             {
-                [self setRight_label_Text_Z:mode1.PriceStr];
+                [self setRight_label_Text_Z:[self ReturnPriceStr:mode SelectTemperature:3]];
             }
+//    xuandian.frame=CGRectMake(right_view.left+(right_view.width-6)/2, right_view.top-9, 6, 6);
+//    [self.topView addSubview:xuandian];
+//    self.Select_teger=2;
+////    order_c.total_amount=self.arrPrice[self.Select_teger];
+//    PriceModeSS * modeS =self.arrPrice[self.Select_teger];
+//    order_c.total_amount=modeS.PriceStr;
+    self.Select_teger=2;
+    order_c.total_amount=[self ReturnPriceStr:mode SelectTemperature:3];
+        }
     }
     xuandian.frame=CGRectMake(right_view.left+(right_view.width-6)/2, right_view.top-9, 6, 6);
     [self.topView addSubview:xuandian];
-    self.Select_teger=2;
-//    order_c.total_amount=self.arrPrice[self.Select_teger];
-    PriceModeSS * modeS =self.arrPrice[self.Select_teger];
-    order_c.total_amount=modeS.PriceStr;
 }
 
 -(void)setRight_label_Text_Z:(NSString*)price_3
@@ -662,6 +806,9 @@
     vc.arrayList=self.arrayList;
     vc.addrStr = self.addrStr;
     vc.OrderAndRenewal=1;
+    vc.Select_teger=self.Select_teger;
+    vc.arrPrice=self.arrPrice;
+    vc.siteIdStr=self.siteIdStr;
 //    vc.DeviceStr = self.DeviceStr;
     vc.NewOrderType=1;///洗衣
     [self.navigationController pushViewController:vc animated:YES];
@@ -681,5 +828,74 @@
     // Pass the selected object to the new view controller.
 }
 */
+//SelectTemperature; ///  从左到右 依次 1是cold，2是 Warm，3是Hot
+-(NSString * )ReturnPriceStr:(productsMode*)mode SelectTemperature:(NSInteger)SelectTemperature
+{
+//     mode=DomeZ.Mode;
+     for (int i = 0; i<mode.attributeList.count; i++) {
+            attributeListsMode * attmode= mode.attributeList[i];
+            for (int j=0; j<attmode.valueList.count; j++) {
+                valueListMode * modeValue =attmode.valueList[j];
+                NSString * productAttributeValueIdStr = modeValue.productAttributeValueId;
+                if([modeValue.productAttributeValue isEqualToString:@"Cold"])
+                {
+//                    [_ColdBtn setTitle:modeValue.productAttributeValue forState:(UIControlStateNormal)];
+                    for (int k=0; k<mode.productVariantList.count; k++) {
+                        productVariantListMode * modePro = mode.productVariantList[k];
+                        for (int M=0; M<modePro.productAttributeValueIds.count; M++) {
+                            NSString * ValueId= modePro.productAttributeValueIds[M];
+                            if([ValueId isEqualToString:productAttributeValueIdStr])
+                            {
+                                if(SelectTemperature==1)
+                                {
+                                    NSString * priceValue = [NSString stringWithFormat:@"%@",modePro.priceValue];
+                                    return priceValue;
+                                }
+                            }
+                        }
+                        
+                    }
+                }else if([modeValue.productAttributeValue isEqualToString:@"Warm"])
+                {
+                    for (int k=0; k<mode.productVariantList.count; k++) {
+                        productVariantListMode * modePro = mode.productVariantList[k];
+                        for (int M=0; M<modePro.productAttributeValueIds.count; M++) {
+                            NSString * ValueId= modePro.productAttributeValueIds[M];
+                            if([ValueId isEqualToString:productAttributeValueIdStr])
+                            {
+                                
+                                    if(SelectTemperature==2)
+                                    {
+                                         NSString * priceValue = [NSString stringWithFormat:@"%@",modePro.priceValue];
+                                        return priceValue;
+                                    }
+                            }
+                        }
+                        
+                    }
+                }else if([modeValue.productAttributeValue isEqualToString:@"Hot"])
+                {
+                    for (int k=0; k<mode.productVariantList.count; k++) {
+                        productVariantListMode * modePro = mode.productVariantList[k];
+                        for (int M=0; M<modePro.productAttributeValueIds.count; M++) {
+                            NSString * ValueId= modePro.productAttributeValueIds[M];
+                            if([ValueId isEqualToString:productAttributeValueIdStr])
+                            {
+                                if(SelectTemperature==3)
+                                {
+                                    NSString * priceValue = [NSString stringWithFormat:@"%@",modePro.priceValue];
+                                    return priceValue;
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+            }
+            
+        }
+
+    return nil;
+}
 
 @end

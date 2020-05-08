@@ -478,14 +478,11 @@ static int iCount=0;
                     }
                 });
                 return YES;
-            }
-            //so easy
-            else if (self.PhoneTextfield.text.length >= 49) {
-                self.PhoneTextfield.text = [[textField.text stringByAppendingString:string] substringToIndex:50];
-    //            NSLog(@"self.phone_textfiled.text =  %ld",self.phone_textfiled.text.length );
-                
-                return NO;
-            }else
+            }//so easy
+                    else if (self.PhoneTextfield.text.length >= 10) {
+                        self.PhoneTextfield.text = [[textField.text stringByAppendingString:string] substringToIndex:11];
+                        return NO;
+                    }else
             {
                 
             }
@@ -1290,7 +1287,7 @@ static int iCount=0;
                 [self.PhoneTextfield setFont:[UIFont systemFontOfSize:16]];
                 self.PhoneTextfield.textColor = [UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
                 self.PhoneTextfield.delegate=self;
-                    
+                self.PhoneTextfield.keyboardType = UIKeyboardTypeNumberPad;
                     
                 });
                 [cell addSubview: self.PhoneTextfield];

@@ -81,6 +81,11 @@
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
 //    [[UINavigationBar appearance] setTranslucent:NO];
 //    [self.navigationController.navigationBar setTranslucent:NO];
+        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
+        
+        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            [self loadNewData];
+        });
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMessage_Notification)name:kRegisterMessage object:nil];
     [super viewWillAppear:animated];
@@ -177,7 +182,8 @@
         [self.tableViewT registerNib:[UINib nibWithNibName:@"ImessageTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:tableID];
     }else if(self.MessageStyle==2)
     {
-        self.tableViewT.frame=CGRectMake(15, kNavBarAndStatusBarHeight+8, SCREEN_WIDTH-(15*2),SCREEN_HEIGHT-(kNavBarAndStatusBarHeight-8-kTabBarHeight));
+        self.tableViewT.frame=CGRectMake(15, kNavBarAndStatusBarHeight+8, SCREEN_WIDTH-(15*2),SCREEN_HEIGHT-((kNavBarAndStatusBarHeight)+8+(kTabBarHeight)));
+        
         self.tableViewT.delegate=self;
         self.tableViewT.dataSource=self;
         self.tableViewT.showsVerticalScrollIndicator=NO;
@@ -187,6 +193,8 @@
         [self.view addSubview:self.tableViewT];
         self.tableViewT.tableFooterView = [[UIView alloc]init];
         // 注册某个重用标识 对应的 Cell类型
+        // 注册某个重用标识 对应的 Cell类型
+        [self.tableViewT registerNib:[UINib nibWithNibName:@"ImessageTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:tableID];
         [self.tableViewT registerNib:[UINib nibWithNibName:@"EwashMessageTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:tableID1];
             dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.06/*延迟执行时间*/ * NSEC_PER_SEC));
             
@@ -195,7 +203,7 @@
             });
             
     }
-    //    [self.tableViewT setEditing:YES animated:NO];
+//    [self.tableViewT setEditing:YES animated:NO];
     
     // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
     MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
@@ -219,13 +227,16 @@
         // 进入刷新状态后会自动调用这个block
     }];
     self.tableViewT.mj_header=header;
-    MJRefreshAutoNormalFooter * footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadNewData_foot)];
+//    MJRefreshAutoNormalFooter * footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadNewData_foot)];
+    MJRefreshBackGifFooter *footer = [MJRefreshBackGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadNewData_foot)];
     // 设置文字
     [footer setTitle:@"" forState:MJRefreshStateIdle];
     [footer setTitle:@"" forState:MJRefreshStatePulling];
     [footer setTitle:@"" forState:MJRefreshStateRefreshing];
     // 设置回调（一旦进入刷新状态，就调用 target 的 action，也就是调用 self 的 loadNewData 方法）
 //    self.tableViewT.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    self.tableViewT.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    }];
     self.tableViewT.mj_footer =footer;
     // 马上进入刷新状态
     
@@ -439,11 +450,15 @@
             
             for (int i=0; i<dictARR.count;i++) {
                 NSDictionary * dict1 = (NSDictionary *)dictARR[i];
-                NSLog(@"dict1 = %@",dict1);
+//                NSLog(@"dict1 = %@",dict1);
                 E_NessageMode * mode = [[E_NessageMode alloc] init];
                 mode.content = [dict1 objectForKey:@"content"];
                 mode.messageId = [dict1 objectForKey:@"messageId"];
                 mode.title = [dict1 objectForKey:@"title"];
+                mode.readFlag = [dict1 objectForKey:@"readFlag"];
+                mode.templateEvent = [dict1 objectForKey:@"templateEvent"];
+                mode.creationTime = [dict1 objectForKey:@"creationTime"];
+                mode.messageAdditionalInformation=[dict1 objectForKey:@"messageAdditionalInformation"];
                 [self->_ListArray addObject:mode];
             }
             
@@ -514,9 +529,8 @@
 
 -(void)NewGet_MessageList_arr_foot
 {
-    if(self.MessageStyle==1)
-    {
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?page=%ld&size=%@",E_FuWuQiUrl,E_MessageList,(long)self.Page_intager,@"10"] parameters:nil progress:^(id progress) {
+
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?page=%ld&size=%@",E_FuWuQiUrl,E_MessageList,(long)self.Page_intager+1,@"10"] parameters:nil progress:^(id progress) {
         
         //    [NSString stringWithFormat:@"%@%@CustomerID=%@&Page=%ld&PageSize=%@",XJP_China(DIQU_Number),Get_MessageList,YonghuID,(long)self.Page_intager,@"20"] parameters:nil progress:^(id progress) {
         
@@ -535,11 +549,15 @@
             
             for (int i=0; i<dictARR.count;i++) {
                 NSDictionary * dict1 = (NSDictionary *)dictARR[i];
-                NSLog(@"dict1 = %@",dict1);
+//                NSLog(@"dict1 = %@",dict1);
                 E_NessageMode * mode = [[E_NessageMode alloc] init];
                 mode.content = [dict1 objectForKey:@"content"];
                 mode.messageId = [dict1 objectForKey:@"messageId"];
                 mode.title = [dict1 objectForKey:@"title"];
+                mode.readFlag = [dict1 objectForKey:@"readFlag"];
+                mode.templateEvent = [dict1 objectForKey:@"templateEvent"];
+                mode.creationTime = [dict1 objectForKey:@"creationTime"];
+                mode.messageAdditionalInformation=[dict1 objectForKey:@"messageAdditionalInformation"];
                 [self->_ListArray addObject:mode];
             }
   
@@ -581,10 +599,8 @@
         }
         [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Request timed out!", @"Language") andDelay:1.5];
     }];
-    }else if(self.MessageStyle==2)
-    {
     
-    }
+    
     
 }
 
@@ -595,60 +611,98 @@
     
 }
 
+//-(void)Get_Message_delete:(NSString *)MessageID indexPath:(NSIndexPath*)indexPath
+//{
+//    if(self.MessageStyle==1)
+//    {
+//    NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+//    SaveUserIDMode *ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+//    NSDictionary * dict =
+//    @{@"memberId":ModeUser.yonghuID,
+//      @"id":MessageID
+//      };
+//    NSLog(@"上传 dict = %@",dict);
+//
+//    _manager = [AFHTTPSessionManager manager];
+//    _manager.requestSerializer = [AFJSONRequestSerializer serializer];
+//    [_manager.requestSerializer setTimeoutInterval:50];
+//    // 加上这行代码，https ssl 验证。
+////    [_manager setSecurityPolicy:[jiamiStr customSecurityPolicy]];
+//    [_manager.requestSerializer setValue:@"iOS" forHTTPHeaderField:@"User-Agent"];
+//    self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPENORMAL];
+//    self.manager.responseSerializer.acceptableContentTypes =  [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", nil];
+//    NSLog(@"posr URL = %@",[NSString stringWithFormat:@"%@%@",FuWuQiUrl,post_deleteMessage]);
+//    [self.manager POST:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,post_deleteMessage] parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        NSLog(@"删除消息请求成功: %@",responseObject);
+//        NSDictionary * dict = (NSDictionary*)responseObject;
+//        NSString * statusCode = [dict objectForKey:@"statusCode"];
+//        NSString * errorMessage = [dict objectForKey:@"errorMessage"];
+//        if(statusCode!=nil && [statusCode intValue]==400)
+//        {
+//            [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
+//            if(self.HUD!=nil){
+//                [self.HUD hideAnimated:YES];
+//            }
+//        }else
+//        {
+//            if(self.HUD!=nil){
+//                [self.HUD hideAnimated:YES];
+//            }
+//            [self->_ListArray removeObjectAtIndex:indexPath.row];
+//            [self.tableViewT reloadData];
+//        }
+//
+//
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        if(self.HUD!=nil){
+//            [self.HUD hideAnimated:YES];
+//        }
+//        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Request timed out!", @"Language") andDelay:1.5];
+//    }];
+//    }else if(self.MessageStyle==2)
+//    {
+//
+//    }
+//}
+
+
 -(void)Get_Message_delete:(NSString *)MessageID indexPath:(NSIndexPath*)indexPath
 {
-    if(self.MessageStyle==1)
-    {
-    NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
-    SaveUserIDMode *ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    NSDictionary * dict =
-    @{@"memberId":ModeUser.yonghuID,
-      @"id":MessageID
-      };
-    NSLog(@"上传 dict = %@",dict);
-    
-    _manager = [AFHTTPSessionManager manager];
-    _manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [_manager.requestSerializer setTimeoutInterval:50];
-    // 加上这行代码，https ssl 验证。
-//    [_manager setSecurityPolicy:[jiamiStr customSecurityPolicy]];
-    [_manager.requestSerializer setValue:@"iOS" forHTTPHeaderField:@"User-Agent"];
-    self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPENORMAL];
-    self.manager.responseSerializer.acceptableContentTypes =  [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", nil];
-    NSLog(@"posr URL = %@",[NSString stringWithFormat:@"%@%@",FuWuQiUrl,post_deleteMessage]);
-    [self.manager POST:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,post_deleteMessage] parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"删除消息请求成功: %@",responseObject);
-        NSDictionary * dict = (NSDictionary*)responseObject;
-        NSString * statusCode = [dict objectForKey:@"statusCode"];
-        NSString * errorMessage = [dict objectForKey:@"errorMessage"];
-        if(statusCode!=nil && [statusCode intValue]==400)
-        {
-            [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
-            if(self.HUD!=nil){
-                [self.HUD hideAnimated:YES];
+     NSDictionary *dict = @{@"messageId":MessageID,
+                               };
+        NSLog(@"dict ====%@",dict);
+        [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_Messagedelete] parameters:dict progress:^(id progress) {
+            NSLog(@"111  %@",progress);
+        } Success:^(NSInteger statusCode,id responseObject) {
+    //        [HudViewFZ HiddenHud];
+            NSLog(@"E_Getcommand = %@",responseObject);
+            [HudViewFZ HiddenHud];
+            if(statusCode==200)
+            {
+//                [HudViewFZ HiddenHud];
+                [self->_ListArray removeObjectAtIndex:indexPath.section];
+                [self.tableViewT reloadData];
             }
-        }else
-        {
-            if(self.HUD!=nil){
-                [self.HUD hideAnimated:YES];
+            
+        } failure:^(NSInteger statusCode, NSError *error) {
+            NSLog(@"3333   %@",error);
+            [HudViewFZ HiddenHud];
+            if(statusCode==401)
+            {
+                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+                //创建一个消息对象
+                NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
+                //发送消息
+                [[NSNotificationCenter defaultCenter]postNotification:notice];
+                
+            }else{
+                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+                
             }
-            [self->_ListArray removeObjectAtIndex:indexPath.row];
-            [self.tableViewT reloadData];
-        }
-        
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        if(self.HUD!=nil){
-            [self.HUD hideAnimated:YES];
-        }
-        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Request timed out!", @"Language") andDelay:1.5];
-    }];
-    }else if(self.MessageStyle==2)
-    {
-    
-    }
+        }];
 }
+
 
 
 -(void)addSetItem
@@ -795,9 +849,14 @@
          cell1.selectionStyle = UITableViewCellSelectionStyleNone;
          cell1.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
          cell1.tag = indexPath.section;
+         cell1.delegate = self;
          E_NessageMode * mode  =self.ListArray[indexPath.section];
          cell1.TopTitle.text=[NSString stringWithFormat:@"%@",mode.title];
          cell1.ContentTitle.text=[NSString stringWithFormat:@"%@",mode.content];
+         if([mode.templateEvent isEqualToString:@"WASHING_ALMOST_COMPLETED"]||[mode.templateEvent isEqualToString:@"DRYING_ALMOST_COMPLETED"]||[mode.templateEvent isEqualToString:@"REWARD_SUCCESS"])
+         {
+             return [self ReturntableViewCell:tableView IndexPath:indexPath];
+         }
          return cell1;
      }
     return nil;
@@ -815,6 +874,56 @@
     NSString * date=[NSString stringWithFormat:@"%@/%@/%@",str_d,str_m,str_y];
     return date;
 }
+
+-(ImessageTableViewCell*)ReturntableViewCell:(UITableView *)tableView IndexPath:(NSIndexPath *)indexPath
+{
+    ImessageTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:tableID];
+    if (cell == nil) {
+        cell = [[ImessageTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:tableID];
+        
+    }
+    UIView *lbl = [[UIView alloc] init]; //定义一个label用于显示cell之间的分割线（未使用系统自带的分割线），也可以用view来画分割线
+    lbl.frame = CGRectMake(cell.frame.origin.x + 10, 0, self.view.width-1, 1);
+    lbl.backgroundColor =  [UIColor clearColor];
+    [cell.contentView addSubview:lbl];
+    //cell选中效果
+    //    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    cell.tag = indexPath.section;
+    cell.delegate = self;
+//    messageMode * mode_message = self.ListArray[indexPath.row];
+    
+    E_NessageMode * mode_message  =self.ListArray[indexPath.section];
+    cell.imageBtn.isRedBall = YES;
+    if([mode_message.templateEvent isEqualToString:@"WASHING_ALMOST_COMPLETED"])
+    {
+    [cell.imageBtn setImage:[UIImage imageNamed:@"washing"] forState:UIControlStateNormal];
+    }else if([mode_message.templateEvent isEqualToString:@"DRYING_ALMOST_COMPLETED"])
+    {
+        [cell.imageBtn setImage:[UIImage imageNamed:@"drying"] forState:UIControlStateNormal];
+    }else if([mode_message.templateEvent isEqualToString:@"REWARD_SUCCESS"])
+    {
+        [cell.imageBtn setImage:[UIImage imageNamed:@"reward"] forState:UIControlStateNormal];
+    }
+    
+    [cell.topLabel setText:mode_message.title];
+    [cell.downLabel setText:[PublicLibrary timeString:mode_message.creationTime]];
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        if([mode_message.readFlag intValue]==0)
+        {
+            cell.imageBtn.badgeValue=1;
+        }else if([mode_message.readFlag intValue]==1)
+        {
+            cell.imageBtn.badgeValue=0;
+        }
+    });
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    //    cell.select_btn.layer.cornerRadius=5;
+    return cell;
+}
+
 
 //设置间隔高度
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -853,6 +962,11 @@
         return 80;
     }else if(self.MessageStyle==2)
     {
+        E_NessageMode * mode  =self.ListArray[indexPath.section];
+       if([mode.templateEvent isEqualToString:@"WASHING_ALMOST_COMPLETED"]||[mode.templateEvent isEqualToString:@"DRYING_ALMOST_COMPLETED"]||[mode.templateEvent isEqualToString:@"REWARD_SUCCESS"])
+        {
+            return 80;
+        }
         return 115;
     }
     return 0;
@@ -886,6 +1000,33 @@
     }else if(self.MessageStyle==2)
     {
         NSLog(@"row====== %ld",(long)indexPath.section);
+        E_NessageMode * mode_message  =self.ListArray[indexPath.section];
+        if([mode_message.templateEvent isEqualToString:@"WASHING_ALMOST_COMPLETED"])
+        {
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            ImessageDetailsViewController *vc=[main instantiateViewControllerWithIdentifier:@"ImessageDetailsViewController"];
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.mode = mode_message;
+            vc.MessageStyle=self.MessageStyle;
+            [self.navigationController pushViewController:vc animated:YES];
+            
+        }else if([mode_message.templateEvent isEqualToString:@"DRYING_ALMOST_COMPLETED"])
+        {
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            ImessageDetailsViewController *vc=[main instantiateViewControllerWithIdentifier:@"ImessageDetailsViewController"];
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.mode = mode_message;
+            vc.MessageStyle=self.MessageStyle;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else if([mode_message.templateEvent isEqualToString:@"REWARD_SUCCESS"])
+        {
+           UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            ImessageDetailsViewController *vc=[main instantiateViewControllerWithIdentifier:@"ImessageDetailsViewController"];
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.mode = mode_message;
+            vc.MessageStyle=self.MessageStyle;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
         
     }
 }
@@ -896,18 +1037,19 @@
 }
 
 #pragma mark - 侧滑删除
-//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return YES;
-//}
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
 -(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
-    //我们让能被3整除的cell顺序不显示勾选框，其他的都显示,当然也可以在model中定义别的属性，根据他的数据来判断哪一行不需要显示勾选框
-    //    int i =(int)indexPath.row+1;
-    //    if (i%3==0) {
-    //        return UITableViewCellEditingStyleNone;
-    //    }else{
-    //    return UITableViewCellEditingStyleInsert|UITableViewCellEditingStyleDelete;
+////    我们让能被3整除的cell顺序不显示勾选框，其他的都显示,当然也可以在model中定义别的属性，根据他的数据来判断哪一行不需要显示勾选框
+//        int i =(int)indexPath.row+1;
+//        if (i%3==0) {
+//            return UITableViewCellEditingStyleNone;
+//        }else{
+//        return UITableViewCellEditingStyleInsert|UITableViewCellEditingStyleDelete;
+////
+//        }
     return UITableViewCellEditingStyleDelete;
-    //    }
 }
 
 /**
@@ -953,9 +1095,10 @@
             NSLog(@"Delete");
             //            [weakSelf.datas removeObject:model];
             //            [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-            messageMode * mode =self.ListArray[indexPath.row];
-            [self labelExample];
-            [self Get_Message_delete:mode.ID indexPath:indexPath];
+//            messageMode * mode =self.ListArray[indexPath.row];
+            E_NessageMode * mode_message  =self.ListArray[indexPath.section];
+            [HudViewFZ labelExample:self.view];
+            [self Get_Message_delete:mode_message.messageId indexPath:indexPath];
             //            [_ListArray removeObjectAtIndex:indexPath.row];
             //            [self.tableViewT reloadData];
         }];

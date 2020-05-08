@@ -53,13 +53,20 @@
     ///初始化单例
     NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
     self.ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    if([self.ModeUser.EmailStr isEqualToString:@""])
+    if([self.ModeUser.EmailStr isEqual:[NSNull null]])
     {
         [self.Email_textfield setPlaceholder:FGGetStringWithKeyFromTable(@"Please enter email address", @"Language")];
     }else
     {
-        [self.Email_textfield setPlaceholder:self.ModeUser.EmailStr];
-        [self.Email_textfield setText:self.ModeUser.EmailStr];
+        if([self.ModeUser.EmailStr isEqualToString:@""])
+        {
+        [self.Email_textfield setPlaceholder:FGGetStringWithKeyFromTable(@"Please enter email address", @"Language")];
+        }else
+        {
+            [self.Email_textfield setPlaceholder:self.ModeUser.EmailStr];
+            [self.Email_textfield setText:self.ModeUser.EmailStr];
+        }
+        
     }
     [super viewWillAppear:animated];
 }
@@ -94,7 +101,8 @@
                           };
     NSLog(@"dict=== %@",dict);
     
-    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,post_UpdateInfo] parameters:dict progress:^(id progress) {
+//    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,post_UpdateInfo] parameters:dict progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_PostUserInfo] parameters:dict progress:^(id progress) {
         NSLog(@"请求成功 = %@",progress);
     }Success:^(NSInteger statusCode,id responseObject) {
         [HudViewFZ HiddenHud];
@@ -103,25 +111,25 @@
         {
             NSDictionary * dictObject=(NSDictionary *)responseObject;
             //            用来储存用户信息
-            
             SaveUserIDMode * mode = [[SaveUserIDMode alloc] init];
-            
-            mode.phoneNumber = [dictObject objectForKey:@"phoneNumber"];//   手机号码
-            mode.loginName = [dictObject objectForKey:@"loginName"];//   与手机号码相同
-            mode.yonghuID = [dictObject objectForKey:@"id"]; ////用户ID
-            //            mode.randomPassword = [dictObject objectForKey:@"randomPassword"];//  验证码
-            //            mode.password = [dictObject objectForKey:@"password"];//  登录密码
-            //            mode.payPassword = [dictObject objectForKey:@"payPassword"];//    支付密码
+            mode.phoneNumber = [dictObject objectForKey:@"mobile"];//   手机号码
+            mode.loginName = [dictObject objectForKey:@"username"];//   与手机号码相同
+            mode.yonghuID = [dictObject objectForKey:@"memberId"]; ////用户ID
             mode.firstName = [dictObject objectForKey:@"firstName"];//   first name
             mode.lastName = [dictObject objectForKey:@"lastName"];//   last name
-            NSNumber * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
-            mode.birthday = [birthdayNum stringValue];
+            NSString * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
+            if(![birthdayNum isEqual:[NSNull null]])
+            {
+                NSInteger num = [birthdayNum integerValue];
+                NSNumber * nums = @(num);
+                mode.birthday = [nums stringValue];;
+            }
             mode.gender = [dictObject objectForKey:@"gender"];//       MALE:男，FEMALE:女
             mode.postCode = [dictObject objectForKey:@"postCode"];//   Post Code inviteCode
             mode.EmailStr = [dictObject objectForKey:@"email"];//   email
             mode.inviteCode = [dictObject objectForKey:@"inviteCode"];//       我填写的邀请码
             mode.myInviteCode = [dictObject objectForKey:@"myInviteCode"];//       我的邀请码
-            mode.headImageUrl = [dictObject objectForKey:@"headImageUrl"];
+            mode.headImageUrl = [dictObject objectForKey:@"headImageId"];
             mode.payPassword = [dictObject objectForKey:@"payPassword"];
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             //存储到NSUserDefaults（转NSData存）

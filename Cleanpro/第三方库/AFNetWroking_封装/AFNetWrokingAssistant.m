@@ -108,6 +108,8 @@
             failure:(void (^)(NSError *error))failure
 {
     self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPENORMAL];
+    [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"X-MEMBER-TOKEN"];
+    [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"X-USER-TOKEN"];
     [self.manager POST:URLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //        NSLog(@"task===  %@",task);
@@ -217,6 +219,8 @@
 {
     self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPENORMAL];
     [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"userToken"];
+    [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"X-MEMBER-TOKEN"];
+    [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"X-USER-TOKEN"];
     [self.manager POST:URLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //        NSLog(@"task===  %@",task);
@@ -343,6 +347,9 @@
     {
         // 设置请求头
         [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"userToken"];
+        
+        [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"X-MEMBER-TOKEN"];
+        [self.manager.requestSerializer setValue: TokenStr forHTTPHeaderField:@"X-USER-TOKEN"];
     }
     // 基于AFN3.0+ 封装的HTPPSession句柄
     _manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:ACCEPTTYPEIMAGE];

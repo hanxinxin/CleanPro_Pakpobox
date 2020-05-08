@@ -25,12 +25,13 @@
 //// 定义选择分钟数  默认是23分钟
 @property (assign, nonatomic) NSInteger TimeTeger;
 @property (assign, nonatomic)NSInteger morenTimeSj;
+@property (assign, nonatomic)NSInteger timeJiaJian;
 @property(nonatomic,strong)NSArray * arrayList;
 
 //@property(nonatomic,strong)Device * DeviceStr;///蓝牙设备
 @property(nonatomic,strong)NSString * addrStr;  ///加密字节
 
-
+@property (nonatomic, strong) NSString * siteIdStr; ///站点的id
 @property(nonatomic,assign)NSInteger OrderAndRenewal;  ///判断是正常下单还是加时烘干 1:正常下单 2:烘干加时
 @property(nonatomic,strong)NSString *  OrderIdTime;
 

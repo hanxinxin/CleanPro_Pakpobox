@@ -1,0 +1,45 @@
+//
+//  timelineAddressViewNew.h
+//  Cleanpro
+//
+//  Created by mac on 2020/4/23.
+//  Copyright © 2020 mac. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+
+
+@protocol timelineDelegateNew <NSObject>
+@optional
+
+- (void)CancelDelegateNew:(NSInteger)time SelectArray:(NSMutableArray *)array; // 1是取消  2是 保存
+- (void)TagTouch;
+@end
+
+//@interface timelineAddressViewController : UIViewController
+@interface timelineAddressViewNew : UIView
+@property (strong, nonatomic) IBOutlet UIView *topBarView;
+@property (strong, nonatomic) IBOutlet UIButton *CancelBtn;
+@property (strong, nonatomic) IBOutlet UIButton *SaveBtn;
+
+
+@property (strong, nonatomic) IBOutlet UITableView *tableviewA;
+@property (strong, nonatomic) IBOutlet UITableView *tableviewB;
+
+
+//@property (strong,nonatomic) NSArray * ArrayCity;
+@property (strong,nonatomic) NSMutableArray * ArrayCity;
+@property (strong,nonatomic) NSMutableArray * OneArray;
+
+@property (nonatomic, weak) id<timelineDelegateNew> delegate;
+
+
+
+-(void)setArrayTable:(NSMutableArray*)arr selectArr:(NSMutableArray *)Selectarray index:(NSInteger)Index;// index 0是没有输入postcode查询 1是输入postcode查询
+
+@end
+
+NS_ASSUME_NONNULL_END

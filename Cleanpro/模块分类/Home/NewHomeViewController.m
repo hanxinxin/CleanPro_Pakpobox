@@ -25,12 +25,13 @@
 #import "StaffViewController.h"
 #import "NewLoginViewController.h"
 //#import <luckysdk/utils.h>
-
+#import "CollectionHXView.h"
+#import "WCQRCodeScanningVC.h"
 
 
 #define tableID @"imageTableViewCell"
 #define count_t 2
-@interface NewHomeViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,CBCentralManagerDelegate,versionViewDelegate,CBCentralManagerDelegate>
+@interface NewHomeViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,CBCentralManagerDelegate,versionViewDelegate,CBCentralManagerDelegate,CollectionHXViewDelegate>
 {
     NSInteger iamgeCC;
 }
@@ -43,7 +44,7 @@
 @property (nonatomic,assign) CGFloat oldContentOffsetX;
 //@property CBCentralManager *centralManager;
 
-
+@property (nonatomic,strong)CollectionHXView*CenterCollectionView;
 
 @end
 
@@ -81,12 +82,13 @@
 //       }else
 //       {
 //        [self.imgArr addObject:[UIImage imageNamed:@"banner01"]];
-        [self.imgArr addObject:[UIImage imageNamed:@"888paper.jpg"]];
-        [self.imgArr addObject:[UIImage imageNamed:@"WashingTo.jpg"]];
+    
+        [self.imgArr addObject:[UIImage imageNamed:@"banner-EWASH.png"]];
+        [self.imgArr addObject:[UIImage imageNamed:@"UPloadbanner"]];
      
-        [self.imageViewArr addObject:[UIImage imageNamed:@"banner-EWASH.png"]];
+        [self.imageViewArr addObject:[UIImage imageNamed:@"888paper.jpg"]];
         [self.imageViewArr addObject:[UIImage imageNamed:@"promotion2.jpeg"]];
-//           [self.imageViewArr addObject:[UIImage imageNamed:@"WashingTo.jpg"]];
+           [self.imageViewArr addObject:[UIImage imageNamed:@"WashingTo.jpg"]];
 //       }
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     
@@ -131,7 +133,7 @@
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
         self.navigationController.navigationBar.translucent = YES;
         self.navigationController.navigationBar.subviews[0].alpha = 0.0;
-        NSLog(@"890890");
+//        NSLog(@"890890");
     });
     
     
@@ -384,13 +386,113 @@
 
 
 
+//-(void)getToken
+//{
+////     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+////    NSString * tokenStr = [userDefaults objectForKey:@"Token"];
+////    NSLog(@"Login url===%@",[NSString stringWithFormat:@"%@%@?userToken=%@",FuWuQiUrl,get_tokenUser,TokenStr]);
+//    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?userToken=%@",FuWuQiUrl,get_tokenUser,TokenStr] parameters:nil progress:^(id progress) {
+////        NSLog(@"请求成功 = %@",progress);
+//    } success:^(id responseObject) {
+//        NSLog(@"111responseObject = %@",responseObject);
+//        [HudViewFZ HiddenHud];
+//        NSDictionary * dictObject=(NSDictionary *)responseObject;
+//        NSNumber * statusCode =[dictObject objectForKey:@"statusCode"];
+//
+//
+//        if([statusCode intValue] ==401)
+//        {
+//            //            [[NSUserDefaults standardUserDefaults] setObject:@"100" forKey:@"TokenError"];
+////            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"TokenError"];
+////            [HudViewFZ showMessageTitle:@"Token expired" andDelay:2.0];
+////            for (UIViewController *controller in self.navigationController.viewControllers) {
+////                if ([controller isKindOfClass:[MyAccountViewController class]]) {
+////                    [self.navigationController popToViewController:controller animated:YES];
+////
+////                }
+////            }
+//            [self setTopViewStrNIL];
+//            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//            [userDefaults setObject:@"1" forKey:@"Token"];
+//            [userDefaults setObject:@"1" forKey:@"phoneNumber"];
+//            [userDefaults setObject:nil forKey:@"SaveUserMode"];
+//            [userDefaults setObject:@"1" forKey:@"logCamera"];
+//            //    [defaults synchronize];
+//
+//        }else if([statusCode intValue] ==500)
+//        {
+//            NSString * errorMessage =[dictObject objectForKey:@"errorMessage"];;
+//            [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
+//        }else{
+//            self.IDStr = [dictObject objectForKey:@"id"];
+//            NSDictionary * wallet = [dictObject objectForKey:@"wallet"];
+//            NSNumber * ba = [wallet objectForKey:@"balance"];
+//            self.balanceStr =[ba stringValue];
+//            self.currencyUnitStr = [wallet objectForKey:@"currencyUnit"];
+////            self.currencyUnitStr = [cur stringValue];
+//            NSNumber * credit = [wallet objectForKey:@"credit"];
+//            self.creditStr = [credit stringValue];
+//            NSNumber * coupon = [dictObject objectForKey:@"couponCount"];
+//            self.couponCountStr = [coupon stringValue];
+////            用来储存用户信息
+//
+//            SaveUserIDMode * mode = [[SaveUserIDMode alloc] init];
+//
+//            mode.phoneNumber = [dictObject objectForKey:@"phoneNumber"];//   手机号码
+//            mode.loginName = [dictObject objectForKey:@"loginName"];//   与手机号码相同
+//            mode.yonghuID = [dictObject objectForKey:@"id"]; ////用户ID
+////            mode.randomPassword = [dictObject objectForKey:@"randomPassword"];//  验证码
+////            mode.password = [dictObject objectForKey:@"password"];//  登录密码
+////            mode.payPassword = [dictObject objectForKey:@"payPassword"];//    支付密码
+//            mode.firstName = [dictObject objectForKey:@"firstName"];//   first name
+//            mode.lastName = [dictObject objectForKey:@"lastName"];//   last name
+//            NSNumber * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
+//            mode.birthday = [birthdayNum stringValue];
+//            mode.gender = [dictObject objectForKey:@"gender"];//       MALE:男，FEMALE:女
+//            mode.postCode = [dictObject objectForKey:@"postCode"];//   Post Code inviteCode
+//            mode.EmailStr = [dictObject objectForKey:@"email"];//   email
+//            mode.inviteCode = [dictObject objectForKey:@"inviteCode"];//       我填写的邀请码
+//            mode.myInviteCode = [dictObject objectForKey:@"myInviteCode"];//       我的邀请码
+//            mode.headImageUrl = [dictObject objectForKey:@"headImageUrl"];
+//            mode.payPassword = [dictObject objectForKey:@"payPassword"];
+//             ////个人中心需要用到积分
+//            mode.credit = self.creditStr;
+//            mode.balance = self.balanceStr;
+//            mode.couponCount = self.couponCountStr;
+//            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+//            //存储到NSUserDefaults（转NSData存）
+//            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: mode];
+//
+//            [defaults setObject:data forKey:@"SaveUserMode"];
+//            [defaults synchronize];
+//            [jiamiStr base64Data_encrypt:mode.yonghuID];
+//            [self setTopViewStr];
+//
+//
+//        }
+//    } failure:^(NSInteger statusCode, NSError *error) {
+//        NSLog(@"error = %@",error);
+//        [HudViewFZ HiddenHud];
+//        if(statusCode==401)
+//        {
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+//            //创建一个消息对象
+//            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
+//            //发送消息
+//            [[NSNotificationCenter defaultCenter]postNotification:notice];
+//
+//        }else{
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+//
+//        }
+//    }];
+//}
 -(void)getToken
 {
-//     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 //    NSString * tokenStr = [userDefaults objectForKey:@"Token"];
-//    NSLog(@"Login url===%@",[NSString stringWithFormat:@"%@%@?userToken=%@",FuWuQiUrl,get_tokenUser,TokenStr]);
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?userToken=%@",FuWuQiUrl,get_tokenUser,TokenStr] parameters:nil progress:^(id progress) {
-//        NSLog(@"请求成功 = %@",progress);
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_GetToken] parameters:nil progress:^(id progress) {
+        //        NSLog(@"请求成功 = %@",progress);
     } success:^(id responseObject) {
         NSLog(@"111responseObject = %@",responseObject);
         [HudViewFZ HiddenHud];
@@ -401,86 +503,98 @@
         if([statusCode intValue] ==401)
         {
             //            [[NSUserDefaults standardUserDefaults] setObject:@"100" forKey:@"TokenError"];
-//            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"TokenError"];
-//            [HudViewFZ showMessageTitle:@"Token expired" andDelay:2.0];
-//            for (UIViewController *controller in self.navigationController.viewControllers) {
-//                if ([controller isKindOfClass:[MyAccountViewController class]]) {
-//                    [self.navigationController popToViewController:controller animated:YES];
-//
-//                }
-//            }
-            [self setTopViewStrNIL];
+            //            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"TokenError"];
+            //            [HudViewFZ showMessageTitle:@"Token expired" andDelay:2.0];
+            //            for (UIViewController *controller in self.navigationController.viewControllers) {
+            //                if ([controller isKindOfClass:[MyAccountViewController class]]) {
+            //                    [self.navigationController popToViewController:controller animated:YES];
+            //
+            //                }
+            //            }
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
             [userDefaults setObject:@"1" forKey:@"Token"];
             [userDefaults setObject:@"1" forKey:@"phoneNumber"];
             [userDefaults setObject:nil forKey:@"SaveUserMode"];
             [userDefaults setObject:@"1" forKey:@"logCamera"];
             //    [defaults synchronize];
+//            [self addDownScroller];
             
         }else if([statusCode intValue] ==500)
         {
             NSString * errorMessage =[dictObject objectForKey:@"errorMessage"];;
             [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
         }else{
-            self.IDStr = [dictObject objectForKey:@"id"];
+            NSString*tokenStr = [dictObject objectForKey:@"token"];
+            NSString*phoneNumberStr = [dictObject objectForKey:@"mobile"];
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setObject:tokenStr forKey:@"Token"];
+            [userDefaults setObject:phoneNumberStr forKey:@"phoneNumber"];
+            [userDefaults setObject:@"2" forKey:@"logCamera"];
+            [[NSUserDefaults standardUserDefaults] setObject:@"100" forKey:@"TokenError"];
+            //            NSString * IDStr = [dictObject objectForKey:@"id"];
             NSDictionary * wallet = [dictObject objectForKey:@"wallet"];
             NSNumber * ba = [wallet objectForKey:@"balance"];
-            self.balanceStr =[ba stringValue];
-            self.currencyUnitStr = [wallet objectForKey:@"currencyUnit"];
-//            self.currencyUnitStr = [cur stringValue];
+            NSString * balanceStr =[ba stringValue];
+            //            NSString * currencyUnitStr = [wallet objectForKey:@"currencyUnit"];
+            //            self.currencyUnitStr = [cur stringValue];
             NSNumber * credit = [wallet objectForKey:@"credit"];
-            self.creditStr = [credit stringValue];
+            NSString * creditStr = [credit stringValue];
             NSNumber * coupon = [dictObject objectForKey:@"couponCount"];
-            self.couponCountStr = [coupon stringValue];
-//            用来储存用户信息
+            NSString *couponCountStr = [coupon stringValue];
+            //            用来储存用户信息
             
             SaveUserIDMode * mode = [[SaveUserIDMode alloc] init];
             
-            mode.phoneNumber = [dictObject objectForKey:@"phoneNumber"];//   手机号码
-            mode.loginName = [dictObject objectForKey:@"loginName"];//   与手机号码相同
-            mode.yonghuID = [dictObject objectForKey:@"id"]; ////用户ID
-//            mode.randomPassword = [dictObject objectForKey:@"randomPassword"];//  验证码
-//            mode.password = [dictObject objectForKey:@"password"];//  登录密码
-//            mode.payPassword = [dictObject objectForKey:@"payPassword"];//    支付密码
+            mode.phoneNumber = [dictObject objectForKey:@"mobile"];//   手机号码
+            mode.loginName = [dictObject objectForKey:@"username"];//   与手机号码相同
+            mode.yonghuID = [dictObject objectForKey:@"memberId"]; ////用户ID
+            //            mode.randomPassword = [dictObject objectForKey:@"randomPassword"];//  验证码
+            //            mode.password = [dictObject objectForKey:@"password"];//  登录密码
+            //            mode.payPassword = [dictObject objectForKey:@"payPassword"];//    支付密码
             mode.firstName = [dictObject objectForKey:@"firstName"];//   first name
             mode.lastName = [dictObject objectForKey:@"lastName"];//   last name
-            NSNumber * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
-            mode.birthday = [birthdayNum stringValue];
+            NSString * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
+            if(![birthdayNum isEqual:[NSNull null]])
+            {
+//                mode.birthday = [birthdayNum ];;
+                NSInteger num = [birthdayNum integerValue];
+                NSNumber * nums = @(num);
+                mode.birthday = [nums stringValue];;
+            }
             mode.gender = [dictObject objectForKey:@"gender"];//       MALE:男，FEMALE:女
             mode.postCode = [dictObject objectForKey:@"postCode"];//   Post Code inviteCode
             mode.EmailStr = [dictObject objectForKey:@"email"];//   email
             mode.inviteCode = [dictObject objectForKey:@"inviteCode"];//       我填写的邀请码
             mode.myInviteCode = [dictObject objectForKey:@"myInviteCode"];//       我的邀请码
-            mode.headImageUrl = [dictObject objectForKey:@"headImageUrl"];
+            mode.headImageUrl = [dictObject objectForKey:@"headImageId"];
             mode.payPassword = [dictObject objectForKey:@"payPassword"];
-             ////个人中心需要用到积分
-            mode.credit = self.creditStr;
-            mode.balance = self.balanceStr;
-            mode.couponCount = self.couponCountStr;
+            ////个人中心需要用到积分
+            mode.credit = creditStr;
+            mode.balance = balanceStr;
+            mode.couponCount = couponCountStr;
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             //存储到NSUserDefaults（转NSData存）
             NSData *data = [NSKeyedArchiver archivedDataWithRootObject: mode];
-           
+             NSLog(@"测试断点5555");
             [defaults setObject:data forKey:@"SaveUserMode"];
             [defaults synchronize];
             [jiamiStr base64Data_encrypt:mode.yonghuID];
-            [self setTopViewStr];
-            
-            
+//            [self addDownScroller];
+             
         }
     } failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"error = %@",error);
         [HudViewFZ HiddenHud];
         if(statusCode==401)
         {
-            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:1.0];
             //创建一个消息对象
             NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
             //发送消息
             [[NSNotificationCenter defaultCenter]postNotification:notice];
             
         }else{
-            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:1.0];
             
         }
     }];
@@ -522,76 +636,135 @@
 -(void)topviewset
 {
 //    topView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 214*autoSizeScaleX+68*autoSizeScaleX)];
-    topView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 214*autoSizeScaleX)];
 //    topView.backgroundColor=[UIColor redColor];
 //    [self.view addSubview:topView];
-    [globalScrollview addSubview:topView];
+    topView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 214*autoSizeScaleX+200*autoSizeScaleX+20)];
+    
     [self addScrollerView];
-    self.button_view = [[UIView alloc] initWithFrame:CGRectMake(0, ShowScrollview.bottom, SCREEN_WIDTH, 68*autoSizeScaleX)];
-    NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
-    SaveUserIDMode * mode  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    
-    
-    for (int i =0 ; i<2; i++) {
-//        HButtonView *
-        UINib *nib = [UINib nibWithNibName:@"HButtonView" bundle:nil];
-        NSArray *objs = [nib instantiateWithOwner:nil options:nil];
-        HButtonView * hb=objs[0];
-        hb.frame=CGRectMake(i*self.button_view.width/2, 0, self.button_view.width/2, self.button_view.height);
-        UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(Puhs_MyWallet:)];
-        
-        [hb addGestureRecognizer:labelTapGestureRecognizer];
-        hb.tag=i;
-        if(i==0)
-        {
-            if(mode!=nil)
-            {
-                hb.Number_lable.text=mode.balance;
-            }else
-            {
-                hb.Number_lable.text=@"-";
-            }
-            hb.title_lable.text=FGGetStringWithKeyFromTable(@"Balance", @"Language");
-            [hb.left_btn setImage:[UIImage imageNamed:@"balance1"] forState:UIControlStateNormal];
-            hb.down_label.textAlignment=NSTextAlignmentCenter;
-            hb.down_label.attributedText =[self set_button_view_Label:i str:@"0"];
-            self.buttonOne=hb;
-        }
-        /*else if(i==1)
-        {
-            hb.Number_lable.text=@"0";
-            hb.title_lable.text=@"Coupons";
-            [hb.left_btn setImage:[UIImage imageNamed:@"home_Coupons"] forState:UIControlStateNormal];
-            hb.down_label.textAlignment=NSTextAlignmentCenter;
-            hb.down_label.attributedText =[self set_button_view_Label:i str:@"0"];
-            self.buttonTwo=hb;
-        }
-         */
-        else if(i==1)
-        {
-            if(mode!=nil)
-            {
-                hb.Number_lable.text=mode.credit;
-            }else
-            {
-                hb.Number_lable.text=@"-";
-            }
-            hb.title_lable.text=FGGetStringWithKeyFromTable(@"Reward Points", @"Language");
-            [hb.left_btn setImage:[UIImage imageNamed:@"credit"] forState:UIControlStateNormal];
- hb.down_label.textAlignment=NSTextAlignmentCenter;
-            hb.down_label.attributedText =[self set_button_view_Label:i str:@"0"];
-            self.buttonThree=hb;
-        }
-//        [self.button_view addSubview:hb];
-        
-    }
-    [self.button_view addSubview:self.buttonOne];
-    [self.button_view addSubview:self.buttonTwo];
-    [self.button_view addSubview:self.buttonThree];
-//    [topView addSubview:self.button_view];
+//    [self addHButtonViewA];  //屏蔽一起显示金额的view
+    [self addCollectionViewA];
+    [globalScrollview addSubview:topView];
     
 }
-
+-(void)addCollectionViewA
+{
+    
+    NSArray * array= @[@[@"Laundry",@"E-wash",@"Lroning",@"Power Bank",@"Vending Machine",@"Gife",@"Locker",@"Coming Soon"]];
+    NSArray * arrS=array[0];
+    NSArray * imagearr= @[@[@"icon_laundry1",@"icon_ewash",@"icon_ironing",@"icon_powerbank",@"icon_vending",@"icon_gifts",@"icon_locker",@"icon_coming"]];
+       NSArray * arrImage=imagearr[0];
+    int count = (int)((arrS.count%4)==0?(arrS.count/4):((arrS.count/4)+1));
+    self.CenterCollectionView=[[CollectionHXView alloc] initFrame:CGRectMake(0, ShowScrollview.bottom, SCREEN_WIDTH,(100*autoSizeScaleX)*count+20) Array:(NSMutableArray *)array imageArr:(NSMutableArray *)arrImage];
+    self.CenterCollectionView.delegate=self;
+    self.CenterCollectionView.backgroundColor=[UIColor whiteColor];
+    [topView addSubview:self.CenterCollectionView];
+    
+}
+- (void)CellTouch:(UITableViewCell*)Cell
+{
+    NSLog(@"Cell.tag=== %ld",(long)Cell.tag);
+    if(Cell.tag==0)
+    {
+        NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"];
+        if([strPhoen isEqualToString:@"1"])
+        {
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            NewLoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewLoginViewController"];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else
+        {
+            WCQRCodeScanningVC *WCVC = [[WCQRCodeScanningVC alloc] init];
+            WCVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:WCVC animated:YES];
+        }
+    }else if(Cell.tag==1)
+    {
+        NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"];
+        if([strPhoen isEqualToString:@"1"])
+        {
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            NewLoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewLoginViewController"];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else
+        {
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            EWashViewController *vc=[main instantiateViewControllerWithIdentifier:@"EWashViewController"];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }else
+    {
+        
+        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"The function is under development, so stay tuned!", @"Language") andDelay:2.0];
+    }
+}
+-(void)addHButtonViewA
+{
+    topView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 214*autoSizeScaleX)];
+     NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+        SaveUserIDMode * mode  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        self.button_view = [[UIView alloc] initWithFrame:CGRectMake(0, ShowScrollview.bottom, SCREEN_WIDTH, 68*autoSizeScaleX)];
+        
+        for (int i =0 ; i<2; i++) {
+    //        HButtonView *
+            UINib *nib = [UINib nibWithNibName:@"HButtonView" bundle:nil];
+            NSArray *objs = [nib instantiateWithOwner:nil options:nil];
+            HButtonView * hb=objs[0];
+            hb.frame=CGRectMake(i*self.button_view.width/2, 0, self.button_view.width/2, self.button_view.height);
+            UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(Puhs_MyWallet:)];
+            
+            [hb addGestureRecognizer:labelTapGestureRecognizer];
+            hb.tag=i;
+            if(i==0)
+            {
+                if(mode!=nil)
+                {
+                    hb.Number_lable.text=mode.balance;
+                }else
+                {
+                    hb.Number_lable.text=@"-";
+                }
+                hb.title_lable.text=FGGetStringWithKeyFromTable(@"Balance", @"Language");
+                [hb.left_btn setImage:[UIImage imageNamed:@"balance1"] forState:UIControlStateNormal];
+                hb.down_label.textAlignment=NSTextAlignmentCenter;
+                hb.down_label.attributedText =[self set_button_view_Label:i str:@"0"];
+                self.buttonOne=hb;
+            }
+            /*else if(i==1)
+            {
+                hb.Number_lable.text=@"0";
+                hb.title_lable.text=@"Coupons";
+                [hb.left_btn setImage:[UIImage imageNamed:@"home_Coupons"] forState:UIControlStateNormal];
+                hb.down_label.textAlignment=NSTextAlignmentCenter;
+                hb.down_label.attributedText =[self set_button_view_Label:i str:@"0"];
+                self.buttonTwo=hb;
+            }
+             */
+            else if(i==1)
+            {
+                if(mode!=nil)
+                {
+                    hb.Number_lable.text=mode.credit;
+                }else
+                {
+                    hb.Number_lable.text=@"-";
+                }
+                hb.title_lable.text=FGGetStringWithKeyFromTable(@"Reward Points", @"Language");
+                [hb.left_btn setImage:[UIImage imageNamed:@"credit"] forState:UIControlStateNormal];
+     hb.down_label.textAlignment=NSTextAlignmentCenter;
+                hb.down_label.attributedText =[self set_button_view_Label:i str:@"0"];
+                self.buttonThree=hb;
+            }
+    //        [self.button_view addSubview:hb];
+            
+        }
+        [self.button_view addSubview:self.buttonOne];
+        [self.button_view addSubview:self.buttonTwo];
+        [self.button_view addSubview:self.buttonThree];
+    //    [topView addSubview:self.button_view];
+}
 -(NSMutableAttributedString*)set_button_view_Label:(NSInteger)index str:(NSString*)strlabel
 {
 //    NSLog(@"tag = %ld", (long)index);
@@ -679,8 +852,8 @@
     //粗体
     [promos.titleLabel setFont:[UIFont fontWithName : @"Helvetica-Bold" size : 16 ]];
     UIButton * ViewAll = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH-80-7, 0, 80, 40)];
-//    [ViewAll setTitle:FGGetStringWithKeyFromTable(@"View all", @"Language") forState:UIControlStateNormal];
-    [ViewAll setTitle:FGGetStringWithKeyFromTable(@"", @"Language") forState:UIControlStateNormal];
+    [ViewAll setTitle:FGGetStringWithKeyFromTable(@"View all", @"Language") forState:UIControlStateNormal];
+//    [ViewAll setTitle:FGGetStringWithKeyFromTable(@"", @"Language") forState:UIControlStateNormal];
     [ViewAll setTitleColor:[UIColor colorWithRed:25/255.0 green:181/255.0 blue:239/255.0 alpha:1.0] forState:UIControlStateNormal];
     [ViewAll.titleLabel setFont:[UIFont systemFontOfSize:15.f]];
 //    [ViewAll addTarget:self action:@selector(btnViewAll:) forControlEvents:UIControlEventTouchDown];
@@ -860,7 +1033,7 @@
         [ShowScrollview addSubview:imagView];
     }
     [ShowScrollview setContentOffset:CGPointMake(SCREEN_WIDTH, 0)];
-        [self.view addSubview:ShowScrollview];
+//        [self.view addSubview:ShowScrollview];
     //启动定时器
     if(self.rotateTimer==nil)
     {
@@ -898,6 +1071,9 @@
     
     [topView addSubview:ShowScrollview];
     [topView addSubview:self.myPageControl];
+    
+//    [globalScrollview addSubview:ShowScrollview];
+//    [globalScrollview addSubview:self.myPageControl];
 }
 #pragma mark -- 滚动视图的代理方法
 //开始拖拽的代理方法，在此方法中暂停定时器。
@@ -954,14 +1130,14 @@
 //            NSLog(@"少时诵诗书 === %f",offsetY);
         }
     } else if (offsetY > 0 && offsetY < 64) {
-        backView.alpha = offsetY / 64;
+//        backView.alpha = offsetY / 64;
 //        self.navigationController.navigationBar.translucent = YES;
         
     }else if(offsetY == 64 ){
 //        backView.alpha = 0;
 //        NSLog(@"fdsafdsfds ");
     } else if (offsetY > 64 ) {//&& offsetY <= NavBar_HEIGHT + 30
-        backView.alpha = 1;
+//        backView.alpha = 1;///不显示导航栏
 //        self.navigationController.navigationBar.translucent = NO;
     }
 }
@@ -1087,7 +1263,7 @@
     */
     if(self.myPageControl.currentPage==0)
     {
-//        [self btnViewAll:nil];
+        [self btnViewAll:nil];
     }
 }
 
@@ -1238,10 +1414,10 @@
         [self.navigationController pushViewController:avc animated:YES];
     }
     */
-    if(indexPath.section==0)
-    {
-        [self btnViewAll:nil];
-    }
+//    if(indexPath.section==0)
+//    {
+//        [self btnViewAll:nil];
+//    }
 }
 
 

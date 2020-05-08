@@ -39,9 +39,18 @@
 
 //@property(nonatomic,strong)Device * DeviceStr;///蓝牙设备
 @property(nonatomic,strong)NSString * addrStr;  ///加密字节
+@property (nonatomic, strong) NSString * siteIdStr; ///站点的id
 @property(nonatomic,assign)NSInteger overtimeYN;  ///加密字节
+@property (nonatomic ,strong)NSMutableArray * arrPrice;  ///
+@property (nonatomic ,strong)NSMutableArray * SPArray;  ///商品的id
+
+
+///////定义选择什么价位
+@property (assign,nonatomic) NSInteger Select_teger; //// 0是Cold 1是Warm 2是Hot
 
 @property(nonatomic,assign)NSInteger OrderAndRenewal;  ///判断是正常下单还是加时烘干 1:正常下单 2:烘干加时
+@property(nonatomic,assign)NSInteger timeTotal;///总时长
+
 @property(nonatomic,strong)NSString *  OrderIdTime;
 
 @property(nonatomic,assign)NSInteger NewOrderType;  ///判断是洗衣还是贩卖机 1:洗衣 2:贩卖机

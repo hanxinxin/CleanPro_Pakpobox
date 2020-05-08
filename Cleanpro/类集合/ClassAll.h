@@ -144,3 +144,54 @@
 @property (nonatomic,strong)NSString * regionLevel ;
 @property (nonatomic,strong)NSString * regionName ;
 @end
+
+@interface CitySelectMode : NSObject
+@property (nonatomic,strong)NSString * cityName ;
+@property (nonatomic,assign)NSInteger indexS ;
+
+@end
+
+
+@interface upperGradeOneMode : NSObject
+@property (nonatomic,strong)NSString * districtId;
+@property (nonatomic,strong)NSString * enName;
+@property (nonatomic,strong)NSString * endGrade;
+@property (nonatomic,strong)NSString * grade;
+@property (nonatomic,strong)NSString * name;
+@property (nonatomic,strong)NSString * postCode;
+@property (nonatomic,strong)NSDictionary * upperGrade;
+@property (nonatomic,strong)NSString * upperGradeId;
+@end
+
+
+@interface NewWalletListClass : NSObject
+
+@property (nonatomic,strong)NSString * comment;
+@property (nonatomic,strong)NSNumber * creationTime;
+@property (nonatomic,strong)NSNumber * creditAmount;
+@property (nonatomic,strong)NSNumber * lastUpdatedTime;
+@property (nonatomic,strong)NSString * memberWalletTransactionLogId;
+@property (nonatomic,strong)NSNumber * tradingTime;
+@property (nonatomic,strong)NSNumber * transactionAmount;
+@property (nonatomic,strong)NSNumber * transactionNumber;
+@property (nonatomic,strong)NSString * incomeType;
+@property (nonatomic,strong)NSString * transactionType;
+@end
+
+
+@interface NewOrderList : NSObject
+@property (nonatomic,strong)NSString * merchantId;//
+@property (nonatomic,strong)NSString * cleanProItemName;//
+@property (nonatomic,strong)NSString * merchantName;//
+@property (nonatomic,strong)NSString * orderNumber;//
+@property (nonatomic,strong)NSString * ordersId;//
+@property (nonatomic,strong)NSArray * ordersItems;//
+@property (nonatomic,strong)NSString * paidCharge;//
+@property (nonatomic,strong)NSString * siteAddress;//
+@property (nonatomic,strong)NSString * siteNumber;//
+@property (nonatomic,strong)NSString * siteSerialNumber;//
+@property (nonatomic,strong)NSString * siteType;
+@property (nonatomic,strong)NSString * timeCreated;//
+@end
+
+

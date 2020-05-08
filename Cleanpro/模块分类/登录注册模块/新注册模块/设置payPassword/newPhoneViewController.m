@@ -140,7 +140,7 @@
     // Pass the selected object to the new view controller.
 }
 */
-
+/*
 -(void)send_getcode
 {
     
@@ -214,14 +214,79 @@
         [HudViewFZ HiddenHud];
     }];
 }
+*/
 
+
+-(void)send_getcode
+{
+    [HudViewFZ labelExample:self.view];
+    NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+        SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    NSDictionary * dict=@{@"mobile":ModeUser.phoneNumber
+    };
+    //        NSLog(@"url=== %@",[NSString stringWithFormat:@"%@%@",FuWuQiUrl,P_sendVerifyCode]);
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Code:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_sendSmsCode] parameters:dict progress:^(id progress) {
+        NSLog(@"请求成功 = %@",progress);
+    }Success:^(NSInteger statusCode,id responseObject) {
+        [HudViewFZ HiddenHud];
+        NSLog(@"E_sendSmsCode = %@",responseObject);
+        if(statusCode==200)
+        {
+            //            NSLog(@"responseObject = %@",responseObject);
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"SendVerifyCode Success", @"Language") andDelay:2.0];
+            [self countDown:60];
+        }else
+        {
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"statusCode error", @"Language") andDelay:2.0];
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+        [HudViewFZ HiddenHud];
+    }];
+}
+-(void)jiaoyan
+{
+    [HudViewFZ labelExample:self.view];
+    NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+    SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    NSDictionary * dict=@{@"mobile":ModeUser.phoneNumber,
+    @"validateCode":self.pay_textfeld.text,};
+    //        NSLog(@"url=== %@",[NSString stringWithFormat:@"%@%@",FuWuQiUrl,P_sendVerifyCode]);
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Code:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_verifySmsCode] parameters:dict progress:^(id progress) {
+        NSLog(@"请求成功 = %@",progress);
+    }Success:^(NSInteger statusCode,id responseObject) {
+        [HudViewFZ HiddenHud];
+        NSLog(@"responseObject = %@",responseObject);
+        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Check success", @"Language") andDelay:1.0];
+        [self push_viewcontroller];
+    } failure:^(NSError *error) {
+        NSLog(@"error = %@",error);
+        
+        if (error) {
+            [HudViewFZ showMessageTitle:[self dictStr:error] andDelay:2.0];
+        }
+        
+        [HudViewFZ HiddenHud];
+    }];
+}
+-(NSString *)dictStr:(NSError *)error
+{
+//    NSString * receive=@"";
+    NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+//    receive= [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *dictFromData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
+    NSString  * message = [dictFromData valueForKey:@"message"];
+//
+    return message;
+}
 -(void)push_viewcontroller
 {
     UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
     SetPayPViewController *vc=[main instantiateViewControllerWithIdentifier:@"SetPayPViewController"];
     vc.hidesBottomBarWhenPushed = YES;
     vc.validateCode=self.pay_textfeld.text;
-    vc.index=1;
+    vc.index=self.index;
     [self.navigationController pushViewController:vc animated:YES];
 }
 -(void)countDown:(int)count{
@@ -274,8 +339,8 @@
                 self.next_btn.backgroundColor=[UIColor colorWithRed:172/255.0 green:220/255.0 blue:251/255.0 alpha:1.0];
             });
             return YES;
-        }else if (self.pay_textfeld.text.length == 5) {
-            self.pay_textfeld.text = [[textField.text stringByAppendingString:string] substringToIndex:6];
+        }else if (self.pay_textfeld.text.length == 3) {
+            self.pay_textfeld.text = [[textField.text stringByAppendingString:string] substringToIndex:4];
             //            NSLog(@"self.phone_textfiled.text =  %@",self.phone_textfiled.text );
             
             if(Time_cout==0){
@@ -287,7 +352,7 @@
             dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.03/*延迟执行时间*/ * NSEC_PER_SEC));
             
             dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-                if (self.pay_textfeld.text.length == 6) {
+                if (self.pay_textfeld.text.length == 4) {
                     [self.next_btn setUserInteractionEnabled:YES];
                     self.next_btn.backgroundColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
                     

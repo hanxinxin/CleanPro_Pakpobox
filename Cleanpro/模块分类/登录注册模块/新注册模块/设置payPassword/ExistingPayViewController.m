@@ -147,6 +147,7 @@
     UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
     newPhoneViewController *vc=[main instantiateViewControllerWithIdentifier:@"newPhoneViewController"];
     vc.hidesBottomBarWhenPushed = YES;
+    vc.index=2;
 //    vc.validateCode=self.pay_textfeld.text;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -155,7 +156,8 @@
     if(self.pay_textfeld.text.length>0)
     {
         self.PayPassWordStr=self.pay_textfeld.text;
-        [self Post_payPassword];
+        [self push_againMimaViewController];
+//        [self Post_payPassword];  ///屏蔽以前的校验支付密码  后台校验
     }
     
    
@@ -223,7 +225,7 @@
     SetPayPViewController *vc=[main instantiateViewControllerWithIdentifier:@"SetPayPViewController"];
     vc.hidesBottomBarWhenPushed = YES;
     vc.PayOldPassWordStr=self.PayPassWordStr;
-    vc.index=2;
+    vc.index=self.index;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

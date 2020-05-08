@@ -10,11 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CitySelectMode : NSObject
-@property (nonatomic,strong)NSString * cityName ;
-@property (nonatomic,assign)NSInteger indexS ;
-
-@end
 
 
 

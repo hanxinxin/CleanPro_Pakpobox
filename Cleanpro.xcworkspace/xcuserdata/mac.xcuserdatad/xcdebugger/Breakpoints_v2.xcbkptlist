@@ -3,4 +3,294 @@
    uuid = "E16255AA-BBBC-483F-B279-437CC00BF74F"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8A63C1A8-0F2C-4F2F-B93F-855ECC23152F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/UITabBarController/BarViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
+            landmarkName = "-setTitleAndview_lll"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "013589F3-5A7B-4B9E-AF67-F95DB3EFFA60"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x4e2a;&#x4eba;&#x4e2d;&#x5fc3;/&#x4e2a;&#x4eba;&#x4fe1;&#x606f;&#x8bbe;&#x7f6e;/InformationViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A3263DF1-42D9-4521-9103-7AFD5D6740AF"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x4e2a;&#x4eba;&#x4e2d;&#x5fc3;/&#x4e2a;&#x4eba;&#x4fe1;&#x606f;&#x8bbe;&#x7f6e;/InformationViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4BE3C5A8-A792-4301-B7FE-C62DEABBD64D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x4e2a;&#x4eba;&#x4e2d;&#x5fc3;/&#x4e2a;&#x4eba;&#x4fe1;&#x606f;&#x8bbe;&#x7f6e;/&#x5730;&#x5740;&#x9009;&#x62e9;&#x65f6;&#x95f4;&#x8f74;/timelineAddressView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "247"
+            endingLineNumber = "247"
+            landmarkName = "timelineAddressView"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4F718072-FB2F-46CF-A832-3C5E3E44E12F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x4e2a;&#x4eba;&#x4e2d;&#x5fc3;/&#x4e2a;&#x4eba;&#x4fe1;&#x606f;&#x8bbe;&#x7f6e;/&#x5730;&#x5740;&#x9009;&#x62e9;&#x65f6;&#x95f4;&#x8f74;/timelineAddressView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "248"
+            endingLineNumber = "248"
+            landmarkName = "timelineAddressView"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "75F1F914-5E79-4CA4-AA29-CC68FCE17A42"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x4e2a;&#x4eba;&#x4e2d;&#x5fc3;/&#x4e2a;&#x4eba;&#x4fe1;&#x606f;&#x8bbe;&#x7f6e;/&#x5730;&#x5740;&#x9009;&#x62e9;&#x65f6;&#x95f4;&#x8f74;/timelineAddressView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "258"
+            endingLineNumber = "258"
+            landmarkName = "timelineAddressView"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4A80972E-356D-4C65-8836-692B874B9AA1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x4e2a;&#x4eba;&#x4e2d;&#x5fc3;/&#x4e2a;&#x4eba;&#x4fe1;&#x606f;&#x8bbe;&#x7f6e;/&#x5730;&#x5740;&#x9009;&#x62e9;&#x65f6;&#x95f4;&#x8f74;/timelineAddressView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "260"
+            endingLineNumber = "260"
+            landmarkName = "timelineAddressView"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B1F4B6BC-5AFB-4007-AC0E-686A25F601BD"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x4e2a;&#x4eba;&#x4e2d;&#x5fc3;/&#x4e2a;&#x4eba;&#x4fe1;&#x606f;&#x8bbe;&#x7f6e;/&#x5730;&#x5740;&#x9009;&#x62e9;&#x65f6;&#x95f4;&#x8f74;/timelineAddressView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
+            landmarkName = "-Get_AddressSelectList:parentIdStr:index:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B1F4B6BC-5AFB-4007-AC0E-686A25F601BD - ce62df2ca95d1da4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[timelineAddressView Get_AddressSelectList:parentIdStr:index:]"
+                  moduleName = "Cleanpro"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/1.0%E5%92%8CEwash%E5%90%88%E5%B9%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0(4.5%E6%97%A5)/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83/%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF%E8%AE%BE%E7%BD%AE/%E5%9C%B0%E5%9D%80%E9%80%89%E6%8B%A9%E6%97%B6%E9%97%B4%E8%BD%B4/timelineAddressView.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "138"
+                  endingLineNumber = "138"
+                  offsetFromSymbolStart = "592">
+               </Location>
+               <Location
+                  uuid = "B1F4B6BC-5AFB-4007-AC0E-686A25F601BD - 5d15954e444c54d7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__63-[timelineAddressView Get_AddressSelectList:parentIdStr:index:]_block_invoke"
+                  moduleName = "Cleanpro"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/1.0%E5%92%8CEwash%E5%90%88%E5%B9%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0(4.5%E6%97%A5)/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83/%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF%E8%AE%BE%E7%BD%AE/%E5%9C%B0%E5%9D%80%E9%80%89%E6%8B%A9%E6%97%B6%E9%97%B4%E8%BD%B4/timelineAddressView.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
+                  offsetFromSymbolStart = "48">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C2730AC2-45F5-4D09-8EDB-A9E9906B0211"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d17;&#x8863;&#x6a21;&#x5757;/&#x6d17;&#x8863;/LaundryViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "525"
+            endingLineNumber = "525"
+            landmarkName = "-left_viewTouch:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F6C0248A-76E1-4905-A898-C8F4B7F39757"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/UITabBarController/CRNavigationController/CRNavigationController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "-initWithRootViewController:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A778495F-8EFA-4640-A71A-6E3D1EF87CC2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/UITabBarController/CRNavigationController/CRNavigationController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "-init"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DF857756-640F-4F89-94FC-0643B235BAEE"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d17;&#x8863;&#x6a21;&#x5757;/&#x6d17;&#x8863;/LaundryViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "205"
+            endingLineNumber = "205"
+            landmarkName = "-navigationShouldPopOnBackButton"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FF922962-B6BF-4E17-B130-7618F64CE765"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/Home/&#x95e8;&#x5e97;/locationMapViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "560"
+            endingLineNumber = "560"
+            landmarkName = "-mapView:didSelectAnnotationView:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "72C3EB85-FDDC-4384-8C97-DBBB7FAA2ED8"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/StaffMember/StaffViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "606"
+            endingLineNumber = "606"
+            landmarkName = "-getKuaiDiOrderList"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "72C3EB85-FDDC-4384-8C97-DBBB7FAA2ED8 - 7ef6714c473a965a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[StaffViewController getKuaiDiOrderList]"
+                  moduleName = "Cleanpro"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/1.0%E5%92%8CEwash%E5%90%88%E5%B9%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0(4.5%E6%97%A5)/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/StaffMember/StaffViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "606"
+                  endingLineNumber = "606"
+                  offsetFromSymbolStart = "336">
+               </Location>
+               <Location
+                  uuid = "72C3EB85-FDDC-4384-8C97-DBBB7FAA2ED8 - 8f9f64a6af2428d3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__41-[StaffViewController getKuaiDiOrderList]_block_invoke"
+                  moduleName = "Cleanpro"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/Desktop/Cleanpro%20%E6%80%BB%E6%96%87%E4%BB%B6/1.0%E5%92%8CEwash%E5%90%88%E5%B9%B6/Cleanpro%E8%93%9D%E7%89%99%E6%B7%BB%E5%8A%A0(4.5%E6%97%A5)/Cleanpro/%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB/StaffMember/StaffViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "608"
+                  endingLineNumber = "608"
+                  offsetFromSymbolStart = "48">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

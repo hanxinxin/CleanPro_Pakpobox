@@ -11,9 +11,13 @@
 #import "InformationViewController.h"
 #import "timelineAddressView.h"
 #import "MyAccountViewController.h"
-@interface PostcodeRViewController ()<UIGestureRecognizerDelegate,UITextFieldDelegate,timelineDelegate>
+#import "NewRegisterViewController.h"
+#import "timelineAddressViewNew.h"
+@interface PostcodeRViewController ()<UIGestureRecognizerDelegate,UITextFieldDelegate,timelineDelegate,timelineDelegateNew>
 {
-    timelineAddressView * timeViewA;
+//    timelineAddressView * timeViewA;
+    timelineAddressViewNew * timeViewA;
+    NSString * ariaId;
 }
 
 @property (nonatomic,strong)SaveUserIDMode * ModeUser;
@@ -158,13 +162,16 @@
 }
 -(void)setTimeLineArray:(NSMutableArray*)Cityarray1 selectArr:(NSMutableArray *)Selectarray index:(NSInteger)index
 {
-    UINib *nib = [UINib nibWithNibName:@"timelineAddressView" bundle:nil];
-        NSArray *objs = [nib instantiateWithOwner:nil options:nil];
-        timeViewA=objs[0];
-        timeViewA.frame=CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 0);
-        timeViewA.delegate = self;
-    //    NSArray * array = @[@[@"11",@"12",@"13",@"14",@"15",@"16"],@[@"21",@"22",@"23",@"24",@"25",@"26"],@[@"31",@"32",@"33",@"34",@"35",@"36"]];
-//        [timeViewA setArrayTable:array];
+//    UINib *nib = [UINib nibWithNibName:@"timelineAddressView" bundle:nil];
+//        NSArray *objs = [nib instantiateWithOwner:nil options:nil];
+//        timeViewA=objs[0];
+//        timeViewA.frame=CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 0);
+//        timeViewA.delegate = self;
+    UINib *nib = [UINib nibWithNibName:@"timelineAddressViewNew" bundle:nil];
+    NSArray *objs = [nib instantiateWithOwner:nil options:nil];
+    timeViewA=objs[0];
+    timeViewA.frame=CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 0);
+    timeViewA.delegate = self;
         [timeViewA setArrayTable:Cityarray1 selectArr:Selectarray index:index];
         [self.view addSubview:timeViewA];
         [self show_Timeview];
@@ -217,19 +224,123 @@
        }
     }
 }
+-(void)CancelDelegateNew:(NSInteger)time SelectArray:(nonnull NSMutableArray *)array
+{
+    if(time==1)
+    {
+        [self hidden_Timeview];
+    }else if(time==2)
+    {
+       if(array.count>=3)
+       {
+           
+           [self UpdateSelfViewUI:array];
+           self.SelectArray=array;
+           if(self.textfield.text.length>0 && self.AreaTextfield.text.length>0)
+           {
+               [self.next_btn setUserInteractionEnabled:YES];
+               self.next_btn.backgroundColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
+           }
+           [self hidden_Timeview];
+       }else{
+           [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No specific location selected", @"Language") andDelay:2.0];
+       }
+    }
+}
+//-(void)UpdateSelfViewUI:(NSMutableArray * )array
+//{
+//    ThreeCityMode * mode3=array[2];
+//    TwoCityMode * mode2 = mode3.parentRegion;
+//    OneCityMode * mode1 = mode2.parentRegion;
+//    self.AreaTextfield.text = [NSString stringWithFormat:@"%@%@%@",mode1.regionName,mode2.regionName,mode3.regionName];
+//    self.textfield.text = mode3.postcode;
+//    if(self.textfield.text.length>0 && self.AreaTextfield.text.length>0)
+//    {
+//        [self.next_btn setUserInteractionEnabled:YES];
+//        self.next_btn.backgroundColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
+//    }
+//}
 -(void)UpdateSelfViewUI:(NSMutableArray * )array
 {
-    ThreeCityMode * mode3=array[2];
-    TwoCityMode * mode2 = mode3.parentRegion;
-    OneCityMode * mode1 = mode2.parentRegion;
-    self.AreaTextfield.text = [NSString stringWithFormat:@"%@%@%@",mode1.regionName,mode2.regionName,mode3.regionName];
-    self.textfield.text = mode3.postcode;
+    if(array.count==4)
+    {
+        upperGradeOneMode * mode3=array[array.count-1];
+        upperGradeOneMode * mode2 = [self JXGradeMode:mode3.upperGrade];
+        upperGradeOneMode * mode1 = [self JXGradeMode:mode2.upperGrade];
+        upperGradeOneMode * mode0 = [self JXGradeMode:mode2.upperGrade];
+        self.AreaTextfield.text = [NSString stringWithFormat:@"%@%@%@%@",mode0.name,mode1.name,mode2.name,mode3.name];
+        if(![mode3.postCode isEqual:[NSNull null]])
+        {
+            self.textfield.text = mode3.postCode;
+        }else
+        {
+            if(![mode2.postCode isEqual:[NSNull null]])
+            {
+                self.textfield.text = mode2.postCode;
+            }else
+            {
+                if(![mode1.postCode isEqual:[NSNull null]])
+                {
+                    self.textfield.text = mode1.postCode;
+                }else
+                {
+                    if(![mode0.postCode isEqual:[NSNull null]])
+                    {
+                        self.textfield.text = mode0.postCode;
+                    }else
+                    {
+                        self.textfield.text = @"";
+                    }
+                }
+            }
+        }
+    }else if(array.count==3)
+    {
+        upperGradeOneMode * mode3=array[array.count-1];
+        upperGradeOneMode * mode2 = [self JXGradeMode:mode3.upperGrade];
+        upperGradeOneMode * mode1 = [self JXGradeMode:mode2.upperGrade];
+        self.AreaTextfield.text = [NSString stringWithFormat:@"%@%@%@",mode1.name,mode2.name,mode3.name];
+        if(![mode3.postCode isEqual:[NSNull null]])
+        {
+            self.textfield.text = mode3.postCode;
+        }else
+        {
+            if(![mode2.postCode isEqual:[NSNull null]])
+            {
+                self.textfield.text = mode2.postCode;
+            }else
+            {
+                if(![mode1.postCode isEqual:[NSNull null]])
+                {
+                    self.textfield.text = mode1.postCode;
+                }else
+                {
+                        self.textfield.text = @"";
+                }
+            }
+        }
+    }
     if(self.textfield.text.length>0 && self.AreaTextfield.text.length>0)
     {
         [self.next_btn setUserInteractionEnabled:YES];
         self.next_btn.backgroundColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
     }
 }
+-(upperGradeOneMode*)JXGradeMode:(NSDictionary*)dict
+{
+    upperGradeOneMode* mode = [[upperGradeOneMode alloc] init];
+    mode.districtId=[dict objectForKey:@"districtId"];
+    mode.enName=[dict objectForKey:@"enName"];
+    mode.endGrade=[dict objectForKey:@"endGrade"];
+    mode.grade=[dict objectForKey:@"grade"];
+    mode.name=[dict objectForKey:@"name"];
+    mode.postCode=[dict objectForKey:@"postCode"];
+    NSDictionary * dict2 =[dict objectForKey:@"upperGrade"];
+    mode.upperGrade = dict2;
+    mode.upperGradeId=[dict objectForKey:@"upperGradeId"];
+    return mode;
+}
+/*
 ///获取用户的详细地址
 -(void)getUserAddressInfo
 {
@@ -280,56 +391,199 @@
         [HudViewFZ HiddenHud];
     }];
 }
--(void)updateUserAddress:(NSString *)postcode detailedAddress:(NSString*)detailedAddress region:(NSString*)region
+ */
+///获取用户的详细地址
+-(void)getUserAddressInfo
 {
-    NSDictionary * idDict = @{@"id":region};
-    NSDictionary * dict = @{@"postcode":postcode,
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_getaddressInfo] parameters:nil progress:^(id progress) {
+        
+    } success:^(id responseObject) {
+        NSLog(@"responseObject== %@",responseObject);
+        NSDictionary * aria = [responseObject objectForKey:@"aria"];
+        NSString * detailedAddress  = [responseObject objectForKey:@"detailedAddress"];
+        if(detailedAddress!=nil  && ![detailedAddress isEqual:[NSNull null]])
+        {
+            self.AddressTextfield.text = detailedAddress;
+        }else{
+            self.AddressTextfield.text = @"";
+        }
+        if(aria!=nil && ![aria isEqual:[NSNull null]])
+        {
+            NSMutableArray *Muarray3 =[NSMutableArray arrayWithCapacity:0];
+            upperGradeOneMode* mode3 = [self JXGradeMode:aria];
+            if([mode3.grade intValue]==3)
+            {
+            upperGradeOneMode * mode2 = [self JXGradeMode:mode3.upperGrade];
+            upperGradeOneMode * mode1 = [self JXGradeMode:mode2.upperGrade];
+            [Muarray3 addObject:mode1];
+            [Muarray3 addObject:mode2];
+            [Muarray3 addObject:mode3];
+            self.SelectArray=Muarray3;
+            }else if([mode3.grade intValue]==4)
+            {
+                upperGradeOneMode * mode2 = [self JXGradeMode:mode3.upperGrade];
+                upperGradeOneMode * mode1 = [self JXGradeMode:mode2.upperGrade];
+                upperGradeOneMode * mode0 = [self JXGradeMode:mode1.upperGrade];
+                [Muarray3 addObject:mode0];
+                [Muarray3 addObject:mode1];
+                [Muarray3 addObject:mode2];
+                [Muarray3 addObject:mode3];
+                self.SelectArray=Muarray3;
+            }
+            [self UpdateSelfViewUI:self.SelectArray];
+        }
+        
+    } failure:^(NSInteger statusCode, NSError *error) {
+        
+        NSLog(@"error = %@",error);
+        
+//        [HudViewFZ showMessageTitle:[self dictStr:error] andDelay:2.0];
+        [HudViewFZ HiddenHud];
+    }];
+}
+-(NSString *)dictStr:(NSError *)error
+{
+//    NSString * receive=@"";
+    NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+//    receive= [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *dictFromData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
+    NSString  * message = [dictFromData valueForKey:@"message"];
+//
+    return message;
+}
+//
+//-(void)updateUserAddress:(NSString *)postcode detailedAddress:(NSString*)detailedAddress region:(NSString*)region
+//{
+//    NSDictionary * idDict = @{@"id":region};
+//    NSDictionary * dict = @{@"postcode":postcode,
+//                            @"detailedAddress":detailedAddress,
+//                            @"region":idDict
+//    };
+//    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_PostaddressUpdate] parameters:dict progress:^(id progress) {
+//
+//    } Success:^(NSInteger statusCode, id responseObject) {
+//         [HudViewFZ HiddenHud];
+//        NSLog(@"responseObject = %@",responseObject);
+//        NSString * postcode = [responseObject objectForKey:@"postcode"];
+//        NSNumber * statusCodeRE = [responseObject objectForKey:@"statusCode"];
+////        NSString * errorMessage = [responseObject objectForKey:@"errorMessage"];
+//        if(statusCode==200)
+//        {
+//            if(statusCodeRE==nil)
+//            {
+//                if([postcode isEqualToString:self.textfield.text])
+//                {
+//                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Address set successfully", @"Language") andDelay:2.0];
+//                }else{
+//                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Address setting failed", @"Language") andDelay:2.0];
+//                }
+//            }else if([statusCodeRE intValue]==401)
+//            {
+////                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+//                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"TokenError"];
+//                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+//                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//                [userDefaults setObject:@"1" forKey:@"Token"];
+//                [userDefaults setObject:@"1" forKey:@"phoneNumber"];
+//                [userDefaults setObject:nil forKey:@"SaveUserMode"];
+//                [userDefaults setObject:@"1" forKey:@"logCamera"];
+//                //    [defaults synchronize];
+//                NSNotification *notification =[NSNotification notificationWithName:@"UIshuaxinLog" object: nil];
+//                //通过通知中心发送通知
+//                [[NSNotificationCenter defaultCenter] postNotification:notification];
+//                for (UIViewController *controller in self.navigationController.viewControllers) {
+//                    if ([controller isKindOfClass:[MyAccountViewController class]]) {
+//                        [self.navigationController popToViewController:controller animated:YES];
+//
+//                    }
+//                }
+//            }else
+//            {
+//                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+//            }
+//            }
+//    } failure:^(NSInteger statusCode, NSError *error) {
+//        NSLog(@"error = %@",error);
+//        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+//        [HudViewFZ HiddenHud];
+//
+//    }];
+//}
+
+
+-(void)updateUserAddress:(NSString *)postcode detailedAddress:(NSString*)detailedAddress region:(NSString*)ariaId
+{
+//    NSDictionary * idDict = @{@"id":region};
+    NSDictionary * dict = @{@"postCode":postcode,
                             @"detailedAddress":detailedAddress,
-                            @"region":idDict
+                            @"ariaId":ariaId
     };
-    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,Post_updateAddress] parameters:dict progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_PostaddressUpdate] parameters:dict progress:^(id progress) {
         
     } Success:^(NSInteger statusCode, id responseObject) {
          [HudViewFZ HiddenHud];
         NSLog(@"responseObject = %@",responseObject);
-        NSString * postcode = [responseObject objectForKey:@"postcode"];
-        NSNumber * statusCodeRE = [responseObject objectForKey:@"statusCode"];
-        NSString * errorMessage = [responseObject objectForKey:@"errorMessage"];
-        if(statusCode==200)
-        {
-            if(statusCodeRE==nil)
+//        NSString * postcode = [responseObject objectForKey:@"postcode"];
+        NSString * ariaId = [responseObject objectForKey:@"ariaId"];
+//        NSString * errorMessage = [responseObject objectForKey:@"errorMessage"];
+//        if(statusCode==200)
+//        {
+            if(ariaId!=nil)
             {
-                if([postcode isEqualToString:self.textfield.text])
+                NSDictionary * aria = [responseObject objectForKey:@"aria"];
+                if(aria!=nil)
                 {
-                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Address set successfully", @"Language") andDelay:2.0];
-                }else{
-                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Address setting failed", @"Language") andDelay:2.0];
-                }
-            }else if([statusCodeRE intValue]==401)
-            {
-//                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
-                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"TokenError"];
-                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
-                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                [userDefaults setObject:@"1" forKey:@"Token"];
-                [userDefaults setObject:@"1" forKey:@"phoneNumber"];
-                [userDefaults setObject:nil forKey:@"SaveUserMode"];
-                [userDefaults setObject:@"1" forKey:@"logCamera"];
-                //    [defaults synchronize];
-                NSNotification *notification =[NSNotification notificationWithName:@"UIshuaxinLog" object: nil];
-                //通过通知中心发送通知
-                [[NSNotificationCenter defaultCenter] postNotification:notification];
-                for (UIViewController *controller in self.navigationController.viewControllers) {
-                    if ([controller isKindOfClass:[MyAccountViewController class]]) {
-                        [self.navigationController popToViewController:controller animated:YES];
-                        
+                    upperGradeOneMode* mode3 = [self JXGradeMode:aria];
+                    upperGradeOneMode * mode2 = [self JXGradeMode:mode3.upperGrade];
+                    upperGradeOneMode * mode1 = [self JXGradeMode:mode2.upperGrade];
+                    upperGradeOneMode * mode0 = [self JXGradeMode:mode1.upperGrade];
+                    if([mode3.grade intValue]==3)
+                    {
+                        if([mode3.postCode isEqualToString:self.textfield.text])
+                        {
+                            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Address set successfully", @"Language") andDelay:2.0];
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }else{
+                            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Address setting failed", @"Language") andDelay:2.0];
+                        }
+                    }else if([mode3.grade intValue]==4)
+                    {
+                        if([mode2.postCode isEqualToString:self.textfield.text])
+                        {
+                            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Address set successfully", @"Language") andDelay:2.0];
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }else{
+                            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Address setting failed", @"Language") andDelay:2.0];
+                        }
                     }
+                    
                 }
+                
+//            }else if([statusCodeRE intValue]==401)
+//            {
+////                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+//                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"TokenError"];
+//                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+//                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//                [userDefaults setObject:@"1" forKey:@"Token"];
+//                [userDefaults setObject:@"1" forKey:@"phoneNumber"];
+//                [userDefaults setObject:nil forKey:@"SaveUserMode"];
+//                [userDefaults setObject:@"1" forKey:@"logCamera"];
+//                //    [defaults synchronize];
+//                NSNotification *notification =[NSNotification notificationWithName:@"UIshuaxinLog" object: nil];
+//                //通过通知中心发送通知
+//                [[NSNotificationCenter defaultCenter] postNotification:notification];
+//                for (UIViewController *controller in self.navigationController.viewControllers) {
+//                    if ([controller isKindOfClass:[MyAccountViewController class]]) {
+//                        [self.navigationController popToViewController:controller animated:YES];
+//                        
+//                    }
+//                }
             }else
             {
                 [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
             }
-            }
+//            }
     } failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"error = %@",error);
         [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
@@ -343,10 +597,18 @@
     {
         if(self.textfield.text.length > 0)
         {
+            //4.21 先屏蔽以前的代码
+//            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//            PhoneRViewController *vc=[main instantiateViewControllerWithIdentifier:@"PhoneRViewController"];
+//            vc.hidesBottomBarWhenPushed = YES;
+//            vc.Nextmode=self.Nextmode;
+//            [self.navigationController pushViewController:vc animated:YES];
+            
             UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            PhoneRViewController *vc=[main instantiateViewControllerWithIdentifier:@"PhoneRViewController"];
+            NewRegisterViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewRegisterViewController"];
             vc.hidesBottomBarWhenPushed = YES;
             vc.Nextmode=self.Nextmode;
+            self.navigationController.navigationBar.tintColor = [UIColor blackColor];
             [self.navigationController pushViewController:vc animated:YES];
         }
     }else if (self.index==2)
@@ -358,15 +620,17 @@
             {
                 if(self.AddressTextfield.text!=nil)
                 {
-                 ThreeCityMode * mode3 = self.SelectArray[2];
+//                 ThreeCityMode * mode3 = self.SelectArray[2];
+                    upperGradeOneMode * mode = self.SelectArray[self.SelectArray.count-1];
                     [HudViewFZ labelExample:self.view];
-                [self updateUserAddress:self.textfield.text detailedAddress:self.AddressTextfield.text region:mode3.idStrThree];
+                [self updateUserAddress:self.textfield.text detailedAddress:self.AddressTextfield.text region:mode.districtId];
                 }else
                 {
                     self.AddressTextfield.text=@"";
-                    ThreeCityMode * mode3 = self.SelectArray[2];
+//                    ThreeCityMode * mode3 = self.SelectArray[2];
+                    upperGradeOneMode * mode = self.SelectArray[self.SelectArray.count-1];
                     [HudViewFZ labelExample:self.view];
-                    [self updateUserAddress:self.textfield.text detailedAddress:self.AddressTextfield.text region:mode3.idStrThree];
+                    [self updateUserAddress:self.textfield.text detailedAddress:self.AddressTextfield.text region:mode.districtId];
                 }
             }else{
                 [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Area Can't be empty", @"Language") andDelay:2.0];
@@ -391,73 +655,6 @@
     }
 }
 
-
-//// 更新用户的性别
-//-(void)postUpdateINFO:(NSString *)firstName lastName:(NSString*)lastName
--(void)postUpdateINFO:(NSString *)postCode
-{
-    
-    [HudViewFZ labelExample:self.view];
-    NSDictionary * dict=@{@"postCode":postCode,
-                          };
-    NSLog(@"dict=== %@",dict);
-    
-    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,post_UpdateInfo] parameters:dict progress:^(id progress) {
-        NSLog(@"请求成功 = %@",progress);
-    }Success:^(NSInteger statusCode,id responseObject) {
-        [HudViewFZ HiddenHud];
-        NSLog(@"responseObject = %@",responseObject);
-        if(statusCode==200)
-        {
-            NSDictionary * dictObject=(NSDictionary *)responseObject;
-            //            用来储存用户信息
-            
-            SaveUserIDMode * mode = [[SaveUserIDMode alloc] init];
-            
-            mode.phoneNumber = [dictObject objectForKey:@"phoneNumber"];//   手机号码
-            mode.loginName = [dictObject objectForKey:@"loginName"];//   与手机号码相同
-            mode.yonghuID = [dictObject objectForKey:@"id"]; ////用户ID
-            //            mode.randomPassword = [dictObject objectForKey:@"randomPassword"];//  验证码
-            //            mode.password = [dictObject objectForKey:@"password"];//  登录密码
-            //            mode.payPassword = [dictObject objectForKey:@"payPassword"];//    支付密码
-            mode.firstName = [dictObject objectForKey:@"firstName"];//   first name
-            mode.lastName = [dictObject objectForKey:@"lastName"];//   last name
-            NSNumber * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
-            mode.birthday = [birthdayNum stringValue];
-            mode.gender = [dictObject objectForKey:@"gender"];//       MALE:男，FEMALE:女
-            mode.postCode = [dictObject objectForKey:@"postCode"];//   Post Code inviteCode
-            mode.EmailStr = [dictObject objectForKey:@"email"];//   email
-            mode.inviteCode = [dictObject objectForKey:@"inviteCode"];//       我填写的邀请码
-            mode.myInviteCode = [dictObject objectForKey:@"myInviteCode"];//       我的邀请码
-            mode.headImageUrl = [dictObject objectForKey:@"headImageUrl"];
-            mode.payPassword = [dictObject objectForKey:@"payPassword"];
-            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-            //存储到NSUserDefaults（转NSData存）
-            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: mode];
-            
-            [defaults setObject:data forKey:@"SaveUserMode"];
-            [defaults synchronize];
-            [jiamiStr base64Data_encrypt:mode.yonghuID];
-            for (UIViewController *temp in self.navigationController.viewControllers) {
-                if ([temp isKindOfClass:[InformationViewController class]]) {
-                    [self.navigationController popToViewController:temp animated:YES];
-                    
-                }
-            }
-            
-        }else
-        {
-            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"statusCode error", @"Language") andDelay:2.0];
-        }
-    } failure:^(NSInteger statusCode, NSError *error) {
-        NSLog(@"error = %@",error);
-        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
-        [HudViewFZ HiddenHud];
-    }];
-}
-
-
-
 /// 根据区号获取地址
 -(void)Get_AddressSelectList:(NSString *)postcode parentIdStr:(NSString *)parentId index:(NSInteger)Index
 {
@@ -466,22 +663,37 @@
     {
         if(parentId!=nil)
         {
-            GetURLStr=[NSString stringWithFormat:@"%@%@?postcode=%@&parentId=%@",FuWuQiUrl,Get_AddressSelect,postcode,parentId] ;
+            GetURLStr=[NSString stringWithFormat:@"%@%@?postCode=%@&upperGradeId=%@",E_FuWuQiUrl,E_getDistrict,postcode,parentId] ;
         }else
         {
-            GetURLStr=[NSString stringWithFormat:@"%@%@?postcode=%@",FuWuQiUrl,Get_AddressSelect,postcode];
+            GetURLStr=[NSString stringWithFormat:@"%@%@?postCode=%@",E_FuWuQiUrl,E_getDistrict,postcode];
         }
     }else
     {
         if(parentId!=nil)
         {
-            GetURLStr=[NSString stringWithFormat:@"%@%@?parentId=%@",FuWuQiUrl,Get_AddressSelect,parentId] ;
+            
+            if(Index!=0)
+            {
+                
+                GetURLStr=[NSString stringWithFormat:@"%@%@?upperGradeId=%@&grade=%ld",E_FuWuQiUrl,E_getDistrict,parentId,(long)Index] ;
+            }else
+            {
+                GetURLStr=[NSString stringWithFormat:@"%@%@?upperGradeId=%@",E_FuWuQiUrl,E_getDistrict,parentId] ;
+            }
         }else
         {
-            GetURLStr=[NSString stringWithFormat:@"%@%@",FuWuQiUrl,Get_AddressSelect];
+            if(Index!=0)
+            {
+                
+                GetURLStr=[NSString stringWithFormat:@"%@%@?grade=%ld",E_FuWuQiUrl,E_getDistrict,(long)Index] ;
+            }else
+            {
+                GetURLStr=[NSString stringWithFormat:@"%@%@?grade=3",E_FuWuQiUrl,E_getDistrict];
+            }
         }
     }
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:GetURLStr parameters:nil progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:GetURLStr parameters:nil progress:^(id progress) {
         
     } success:^(id responseObject) {
         NSLog(@"responseObject== %@",responseObject);
@@ -497,11 +709,7 @@
             NSMutableArray * KBArray = [NSMutableArray arrayWithCapacity:0];
             for (int i =0; i<arrayZong.count; i++) {
                 NSDictionary * dict =arrayZong[i];
-                OneCityMode* mode = [[OneCityMode alloc] init];
-                mode.idStr=[dict objectForKey:@"id"];
-                mode.regionLevel=[dict objectForKey:@"regionLevel"];
-                mode.regionName=[dict objectForKey:@"regionName"];
-                mode.regionShortName=[dict objectForKey:@"regionShortName"];
+                upperGradeOneMode*mode = [self JXGradeMode:dict];
                 [KBArray addObject:mode];
             }
 //            NSArray * array = @[KBArray];
@@ -520,24 +728,7 @@
             NSArray * array = (NSArray *)responseObject;
             for (int i =0 ; i<array.count; i++) {
                 NSDictionary * dict3 = array[i];
-                ThreeCityMode * mode3= [[ThreeCityMode alloc] init];
-                mode3.idStrThree = [dict3 objectForKey:@"id"];
-                NSDictionary * dict=[dict3 objectForKey:@"parentRegion"];
-                    TwoCityMode * modeT = [[TwoCityMode alloc] init];
-                    modeT.idStrTwo=[dict objectForKey:@"id"];
-                    NSDictionary * dictTwo=[dict objectForKey:@"parentRegion"];
-                        OneCityMode* modeO = [[OneCityMode alloc] init];
-                        modeO.idStr=[dictTwo objectForKey:@"id"];
-                        modeO.regionLevel=[dictTwo objectForKey:@"regionLevel"];
-                        modeO.regionName=[dictTwo objectForKey:@"regionName"];
-                        modeO.regionShortName=[dictTwo objectForKey:@"regionShortName"];
-                    modeT.parentRegion = modeO;
-                    modeT.regionLevel=[dict objectForKey:@"regionLevel"];
-                    modeT.regionName=[dict objectForKey:@"regionName"];
-                mode3.parentRegion=modeT;
-                mode3.postcode = [dict3 objectForKey:@"postcode"];
-                mode3.regionLevel=[dict3 objectForKey:@"regionLevel"];
-                mode3.regionName=[dict3 objectForKey:@"regionName"];
+                upperGradeOneMode*mode3 = [self JXGradeMode:dict3];
                 [Muarray3 addObject:mode3];
             }
 //            self.CityArray = Muarray3;
@@ -553,9 +744,9 @@
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Postcode is wrong, please re-enter!", @"Language") andDelay:1.5];
         }
         
-    } failure:^(NSError *error) {
+    } failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"error = %@",error);
-        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+//        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
         [HudViewFZ HiddenHud];
     }];
 }

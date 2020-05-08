@@ -62,6 +62,7 @@
 //    self.title=FGGetStringWithKeyFromTable(@"Nearby_A", @"Language");
     self.NoAppLabel.text = FGGetStringWithKeyFromTable(@"No APP available", @"Language");
     self.YesAppLabel.text = FGGetStringWithKeyFromTable(@"APP available", @"Language");
+    self.NO_WASHERLabel.text = FGGetStringWithKeyFromTable(@"E-wash", @"Language");
     airAnnotation = [[AircraftAnnotation alloc] init];
     [self addMapView_c];
     
@@ -82,7 +83,7 @@
     self.title=FGGetStringWithKeyFromTable(@"Nearby", @"Language");;
 //    self.navigationController.title=@"Location";
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    [MD_MUtableArr removeAllObjects];
+//    [MD_MUtableArr removeAllObjects];
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
@@ -183,6 +184,14 @@
 }
 
 
+//showOnAppType   图标状态
+//
+//1) NO_WASHER
+//2) WASHER_WITH_APP
+//3) WASHER_WITHOUT_APP
+//4) HIDDEN_ON_APP
+
+//location_ewash_app
 -(void)getLocationList:(CLLocationCoordinate2D)My_LocaACE
 {
     //    name    String    否    门店名称
@@ -190,16 +199,21 @@
     //    longitude    Double    否    经度
     [HudViewFZ labelExample:self.view];
     __block locationMapViewController *  blockSelf = self;
-    NSLog(@"url===  %@",[NSString stringWithFormat:@"%@%@?page=%@&maxCount=%@&latitude=%f&longitude=%f",FuWuQiUrl,Get_location,@"0",@"10000",My_LocaACE.latitude,My_LocaACE.longitude]);///默认距离
+    NSLog(@"url===  %@",[NSString stringWithFormat:@"%@%@?latitude=%f&longitude=%f",E_FuWuQiUrl,E_Getnearby,My_LocaACE.latitude,My_LocaACE.longitude]);///默认距离
 //    NSLog(@"url===  %@",[NSString stringWithFormat:@"%@%@?page=%@&maxCount=%@&latitude=%f&longitude=%f&distance=%f",FuWuQiUrl,Get_location,@"0",@"10000",My_LocaACE.latitude,My_LocaACE.longitude]); ///设置距离4000
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:[NSString stringWithFormat:@"%@%@?page=%@&maxCount=%@&latitude=%f&longitude=%f",FuWuQiUrl,Get_location,@"0",@"10000",My_LocaACE.latitude,My_LocaACE.longitude] parameters:nil progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:[NSString stringWithFormat:@"%@%@?latitude=%f&longitude=%f",E_FuWuQiUrl,E_Getnearby,My_LocaACE.latitude,My_LocaACE.longitude] parameters:nil progress:^(id progress) {
         
     } success:^(id responseObject) {
         NSLog(@"responseObject=  %@",responseObject);
         [HudViewFZ HiddenHud];
-        NSDictionary * dictionary = (NSDictionary*)responseObject;
+//        NSDictionary * dictionary = (NSDictionary*)responseObject;
         
-        NSArray * resultListArr=[dictionary objectForKey:@"resultList"];
+//        NSArray * resultListArr=[dictionary objectForKey:@"resultList"];
+         NSArray * resultListArr=(NSArray *)responseObject;
+        if(resultListArr.count>0)
+        {
+            [self->MD_MUtableArr removeAllObjects];
+        
         for (int i=0; i<resultListArr.count; i++) {
             NSDictionary * dic=resultListArr[i];
             LocationClass * MD_Mode = [[LocationClass alloc] init];
@@ -207,10 +221,10 @@
             MD_Mode.MenDian_lat=[dic objectForKey:@"latitude"];
             MD_Mode.MenDian_lon=[dic objectForKey:@"longitude"];
             MD_Mode.MDenName=[dic objectForKey:@"enName"];
-            NSLog(@"address === %@",[dic objectForKey:@"address"]);
-            MD_Mode.MDName=[dic objectForKey:@"name"];
-            MD_Mode.MDaddress=[dic objectForKey:@"address"];
-            MD_Mode.showApp = [dic objectForKey:@"showApp"];
+            NSLog(@"address === %@",[dic objectForKey:@"streetAddress"]);
+            MD_Mode.MDName=[dic objectForKey:@"merchantName"];
+            MD_Mode.MDaddress=[dic objectForKey:@"streetAddress"];
+            MD_Mode.showApp = [dic objectForKey:@"showOnAppType"];
             [blockSelf->MD_MUtableArr addObject:MD_Mode];
             
 //            }
@@ -232,12 +246,72 @@
             [self.MapView addAnnotation:airAnnotation2];
         }
         }
+        }
     } failure:^(NSError *error) {
         [HudViewFZ HiddenHud];
         [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
     }];
         
 }
+
+
+
+
+//-(void)getLocationList:(CLLocationCoordinate2D)My_LocaACE
+//{
+//    //    name    String    否    门店名称
+//    //    latitude    Double    否    纬度
+//    //    longitude    Double    否    经度
+//    [HudViewFZ labelExample:self.view];
+//    __block locationMapViewController *  blockSelf = self;
+//    NSLog(@"url===  %@",[NSString stringWithFormat:@"%@%@?page=%@&maxCount=%@&latitude=%f&longitude=%f",FuWuQiUrl,Get_location,@"0",@"10000",My_LocaACE.latitude,My_LocaACE.longitude]);///默认距离
+////    NSLog(@"url===  %@",[NSString stringWithFormat:@"%@%@?page=%@&maxCount=%@&latitude=%f&longitude=%f&distance=%f",FuWuQiUrl,Get_location,@"0",@"10000",My_LocaACE.latitude,My_LocaACE.longitude]); ///设置距离4000
+//    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:[NSString stringWithFormat:@"%@%@?page=%@&maxCount=%@&latitude=%f&longitude=%f",FuWuQiUrl,Get_location,@"0",@"10000",My_LocaACE.latitude,My_LocaACE.longitude] parameters:nil progress:^(id progress) {
+//
+//    } success:^(id responseObject) {
+//        NSLog(@"responseObject=  %@",responseObject);
+//        [HudViewFZ HiddenHud];
+//        NSDictionary * dictionary = (NSDictionary*)responseObject;
+//
+//        NSArray * resultListArr=[dictionary objectForKey:@"resultList"];
+//        for (int i=0; i<resultListArr.count; i++) {
+//            NSDictionary * dic=resultListArr[i];
+//            LocationClass * MD_Mode = [[LocationClass alloc] init];
+////            NSNumber * LatNum=[dic objectForKey:@"latitude"];
+//            MD_Mode.MenDian_lat=[dic objectForKey:@"latitude"];
+//            MD_Mode.MenDian_lon=[dic objectForKey:@"longitude"];
+//            MD_Mode.MDenName=[dic objectForKey:@"enName"];
+//            NSLog(@"address === %@",[dic objectForKey:@"address"]);
+//            MD_Mode.MDName=[dic objectForKey:@"name"];
+//            MD_Mode.MDaddress=[dic objectForKey:@"address"];
+//            MD_Mode.showApp = [dic objectForKey:@"showApp"];
+//            [blockSelf->MD_MUtableArr addObject:MD_Mode];
+//
+////            }
+////        }
+////        for (int i=0; i<blockSelf->MD_MUtableArr.count; i++) {
+////            LocationClass * MD_Mode = blockSelf->MD_MUtableArr[i];
+//        AircraftAnnotation * airAnnotation2 = [[AircraftAnnotation alloc] init];
+//        CLLocationDegrees latitude1 = [MD_Mode.MenDian_lat doubleValue];
+//        CLLocationDegrees longtitude1 = [MD_Mode.MenDian_lon doubleValue] ;
+//        airAnnotation2.coordinate= CLLocationCoordinate2DMake(latitude1, longtitude1);
+//        airAnnotation2.title=[NSString stringWithFormat:@"%@",MD_Mode.MDName];
+//        airAnnotation2.tagg=i;
+//        //            airAnnotation2.title=[NSString stringWithFormat:@" "];
+//        //            if(i==0)
+//        //            {
+//        if(airAnnotation2.coordinate.latitude!=0 && airAnnotation2.coordinate.longitude!=0)
+//        {
+//            //                        [self.MapView setRegion:MKCoordinateRegionMakeWithDistance(airAnnotation2.coordinate, 3000, 3000) animated:NO];
+//            [self.MapView addAnnotation:airAnnotation2];
+//        }
+//        }
+//    } failure:^(NSError *error) {
+//        [HudViewFZ HiddenHud];
+//        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+//    }];
+//
+//}
 
 -(void)addMapView_c
 {
@@ -438,11 +512,17 @@
         LocationClass * mode = MD_MUtableArr[annotationTagg.tagg];
         if(mode.showApp!=nil)
         {
-            if([mode.showApp doubleValue]==0)
+//            if([mode.showApp doubleValue]==0)
+            if([mode.showApp isEqualToString:@"WASHER_WITH_APP"])
             {
-//                annotationView.image = [UIImage imageNamed:@"location_mark_app"];
                 annotationView.image = [UIImage imageNamed:@"location_mark_app"];
-            }else
+            }else if([mode.showApp isEqualToString:@"WASHER_WITHOUT_APP"])
+            {
+                annotationView.image = [UIImage imageNamed:@"icon_pay"];
+            }else if([mode.showApp isEqualToString:@"NO_WASHER"])
+            {
+                annotationView.image = [UIImage imageNamed:@"location_ewash_app"];
+            }else if([mode.showApp isEqualToString:@"HIDDEN_ON_APP"])
             {
                 annotationView.image = [UIImage imageNamed:@"icon_pay"];
             }
@@ -473,27 +553,65 @@
 -(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
 //    NSLog(@"选中了标注 %f %f %f %f",view.top,view.left,view.width,view.height);
-    NSLog(@"选中了标注");
+    NSLog(@"选中了标注 === ");
    
     if ([view.annotation isKindOfClass:[AircraftAnnotation class]])
     {
         AircraftAnnotation * mac=(AircraftAnnotation*)view.annotation;
-//        NSLog(@"title===%ld",mac.tagg);
+        NSLog(@"title===  %ld",mac.tagg);
          LocationClass * MD_Mode = (LocationClass * )MD_MUtableArr[mac.tagg];
         self.mendianLabel.text=MD_Mode.MDName;
         [self returnSize1:self.mendianLabel];
 //        self.mendianMiaoShu.frame=CGRectMake(self.daohangBtn.right, self.mendianLabel.bottom+5, SCREEN_WIDTH-self.daohangBtn.right*2, 44);
         self.mendianMiaoShu.text=MD_Mode.MDaddress;
         [self returnSize2:self.mendianMiaoShu];
-        NSLog(@"mendianMiaoShu===%@",self.mendianMiaoShu.text);
+        [self updateView:view ClassMode:MD_Mode];
+        NSLog(@"选中===%@",self.mendianMiaoShu.text);
+        [self down_viewShow];
     }
-     [self down_viewShow];
+     
 }
 
+-(void)updateView:(MKAnnotationView *)annotationView ClassMode:(LocationClass *)mode
+{
+    if(mode.showApp!=nil)
+            {
+    //            if([mode.showApp doubleValue]==0)
+                if([mode.showApp isEqualToString:@"WASHER_WITH_APP"])
+                {
+                    annotationView.image = [UIImage imageNamed:@"location_mark_app"];
+                }else if([mode.showApp isEqualToString:@"WASHER_WITHOUT_APP"])
+                {
+                    annotationView.image = [UIImage imageNamed:@"icon_pay"];
+                }else if([mode.showApp isEqualToString:@"NO_WASHER"])
+                {
+                    annotationView.image = [UIImage imageNamed:@"location_ewash_app"];
+                }else if([mode.showApp isEqualToString:@"HIDDEN_ON_APP"])
+                {
+                    annotationView.image = [UIImage imageNamed:@"icon_pay"];
+                }
+            }else
+            {
+                annotationView.image = [UIImage imageNamed:@"location_mark_app"];
+            }
+}
 #pragma mark 取消选中标注的处理事件
 -(void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
 {
     NSLog(@"取消了标注");
+    if ([view.annotation isKindOfClass:[AircraftAnnotation class]])
+        {
+            AircraftAnnotation * mac=(AircraftAnnotation*)view.annotation;
+    //        NSLog(@"title===%ld",mac.tagg);
+             LocationClass * MD_Mode = (LocationClass * )MD_MUtableArr[mac.tagg];
+            self.mendianLabel.text=MD_Mode.MDName;
+            [self returnSize1:self.mendianLabel];
+    //        self.mendianMiaoShu.frame=CGRectMake(self.daohangBtn.right, self.mendianLabel.bottom+5, SCREEN_WIDTH-self.daohangBtn.right*2, 44);
+            self.mendianMiaoShu.text=MD_Mode.MDaddress;
+            [self returnSize2:self.mendianMiaoShu];
+            [self updateView:view ClassMode:MD_Mode];
+            NSLog(@"取消 ===%@",self.mendianMiaoShu.text);
+        }
     [self down_viewHidden];
 }
 //大头针显示在视图上时调用，在这里给大头针设置显示动画

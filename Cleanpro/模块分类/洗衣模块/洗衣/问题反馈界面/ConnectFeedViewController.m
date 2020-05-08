@@ -775,7 +775,7 @@ NSLog(@"select111 ==== %ld,%ld",(long)indexPath.row,(long)indexPath.section);
 
 
 
-
+/*
 -(void)postUploadHeadImage:(UIImage *)image
 //-(void)postUploadHeadImage:(NSArray *)arr
 {
@@ -869,34 +869,122 @@ NSLog(@"select111 ==== %ld,%ld",(long)indexPath.row,(long)indexPath.section);
             }
         }];
 }
+*/
 
+-(void)postUploadHeadImage:(UIImage *)image
+{
+        
+        [HudViewFZ labelExample:self.view];
+//        NSDictionary * dict=@{@"file":gender,};
+//        NSLog(@"dict=== %@",dict);
+    NSArray * arr = [NSArray arrayWithObjects:image, nil];
+    
+    
+    [[AFNetWrokingAssistant shareAssistant] uploadImagesWihtImgArr:arr url:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_POSTFile] Tokenbool:YES parameters:nil block:^(id objc, BOOL success) {
+        NSLog(@"objc=====  %@",objc);
+        NSDictionary *dict= (NSDictionary*)objc;
+        NSString * fileIdStr = [dict objectForKey:@"fileId"];
+        if(fileIdStr!=nil)
+        {
+//            [HudViewFZ HiddenHud];
+            [self.refundIDArr addObject:fileIdStr];
+            if(self.refundIDArr.count == self.imageViewArr.count)
+            {
+                [self post_refund_feed:self.refundIDArr];
+            }
+        }else
+        {
+            if(success==NO)
+            {
+                [HudViewFZ HiddenHud];
+                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+            }
+ 
+                NSString * strResult = [dict objectForKey:@"errorMessage"];
+                [HudViewFZ HiddenHud];
+                [HudViewFZ showMessageTitle:strResult andDelay:2.0];
+        }
+    }blockprogress:^(id progress) {
+        
+    }];
+}
+-(void)post_refund_feed:(NSMutableArray*)arr
+{
+    NSDictionary * dict =@{@"ordersId":self.orderidStr,
+                           @"fileIds":arr,
+                           @"refundOption":self.FKtype,
+                           @"refundComment":self.feedback_textView.text,
+    };
+    NSLog(@"dict ====  %@",dict);
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_refund_application] parameters:dict progress:^(id progress) {
+            NSLog(@"111  %@",progress);
+        } Success:^(NSInteger statusCode,id responseObject) {
+            [HudViewFZ HiddenHud];
+            NSLog(@"responseObject = %@",responseObject);
+    //        [HudViewFZ HiddenHud];
+            if(statusCode==200)
+            {
+                NSDictionary *dict= (NSDictionary*)responseObject;
+                NSNumber * result = [dict objectForKey:@"result"];
+                if([result integerValue]==1)
+                {
+                    [self submit_Alt];
+                }else
+                {
+                    NSString * strResult = [dict objectForKey:@"errorMessage"];
+                    [HudViewFZ HiddenHud];
+                    [HudViewFZ showMessageTitle:strResult andDelay:2.0];
+                }
+            }else
+            {
+                
+                    [HudViewFZ HiddenHud];
+                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+            }
+            
+        } failure:^(NSInteger statusCode, NSError *error) {
+            NSLog(@"3333   %@",error);
+            [HudViewFZ HiddenHud];
+            if(statusCode==401)
+            {
+                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+                //创建一个消息对象
+                NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
+                //发送消息
+                [[NSNotificationCenter defaultCenter]postNotification:notice];
+                
+            }else{
+                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+                
+            }
+        }];
+}
 
 -(void)submit_Alt
 {
     UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"Tips" message:@"Submit Success" preferredStyle:(UIAlertControllerStyleAlert)];
     UIAlertAction *alertA = [UIAlertAction actionWithTitle:@"Confirm" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
         for (UIViewController *temp in self.navigationController.viewControllers) {
-                                   if ([temp isKindOfClass:[WCQRCodeScanningVC class]]) {
+            if ([temp isKindOfClass:[WCQRCodeScanningVC class]]) {
                            //            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
                            //            [appDelegate.appdelegate1 closeConnected];
-                                       AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-                                       [appDelegate.ManagerBLE closeConnected];
-                                       [appDelegate hiddenFCViewNO];
-                                       [self.navigationController popToViewController:temp animated:YES];
-                                       
-                                   }
-                               }
-                               for (UIViewController *temp in self.navigationController.viewControllers) {
-                                   if ([temp isKindOfClass:[MyAccountViewController class]]) {
+                AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                [appDelegate.ManagerBLE closeConnected];
+                [appDelegate hiddenFCViewNO];
+                [self.navigationController popToViewController:temp animated:YES];
+            }
+        }
+        for (UIViewController *temp in self.navigationController.viewControllers) {
+            if ([temp isKindOfClass:[MyAccountViewController class]]) {
                            //            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
                            //            [appDelegate.appdelegate1 closeConnected];
-                                       AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-                                       [appDelegate.ManagerBLE closeConnected];
-                                       [appDelegate hiddenFCViewNO];
-                                       [self.navigationController popToViewController:temp animated:YES];
+                AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                [appDelegate.ManagerBLE closeConnected];
+                [appDelegate hiddenFCViewNO];
+                [self.navigationController popToViewController:temp animated:YES];
                                        ////            return NO;//这里要设为NO，不是会返回两次。返回到主界面。
-                                   }
-                               }
+                }
+        }
     }];
     
     [alertC addAction:alertA];

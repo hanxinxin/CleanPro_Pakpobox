@@ -39,6 +39,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 //#pragma mark - UINavigationControllerDelegate
 //// 将要显示控制器
 //- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
@@ -47,38 +49,38 @@
 //
 //    [self.navigationController setNavigationBarHidden:isShowHomePage animated:YES];
 //}
-
+//
 ///**
 // * 可以在这个方法中拦截所有push进来的控制器
 // */
 //- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 //{
-//    if (self.childViewControllers.count > 0) { // 如果push进来的不是第一个控制器
-//        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [button setTitle:FGGetStringWithKeyFromTable(@"Back", @"Language") forState:UIControlStateNormal];
-//        [button setImage:[UIImage imageNamed:@"en1"] forState:UIControlStateNormal];
-//        [button setImage:[UIImage imageNamed:@"en2"] forState:UIControlStateHighlighted];
-////        button.frame.size = CGSizeMake(80, 30);
-//        
-//        // 让按钮内部的所有内容左对齐
-//        button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-//        // 让按钮的内容往左边偏移10
-//        button.contentEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
-//        
-//        // 更简单的处理方式：
-//        // [button sizeToFit]; // 让按钮的尺寸跟随内容而变化
-//        
-//        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//        [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-//        // 隐藏tabbar
-//        viewController.hidesBottomBarWhenPushed = YES;
-//    }
-//    
+////    if (self.childViewControllers.count > 0) { // 如果push进来的不是第一个控制器
+////        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+////        [button setTitle:FGGetStringWithKeyFromTable(@"Back", @"Language") forState:UIControlStateNormal];
+////        [button setImage:[UIImage imageNamed:@"en1"] forState:UIControlStateNormal];
+////        [button setImage:[UIImage imageNamed:@"en2"] forState:UIControlStateHighlighted];
+//////        button.frame.size = CGSizeMake(80, 30);
+////
+////        // 让按钮内部的所有内容左对齐
+////        button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+////        // 让按钮的内容往左边偏移10
+////        button.contentEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
+////
+////        // 更简单的处理方式：
+////        // [button sizeToFit]; // 让按钮的尺寸跟随内容而变化
+////
+////        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+////        [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+////
+////        viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+////        // 隐藏tabbar
+////        viewController.hidesBottomBarWhenPushed = YES;
+////    }
+//
 //    // 这句super的push要放在后面, 让viewController可以覆盖上面设置的leftBarButtonItem
 //    [super pushViewController:viewController animated:animated];
-//    
+//
 //}
 /*
 #pragma mark - Navigation

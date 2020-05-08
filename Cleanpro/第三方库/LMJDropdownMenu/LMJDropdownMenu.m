@@ -103,7 +103,7 @@
     
     if(_Style==1)
     {
-    
+        _mainBtn.titleLabel.font    = [UIFont systemFontOfSize:15.f];
         // 旋转尖头
         _arrowMark = [[UIImageView alloc] initWithFrame:CGRectMake(_mainBtn.frame.size.width - 15, 0, 9, 9)];
         _arrowMark.center = CGPointMake(VIEW_CENTER_X(_arrowMark), VIEW_HEIGHT(_mainBtn)/2);
@@ -111,6 +111,7 @@
         [_mainBtn addSubview:_arrowMark];
     }else if (_Style==2)
     {
+        _mainBtn.titleLabel.font    = [UIFont systemFontOfSize:12.f];
         // 旋转尖头
         _arrowMark = [[UIImageView alloc] initWithFrame:CGRectMake(_mainBtn.frame.size.width - 15, 0, 14, 10)];
         _arrowMark.center = CGPointMake(VIEW_CENTER_X(_arrowMark), VIEW_HEIGHT(_mainBtn)/2);
@@ -294,7 +295,13 @@
     if (cell == nil) {
         //---------------------------下拉选项样式，可在此处自定义-------------------------
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.textLabel.font          = [UIFont systemFontOfSize:14.f];
+        if(_Style==1)
+        {
+            cell.textLabel.font          = [UIFont systemFontOfSize:14.f];
+        }else if (_Style==2)
+        {
+        cell.textLabel.font          = [UIFont systemFontOfSize:12.f];
+        }
         cell.textLabel.textColor     = [UIColor blackColor];
         cell.selectionStyle          = UITableViewCellSelectionStyleNone;
         

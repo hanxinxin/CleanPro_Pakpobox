@@ -62,19 +62,20 @@
 }
 
 
+
 -(void)getOrderList
 {
 
     self.page = 0;
     [arr_title removeAllObjects];
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?page=%ld&maxCount=%ld",FuWuQiUrl,Get_UserQuery,(long)self.page,(long)self.maxCount] parameters:nil progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?page=%ld&size=%ld",E_FuWuQiUrl,E_GetwalletList,(long)self.page,(long)self.maxCount] parameters:nil progress:^(id progress) {
         
     } success:^(id responseObject) {
         NSLog(@"responseObject ORder=  %@",responseObject);
         NSDictionary * dictList=(NSDictionary *)responseObject;
-        NSArray * Array=[dictList objectForKey:@"resultList"];
-        self.totalCount=[dictList objectForKey:@"totalCount"];
-        self.totalPage=[dictList objectForKey:@"totalPage"];
+        NSArray * Array=[dictList objectForKey:@"content"];
+        self.totalCount=[dictList objectForKey:@"totalElements"];
+        self.totalPage=[dictList objectForKey:@"totalPages"];
         if([self.totalCount integerValue]>20)
         {
             [self.tableView_top.mj_footer setHidden:NO];
@@ -84,15 +85,16 @@
         }
         for (int i=0; i<Array.count; i++) {
             NSDictionary * dict=Array[i];
-            WalletListClass * mode=[[WalletListClass alloc] init];;
-            mode.amount=[dict objectForKey:@"amount"];
-            mode.balance=[dict objectForKey:@"balance"];
-            mode.createTime=[dict objectForKey:@"createTime"];
-            mode.WalletId=[dict objectForKey:@"id"];
+            NewWalletListClass * mode=[[NewWalletListClass alloc] init];;
+            mode.comment=[dict objectForKey:@"comment"];
+            mode.creationTime=[dict objectForKey:@"creationTime"];
+            mode.creditAmount=[dict objectForKey:@"creditAmount"];
+            mode.lastUpdatedTime=[dict objectForKey:@"lastUpdatedTime"];
+            mode.memberWalletTransactionLogId=[dict objectForKey:@"memberWalletTransactionLogId"];
+            mode.tradingTime=[dict objectForKey:@"tradingTime"];
+            mode.transactionAmount=[dict objectForKey:@"transactionAmount"];
+            mode.transactionNumber=[dict objectForKey:@"transactionNumber"];
             mode.incomeType=[dict objectForKey:@"incomeType"];
-            mode.paymentType=[dict objectForKey:@"paymentType"];
-            mode.tradeType=[dict objectForKey:@"tradeType"];
-            mode.transactionType=[dict objectForKey:@"transactionType"];
             [self->arr_title addObject:mode];
         }
         [self.tableView_top reloadData];
@@ -110,25 +112,26 @@
     {
         self.page+=1;
         
-        [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?page=%ld&maxCount=%ld",FuWuQiUrl,Post_userOrder,(long)self.page,(long)self.maxCount] parameters:nil progress:^(id progress) {
+        [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?page=%ld&size=%ld",E_FuWuQiUrl,E_GetwalletList,(long)self.page,(long)self.maxCount] parameters:nil progress:^(id progress) {
             
         } success:^(id responseObject) {
             NSLog(@"responseObject ORder=  %@",responseObject);
             NSDictionary * dictList=(NSDictionary *)responseObject;
             NSArray * Array=[dictList objectForKey:@"resultList"];
-            self.totalCount=[dictList objectForKey:@"totalCount"];
-            self.totalPage=[dictList objectForKey:@"totalPage"];
+            self.totalCount=[dictList objectForKey:@"totalElements"];
+            self.totalPage=[dictList objectForKey:@"totalPages"];
             for (int i=0; i<Array.count; i++) {
                 NSDictionary * dict=Array[i];
-                WalletListClass * mode=[[WalletListClass alloc] init];;
-                mode.amount=[dict objectForKey:@"amount"];
-                mode.balance=[dict objectForKey:@"balance"];
-                mode.createTime=[dict objectForKey:@"createTime"];
-                mode.WalletId=[dict objectForKey:@"id"];
+               NewWalletListClass * mode=[[NewWalletListClass alloc] init];;
+                mode.comment=[dict objectForKey:@"comment"];
+                mode.creationTime=[dict objectForKey:@"creationTime"];
+                mode.creditAmount=[dict objectForKey:@"creditAmount"];
+                mode.lastUpdatedTime=[dict objectForKey:@"lastUpdatedTime"];
+                mode.memberWalletTransactionLogId=[dict objectForKey:@"memberWalletTransactionLogId"];
+                mode.tradingTime=[dict objectForKey:@"tradingTime"];
+                mode.transactionAmount=[dict objectForKey:@"transactionAmount"];
+                mode.transactionNumber=[dict objectForKey:@"transactionNumber"];
                 mode.incomeType=[dict objectForKey:@"incomeType"];
-                mode.paymentType=[dict objectForKey:@"paymentType"];
-                mode.tradeType=[dict objectForKey:@"tradeType"];
-                mode.transactionType=[dict objectForKey:@"transactionType"];
 //                if([mode.incomeType isEqualToString:@"OUT"])
 //                {
 //
@@ -149,6 +152,95 @@
         [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"There's no more data", @"Language") andDelay:2.0];
     }
 }
+
+
+//-(void)getOrderList
+//{
+//
+//    self.page = 0;
+//    [arr_title removeAllObjects];
+//    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?page=%ld&maxCount=%ld",FuWuQiUrl,Get_UserQuery,(long)self.page,(long)self.maxCount] parameters:nil progress:^(id progress) {
+//
+//    } success:^(id responseObject) {
+//        NSLog(@"responseObject ORder=  %@",responseObject);
+//        NSDictionary * dictList=(NSDictionary *)responseObject;
+//        NSArray * Array=[dictList objectForKey:@"resultList"];
+//        self.totalCount=[dictList objectForKey:@"totalCount"];
+//        self.totalPage=[dictList objectForKey:@"totalPage"];
+//        if([self.totalCount integerValue]>20)
+//        {
+//            [self.tableView_top.mj_footer setHidden:NO];
+//        }else
+//        {
+//            [self.tableView_top.mj_footer setHidden:YES];
+//        }
+//        for (int i=0; i<Array.count; i++) {
+//            NSDictionary * dict=Array[i];
+//            WalletListClass * mode=[[WalletListClass alloc] init];;
+//            mode.amount=[dict objectForKey:@"amount"];
+//            mode.balance=[dict objectForKey:@"balance"];
+//            mode.createTime=[dict objectForKey:@"createTime"];
+//            mode.WalletId=[dict objectForKey:@"id"];
+//            mode.incomeType=[dict objectForKey:@"incomeType"];
+//            mode.paymentType=[dict objectForKey:@"paymentType"];
+//            mode.tradeType=[dict objectForKey:@"tradeType"];
+//            mode.transactionType=[dict objectForKey:@"transactionType"];
+//            [self->arr_title addObject:mode];
+//        }
+//        [self.tableView_top reloadData];
+//        [self.tableView_top.mj_header endRefreshing];
+//    } failure:^(NSInteger statusCode, NSError *error) {
+//        NSLog(@"error ORder=  %@",error);
+//        [self.tableView_top.mj_header endRefreshing];
+//    }];
+//}
+//
+//
+//-(void)getOrderListFoot
+//{
+//    if((self.page+1)<[self.totalPage integerValue])
+//    {
+//        self.page+=1;
+//
+//        [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?page=%ld&maxCount=%ld",FuWuQiUrl,Post_userOrder,(long)self.page,(long)self.maxCount] parameters:nil progress:^(id progress) {
+//
+//        } success:^(id responseObject) {
+//            NSLog(@"responseObject ORder=  %@",responseObject);
+//            NSDictionary * dictList=(NSDictionary *)responseObject;
+//            NSArray * Array=[dictList objectForKey:@"resultList"];
+//            self.totalCount=[dictList objectForKey:@"totalCount"];
+//            self.totalPage=[dictList objectForKey:@"totalPage"];
+//            for (int i=0; i<Array.count; i++) {
+//                NSDictionary * dict=Array[i];
+//                WalletListClass * mode=[[WalletListClass alloc] init];;
+//                mode.amount=[dict objectForKey:@"amount"];
+//                mode.balance=[dict objectForKey:@"balance"];
+//                mode.createTime=[dict objectForKey:@"createTime"];
+//                mode.WalletId=[dict objectForKey:@"id"];
+//                mode.incomeType=[dict objectForKey:@"incomeType"];
+//                mode.paymentType=[dict objectForKey:@"paymentType"];
+//                mode.tradeType=[dict objectForKey:@"tradeType"];
+//                mode.transactionType=[dict objectForKey:@"transactionType"];
+////                if([mode.incomeType isEqualToString:@"OUT"])
+////                {
+////
+////                }else if ([mode.incomeType isEqualToString:@"IN"])
+////                {
+////                    [self->arr_title addObject:mode];
+////                }
+//                [self->arr_title addObject:mode];
+//            }
+//            [self.tableView_top reloadData];
+//            [self.tableView_top.mj_footer endRefreshing];
+//        } failure:^(NSInteger statusCode, NSError *error) {
+//            NSLog(@"error ORder=  %@",error);
+//            [self.tableView_top.mj_footer endRefreshing];
+//        }];
+//    }else{
+//        [self.tableView_top.mj_footer endRefreshing];
+//        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"There's no more data", @"Language") andDelay:2.0];
+//    }
+//}
 -(void)addTableViewOrders
 {
 //    if(self.view.width==375.000000 && self.view.height==812.000000)
@@ -215,6 +307,8 @@
     foot.stateLabel.font = [UIFont systemFontOfSize:15];
     // 设置颜色
     foot.stateLabel.textColor = [UIColor blackColor];
+    self.tableView_top.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    }];
     self.tableView_top.mj_footer =foot;
 //    self.tableView_top.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadFootData)];
     //    // 马上进入刷新状态
@@ -258,27 +352,28 @@
     [cell.contentView addSubview:lbl];
     //cell选中效果
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    WalletListClass * mode =arr_title[indexPath.row];
-    if([mode.transactionType isEqualToString:@"LAUNDRY"])
-    {
-//        self.title =@"Washer";
-        cell.top_Label.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Washer", @"Language")];
-    }else if([mode.transactionType isEqualToString:@"DRYER"])
-    {
-//        self.title =@"Dryer";
-        cell.top_Label.text=[NSString stringWithFormat:@"%@",mode.transactionType];
-    }
-    
+//    WalletListClass * mode =arr_title[indexPath.row];
+    NewWalletListClass * mode =arr_title[indexPath.row];
+//    if([mode.comment isEqualToString:@"WASHER"])
+//    {
+////        self.title =@"Washer";
+//        cell.top_Label.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Washer", @"Language")];
+//    }else if([mode.comment isEqualToString:@"DRYER"])
+//    {
+////        self.title =@"Dryer";
+//        cell.top_Label.text=[NSString stringWithFormat:@"%@",mode.comment];
+//    }
+    cell.top_Label.text=[NSString stringWithFormat:@"%@",mode.comment];
     
 //    cell.down_label.text=[NSString stringWithFormat:@"%@",mode.createTime];
-    cell.down_label.text=[NSString stringWithFormat:@"%@",[DetailsListViewController nsdateToString:[DetailsListViewController changeSpToTime:[mode.createTime stringValue]]]];
+    cell.down_label.text=[NSString stringWithFormat:@"%@",[DetailsListViewController nsdateToString:[DetailsListViewController changeSpToTime:[mode.tradingTime stringValue]]]];
     if([mode.incomeType isEqualToString:@"OUT"])
     {
-        cell.right_label.text=[NSString stringWithFormat:@"-%.f",[mode.amount floatValue]/100];
+        cell.right_label.text=[NSString stringWithFormat:@"%@",mode.transactionAmount];
         cell.right_label.textColor=[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
     }else if ([mode.incomeType isEqualToString:@"IN"])
     {
-        cell.right_label.text=[NSString stringWithFormat:@"+%.f",[mode.amount floatValue]/100];
+        cell.right_label.text=[NSString stringWithFormat:@"+%@",mode.transactionAmount];
         cell.right_label.textColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
     }
     cell.backgroundColor = [UIColor whiteColor];

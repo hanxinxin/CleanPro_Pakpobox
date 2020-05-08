@@ -222,12 +222,22 @@
     
     for (int i=0; i<self.DQNumber.count; i++) {
         productsMode*mode=self.DQNumber[i];
+        NSLog(@"mode.productName === %@",mode.productName);
         [arr addObject:mode.productName];
+         /* //屏蔽自己做的适配
+        if([mode.productName isEqualToString:@"5 Pound"])
+        {
+            [arr addObject:@"Large"];
+        }else if([mode.productName isEqualToString:@"10 Pound"])
+        {
+            [arr addObject:@"Extra Large"];
+        }
+        */
     }
     if(self.DQNumber.count==0)
     {
-        [arr addObject:@"5 Poubd"];
-        [arr addObject:@"10 Poubd"];
+//        [arr addObject:@"Large"];
+//        [arr addObject:@"Extra Large"];
     }
     
      // 控件的创建
@@ -241,7 +251,7 @@
         [dropdownMenu setMenuTitles:arr rowHeight:40 Selectindex:self.SelectMenuPound];
     [UIBezierPathView setCornerOnLeft:4 view_b:dropdownMenu.mainBtn];
     dropdownMenu.delegate = self;
-    
+                     
     [self addSubview:dropdownMenu];
     }else
     {

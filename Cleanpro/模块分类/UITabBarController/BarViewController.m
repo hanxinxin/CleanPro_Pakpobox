@@ -30,6 +30,8 @@
     // Do any additional setup after loading the view.
     //初始化两个视图控制器
     //    HomeViewController *HomeVc = [[HomeViewController alloc]init];
+    ///修改4.21日 屏蔽mcTabbar
+    /*
     //选中时的颜色
     self.mcTabbar.tintColor = [UIColor colorWithRed:251.0/255.0 green:199.0/255.0 blue:115/255.0 alpha:1];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
@@ -42,7 +44,7 @@
     self.mcTabbar.centerHeight=70.f;
     self.mcTabbar.centerImage = [UIImage imageNamed:@"scan"];
     self.mcDelegate = self;
-     
+     */
     // 改变分割线的颜色 禁止透明
 //    self.tabBar.layer.borderWidth = 0.20;
 //    self.tabBar.layer.borderColor = [UIColor colorWithRed:241/255.0 green:242/255.0 blue:240/255.0 alpha:1].CGColor;
@@ -60,18 +62,18 @@
     
 //    self.tabBar.barStyle = UIBarStyleBlackOpaque;
     
-    /// 20年3.30日修改TabBar 展示屏蔽以前的洗衣的，只展示预约洗衣的。
-    NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"];
-
-        if([strPhoen isEqualToString:@"1"])
-        {
-            [self setTitleAndview_lll];
-        }else
-        {
-            [self setTitleAndview];
-        }
+//    /// 20年3.30日修改TabBar 展示屏蔽以前的洗衣的，只展示预约洗衣的。
+//    NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"];
+//
+//        if([strPhoen isEqualToString:@"1"])
+//        {
+//            [self setTitleAndview_lll];
+//        }else
+//        {
+//            [self setTitleAndview];
+//        }
     
-//    [self tongzhi_UpdateTabbar]; ///监测是否快递员  4.17日屏蔽
+    [self tongzhi_UpdateTabbar]; ///监测是否快递员  4.17日屏蔽
 //    [self setTitleAndview];
     
     
@@ -85,7 +87,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tongzhi_SXUI3)name:@"UIshuaxinScan" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tongzhi_UpdateTabbar)name:@"tongzhi_UpdateTabbar" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addVersionView:forcedFlag:)name:@"addVersionView" object:nil];
-//    [self get_version_URL];
+    [self get_version_URL];
 }
 -(void)setTitleAndview
 {
@@ -95,15 +97,17 @@
 //    HomeViewController *HomeVc=[main instantiateViewControllerWithIdentifier:@"HomeViewController"];
     NewHomeViewController*HomeVc=[main instantiateViewControllerWithIdentifier:@"NewHomeViewController"];
     locationMapViewController *locationVC=[main instantiateViewControllerWithIdentifier:@"locationMapViewController"];
-    WCQRCodeScanningVC *WCVC = [[WCQRCodeScanningVC alloc] init];
+//    WCQRCodeScanningVC *WCVC = [[WCQRCodeScanningVC alloc] init];
 //    WCVC.hidesBottomBarWhenPushed = YES;
     IMessageViewController *OrderVc=[main instantiateViewControllerWithIdentifier:@"IMessageViewController"];
     OrderVc.MessageStyle=2;
-    MyAccountViewController *MyVc=[main instantiateViewControllerWithIdentifier:@"MyAccountViewController"];
+//    MyAccountViewController *MyVc=[main instantiateViewControllerWithIdentifier:@"MyAccountViewController"];
+    EwashMyViewController *MyVc=[main instantiateViewControllerWithIdentifier:@"EwashMyViewController"];
+    MyVc.QuAndUser=1;
     //为两个视图控制器添加导航栏控制器
     navHome = [[UINavigationController alloc]initWithRootViewController:HomeVc];
     location = [[UINavigationController alloc]initWithRootViewController:locationVC];
-    WC = [[UINavigationController alloc]initWithRootViewController:WCVC];
+//    WC = [[UINavigationController alloc]initWithRootViewController:WCVC];
     navMy = [[UINavigationController alloc]initWithRootViewController:MyVc];
     Massage = [[UINavigationController alloc]initWithRootViewController:OrderVc];
 //    GYHub = [[UINavigationController alloc]initWithRootViewController:GYHub_cc];
@@ -124,7 +128,7 @@
     [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName:[UIColor lightGrayColor]} forState:UIControlStateNormal];
     [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName:[UIColor colorWithRed:41/255.0 green:209/255.0 blue:255/255.0 alpha:1]} forState:UIControlStateSelected];
     //创建一个数组包含四个导航栏控制器
-    NSArray *vcArry = [NSArray arrayWithObjects:navHome,location,WC,Massage,navMy,nil];
+    NSArray *vcArry = [NSArray arrayWithObjects:navHome,location,Massage,navMy,nil];
     //将数组传给UITabBarController
     self.viewControllers = vcArry;
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3/*延迟执行时间*/ * NSEC_PER_SEC));
@@ -132,6 +136,7 @@
         sendMessage(@"ReturnMessage");//发送通知
     });
     self.navigationController.navigationBarHidden=YES;
+
     
 //    /// 3.30日添加的   4.17日屏蔽
 //    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -190,7 +195,7 @@
     //        MyViewController *MyVc = [[MyViewController alloc]init];
     locationMapViewController *locationVC=[main instantiateViewControllerWithIdentifier:@"locationMapViewController"];
 //    WCQRCodeScanningVC *WCVC = [[WCQRCodeScanningVC alloc] init];
-    LoginViewController*login=[main instantiateViewControllerWithIdentifier:@"LoginViewController"];
+//    LoginViewController*login=[main instantiateViewControllerWithIdentifier:@"LoginViewController"];
     //    WCVC.hidesBottomBarWhenPushed = YES;
     LoginViewController *OrderVc=[main instantiateViewControllerWithIdentifier:@"LoginViewController"];
     MyAccountViewController *MyVc=[main instantiateViewControllerWithIdentifier:@"MyAccountViewController"];
@@ -200,7 +205,7 @@
     //为两个视图控制器添加导航栏控制器
     navHome = [[UINavigationController alloc]initWithRootViewController:HomeVc];
     location = [[UINavigationController alloc]initWithRootViewController:locationVC];
-    WC = [[UINavigationController alloc]initWithRootViewController:login];
+//    WC = [[UINavigationController alloc]initWithRootViewController:login];
     navMy = [[UINavigationController alloc]initWithRootViewController:MyVc];
     Massage = [[UINavigationController alloc]initWithRootViewController:OrderVc];
     //    GYHub = [[UINavigationController alloc]initWithRootViewController:GYHub_cc];
@@ -228,7 +233,7 @@
 //    [self.navigationController.tabBarItem setTitleTextAttributes:dictHome forState:UIControlStateSelected];
     
     //创建一个数组包含四个导航栏控制器
-    NSArray *vcArry = [NSArray arrayWithObjects:navHome,location,WC,Massage,navMy,nil];
+    NSArray *vcArry = [NSArray arrayWithObjects:navHome,location,Massage,navMy,nil];
     
     //将数组传给UITabBarController
     self.viewControllers = vcArry;
@@ -284,6 +289,10 @@
                 sendMessage(@"ReturnMessage");//发送通知
             });
             self.navigationController.navigationBarHidden=YES;
+
+            [self setSelectedIndex:1];
+            
+    
 }
 
 
@@ -342,16 +351,15 @@
 
 -(void)tongzhi_SXUI2
 {
-//    NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"];
-//
-//    if([strPhoen isEqualToString:@"1"])
-//    {
-//        [self setTitleAndview_lll];
-//    }else
-//    {
-//        [self setTitleAndview];
-//    }
-    
+    NSString * userIdString=[[NSUserDefaults standardUserDefaults] objectForKey:@"userId"];
+    if([userIdString isEqualToString:@"1"])
+        {
+            [self setTitleAndview];
+            [self setSelectedIndex:0];
+        }else
+        {
+            [self setTabbarCout];
+        }
 }
 
 -(void)tongzhi_SXUI3
@@ -375,6 +383,7 @@
     if([userIdString isEqualToString:@"1"])
     {
         [self setTitleAndview];
+        
     }else
     {
         
@@ -499,60 +508,161 @@
     }
 }
 
+//-(void)get_version_URL
+//{
+////    NSLog(@"Version==== %@",[NSString stringWithFormat:@"%@%@?clientType=IOS",FuWuQiUrl,get_version]);
+//    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?clientType=IOS",FuWuQiUrl,get_version] parameters:nil progress:^(id progress) {
+//        //        NSLog(@"请求成功 = %@",progress);
+//    } success:^(id responseObject) {
+//        NSLog(@"Version_responseObject = %@",responseObject);
+//        [HudViewFZ HiddenHud];
+//        NSDictionary * dictObject=(NSDictionary *)responseObject;
+//        NSString * versionStr =[dictObject objectForKey:@"version"];
+//        NSString * contentStr =[dictObject objectForKey:@"content"];
+//        NSString * forcedFlagStr =[dictObject objectForKey:@"forcedFlag"];
+//        NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary];
+//        // app名称
+////        NSString *app_Name = [infoDictionary objectForKey:@"CFBundleDisplayName"];
+//        // app版本
+////        NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+//        // app build版本
+//        NSString *app_build = [infoDictionary objectForKey:@"CFBundleVersion"];
+//        NSArray *versionArray = [versionStr componentsSeparatedByString:@"."];//服务器返回版
+//
+//        NSArray *currentVesionArray = [app_build componentsSeparatedByString:@"."];//当前版本
+//        NSInteger a = (versionArray.count> currentVesionArray.count)?currentVesionArray.count : versionArray.count;
+//        for (int i = 0; i< a; i++) {
+//
+//            NSInteger a1 = [versionArray[i] integerValue];
+//            NSInteger b = [currentVesionArray[i] integerValue];
+//            if (a1 > b) {
+//                NSLog(@"有新版本");
+//                [self addVersionView:contentStr forcedFlag:forcedFlagStr];
+//            }else if(a1 == b){
+//               NSLog(@"没有新版本1");
+//
+//            }else if(a1 < b){
+//                if(i==0 || i==1)
+//                {
+//                    NSLog(@"直接跳出");
+//                    break;
+//                }
+//               NSLog(@"没有新版本2");
+//
+//            }
+//
+//        }
+//
+//    } failure:^(NSInteger statusCode, NSError *error) {
+//        NSLog(@"error = %@",error);
+//        [HudViewFZ HiddenHud];
+//
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+//    }];
+//}
+
+
 -(void)get_version_URL
 {
-//    NSLog(@"Version==== %@",[NSString stringWithFormat:@"%@%@?clientType=IOS",FuWuQiUrl,get_version]);
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?clientType=IOS",FuWuQiUrl,get_version] parameters:nil progress:^(id progress) {
-        //        NSLog(@"请求成功 = %@",progress);
-    } success:^(id responseObject) {
-        NSLog(@"Version_responseObject = %@",responseObject);
-        [HudViewFZ HiddenHud];
-        NSDictionary * dictObject=(NSDictionary *)responseObject;
-        NSString * versionStr =[dictObject objectForKey:@"version"];
-        NSString * contentStr =[dictObject objectForKey:@"content"];
-        NSString * forcedFlagStr =[dictObject objectForKey:@"forcedFlag"];
-        NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary];
-        // app名称
-//        NSString *app_Name = [infoDictionary objectForKey:@"CFBundleDisplayName"];
-        // app版本
-//        NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
-        // app build版本
-        NSString *app_build = [infoDictionary objectForKey:@"CFBundleVersion"];
-        NSArray *versionArray = [versionStr componentsSeparatedByString:@"."];//服务器返回版
-        
-        NSArray *currentVesionArray = [app_build componentsSeparatedByString:@"."];//当前版本
-        NSInteger a = (versionArray.count> currentVesionArray.count)?currentVesionArray.count : versionArray.count;
-        for (int i = 0; i< a; i++) {
-            
-            NSInteger a1 = [versionArray[i] integerValue];
-            NSInteger b = [currentVesionArray[i] integerValue];
-            if (a1 > b) {
-                NSLog(@"有新版本");
-                [self addVersionView:contentStr forcedFlag:forcedFlagStr];
-            }else if(a1 == b){
-               NSLog(@"没有新版本1");
-                
-            }else if(a1 < b){
-                if(i==0 || i==1)
-                {
-                    NSLog(@"直接跳出");
-                    break;
-                }
-               NSLog(@"没有新版本2");
-                
+    
+    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+        NSString *appVersion = infoDict[@"CFBundleShortVersionString"];
+    //    NSString *bundleId   = infoDict[@"CFBundleIdentifier"];
+        NSString *urlString = [NSString stringWithFormat:@"https://itunes.apple.com/cn/lookup?id=%@", @"1499447258"];
+        //两种请求appStore最新版本app信息 通过bundleId与appleId判断
+        //[NSString stringWithFormat:@"https://itunes.apple.com/cn/lookup?bundleid=%@", bundleId]
+        //[NSString stringWithFormat:@"https://itunes.apple.com/cn/lookup?id=%@", appleid]
+        NSURL *urlStr = [NSURL URLWithString:urlString];
+        NSURLRequest *urlRequest = [NSURLRequest requestWithURL:urlStr];
+        [NSURLConnection sendAsynchronousRequest:urlRequest queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse * _Nullable response, NSData * _Nullable data, NSError * _Nullable connectionError) {
+            if (connectionError) {
+                return ;
             }
-            
-        }
-        
-    } failure:^(NSInteger statusCode, NSError *error) {
-        NSLog(@"error = %@",error);
-        [HudViewFZ HiddenHud];
-        
-            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
-    }];
+            NSError *error;
+            NSDictionary *resultsDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+            NSLog(@"返回%@",resultsDict);
+            if (error) {
+                return;
+            }
+            NSArray *sourceArray = resultsDict[@"results"];
+            if (sourceArray.count >= 1) {
+                //AppStore内最新App的版本号
+                NSDictionary *sourceDict = sourceArray[0];
+                NSString *newVersion = sourceDict[@"version"];
+                NSLog(@"newVersion===  %@",newVersion);
+                if([self judgeNewVersion:newVersion withOldVersion:appVersion])
+                {
+                    //    NSLog(@"Version==== %@",[NSString stringWithFormat:@"%@%@?clientType=IOS",FuWuQiUrl,get_version]);
+                        [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_GetloadAppVersion] parameters:nil progress:^(id progress) {
+                            //        NSLog(@"请求成功 = %@",progress);
+                        } success:^(id responseObject) {
+                            NSLog(@"Version_responseObject = %@",responseObject);
+                            [HudViewFZ HiddenHud];
+                            
+                            NSDictionary * dictObject=(NSDictionary *)responseObject;
+                            if(dictObject!=nil)
+                            {
+                            NSString * versionStr =[dictObject objectForKey:@"version"];
+                            NSString * contentStr =[dictObject objectForKey:@"content"];
+                            NSString * forcedFlagStr =[dictObject objectForKey:@"forcedFlag"];
+                            NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary];
+                            // app名称
+                    //        NSString *app_Name = [infoDictionary objectForKey:@"CFBundleDisplayName"];
+                            // app版本
+                    //        NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+                            // app build版本
+                            NSString *app_build = [infoDictionary objectForKey:@"CFBundleVersion"];
+                            NSArray *versionArray = [versionStr componentsSeparatedByString:@"."];//服务器返回版
+                            
+                            NSArray *currentVesionArray = [app_build componentsSeparatedByString:@"."];//当前版本
+                            NSInteger a = (versionArray.count> currentVesionArray.count)?currentVesionArray.count : versionArray.count;
+                            for (int i = 0; i< a; i++) {
+                                
+                                NSInteger a1 = [versionArray[i] integerValue];
+                                NSInteger b = [currentVesionArray[i] integerValue];
+                                if (a1 > b) {
+                                    NSLog(@"有新版本");
+                                    [self addVersionView:contentStr forcedFlag:forcedFlagStr];
+                                }else if(a1 == b){
+                                   NSLog(@"没有新版本1");
+                                    
+                                }else if(a1 < b){
+                                    if(i==0 || i==1)
+                                    {
+                                        NSLog(@"直接跳出");
+                                        break;
+                                    }
+                                   NSLog(@"没有新版本2");
+                                    
+                                }
+                                
+                            }
+                            }
+                            
+                        } failure:^(NSInteger statusCode, NSError *error) {
+                            NSLog(@"error = %@",error);
+                            [HudViewFZ HiddenHud];
+                            
+                    //            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+                        }];
+                }
+            }
+        }];
+
 }
-
-
+//判断当前app版本和AppStore最新app版本大小
+- (BOOL)judgeNewVersion:(NSString *)newVersion withOldVersion:(NSString *)oldVersion {
+    NSArray *newArray = [newVersion componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"."]];
+    NSArray *oldArray = [oldVersion componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"."]];
+    for (NSInteger i = 0; i < newArray.count; i ++) {
+        if ([newArray[i] integerValue] > [oldArray[i] integerValue]) {
+            return YES;
+        } else if ([newArray[i] integerValue] < [oldArray[i] integerValue]) {
+            return NO;
+        } else { }
+    }
+    return NO;
+}
 /**
  扫描二维码 需要先检测相机
  

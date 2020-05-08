@@ -14,9 +14,7 @@
 
 #define tableID @"timelineAddressTableViewCell"
 
-@implementation CitySelectMode
 
-@end
 
 
 static BOOL selectOne_two=NO;
@@ -113,7 +111,7 @@ static BOOL selectOne_two=NO;
     }
 }
 
-/// 根据区号获取地址
+/// 根据区号获取地址 old
 -(void)Get_AddressSelectList:(NSString *)postcode parentIdStr:(NSString *)parentId index:(NSInteger)Index
 {
     [HudViewFZ labelExample:self];
@@ -122,19 +120,19 @@ static BOOL selectOne_two=NO;
     {
         if(parentId!=nil)
         {
-            GetURLStr=[NSString stringWithFormat:@"%@%@?postcode=%@&parentId=%@",FuWuQiUrl,Get_AddressSelect,postcode,parentId] ;
+            GetURLStr=[NSString stringWithFormat:@"%@%@?postCode=%@&upperGradeId=%@",E_FuWuQiUrl,E_getDistrict,postcode,parentId] ;
         }else
         {
-            GetURLStr=[NSString stringWithFormat:@"%@%@?postcode=%@&parentId=%@",FuWuQiUrl,Get_AddressSelect,postcode,parentId];
+            GetURLStr=[NSString stringWithFormat:@"%@%@?postCode=%@",E_FuWuQiUrl,E_getDistrict,postcode];
         }
     }else
     {
         if(parentId!=nil)
         {
-            GetURLStr=[NSString stringWithFormat:@"%@%@?parentId=%@",FuWuQiUrl,Get_AddressSelect,parentId] ;
+            GetURLStr=[NSString stringWithFormat:@"%@%@?upperGradeId=%@",E_FuWuQiUrl,E_getDistrict,parentId] ;
         }else
         {
-            GetURLStr=[NSString stringWithFormat:@"%@%@",FuWuQiUrl,Get_AddressSelect];
+            GetURLStr=[NSString stringWithFormat:@"%@%@?grade=1",E_FuWuQiUrl,E_getDistrict];
         }
     }
     [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:GetURLStr parameters:nil progress:^(id progress) {
@@ -216,8 +214,95 @@ static BOOL selectOne_two=NO;
         [HudViewFZ HiddenHud];
     }];
 }
-
-
+//*/
+/*
+/// 根据区号获取地址 New
+-(void)Get_AddressSelectList:(NSString *)postcode parentIdStr:(NSString *)parentId index:(NSInteger)Index
+{
+    [HudViewFZ labelExample:self];
+    NSString * GetURLStr;
+    if(postcode!=nil)
+    {
+        if(parentId!=nil)
+        {
+            GetURLStr=[NSString stringWithFormat:@"%@%@?postCode=%@&upperGradeId=%@",E_FuWuQiUrl,E_getDistrict,postcode,parentId] ;
+        }else
+        {
+            GetURLStr=[NSString stringWithFormat:@"%@%@?postCode=%@",E_FuWuQiUrl,E_getDistrict,postcode];
+        }
+    }else
+    {
+        if(parentId!=nil)
+        {
+            GetURLStr=[NSString stringWithFormat:@"%@%@?upperGradeId=%@",E_FuWuQiUrl,E_getDistrict,parentId] ;
+        }else
+        {
+            GetURLStr=[NSString stringWithFormat:@"%@%@?grade=3",E_FuWuQiUrl,E_getDistrict];
+        }
+    }
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:GetURLStr parameters:nil progress:^(id progress) {
+        
+    } success:^(id responseObject) {
+        NSLog(@"responseObject== %@",responseObject);
+        [HudViewFZ HiddenHud];
+       if(responseObject!=nil)
+       {
+           [self.ArrayCity removeAllObjects];
+        if(self->ASelect==0)
+        {
+            NSArray * arrayZong = (NSArray *)responseObject;
+            NSMutableArray * KBArray = [NSMutableArray arrayWithCapacity:0];
+           for (int i =0; i<arrayZong.count; i++) {
+               NSDictionary * dict =arrayZong[i];
+               upperGradeOneMode*mode = [self JXGradeMode:dict];
+               [KBArray addObject:mode];
+           }
+            self.ArrayCity = KBArray;
+        }else if(self->ASelect==1)
+        {
+            NSMutableArray * Muarray = [NSMutableArray arrayWithCapacity:0];
+                       NSArray * array = (NSArray *)responseObject;
+                       for (int i =0 ; i<array.count; i++) {
+                           NSDictionary * dict = array[i];
+                           upperGradeOneMode*modeT = [self JXGradeMode:dict];
+                           [Muarray addObject:modeT];
+                       }
+                       self.ArrayCity=Muarray;
+        }else if(self->ASelect==2)
+        {
+            NSMutableArray * Muarray3 = [NSMutableArray arrayWithCapacity:0];
+            NSArray * array = (NSArray *)responseObject;
+            for (int i =0 ; i<array.count; i++) {
+                NSDictionary * dict3 = array[i];
+                upperGradeOneMode*mode3 = [self JXGradeMode:dict3];
+                [Muarray3 addObject:mode3];
+            }
+            self.ArrayCity=Muarray3;
+        }
+            [self.tableviewA reloadData];
+            [self.tableviewB reloadData];
+       }
+    } failure:^(NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+        [HudViewFZ HiddenHud];
+    }];
+}
+*/
+-(upperGradeOneMode*)JXGradeMode:(NSDictionary*)dict
+{
+    upperGradeOneMode* mode = [[upperGradeOneMode alloc] init];
+    mode.districtId=[dict objectForKey:@"districtId"];
+    mode.enName=[dict objectForKey:@"enName"];
+    mode.endGrade=[dict objectForKey:@"endGrade"];
+    mode.grade=[dict objectForKey:@"grade"];
+    mode.name=[dict objectForKey:@"name"];
+    mode.postCode=[dict objectForKey:@"postCode"];
+    NSDictionary * dict2 =[dict objectForKey:@"upperGrade"];
+    mode.upperGrade = dict2;
+    mode.upperGradeId=[dict objectForKey:@"upperGradeId"];
+    return mode;
+}
 - (IBAction)Cancel_touch:(id)sender {
     if ([self.delegate respondsToSelector:@selector(CancelDelegate:SelectArray:)]) {
         [self.delegate CancelDelegate:1 SelectArray:self.OneArray];

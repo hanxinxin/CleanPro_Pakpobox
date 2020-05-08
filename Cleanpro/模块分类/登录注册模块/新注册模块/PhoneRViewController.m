@@ -10,6 +10,7 @@
 #import "LMJDropdownMenu.h"
 #import "PasswordRViewController.h"
 #import "UIBezierPathView.h"
+#import "NewPasswordSetViewController.h"
 @interface PhoneRViewController ()<LMJDropdownMenuDelegate,UIGestureRecognizerDelegate,UITextFieldDelegate>
 {
     int Time_cout;
@@ -195,11 +196,13 @@
 - (IBAction)Next_touch:(id)sender {
     if(self.Nextmode.phoneNumber != nil && self.Nextmode.randomPassword !=nil && self.Nextmode.countryCode !=nil)
     {
-    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    PasswordRViewController *vc=[main instantiateViewControllerWithIdentifier:@"PasswordRViewController"];
-    vc.hidesBottomBarWhenPushed = YES;
-    vc.Nextmode=self.Nextmode;
-    [self.navigationController pushViewController:vc animated:YES];
+        
+        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        PasswordRViewController *vc=[main instantiateViewControllerWithIdentifier:@"PasswordRViewController"];
+        vc.hidesBottomBarWhenPushed = YES;
+        vc.Nextmode=self.Nextmode;
+        [self.navigationController pushViewController:vc animated:YES];
+
     }
 }
 

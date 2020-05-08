@@ -30,7 +30,7 @@
 @property (nonatomic, strong) NSString *orderStr; //////扫描二维码得到的信息
 
 @property (nonatomic, strong) NSString * addr; ///获取二维码的加密字节
-
+@property (nonatomic, strong) NSString * siteIdStr; ///站点的id
 //@property CBCentralManager *centralManager;
 
 
@@ -94,6 +94,7 @@
 //    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
         self.orderStr =@"";
     self.addr = @"";
+    self.siteIdStr=@"";
         /// 为了 UI 效果
         [self.view addSubview:self.scanningView];
         [self.view addSubview:self.promptLabel];
@@ -210,7 +211,8 @@
 
 - (SGQRCodeScanningView *)scanningView {
     if (!_scanningView) {
-        _scanningView = [[SGQRCodeScanningView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.9 * self.view.frame.size.height)];
+//        _scanningView = [[SGQRCodeScanningView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.9 * self.view.frame.size.height)];
+        _scanningView = [[SGQRCodeScanningView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
 //        _scanningView.backgroundColor = [UIColor blueColor];
     }
     return _scanningView;
@@ -268,58 +270,75 @@
     if (metadataObjects != nil && metadataObjects.count > 0) {
         [scanManager playSoundName:@"SGQRCode.bundle/sound.caf"];
         [scanManager stopRunning];
-//        [scanManager videoPreviewLayerRemoveFromSuperlayer];
-//
+        //        [scanManager videoPreviewLayerRemoveFromSuperlayer];
+        //
         AVMetadataMachineReadableCodeObject *obj = metadataObjects[0];
-//        ScanSuccessJumpVC *jumpVC = [[ScanSuccessJumpVC alloc] init];
-//        jumpVC.comeFromVC = ScanSuccessJumpComeFromWC;
-//        NSLog(@"metadataObjects - - %@ ，，， obj String=%@", obj,[obj stringValue]);
+        //        ScanSuccessJumpVC *jumpVC = [[ScanSuccessJumpVC alloc] init];
+        //        jumpVC.comeFromVC = ScanSuccessJumpComeFromWC;
+        //        NSLog(@"metadataObjects - - %@ ，，， obj String=%@", obj,[obj stringValue]);
         
         NSString * orderStr1=[jiamiStr AesDecrypt:[obj stringValue]];////屏蔽以前的j解密方式
         NSLog(@"orderStr1 === %@", orderStr1);
         NSArray *array = [orderStr1 componentsSeparatedByString:@"#"];
         if(array.count==3)
         {
-        self.orderStr =orderStr1;
-        /*
-        if([Manager.inst isConnected])
-        {
-            NSLog(@"已连接偶忆蓝牙");
+            self.orderStr =orderStr1;
+            /*
+             if([Manager.inst isConnected])
+             {
+             NSLog(@"已连接偶忆蓝牙");
+             NSArray *array = [self.orderStr componentsSeparatedByString:@"#"];
+             [self get_zuwangmessage:array[0]];
+             }else
+             {
+             [self zuwang:orderStr1];
+             }
+             */
             NSArray *array = [self.orderStr componentsSeparatedByString:@"#"];
-            [self get_zuwangmessage:array[0]];
-        }else
-        {
-            [self zuwang:orderStr1];
-        }
-         */
-            NSArray *array = [self.orderStr componentsSeparatedByString:@"#"];
-//            [self get_zuwangmessage:array[0]];
+            //            [self get_zuwangmessage:array[0]];
             [self getBLEMac:array[0] NumberStr:array[1]];
         }else if(array.count==2)
         {
-//            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//            HxShopCartViewController *vc=[main instantiateViewControllerWithIdentifier:@"HxShopCartViewController"];
-//            vc.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:vc animated:YES];
-        }else
-        {
+            //            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            //            HxShopCartViewController *vc=[main instantiateViewControllerWithIdentifier:@"HxShopCartViewController"];
+            //            vc.hidesBottomBarWhenPushed = YES;
+            //            [self.navigationController pushViewController:vc animated:YES];
             NSLog(@"暂未识别出扫描的二维码1");
             [HudViewFZ HiddenHud];
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"The scanned qr code has not been identified yet", @"Language") andDelay:2.5];
-            [scanManager startRunning];
-            [self setupQRCodeScanning];
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.2/*延迟执行时间*/ * NSEC_PER_SEC));
+            
+            dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                [self->_manager startRunning];
+            });
+        }else
+        {
+            
+            NSLog(@"暂未识别出扫描的二维码1");
+            [HudViewFZ HiddenHud];
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"The scanned qr code has not been identified yet", @"Language") andDelay:2.5];
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.2/*延迟执行时间*/ * NSEC_PER_SEC));
+            
+            dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                [self->_manager startRunning];
+            });
         }
         
         
-//        NSString * orderStr =[obj stringValue];
-//        NSArray *arrys= [orderStr DiscountPricecomponentsSeparatedByString:@"."];
+        //        NSString * orderStr =[obj stringValue];
+        //        NSArray *arrys= [orderStr DiscountPricecomponentsSeparatedByString:@"."];
         
     } else {
         NSLog(@"暂未识别出扫描的二维码2");
         [HudViewFZ HiddenHud];
         [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"The scanned qr code has not been identified yet", @"Language") andDelay:2.5];
-        [scanManager startRunning];
-        [self setupQRCodeScanning];
+
+        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.2/*延迟执行时间*/ * NSEC_PER_SEC));
+        
+        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            [self->_manager startRunning];
+        });
+        
     }
 }
 
@@ -402,6 +421,7 @@
             vc.hidesBottomBarWhenPushed = YES;
             vc.arrayList=array;
             vc.addrStr = self.addr;
+            vc.siteIdStr=self.siteIdStr;
             [self.navigationController pushViewController:vc animated:YES];
             //        }else if (_tag_int==2)
         }else if([array[2] isEqualToString:@"DRYER"])
@@ -411,6 +431,7 @@
             vc.hidesBottomBarWhenPushed = YES;
             vc.arrayList=array;
             vc.addrStr = self.addr;
+            vc.siteIdStr=self.siteIdStr;
             vc.OrderAndRenewal=1;
             [self.navigationController pushViewController:vc animated:YES];
         }
@@ -423,7 +444,64 @@
     }
 }
 
-
+-(void)getBLEMac:(NSString *)siteNo NumberStr:(NSString*)NumStr
+{
+     NSString *escapedPathURL = [[NSString stringWithFormat:@"%@%@%@#%@",E_FuWuQiUrl,E_GetBleInfo,siteNo,NumStr] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        NSLog(@"URL2 = %@",escapedPathURL);
+        [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:escapedPathURL parameters:nil progress:^(id progress) {
+                
+            } success:^(id responseObject) {
+    //            addr = 0016;
+    //            mac = "F5:13:44:A9:73:F6";
+    //            machineNo = 03;
+    //            siteNo = P2018080603;
+                NSLog(@"responseObject ORder=  %@",responseObject);
+                NSDictionary * dictList=(NSDictionary *)responseObject;
+                  if(dictList)
+                  {
+                    NSString * addr = [dictList objectForKey:@"communicateInfo"];;
+                    NSString * mac = [dictList objectForKey:@"macAddress"];
+//                    NSString * machineNo = [dictList objectForKey:@"machineNo"];
+    //                NSString * siteNo = [dictList objectForKey:@"siteNo"];
+                    NSString * siteId = [dictList objectForKey:@"siteId"];
+                    NSString * macByte=[mac stringByReplacingOccurrencesOfString:@":" withString:@""];
+                    if(macByte)
+                    {
+                        self.addr = addr;
+                        self.siteIdStr= siteId;
+                        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                        [appDelegate.ManagerBLE scanPeripherals];
+                        [appDelegate.ManagerBLE setAddressName:macByte];
+    //                    [appDelegate.ManagerBLE setMacName:machineNo];
+                        [self AddConnected];
+                    }
+                }
+               
+            } failure:^(NSInteger statusCode, NSError *error) {
+                [HudViewFZ HiddenHud];
+                NSLog(@"error ORder=  %@",error);
+                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Bluetooth connection failed", @"Language") andDelay:2.0];
+                if(error)
+                {
+                    if([[self dictStr:error] integerValue]==404)
+                    {
+                        [self.manager startRunning];
+                        [self setupQRCodeScanning];
+                    }
+                }
+            }];
+}
+-(NSNumber *)dictStr:(NSError *)error
+{
+//    NSString * receive=@"";
+    NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+//    receive= [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *dictFromData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
+    NSNumber * errorCode = [dictFromData valueForKey:@"errorCode"];
+//
+    return errorCode;
+}
+/*
 -(void)getBLEMac:(NSString *)siteNo NumberStr:(NSString*)NumStr
 {
     NSLog(@"URL = %@",[NSString stringWithFormat:@"%@%@%@#%@",FuWuQiUrl,get_BLEmacAddress,siteNo,NumStr]);
@@ -472,7 +550,7 @@
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Bluetooth connection failed", @"Language") andDelay:2.0];
         }];
 }
-
+*/
 
 
 

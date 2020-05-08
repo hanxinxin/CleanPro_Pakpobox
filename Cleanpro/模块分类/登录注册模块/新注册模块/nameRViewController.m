@@ -11,6 +11,7 @@
 #import "BirthdayRViewController.h"
 #import "PhoneRViewController.h"
 #import "GenderRViewController.h"
+#import "NewRegisterViewController.h"
 
 @interface nameRViewController ()<UIGestureRecognizerDelegate,UITextFieldDelegate>
 
@@ -24,9 +25,11 @@
     self.next_btn.layer.cornerRadius=4;
     self.first_nameText.keyboardType = UIKeyboardTypeAlphabet;
     self.first_nameText.delegate=self;
+    self.first_nameText.secureTextEntry = NO;
     self.first_nameText.layer.cornerRadius=4;
     self.last_nameText.layer.cornerRadius=4;
     self.last_nameText.delegate=self;
+    self.last_nameText.secureTextEntry = NO;
     self.last_nameText.keyboardType = UIKeyboardTypeAlphabet;
     self.next_btn.backgroundColor=[UIColor colorWithRed:172/255.0 green:220/255.0 blue:251/255.0 alpha:1.0];
     [self.next_btn setUserInteractionEnabled:NO];
@@ -69,6 +72,13 @@
         [self.next_btn setTitle:@"Next" forState:UIControlStateNormal];
     }else if (self.index==2)
     {
+        NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+        SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        if(![ModeUser.firstName isEqual:[NSNull null]] && ![ModeUser.lastName isEqual:[NSNull null]]){
+        self.first_nameText.text=ModeUser.firstName;
+        self.last_nameText.text=ModeUser.lastName;
+        }
+        
         [self.next_btn setTitle:@"Save" forState:UIControlStateNormal];
     }
     [self.navigationController.navigationBar setHidden:NO];
@@ -115,12 +125,12 @@
 
     if (textField == self.first_nameText) {
 
-        self.first_nameText.secureTextEntry = YES;
+//        self.first_nameText.secureTextEntry = YES;
 
     }
     if (textField == self.last_nameText) {
 
-        self.last_nameText.secureTextEntry = YES;
+//        self.last_nameText.secureTextEntry = YES;
 
     }
 }
@@ -181,8 +191,22 @@
          
          */
 //        12月30日屏蔽 直接进入号码填写页面
+//        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        PhoneRViewController *vc=[main instantiateViewControllerWithIdentifier:@"PhoneRViewController"];
+//        vc.hidesBottomBarWhenPushed = YES;
+//        userIDMode * Nextmode = [[userIDMode alloc] init];
+//        Nextmode.firstName=self.Nextmode.firstName;
+//        Nextmode.lastName=self.Nextmode.lastName;
+//        Nextmode.birthday=@"";
+//        Nextmode.gender=@"MALE";
+//        Nextmode.postCode=@"";
+//        vc.Nextmode=Nextmode;
+//        [self.navigationController pushViewController:vc animated:YES];
+         
+        /// 4.21 日修改
+        
         UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        PhoneRViewController *vc=[main instantiateViewControllerWithIdentifier:@"PhoneRViewController"];
+        NewRegisterViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewRegisterViewController"];
         vc.hidesBottomBarWhenPushed = YES;
         userIDMode * Nextmode = [[userIDMode alloc] init];
         Nextmode.firstName=self.Nextmode.firstName;
@@ -192,7 +216,6 @@
         Nextmode.postCode=@"";
         vc.Nextmode=Nextmode;
         [self.navigationController pushViewController:vc animated:YES];
-         
         
         /*
         UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -235,7 +258,9 @@
                           };
     NSLog(@"dict=== %@",dict);
     
-    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,post_UpdateInfo] parameters:dict progress:^(id progress) {
+//    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,post_UpdateInfo] parameters:dict progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_PostUserInfo] parameters:dict progress:^(id progress) {
+    
         NSLog(@"请求成功 = %@",progress);
     }Success:^(NSInteger statusCode,id responseObject) {
         [HudViewFZ HiddenHud];
@@ -246,23 +271,24 @@
             //            用来储存用户信息
             
             SaveUserIDMode * mode = [[SaveUserIDMode alloc] init];
-            
-            mode.phoneNumber = [dictObject objectForKey:@"phoneNumber"];//   手机号码
-            mode.loginName = [dictObject objectForKey:@"loginName"];//   与手机号码相同
-            mode.yonghuID = [dictObject objectForKey:@"id"]; ////用户ID
-            //            mode.randomPassword = [dictObject objectForKey:@"randomPassword"];//  验证码
-            //            mode.password = [dictObject objectForKey:@"password"];//  登录密码
-            //            mode.payPassword = [dictObject objectForKey:@"payPassword"];//    支付密码
+            mode.phoneNumber = [dictObject objectForKey:@"mobile"];//   手机号码
+            mode.loginName = [dictObject objectForKey:@"username"];//   与手机号码相同
+            mode.yonghuID = [dictObject objectForKey:@"memberId"]; ////用户ID
             mode.firstName = [dictObject objectForKey:@"firstName"];//   first name
             mode.lastName = [dictObject objectForKey:@"lastName"];//   last name
-            NSNumber * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
-            mode.birthday = [birthdayNum stringValue];
+            NSString * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
+            if(![birthdayNum isEqual:[NSNull null]])
+            {
+                NSInteger num = [birthdayNum integerValue];
+                NSNumber * nums = @(num);
+                mode.birthday = [nums stringValue];;
+            }
             mode.gender = [dictObject objectForKey:@"gender"];//       MALE:男，FEMALE:女
             mode.postCode = [dictObject objectForKey:@"postCode"];//   Post Code inviteCode
             mode.EmailStr = [dictObject objectForKey:@"email"];//   email
             mode.inviteCode = [dictObject objectForKey:@"inviteCode"];//       我填写的邀请码
             mode.myInviteCode = [dictObject objectForKey:@"myInviteCode"];//       我的邀请码
-            mode.headImageUrl = [dictObject objectForKey:@"headImageUrl"];
+            mode.headImageUrl = [dictObject objectForKey:@"headImageId"];
             mode.payPassword = [dictObject objectForKey:@"payPassword"];
             NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
             //存储到NSUserDefaults（转NSData存）
@@ -284,8 +310,10 @@
         }
     } failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"error = %@",error);
-        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
-        [HudViewFZ HiddenHud];
+//        NSString * errorMessage = (NSString *)receive;
+//        [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+            [HudViewFZ HiddenHud];
     }];
 }
 

@@ -15,6 +15,7 @@
 #import "AppDelegate.h"
 #import "ConnectFeedViewController.h"
 #import "AES_SecurityUtil.h"
+#import "NewHomeViewController.h"
 
 @interface LaundrySuccessViewController ()
 {
@@ -124,10 +125,26 @@
     }
 }
 -(void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
+    
     if([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     };
+    
+
+    NSArray *viewControllers = self.navigationController.viewControllers;
+    if (viewControllers.count > 1 && [viewControllers objectAtIndex:viewControllers.count-2] == self) {
+        //push
+    } else if ([viewControllers indexOfObject:self] == NSNotFound) {
+        //pop
+       for (UIViewController *temp in self.navigationController.viewControllers) {
+                if ([temp isKindOfClass:[WCQRCodeScanningVC class]]) {
+                    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                    [appDelegate.ManagerBLE closeConnected];
+                    [appDelegate hiddenFCViewNO];
+                }
+            }
+    }
+    [super viewWillDisappear:animated];
 }
 
 -(void)NotificationRead:(NSNotification *)noti
@@ -136,33 +153,80 @@
     [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Data was successfully sent to BLE", @"Language") andDelay:2.5];
 }
 
-
+   
 -(void)get_order_task_ZL
 {
-    NSLog(@"GetOrder URL = %@",[NSString stringWithFormat:@"%@%@%@/task",FuWuQiUrl,get_order_task,self.orderidStr]);
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@%@/task",FuWuQiUrl,get_order_task,self.orderidStr] parameters:nil progress:^(id progress) {
+    NSDictionary *dict = @{@"ordersId":self.orderidStr,
+                           };
+    NSLog(@"dict ====%@",dict);
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_Getcommand] parameters:dict progress:^(id progress) {
+        NSLog(@"111  %@",progress);
+    } Success:^(NSInteger statusCode,id responseObject) {
+//        [HudViewFZ HiddenHud];
+        NSLog(@"E_Getcommand = %@",responseObject);
+//        [HudViewFZ HiddenHud];
+        if(statusCode==200)
+        {
+                    NSDictionary * dictionary = (NSDictionary *)responseObject;
+                    NSString * taskCommand=[dictionary objectForKey:@"blueToothCommand"];
+                    self.taskCommandStr = taskCommand;
+                    [self sendStrCmd:taskCommand];
+        }
         
-    } success:^(id responseObject) {
-        NSLog(@"responseObject=  %@",responseObject);
-        
-        //        NSDictionary * dictionary = (NSDictionary*)responseObject;
-        //
-        //        NSArray * resultListArr=[dictionary objectForKey:@"resultList"];
-        
-        NSDictionary * dictionary = (NSDictionary *)responseObject;
-        NSString * taskCommand=[dictionary objectForKey:@"taskCommand"];
-        self.taskCommandStr = taskCommand;
-        [self sendStrCmd:taskCommand];
-//        [self sendDeviceData:@"01017880-0000-0000-83cd-c0bb04840000" taskCommand:taskCommand];
-        
-//        @"031119190001110e0066";
-        
-    } failure:^(NSInteger statusCode, NSError *error) {
-    
+    } failure:^(NSInteger statusCode, NSError *error)  {
+        NSLog(@"3333   %@",error);
         [HudViewFZ HiddenHud];
-   
+        if(statusCode==401)
+        {
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+            //创建一个消息对象
+            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
+            //发送消息
+            [[NSNotificationCenter defaultCenter]postNotification:notice];
+            
+        }else{
+            [HudViewFZ showMessageTitle:[self dictMessageStr:error] andDelay:2.0];
+            
+        }
     }];
+    
 }
+
+-(NSString *)dictMessageStr:(NSError *)error
+{
+//    NSString * receive=@"";
+    NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+//    receive= [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *dictFromData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
+    NSString * message = [dictFromData valueForKey:@"message"];
+    return message;
+}
+//-(void)get_order_task_ZL
+//{
+//    NSLog(@"GetOrder URL = %@",[NSString stringWithFormat:@"%@%@%@/task",FuWuQiUrl,get_order_task,self.orderidStr]);
+//    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@%@/task",FuWuQiUrl,get_order_task,self.orderidStr] parameters:nil progress:^(id progress) {
+//
+//    } success:^(id responseObject) {
+//        NSLog(@"responseObject=  %@",responseObject);
+//
+//        //        NSDictionary * dictionary = (NSDictionary*)responseObject;
+//        //
+//        //        NSArray * resultListArr=[dictionary objectForKey:@"resultList"];
+//
+//        NSDictionary * dictionary = (NSDictionary *)responseObject;
+//        NSString * taskCommand=[dictionary objectForKey:@"taskCommand"];
+//        self.taskCommandStr = taskCommand;
+//        [self sendStrCmd:taskCommand];
+////        [self sendDeviceData:@"01017880-0000-0000-83cd-c0bb04840000" taskCommand:taskCommand];
+//
+////        @"031119190001110e0066";
+//
+//    } failure:^(NSInteger statusCode, NSError *error) {
+//
+//        [HudViewFZ HiddenHud];
+//
+//    }];
+//}
 -(void)sendStrCmd:(NSString *)str
 {
     NSArray *array = [str componentsSeparatedByString:@";"];
@@ -290,7 +354,7 @@
 //    [Manager.inst disconnect];
     
     for (UIViewController *temp in self.navigationController.viewControllers) {
-        if ([temp isKindOfClass:[WCQRCodeScanningVC class]]) {
+        if ([temp isKindOfClass:[NewHomeViewController class]]) {
 //            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 //            [appDelegate.appdelegate1 closeConnected];
             AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
@@ -368,7 +432,8 @@
     UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
     ConnectFeedViewController *vc=[main instantiateViewControllerWithIdentifier:@"ConnectFeedViewController"];
     vc.hidesBottomBarWhenPushed = YES;
-    vc.orderidStr=self.orderidStr;
+//    vc.orderidStr=self.orderidStr;
+    vc.orderidStr=self.PushOrderMode.ordersId;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -378,7 +443,7 @@
     NSLog(@"重置密码返回啦");
     //    [self.navigationController popToRootViewControllerAnimated:YES];
     for (UIViewController *temp in self.navigationController.viewControllers) {
-        if ([temp isKindOfClass:[WCQRCodeScanningVC class]]) {
+        if ([temp isKindOfClass:[NewHomeViewController class]]) {
 //            [Manager.inst disconnect];
             AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 //            [appDelegate.appdelegate1 closeConnected];

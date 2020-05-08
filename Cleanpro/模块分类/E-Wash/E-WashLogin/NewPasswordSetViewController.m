@@ -244,13 +244,81 @@
 -(void)registerUser
 {
     [HudViewFZ labelExample:self.view];
-    NSDictionary * dict=@{@"username":self.PhoneStr,
-                          @"nickname":self.PhoneStr,//昵称
-                          @"mobile":self.PhoneStr,//手机号
-                          @"password":self.passwordStr,//密码
-                          @"clientType":@"IOS",//客户端类型 IOS：水果、ANDROID：安卓
-                          @"validateCode":self.CodeStr,//  手机验证码
-    };
+    NSDictionary * dict = [[NSDictionary alloc] init];
+    if(self.Nextmode.birthday!=nil && ![self.Nextmode.birthday isEqualToString:@""])
+    {
+        if (self.Nextmode.postCode!=nil && ![self.Nextmode.postCode isEqualToString:@""]) {
+            dict=@{@"username":self.Nextmode.loginName,
+                                  @"nickname":self.Nextmode.loginName,//昵称
+                                  @"mobile":self.Nextmode.loginName,//手机号
+                                  @"password":self.Nextmode.password,//密码
+                                  @"clientType":@"IOS",//客户端类型 IOS：水果、ANDROID：安卓
+                                  @"validateCode":self.CodeStr,//  手机验证码
+                                  @"firstName":self.Nextmode.firstName,//
+                                  @"lastName":self.Nextmode.lastName,//
+                                  @"birthday":self.Nextmode.birthday,//
+                                  @"gender":self.Nextmode.gender,//
+                                  @"countryCode":self.Nextmode.countryCode,
+                                  @"postCode":self.Nextmode.postCode,
+            };
+        }else
+        {
+            dict=@{@"username":self.Nextmode.loginName,
+                                  @"nickname":self.Nextmode.loginName,//昵称
+                                  @"mobile":self.Nextmode.loginName,//手机号
+                                  @"password":self.Nextmode.password,//密码
+                                  @"clientType":@"IOS",//客户端类型 IOS：水果、ANDROID：安卓
+                                  @"validateCode":self.CodeStr,//  手机验证码
+                                  @"firstName":self.Nextmode.firstName,//
+                                  @"lastName":self.Nextmode.lastName,//
+                                  @"birthday":self.Nextmode.birthday,//
+                                  @"gender":self.Nextmode.gender,//
+                                  @"countryCode":self.Nextmode.countryCode,
+//                                  @"postCode":self.Nextmode.postCode,
+            };
+        }
+        
+        
+    }else
+    {
+        if (self.Nextmode.postCode!=nil && ![self.Nextmode.postCode isEqualToString:@""]) {
+            dict=@{@"username":self.Nextmode.loginName,
+                                  @"nickname":self.Nextmode.loginName,//昵称
+                                  @"mobile":self.Nextmode.loginName,//手机号
+                                  @"password":self.Nextmode.password,//密码
+                                  @"clientType":@"IOS",//客户端类型 IOS：水果、ANDROID：安卓
+                                  @"validateCode":self.CodeStr,//  手机验证码
+                                  @"firstName":self.Nextmode.firstName,//
+                                  @"lastName":self.Nextmode.lastName,//
+//                                  @"birthday":self.Nextmode.birthday,//
+                                  @"gender":self.Nextmode.gender,//
+                                  @"countryCode":self.Nextmode.countryCode,
+                                  @"postCode":self.Nextmode.postCode,
+            };
+        }else
+        {
+            dict=@{@"username":self.Nextmode.loginName,
+                                  @"nickname":self.Nextmode.loginName,//昵称
+                                  @"mobile":self.Nextmode.loginName,//手机号
+                                  @"password":self.Nextmode.password,//密码
+                                  @"clientType":@"IOS",//客户端类型 IOS：水果、ANDROID：安卓
+                                  @"validateCode":self.CodeStr,//  手机验证码
+                                  @"firstName":self.Nextmode.firstName,//
+                                  @"lastName":self.Nextmode.lastName,//
+////                                  @"birthday":self.Nextmode.birthday,//
+//                                  @"gender":self.Nextmode.gender,//
+                                  @"countryCode":self.Nextmode.countryCode,
+//                                  @"postCode":self.Nextmode.postCode,
+            };
+        }
+    }
+//    NSDictionary * dict=@{@"username":self.PhoneStr,
+//                          @"nickname":self.PhoneStr,//昵称
+//                          @"mobile":self.PhoneStr,//手机号
+//                          @"password":self.passwordStr,//密码
+//                          @"clientType":@"IOS",//客户端类型 IOS：水果、ANDROID：安卓
+//                          @"validateCode":self.CodeStr,//  手机验证码
+//    };
     [[AFNetWrokingAssistant shareAssistant] PostURL_Code_error:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_register] parameters:dict progress:^(id progress) {
         NSLog(@"请求成功 = %@",progress);
     }Success:^(NSInteger statusCode,id responseObject) {

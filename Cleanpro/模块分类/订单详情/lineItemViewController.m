@@ -31,11 +31,19 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.AddTimeBtn.layer.cornerRadius=4;
-    if([self.mode.order_type isEqualToString:@"DRYER"])
+//    if([self.mode.order_type isEqualToString:@"DRYER"])
+//    {
+//
+//
+//    }else if([self.mode.order_type isEqualToString:@"LAUNDRY"])
+//    {
+//       self.AddTimeBtn.hidden = YES;
+//    }
+    if([self.Newmode.siteType isEqualToString:@"DRYER"])
     {
         
     
-    }else if([self.mode.order_type isEqualToString:@"LAUNDRY"])
+    }else if([self.Newmode.siteType isEqualToString:@"WASHER"])
     {
        self.AddTimeBtn.hidden = YES;
     }
@@ -54,7 +62,7 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]}];
 //    self.overtimeFlag=0;
     [self setLabelText];
-    [self Get_OrderDetailView:self.mode.OrderId];
+//    [self Get_OrderDetailView:self.mode.OrderId];
     [super viewWillAppear:animated];
 }
 
@@ -66,41 +74,82 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [super viewWillDisappear:animated];
 }
+///1.0的数据展示
+//-(void)setLabelText
+//{
+//    if([self.mode.order_type isEqualToString:@"DRYER"])
+//    {
+//        self.OrderType.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Dryer", @"Language")];
+////        self.OrderType.text=[NSString stringWithFormat:@"%@",self.mode.order_type];
+//    }else if([self.mode.order_type isEqualToString:@"LAUNDRY"])
+//    {
+//       self.OrderType.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Washer", @"Language")];
+//    }
+//    self.orderNo.text = [NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Transaction NO.", @"Language")];
+//    self.NoLabel.text=[NSString stringWithFormat:@"%@",self.mode.order_no];
+//    [self.Location setText:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Outlet ", @"Language")]];
+//    self.LocationLabel.text=[NSString stringWithFormat:@"%@",self.mode.LocationName];
+//    [self.Machine setText:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Machine No. ", @"Language")]];
+//    self.MachineLabel.text=[NSString stringWithFormat:@"%@",[self getString:self.mode.machine_no]];
+//
+//    if([self.mode.order_type isEqualToString:@"DRYER"])
+//    {
+//        [self.BtnType_image setImage:[UIImage imageNamed:@"icon_dryer2"] forState:(UIControlStateNormal)];
+//        [self.Temperature setText:[NSString stringWithFormat:@"%@ :",FGGetStringWithKeyFromTable(@"Duration", @"Language")]];
+//        self.temperatureLabel.text=[NSString stringWithFormat:@"%@m",[[self Json_returnDict:self.mode.goods_info]objectForKey:@"time"]];
+//    }else if([self.mode.order_type isEqualToString:@"LAUNDRY"])
+//    {
+//        [self.BtnType_image setImage:[UIImage imageNamed:@"icon_laundry2"] forState:(UIControlStateNormal)];
+//        [self.Temperature setText:[NSString stringWithFormat:@"%@ :",FGGetStringWithKeyFromTable(@"Temperature", @"Language")]];
+//        self.temperatureLabel.text=[NSString stringWithFormat:@"%@",[[self Json_returnDict:self.mode.goods_info]objectForKey:@"temperature"]];
+//    }
+//
+//    [self.Time setText:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Time", @"Language")]];
+//    self.TimeLabel.text=[NSString stringWithFormat:@"%@",[PublicLibrary timeString:[self.mode.create_time stringValue]]];
+//    [self.price setText:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Charges ", @"Language")]];
+//    self.PriceLabel.text=[NSString stringWithFormat:@"%@",self.mode.total_amount];
+//
+//}
+///2.0的数据展示
 -(void)setLabelText
 {
-    if([self.mode.order_type isEqualToString:@"DRYER"])
+    if([self.Newmode.siteType isEqualToString:@"DRYER"])
     {
         self.OrderType.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Dryer", @"Language")];
 //        self.OrderType.text=[NSString stringWithFormat:@"%@",self.mode.order_type];
-    }else if([self.mode.order_type isEqualToString:@"LAUNDRY"])
+    }else if([self.mode.order_type isEqualToString:@"WASHER"])
     {
        self.OrderType.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Washer", @"Language")];
     }
     self.orderNo.text = [NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Transaction NO.", @"Language")];
-    self.NoLabel.text=[NSString stringWithFormat:@"%@",self.mode.order_no];
+    self.NoLabel.text=[NSString stringWithFormat:@"%@",self.Newmode.orderNumber];
     [self.Location setText:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Outlet ", @"Language")]];
-    self.LocationLabel.text=[NSString stringWithFormat:@"%@",self.mode.LocationName];
+    self.LocationLabel.text=[NSString stringWithFormat:@"%@",self.Newmode.merchantName];
     [self.Machine setText:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Machine No. ", @"Language")]];
-    self.MachineLabel.text=[NSString stringWithFormat:@"%@",[self getString:self.mode.machine_no]];
+    self.MachineLabel.text=[NSString stringWithFormat:@"%@",[self getString:self.Newmode.siteSerialNumber]];
     
-    if([self.mode.order_type isEqualToString:@"DRYER"])
+    if([self.Newmode.siteType isEqualToString:@"DRYER"])
     {
         [self.BtnType_image setImage:[UIImage imageNamed:@"icon_dryer2"] forState:(UIControlStateNormal)];
         [self.Temperature setText:[NSString stringWithFormat:@"%@ :",FGGetStringWithKeyFromTable(@"Duration", @"Language")]];
-        self.temperatureLabel.text=[NSString stringWithFormat:@"%@m",[[self Json_returnDict:self.mode.goods_info]objectForKey:@"time"]];
-    }else if([self.mode.order_type isEqualToString:@"LAUNDRY"])
+//        self.temperatureLabel.text=[NSString stringWithFormat:@"%@m",[[self Json_returnDict:self.mode.goods_info]objectForKey:@"time"]];
+        self.temperatureLabel.text=[NSString stringWithFormat:@"%@m",self.Newmode.cleanProItemName];
+    }else if([self.Newmode.siteType isEqualToString:@"WASHER"])
     {
         [self.BtnType_image setImage:[UIImage imageNamed:@"icon_laundry2"] forState:(UIControlStateNormal)];
         [self.Temperature setText:[NSString stringWithFormat:@"%@ :",FGGetStringWithKeyFromTable(@"Temperature", @"Language")]];
-        self.temperatureLabel.text=[NSString stringWithFormat:@"%@",[[self Json_returnDict:self.mode.goods_info]objectForKey:@"temperature"]];
+//        self.temperatureLabel.text=[NSString stringWithFormat:@"%@",[[self Json_returnDict:self.mode.goods_info]objectForKey:@"temperature"]];
+        self.temperatureLabel.text=[NSString stringWithFormat:@"%@",self.Newmode.cleanProItemName];
     }
     
     [self.Time setText:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Time", @"Language")]];
-    self.TimeLabel.text=[NSString stringWithFormat:@"%@",[PublicLibrary timeString:[self.mode.create_time stringValue]]];
+    self.TimeLabel.text=[NSString stringWithFormat:@"%@",[PublicLibrary timeString:self.Newmode.timeCreated]];
     [self.price setText:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Charges ", @"Language")]];
-    self.PriceLabel.text=[NSString stringWithFormat:@"%@",self.mode.total_amount];
+    self.PriceLabel.text=[NSString stringWithFormat:@"%@",self.Newmode.paidCharge];
     
 }
+
+
 
 -(NSString *)getString:(NSString *) str
 {
@@ -142,7 +191,8 @@
         vc.arrayList=arrayList;
         vc.addrStr = address;
         vc.OrderAndRenewal=2;
-        vc.OrderIdTime=self.mode.OrderId;
+//        vc.OrderIdTime=self.mode.OrderId;
+        vc.OrderIdTime=self.Newmode.ordersId;
         [self.navigationController pushViewController:vc animated:YES];
 }
 

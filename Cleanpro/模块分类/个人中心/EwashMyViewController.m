@@ -124,26 +124,34 @@
             //        self.touxiang_btn.userInteractionEnabled=YES;
             [self.touxiang_btn setBackgroundImage:[UIImage imageNamed:@"icon_Avatar"] forState:UIControlStateNormal];
             [self.touxiangImage setImage:[UIImage imageNamed:@"icon_Avatar"]];
-    //        [self.jifen_btn setHidden:YES];
+            [self.jifen_btn setHidden:YES];
         }else
         {
-    //        [self.jifen_btn setHidden:NO];
-//            [self updateText];
-            [self.touxiang_btn setBackgroundImage:[UIImage imageNamed:@"icon_Avatar"] forState:UIControlStateNormal];
-            [self.touxiangImage setImage:[UIImage imageNamed:@"icon_Avatar"]];
-            NSString * username=[[NSUserDefaults standardUserDefaults] objectForKey:@"username"];
-            self.name_label.text=username;
+            [self.jifen_btn setHidden:NO];
+            [self updateText];
+//            [self.touxiang_btn setBackgroundImage:[UIImage imageNamed:@"icon_Avatar"] forState:UIControlStateNormal];
+//            [self.touxiangImage setImage:[UIImage imageNamed:@"icon_Avatar"]];
+//            NSString * username=[[NSUserDefaults standardUserDefaults] objectForKey:@"username"];
+//            self.name_label.text=username;
         }
     
     arrtitle=[NSMutableArray arrayWithCapacity:0];
     
     if([userIdStr isEqualToString:@"1"])
     {
-        [arrtitle addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"Orders", @"Language"),FGGetStringWithKeyFromTable(@"Settings", @"Language"), nil]];
+//        [arrtitle addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"Orders", @"Language"),FGGetStringWithKeyFromTable(@"Settings", @"Language"), nil]];
+        [arrtitle addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"My Wallet", @"Language"),FGGetStringWithKeyFromTable(@"History", @"Language"),FGGetStringWithKeyFromTable(@"E-Wash Orders", @"Language"),FGGetStringWithKeyFromTable(@"Invite Friends", @"Language"), nil]];
+        [arrtitle addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"Introduction", @"Language"),FGGetStringWithKeyFromTable(@"Feedback", @"Language"),FGGetStringWithKeyFromTable(@"Settings", @"Language"),nil]];
         self.QuAndUser=1;
     }else
     {
         [arrtitle addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"E-Wash Orders", @"Language"),FGGetStringWithKeyFromTable(@"Settings", @"Language"), nil]];
+        self.jifen_label.text=@"";
+        [self.touxiang_btn setBackgroundImage:[UIImage imageNamed:@"icon_Avatar"] forState:UIControlStateNormal];
+        [self.touxiangImage setImage:[UIImage imageNamed:@"icon_Avatar"]];
+        NSString * username=[[NSUserDefaults standardUserDefaults] objectForKey:@"username"];
+        self.name_label.text=username;
+        [self.jifen_btn setHidden:YES];
         self.QuAndUser=2;
         
     }
@@ -165,7 +173,7 @@
         self.touxiang_btn.layer.cornerRadius=self.touxiang_btn.width/2;
         self.touxiang_btn.layer.masksToBounds = YES;
 //         [self.navigationController setNavigationBarHidden:YES animated:NO];//隐藏导航栏
-//        [self getToken];
+        [self getToken];
 //        [self updateMessage];
     });
     
@@ -297,10 +305,18 @@
         [self.navigationController pushViewController:vc animated:YES];
     }else
     {
-//        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        InformationViewController *vc=[main instantiateViewControllerWithIdentifier:@"InformationViewController"];
-//        vc.hidesBottomBarWhenPushed = YES;
-//        [self.navigationController pushViewController:vc animated:YES];
+        ///普通用户可以进入用户详情
+         if([userIdStr isEqualToString:@"1"])
+            {
+                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                InformationViewController *vc=[main instantiateViewControllerWithIdentifier:@"InformationViewController"];
+                vc.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else
+            {
+                
+            }
+        
     }
     
 }
@@ -315,8 +331,20 @@
     //        self.name_label.text=strPhoen;
     if(self.ModeUser!=nil)
     {
-        self.name_label.text=[NSString stringWithFormat:@"%@%@",self.ModeUser.firstName,self.ModeUser.lastName];
-        if(self.ModeUser.credit!=nil)
+        if(![self.ModeUser.firstName isEqual:[NSNull null]] && ![self.ModeUser.lastName isEqual:[NSNull null]])
+        {
+            self.name_label.text=[NSString stringWithFormat:@"%@%@",self.ModeUser.firstName,self.ModeUser.lastName];
+        }else
+        {
+            if(![self.ModeUser.loginName isEqual:[NSNull null]])
+            {
+                self.name_label.text=self.ModeUser.loginName;
+            }else{
+                self.name_label.text=@"";
+            }
+        }
+        
+        if(![self.ModeUser.credit isEqual:[NSNull null]])
         {
             self.jifen_label.text=[NSString stringWithFormat:@"%@ %@",FGGetStringWithKeyFromTable(@"Reward Points", @"Language"),self.ModeUser.credit];
         }
@@ -330,7 +358,7 @@
     {
         if(self.ModeUser.headImageUrl!=nil)
         {
-            [self.touxiangImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",FuWuQiUrl,get_downImage,self.ModeUser.headImageUrl]] placeholderImage:[UIImage imageNamed:@"icon_Avatar"]];
+            [self.touxiangImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",E_FuWuQiUrl,E_DownliadHeaderImage,self.ModeUser.headImageUrl]] placeholderImage:[UIImage imageNamed:@"icon_Avatar"]];
             NSLog(@"测试断点22");
         }else
         {
@@ -345,11 +373,117 @@
     
 }
 
+//-(void)getToken
+//{
+////    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+////    NSString * tokenStr = [userDefaults objectForKey:@"Token"];
+//    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?userToken=%@",FuWuQiUrl,get_tokenUser,TokenStr] parameters:nil progress:^(id progress) {
+//        //        NSLog(@"请求成功 = %@",progress);
+//    } success:^(id responseObject) {
+//        NSLog(@"111responseObject = %@",responseObject);
+//        [HudViewFZ HiddenHud];
+//        NSDictionary * dictObject=(NSDictionary *)responseObject;
+//        NSNumber * statusCode =[dictObject objectForKey:@"statusCode"];
+//
+//
+//        if([statusCode intValue] ==401)
+//        {
+//            //            [[NSUserDefaults standardUserDefaults] setObject:@"100" forKey:@"TokenError"];
+//            //            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"TokenError"];
+//            //            [HudViewFZ showMessageTitle:@"Token expired" andDelay:2.0];
+//            //            for (UIViewController *controller in self.navigationController.viewControllers) {
+//            //                if ([controller isKindOfClass:[MyAccountViewController class]]) {
+//            //                    [self.navigationController popToViewController:controller animated:YES];
+//            //
+//            //                }
+//            //            }
+//            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//            [userDefaults setObject:@"1" forKey:@"Token"];
+//            [userDefaults setObject:@"1" forKey:@"phoneNumber"];
+//            [userDefaults setObject:nil forKey:@"SaveUserMode"];
+//            [userDefaults setObject:@"1" forKey:@"logCamera"];
+//            //    [defaults synchronize];
+//
+//            [self updateText];;
+//
+//            [self.Down_tableView reloadData];
+////            [self addDownScroller];
+//
+//        }else if([statusCode intValue] ==401)
+//        {
+//            NSString * errorMessage =[dictObject objectForKey:@"errorMessage"];;
+//            [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
+//        }else{
+//            //            NSString * IDStr = [dictObject objectForKey:@"id"];
+//            NSDictionary * wallet = [dictObject objectForKey:@"wallet"];
+//
+//            NSNumber * ba = [wallet objectForKey:@"balance"];
+//            NSString * balanceStr =[ba stringValue];
+//            //            NSString * currencyUnitStr = [wallet objectForKey:@"currencyUnit"];
+//            //            self.currencyUnitStr = [cur stringValue];
+//            NSNumber * credit = [wallet objectForKey:@"credit"];
+//            NSString * creditStr = [credit stringValue];
+//            NSNumber * coupon = [dictObject objectForKey:@"couponCount"];
+//            NSString *couponCountStr = [coupon stringValue];
+//            //            用来储存用户信息
+//
+//            SaveUserIDMode * mode = [[SaveUserIDMode alloc] init];
+//
+//            mode.phoneNumber = [dictObject objectForKey:@"phoneNumber"];//   手机号码
+//            mode.loginName = [dictObject objectForKey:@"loginName"];//   与手机号码相同
+//            mode.yonghuID = [dictObject objectForKey:@"id"]; ////用户ID
+//            //            mode.randomPassword = [dictObject objectForKey:@"randomPassword"];//  验证码
+//            //            mode.password = [dictObject objectForKey:@"password"];//  登录密码
+//            //            mode.payPassword = [dictObject objectForKey:@"payPassword"];//    支付密码
+//            mode.firstName = [dictObject objectForKey:@"firstName"];//   first name
+//            mode.lastName = [dictObject objectForKey:@"lastName"];//   last name
+//            NSNumber * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
+//            mode.birthday = [birthdayNum stringValue];
+//            mode.gender = [dictObject objectForKey:@"gender"];//       MALE:男，FEMALE:女
+//            mode.postCode = [dictObject objectForKey:@"postCode"];//   Post Code inviteCode
+//            mode.EmailStr = [dictObject objectForKey:@"email"];//   email
+//            mode.inviteCode = [dictObject objectForKey:@"inviteCode"];//       我填写的邀请码
+//            mode.myInviteCode = [dictObject objectForKey:@"myInviteCode"];//       我的邀请码
+//            mode.headImageUrl = [dictObject objectForKey:@"headImageUrl"];
+//            mode.payPassword = [dictObject objectForKey:@"payPassword"];
+//            ////个人中心需要用到积分
+//            mode.credit = creditStr;
+//            mode.balance = balanceStr;
+//            mode.couponCount = couponCountStr;
+//            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+//            //存储到NSUserDefaults（转NSData存）
+//            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: mode];
+//             NSLog(@"测试断点5555");
+//            [defaults setObject:data forKey:@"SaveUserMode"];
+//            [defaults synchronize];
+//            [jiamiStr base64Data_encrypt:mode.yonghuID];
+//            [self updateText];;
+//            [self.Down_tableView reloadData];
+////            [self addDownScroller];
+//        }
+//    } failure:^(NSInteger statusCode, NSError *error) {
+//        NSLog(@"error = %@",error);
+//        [HudViewFZ HiddenHud];
+//        if(statusCode==401)
+//        {
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+//            //创建一个消息对象
+//            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
+//            //发送消息
+//            [[NSNotificationCenter defaultCenter]postNotification:notice];
+//
+//        }else{
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+//
+//        }
+//    }];
+//}
+
 -(void)getToken
 {
 //    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 //    NSString * tokenStr = [userDefaults objectForKey:@"Token"];
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?userToken=%@",FuWuQiUrl,get_tokenUser,TokenStr] parameters:nil progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_GetToken] parameters:nil progress:^(id progress) {
         //        NSLog(@"请求成功 = %@",progress);
     } success:^(id responseObject) {
         NSLog(@"111responseObject = %@",responseObject);
@@ -381,14 +515,20 @@
             [self.Down_tableView reloadData];
 //            [self addDownScroller];
             
-        }else if([statusCode intValue] ==401)
+        }else if([statusCode intValue] ==500)
         {
             NSString * errorMessage =[dictObject objectForKey:@"errorMessage"];;
             [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
         }else{
+            NSString*tokenStr = [dictObject objectForKey:@"token"];
+            NSString*phoneNumberStr = [dictObject objectForKey:@"mobile"];
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setObject:tokenStr forKey:@"Token"];
+            [userDefaults setObject:phoneNumberStr forKey:@"phoneNumber"];
+            [userDefaults setObject:@"2" forKey:@"logCamera"];
+            [[NSUserDefaults standardUserDefaults] setObject:@"100" forKey:@"TokenError"];
             //            NSString * IDStr = [dictObject objectForKey:@"id"];
             NSDictionary * wallet = [dictObject objectForKey:@"wallet"];
-
             NSNumber * ba = [wallet objectForKey:@"balance"];
             NSString * balanceStr =[ba stringValue];
             //            NSString * currencyUnitStr = [wallet objectForKey:@"currencyUnit"];
@@ -401,22 +541,28 @@
             
             SaveUserIDMode * mode = [[SaveUserIDMode alloc] init];
             
-            mode.phoneNumber = [dictObject objectForKey:@"phoneNumber"];//   手机号码
-            mode.loginName = [dictObject objectForKey:@"loginName"];//   与手机号码相同
-            mode.yonghuID = [dictObject objectForKey:@"id"]; ////用户ID
+            mode.phoneNumber = [dictObject objectForKey:@"mobile"];//   手机号码
+            mode.loginName = [dictObject objectForKey:@"username"];//   与手机号码相同
+            mode.yonghuID = [dictObject objectForKey:@"memberId"]; ////用户ID
             //            mode.randomPassword = [dictObject objectForKey:@"randomPassword"];//  验证码
             //            mode.password = [dictObject objectForKey:@"password"];//  登录密码
             //            mode.payPassword = [dictObject objectForKey:@"payPassword"];//    支付密码
             mode.firstName = [dictObject objectForKey:@"firstName"];//   first name
             mode.lastName = [dictObject objectForKey:@"lastName"];//   last name
-            NSNumber * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
-            mode.birthday = [birthdayNum stringValue];
+            NSString * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
+            if(![birthdayNum isEqual:[NSNull null]])
+            {
+//                mode.birthday = [birthdayNum ];;
+                NSInteger num = [birthdayNum integerValue];
+                NSNumber * nums = @(num);
+                mode.birthday = [nums stringValue];;
+            }
             mode.gender = [dictObject objectForKey:@"gender"];//       MALE:男，FEMALE:女
             mode.postCode = [dictObject objectForKey:@"postCode"];//   Post Code inviteCode
             mode.EmailStr = [dictObject objectForKey:@"email"];//   email
             mode.inviteCode = [dictObject objectForKey:@"inviteCode"];//       我填写的邀请码
             mode.myInviteCode = [dictObject objectForKey:@"myInviteCode"];//       我的邀请码
-            mode.headImageUrl = [dictObject objectForKey:@"headImageUrl"];
+            mode.headImageUrl = [dictObject objectForKey:@"headImageId"];
             mode.payPassword = [dictObject objectForKey:@"payPassword"];
             ////个人中心需要用到积分
             mode.credit = creditStr;
@@ -429,30 +575,70 @@
             [defaults setObject:data forKey:@"SaveUserMode"];
             [defaults synchronize];
             [jiamiStr base64Data_encrypt:mode.yonghuID];
+            [self Get_existPassword];
             [self updateText];;
             [self.Down_tableView reloadData];
 //            [self addDownScroller];
+             
         }
     } failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"error = %@",error);
         [HudViewFZ HiddenHud];
         if(statusCode==401)
         {
-            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
             //创建一个消息对象
             NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
             //发送消息
             [[NSNotificationCenter defaultCenter]postNotification:notice];
             
-        }else{
-            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+        }else if(statusCode==403){
+           
             
+        }else
+        {
+//             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
         }
     }];
 }
 
-
-
+-(void)Get_existPassword
+{
+    
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_existPassword] parameters:nil progress:^(id progress) {
+        //        NSLog(@"请求成功 = %@",progress);
+    } success:^(id responseObject) {
+        NSLog(@"existPassword = %@",responseObject);
+        [HudViewFZ HiddenHud];
+        NSDictionary * dictObject=(NSDictionary *)responseObject;
+        NSNumber * result =[dictObject objectForKey:@"result"];
+        if([result integerValue]==0)
+        {
+            NSData * data1 =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+            SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+            ModeUser.payPassword=@"";
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                       //存储到NSUserDefaults（转NSData存）
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: ModeUser];
+            [defaults setObject:data forKey:@"SaveUserMode"];
+            [defaults synchronize];
+        }else{
+            NSData * data1 =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+            SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+            ModeUser.payPassword=@"6666";
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                       //存储到NSUserDefaults（转NSData存）
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: ModeUser];
+            [defaults setObject:data forKey:@"SaveUserMode"];
+            [defaults synchronize];
+            
+        }
+    }failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ HiddenHud];
+    }];
+        
+}
 - (IBAction)Login_touch:(id)sender {
     
 
@@ -460,7 +646,7 @@
     if([strPhoen isEqualToString:@"1"])
     {
         UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        LoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"LoginViewController"];
+        NewLoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewLoginViewController"];
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }else
@@ -478,7 +664,7 @@
     if([strPhoen isEqualToString:@"1"])
     {
         UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        LoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"LoginViewController"];
+        NewLoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewLoginViewController"];
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }else
@@ -502,23 +688,22 @@
         //设置滚动范围
         Down_Scroller =[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
 //        Down_Scroller.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self.topView.height+6*60);
-        Down_Scroller.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self.topView.height+5*60+8+95+10);
+        Down_Scroller.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self.topView.height+6*60+8+95+10);
     }else if(SCREEN_WIDTH==320.f && SCREEN_HEIGHT==568.f)
     {
         //设置滚动范围
         Down_Scroller =[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-        Down_Scroller.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self.topView.bottom+5*60+10);
+        Down_Scroller.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self.topView.bottom+6*60+10);
     }else if(SCREEN_WIDTH==375.f && SCREEN_HEIGHT==667.f)
     {
         //设置滚动范围
         Down_Scroller =[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-        Down_Scroller.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self.topView.height+5*60+8+95+10);
+        Down_Scroller.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self.topView.height+6*60+8+95+10);
     }else{
         //设置滚动范围
         Down_Scroller =[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-        Down_Scroller.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self.topView.height+5*60+8+95+10);
+        Down_Scroller.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), self.topView.height+6*60+8+95+10);
     }
-    
     NSLog(@"Down_Scroller.top= %f",self.Down_Scroller.top);
     //设置分页效果
     //    Down_Scroller.pagingEnabled = YES;
@@ -537,9 +722,15 @@
     [self.Down_tableView setHidden:NO];
     //    self.Down_tableView.frame=CGRectMake(0, self.topView.bottom, SCREEN_WIDTH, SCREEN_HEIGHT-self.topView.height-15);5*60+15
 //    NSLog(@"self.topView.bottom = %f , self.topView.height = %f",self.topView.bottom,self.topView.height);
-    self.Down_tableView.frame=CGRectMake(0, self.topView.bottom+8, SCREEN_WIDTH, 6*60+8);
-    NSArray * arr=arrtitle[0];
-        self.Down_tableView.frame=CGRectMake(0, self.topView.bottom+8, SCREEN_WIDTH, arr.count*60+8);
+    self.Down_tableView.frame=CGRectMake(0, self.topView.bottom+8, SCREEN_WIDTH, 7*60+8);
+    if([userIdStr isEqualToString:@"1"])
+        {
+        }else
+        {
+            NSArray * arr=arrtitle[0];
+            self.Down_tableView.frame=CGRectMake(0, self.topView.bottom+8, SCREEN_WIDTH, arr.count*60+8);
+        }
+   
     self.Down_tableView.delegate=self;
     self.Down_tableView.dataSource=self;
     //     self.Set_tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -548,7 +739,7 @@
     {
         NSLog(@"ANober");
         self.Down_tableView.scrollEnabled = YES;  ////设置tableview可以上下滑动
-        self.Down_tableView.frame=CGRectMake(0, self.topView.bottom, SCREEN_WIDTH, 6*60+40);
+        self.Down_tableView.frame=CGRectMake(0, self.topView.bottom, SCREEN_WIDTH, 7*60+40);
     }else{
         self.Down_tableView.scrollEnabled = NO;  ////设置tableview不上下滑动
         NSLog(@"BNober");
@@ -594,17 +785,53 @@
     NSArray  * titleT=arrtitle[indexPath.section];
     cell.textLabel.text = [titleT objectAtIndex:indexPath.row];
     
-        NSLog(@"%ld",(long)indexPath.row);
+//        NSLog(@"%ld",(long)indexPath.row);
     if(self.QuAndUser==1)
     {
-        if(indexPath.row==0)
+//        if(indexPath.row==0)
+//        {
+//
+//            cell.imageView.image=[UIImage imageNamed:@"icon_lishijilu"];
+//
+//        }else if(indexPath.row==1)
+//        {
+//            cell.imageView.image=[UIImage imageNamed:@"me_settings"];
+//        }
+        if(indexPath.section==0)
         {
-            
-            cell.imageView.image=[UIImage imageNamed:@"icon_lishijilu"];
-            
-        }else if(indexPath.row==1)
+            if(indexPath.row==0)
+            {
+                if(self.ModeUser!=nil)
+                {
+                    [cell.detailTextLabel setText:[NSString stringWithFormat:@"%.2f",[self.ModeUser.balance doubleValue]]];
+                }else
+                {
+                    [cell.detailTextLabel setText:[NSString stringWithFormat:@""]];
+                }
+                cell.imageView.image=[UIImage imageNamed:@"me_balance"];
+            }else if (indexPath.row==1)
+            {
+                
+                cell.imageView.image=[UIImage imageNamed:@"orders11"];
+            }else if (indexPath.row==2)
+            {
+                cell.imageView.image=[UIImage imageNamed:@"icon_lishijilu"];
+            }else if (indexPath.row==3)
+            {
+                cell.imageView.image=[UIImage imageNamed:@"invite-friends"];
+            }
+        }else if (indexPath.section==1)
         {
-            cell.imageView.image=[UIImage imageNamed:@"me_settings"];
+            if (indexPath.row==0)
+            {
+                cell.imageView.image=[UIImage imageNamed:@"me_introduction"];
+            }else if (indexPath.row==1)
+            {
+                cell.imageView.image=[UIImage imageNamed:@"nav_feedback"];
+            }else if (indexPath.row==2)
+            {
+                cell.imageView.image=[UIImage imageNamed:@"me_settings"];
+            }
         }
     }else if(self.QuAndUser==2)
     {
@@ -663,33 +890,137 @@
     NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"];
     if(self.QuAndUser==1)
     {
-        if(indexPath.row==0)
-        {
-            if([strPhoen isEqualToString:@"1"])
+//        if(indexPath.row==0)
+//        {
+//            if([strPhoen isEqualToString:@"1"])
+//            {
+//                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//                NewLoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewLoginViewController"];
+//                vc.hidesBottomBarWhenPushed = YES;
+//                [self.navigationController pushViewController:vc animated:YES];
+//            }else
+//            {
+//                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//                StaffViewController *vc=[main instantiateViewControllerWithIdentifier:@"StaffViewController"];
+//                vc.hidesBottomBarWhenPushed = YES;
+//                vc.StatusList=2;
+//                [self.navigationController pushViewController:vc animated:YES];
+//            }
+//
+//        }else if(indexPath.row==1)
+//        {
+//
+//                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//                SettingViewController *vc=[main instantiateViewControllerWithIdentifier:@"SettingViewController"];
+//                vc.hidesBottomBarWhenPushed = YES;
+//                [self.navigationController pushViewController:vc animated:YES];
+//
+//
+//        }
+        NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"];
+            if(indexPath.section==0)
             {
-                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                NewLoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewLoginViewController"];
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:vc animated:YES];
-            }else
+                if(indexPath.row==0)
+                {
+                    NSLog(@"11111111");
+                    if([strPhoen isEqualToString:@"1"])
+                    {
+                        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        NewLoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewLoginViewController"];
+                        vc.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }else
+                    {
+                        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        NewMyWalletViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewMyWalletViewController"];
+                        vc.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }
+                }else if (indexPath.row==1)
+                {
+                    NSLog(@"222222");
+                    if([strPhoen isEqualToString:@"1"])
+                    {
+                        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        NewLoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewLoginViewController"];
+                        vc.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }else
+                    {
+                        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        OrdersViewController *vc=[main instantiateViewControllerWithIdentifier:@"OrdersViewController"];
+                        vc.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }
+                }else if (indexPath.row==2)
+                {
+                    NSLog(@"333333");
+                    if([strPhoen isEqualToString:@"1"])
+                    {
+                        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        NewLoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewLoginViewController"];
+                        vc.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }else
+                    {
+                        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        StaffViewController *vc=[main instantiateViewControllerWithIdentifier:@"StaffViewController"];
+                        vc.hidesBottomBarWhenPushed = YES;
+                        vc.StatusList=2;
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }
+                }else if (indexPath.row==3)
+                {
+                    NSLog(@"333333");
+                    if([strPhoen isEqualToString:@"1"])
+                    {
+                        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        NewLoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewLoginViewController"];
+                        vc.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }else
+                    {
+                        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        InviteFriendsViewController *vc=[main instantiateViewControllerWithIdentifier:@"InviteFriendsViewController"];
+                        vc.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }
+                }
+            }else if (indexPath.section==1)
             {
-                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                StaffViewController *vc=[main instantiateViewControllerWithIdentifier:@"StaffViewController"];
-                vc.hidesBottomBarWhenPushed = YES;
-                vc.StatusList=2;
-                [self.navigationController pushViewController:vc animated:YES];
+                if (indexPath.row==0)
+                {
+                    NSLog(@"444444");
+                    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    IntroductionViewController *vc=[main instantiateViewControllerWithIdentifier:@"IntroductionViewController"];
+                    vc.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }else if (indexPath.row==1)
+                {
+                    if([strPhoen isEqualToString:@"1"])
+                    {
+                        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        NewLoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewLoginViewController"];
+                        vc.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }else
+                    {
+                        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        FeedbackViewController *vc=[main instantiateViewControllerWithIdentifier:@"FeedbackViewController"];
+                        vc.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }
+                    
+                }else if (indexPath.row==2)
+                {
+                    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    SettingViewController *vc=[main instantiateViewControllerWithIdentifier:@"SettingViewController"];
+                    vc.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                    
+                    
+                }
             }
-            
-        }else if(indexPath.row==1)
-        {
-            
-                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                SettingViewController *vc=[main instantiateViewControllerWithIdentifier:@"SettingViewController"];
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:vc animated:YES];
-            
-            
-        }
     }else if(self.QuAndUser==2)
     {
         if(indexPath.row==0)
@@ -738,110 +1069,6 @@
     }
     
     
-    /*
-    NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"];
-    if(indexPath.section==0)
-    {
-        if(indexPath.row==0)
-        {
-            NSLog(@"11111111");
-//            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-//            [appDelegate.appdelegate1 setImportMeshNetWorkWithDataJson:[[NSData alloc]init]];
-            if([strPhoen isEqualToString:@"1"])
-            {
-                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                LoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"LoginViewController"];
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:vc animated:YES];
-            }else
-            {
-//                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//                MyWalletViewController *vc=[main instantiateViewControllerWithIdentifier:@"MyWalletViewController"];
-//                vc.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:vc animated:YES];
-                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                NewMyWalletViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewMyWalletViewController"];
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:vc animated:YES];
-            }
-        }else if (indexPath.row==1)
-        {
-            NSLog(@"222222");
-//            [[AppDelegate shareAppDelegate].appdelegate1 AddConnected];
-//            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-//            [appDelegate.appdelegate1 AddConnected];
-            if([strPhoen isEqualToString:@"1"])
-            {
-                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                LoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"LoginViewController"];
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:vc animated:YES];
-            }else
-            {
-                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                OrdersViewController *vc=[main instantiateViewControllerWithIdentifier:@"OrdersViewController"];
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:vc animated:YES];
-            }
-        }else if (indexPath.row==2)
-        {
-            NSLog(@"333333");
-//            [[AppDelegate shareAppDelegate].appdelegate1 closeConnected];
-//            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-//            [appDelegate.appdelegate1 closeConnected];
-            if([strPhoen isEqualToString:@"1"])
-            {
-                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                LoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"LoginViewController"];
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:vc animated:YES];
-            }else
-            {
-                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                InviteFriendsViewController *vc=[main instantiateViewControllerWithIdentifier:@"InviteFriendsViewController"];
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:vc animated:YES];
-            }
-        }
-    }else if (indexPath.section==1)
-    {
-        if (indexPath.row==0)
-        {
-            NSLog(@"444444");
-//            [[AppDelegate shareAppDelegate].appdelegate1 dataSend];
-//            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-//            [appDelegate.appdelegate1 dataSend];
-            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            IntroductionViewController *vc=[main instantiateViewControllerWithIdentifier:@"IntroductionViewController"];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
-        }else if (indexPath.row==1)
-        {
-            if([strPhoen isEqualToString:@"1"])
-            {
-                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                LoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"LoginViewController"];
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:vc animated:YES];
-            }else
-            {
-                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                FeedbackViewController *vc=[main instantiateViewControllerWithIdentifier:@"FeedbackViewController"];
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:vc animated:YES];
-            }
-            
-        }else if (indexPath.row==2)
-        {
-            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            SettingViewController *vc=[main instantiateViewControllerWithIdentifier:@"SettingViewController"];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
-            
-            
-        }
-    }
-     */
 }
 
 - (void)didReceiveMemoryWarning {

@@ -115,6 +115,200 @@
 
 
 
+
+-(void)addTableViewOrders
+{
+    if(self.view.width==375.000000 && self.view.height>=812.000000)
+    {
+        self.tableViewTop.frame=CGRectMake(15, 84+10, SCREEN_WIDTH-15*2,SCREEN_HEIGHT-84-10);
+    }else{
+        self.tableViewTop.frame=CGRectMake(15, 64+10, SCREEN_WIDTH-15*2,SCREEN_HEIGHT-64-10);
+    }
+//    self.tableViewTop.frame=self.view.frame;
+    self.tableViewTop.delegate=self;
+    self.tableViewTop.dataSource=self;
+    //     self.Set_tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    //    self.Set_tableView.separatorInset=UIEdgeInsetsMake(0,10, 0, 10);           //top left bottom right 左右边距相同
+    self.tableViewTop.separatorStyle=UITableViewCellSeparatorStyleNone;
+    self.tableViewTop.backgroundColor = [UIColor colorWithRed:237/255.0 green:240/255.0 blue:241/255.0 alpha:1];
+//    self.tableViewTop.backgroundColor = [UIColor redColor];
+    [self.view addSubview:self.tableViewTop];
+    [self.tableViewTop registerNib:[UINib nibWithNibName:@"OrdersTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:tableID];
+
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
+    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    // 隐藏时间
+    header.lastUpdatedTimeLabel.hidden = YES;
+    // 隐藏状态
+    header.stateLabel.hidden = NO;
+    // 设置文字
+    [header setTitle:@"Pull down to refresh" forState:MJRefreshStateIdle];
+    [header setTitle:@"Release to refresh" forState:MJRefreshStatePulling];
+    [header setTitle:@"Loading ..." forState:MJRefreshStateRefreshing];
+    
+    // 设置字体
+    header.stateLabel.font = [UIFont systemFontOfSize:15];
+    header.lastUpdatedTimeLabel.font = [UIFont systemFontOfSize:14];
+    
+    // 设置颜色
+    header.stateLabel.textColor = [UIColor blackColor];
+    header.lastUpdatedTimeLabel.textColor = [UIColor blackColor];
+    
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
+    MJRefreshBackGifFooter *foot = [MJRefreshBackGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadFootData)];
+    // 隐藏状态
+    foot.stateLabel.hidden = NO;
+    // 设置文字
+    [foot setTitle:@"Drop down to refresh more" forState:MJRefreshStateIdle];
+    [foot setTitle:@"Release to refresh" forState:MJRefreshStatePulling];
+    [foot setTitle:@"Loading ..." forState:MJRefreshStateRefreshing];
+    // 设置字体
+    foot.stateLabel.font = [UIFont systemFontOfSize:15];
+    // 设置颜色
+    foot.stateLabel.textColor = [UIColor blackColor];
+//    foot.lastUpdatedTimeLabel.textColor = [UIColor blackColor];
+    self.tableViewTop.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        // 进入刷新状态后会自动调用这个block
+    }];
+    self.tableViewTop.mj_header=header;
+//     self.tableViewTop.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadFootData)];
+    // 设置回调（一旦进入刷新状态就会调用这个refreshingBlock）
+    self.tableViewTop.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    }];
+    self.tableViewTop.mj_footer = foot;
+    // 马上进入刷新状态
+//    [self.tableViewTop.mj_header beginRefreshing];
+    
+}
+
+-(void)loadNewData
+{
+    [self getOrderList];
+}
+
+-(void)loadFootData
+{
+    [self getOrderListFoot];
+}
+
+
+-(void)getOrderList
+{
+    self.page=0;
+    [arr_title removeAllObjects];
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?page=%ld&size=%ld",E_FuWuQiUrl,E_WasherDryerquery,(long)self.page,(long)self.maxCount] parameters:nil progress:^(id progress) {
+        
+    } success:^(id responseObject) {
+        NSLog(@"responseObject ORder=  %@",responseObject);
+        NSDictionary * dictList=(NSDictionary *)responseObject;
+        if(dictList)
+        {
+//        if([self.totalCount integerValue]>20)
+//        {
+//            [self.tableViewTop.mj_footer setHidden:NO];
+//        }else
+//        {
+//            [self.tableViewTop.mj_footer setHidden:YES];
+//        }
+            NSArray * Array= [dictList objectForKey:@"content"];;
+            if(Array.count>0)
+            {
+                [self.arr_title removeAllObjects];
+            
+            for (int i=0; i<Array.count; i++) {
+                NSDictionary * dictArr=Array[i];
+                NewOrderList * mode = [[NewOrderList alloc] init];
+                mode.merchantId=[dictArr objectForKey:@"merchantId"];;//
+                mode.cleanProItemName=[dictArr objectForKey:@"cleanProItemName"];
+                mode.merchantName=[dictArr objectForKey:@"merchantName"];//
+                mode.orderNumber=[dictArr objectForKey:@"orderNumber"];//
+                mode.ordersId=[dictArr objectForKey:@"ordersId"];//
+                mode.ordersItems=[dictArr objectForKey:@"ordersItems"];//
+                mode.paidCharge=[dictArr objectForKey:@"paidCharge"];//
+                mode.siteAddress=[dictArr objectForKey:@"siteAddress"];//
+                mode.siteNumber=[dictArr objectForKey:@"siteNumber"];//
+                mode.siteSerialNumber=[dictArr objectForKey:@"siteSerialNumber"];//
+                mode.siteType=[dictArr objectForKey:@"siteType"];
+                mode.timeCreated=[dictArr objectForKey:@"timeCreated"];//
+                [self->arr_title addObject:mode];
+            }
+                if(self->arr_title.count>0)
+                {
+                    [self removeNilView];
+                }else
+                {
+                    [self addnilView];
+                }
+            }else{
+                
+                    [self.tableViewTop.mj_header  endRefreshing];
+                    [self addnilView];
+                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No order at present", @"Language") andDelay:2.0];
+            }
+        }
+        [self.tableViewTop reloadData];
+        [self.tableViewTop.mj_header endRefreshing];
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"error ORder=  %@",error);
+        [self.tableViewTop.mj_header endRefreshing];
+    }];
+}
+-(void)getOrderListFoot
+{
+    if((self.page+1)<[self.totalPage integerValue])
+    {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@??page=%ld&size=%ld",E_FuWuQiUrl,E_WasherDryerquery,(long)self.page,(long)self.maxCount] parameters:nil progress:^(id progress) {
+        
+    } success:^(id responseObject) {
+        NSLog(@"responseObject ORder=  %@",responseObject);
+        NSDictionary * dictList=(NSDictionary *)responseObject;
+        if(dictList)
+        {
+            self.page+=1;
+        NSArray * Array= [dictList objectForKey:@"content"];;
+        if(Array.count>0)
+        {
+        
+        for (int i=0; i<Array.count; i++) {
+            NSDictionary * dictArr=Array[i];
+            NewOrderList * mode = [[NewOrderList alloc] init];
+            mode.merchantId=[dictArr objectForKey:@"merchantId"];;//
+            mode.cleanProItemName=[dictArr objectForKey:@"cleanProItemName"];
+            mode.merchantName=[dictArr objectForKey:@"merchantName"];//
+            mode.orderNumber=[dictArr objectForKey:@"orderNumber"];//
+            mode.ordersId=[dictArr objectForKey:@"ordersId"];//
+            mode.ordersItems=[dictArr objectForKey:@"ordersItems"];//
+            mode.paidCharge=[dictArr objectForKey:@"paidCharge"];//
+            mode.siteAddress=[dictArr objectForKey:@"siteAddress"];//
+            mode.siteNumber=[dictArr objectForKey:@"siteNumber"];//
+            mode.siteSerialNumber=[dictArr objectForKey:@"siteSerialNumber"];//
+            mode.siteType=[dictArr objectForKey:@"siteType"];
+            mode.timeCreated=[dictArr objectForKey:@"timeCreated"];//
+            [self->arr_title addObject:mode];
+        }
+            if(self->arr_title.count>0)
+            {
+                [self removeNilView];
+            }else
+            {
+                [self addnilView];
+            }
+        }
+        }
+        [self.tableViewTop reloadData];
+        [self.tableViewTop.mj_footer endRefreshing];
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"error ORder=  %@",error);
+        [self.tableViewTop.mj_footer endRefreshing];
+        [self removeNilView];
+    }];
+    }else{
+        [self.tableViewTop.mj_footer endRefreshing];
+        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"There's no more data", @"Language") andDelay:2.0];
+    }
+}
+
+/*
 -(void)getOrderList
 {
     self.page=0;
@@ -177,80 +371,8 @@
         [self.tableViewTop.mj_header endRefreshing];
     }];
 }
-
-
--(void)addTableViewOrders
-{
-    if(self.view.width==375.000000 && self.view.height>=812.000000)
-    {
-        self.tableViewTop.frame=CGRectMake(15, 84+10, SCREEN_WIDTH-15*2,SCREEN_HEIGHT-84-10);
-    }else{
-        self.tableViewTop.frame=CGRectMake(15, 64+10, SCREEN_WIDTH-15*2,SCREEN_HEIGHT-64-10);
-    }
-//    self.tableViewTop.frame=self.view.frame;
-    self.tableViewTop.delegate=self;
-    self.tableViewTop.dataSource=self;
-    //     self.Set_tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    //    self.Set_tableView.separatorInset=UIEdgeInsetsMake(0,10, 0, 10);           //top left bottom right 左右边距相同
-    self.tableViewTop.separatorStyle=UITableViewCellSeparatorStyleNone;
-    self.tableViewTop.backgroundColor = [UIColor colorWithRed:237/255.0 green:240/255.0 blue:241/255.0 alpha:1];
-//    self.tableViewTop.backgroundColor = [UIColor redColor];
-    [self.view addSubview:self.tableViewTop];
-    [self.tableViewTop registerNib:[UINib nibWithNibName:@"OrdersTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:tableID];
-
-    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
-    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
-    // 隐藏时间
-    header.lastUpdatedTimeLabel.hidden = YES;
-    // 隐藏状态
-    header.stateLabel.hidden = NO;
-    // 设置文字
-    [header setTitle:@"Pull down to refresh" forState:MJRefreshStateIdle];
-    [header setTitle:@"Release to refresh" forState:MJRefreshStatePulling];
-    [header setTitle:@"Loading ..." forState:MJRefreshStateRefreshing];
-    
-    // 设置字体
-    header.stateLabel.font = [UIFont systemFontOfSize:15];
-    header.lastUpdatedTimeLabel.font = [UIFont systemFontOfSize:14];
-    
-    // 设置颜色
-    header.stateLabel.textColor = [UIColor blackColor];
-    header.lastUpdatedTimeLabel.textColor = [UIColor blackColor];
-    
-    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
-    MJRefreshBackGifFooter *foot = [MJRefreshBackGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadFootData)];
-    // 隐藏状态
-    foot.stateLabel.hidden = NO;
-    // 设置文字
-    [foot setTitle:@"Drop down to refresh more" forState:MJRefreshStateIdle];
-    [foot setTitle:@"Release to refresh" forState:MJRefreshStatePulling];
-    [foot setTitle:@"Loading ..." forState:MJRefreshStateRefreshing];
-    // 设置字体
-    foot.stateLabel.font = [UIFont systemFontOfSize:15];
-    // 设置颜色
-    foot.stateLabel.textColor = [UIColor blackColor];
-//    foot.lastUpdatedTimeLabel.textColor = [UIColor blackColor];
-    self.tableViewTop.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        // 进入刷新状态后会自动调用这个block
-    }];
-    self.tableViewTop.mj_header=header;
-//     self.tableViewTop.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadFootData)];
-    self.tableViewTop.mj_footer = foot;
-    // 马上进入刷新状态
-//    [self.tableViewTop.mj_header beginRefreshing];
-    
-}
-
--(void)loadNewData
-{
-    [self getOrderList];
-}
-
--(void)loadFootData
-{
-    [self getOrderListFoot];
-}
-
+*/
+/*
 -(void)getOrderListFoot
 {
     if((self.page+1)<[self.totalPage integerValue])
@@ -293,7 +415,7 @@
     }
 }
 
-
+*/
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -322,23 +444,38 @@
     [cell.contentView addSubview:lbl];
     //cell选中效果
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    OrderListClass * mode =arr_title[indexPath.section];
+//    OrderListClass * mode =arr_title[indexPath.section];
+//
+//    if([mode.order_type isEqualToString:@"DRYER"])
+//    {
+//
+//        [cell.typeButton setImage:[UIImage imageNamed:@"icon_dryer2"] forState:(UIControlStateNormal)];
+//        cell.Order_type.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Dryer", @"Language")];
+//    }else if([mode.order_type isEqualToString:@"LAUNDRY"])
+//    {
+//        [cell.typeButton setImage:[UIImage imageNamed:@"icon_laundry2"] forState:(UIControlStateNormal)];
+//        cell.Order_type.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Washer", @"Language")];
+//    }
+////    cell.OrderNo.text=[NSString stringWithFormat:@"Order NO. %@",mode.order_no];
+//    cell.OrderNo.text=[NSString stringWithFormat:@"%@%@",FGGetStringWithKeyFromTable(@"Transaction NO. ", @"Language"),mode.order_no];
+////    cell.OrderNo.text=[NSString stringWithFormat:@"%@",[OrdersViewController nsdateToString:[OrdersViewController changeSpToTime:[mode.createTime stringValue]]]];
+//    cell.Paid.text=[NSString stringWithFormat:@"%@",mode.pay_status];
+//    cell.totalAmount.text=[NSString stringWithFormat:@"%.2f",[mode.total_amount floatValue]];
     
-    if([mode.order_type isEqualToString:@"DRYER"])
-    {
-        
-        [cell.typeButton setImage:[UIImage imageNamed:@"icon_dryer2"] forState:(UIControlStateNormal)];
-        cell.Order_type.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Dryer", @"Language")];
-    }else if([mode.order_type isEqualToString:@"LAUNDRY"])
-    {
-        [cell.typeButton setImage:[UIImage imageNamed:@"icon_laundry2"] forState:(UIControlStateNormal)];
-        cell.Order_type.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Washer", @"Language")];
-    }
-//    cell.OrderNo.text=[NSString stringWithFormat:@"Order NO. %@",mode.order_no];
-    cell.OrderNo.text=[NSString stringWithFormat:@"%@%@",FGGetStringWithKeyFromTable(@"Transaction NO. ", @"Language"),mode.order_no];
-//    cell.OrderNo.text=[NSString stringWithFormat:@"%@",[OrdersViewController nsdateToString:[OrdersViewController changeSpToTime:[mode.createTime stringValue]]]];
-    cell.Paid.text=[NSString stringWithFormat:@"%@",mode.pay_status];
-    cell.totalAmount.text=[NSString stringWithFormat:@"%.2f",[mode.total_amount floatValue]];
+    NewOrderList * mode=arr_title[indexPath.section];
+        if([mode.siteType isEqualToString:@"DRYER"])
+        {
+    
+            [cell.typeButton setImage:[UIImage imageNamed:@"icon_dryer2"] forState:(UIControlStateNormal)];
+            cell.Order_type.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Dryer", @"Language")];
+        }else if([mode.siteType isEqualToString:@"WASHER"])
+        {
+            [cell.typeButton setImage:[UIImage imageNamed:@"icon_laundry2"] forState:(UIControlStateNormal)];
+            cell.Order_type.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Washer", @"Language")];
+        }
+        cell.OrderNo.text=[NSString stringWithFormat:@"%@%@",FGGetStringWithKeyFromTable(@"Transaction NO. ", @"Language"),mode.orderNumber];
+//        cell.Paid.text=[NSString stringWithFormat:@"%@",mode.pay_status];
+        cell.totalAmount.text=[NSString stringWithFormat:@"%.2f",[mode.paidCharge floatValue]];
     cell.backgroundColor = [UIColor whiteColor];
     return cell;
 }
@@ -376,7 +513,8 @@
         UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
         lineItemViewController *vc=[main instantiateViewControllerWithIdentifier:@"lineItemViewController"];
         vc.hidesBottomBarWhenPushed = YES;
-    vc.mode=arr_title[indexPath.section];
+//        vc.mode=arr_title[indexPath.section];
+        vc.Newmode=arr_title[indexPath.section];
         [self.navigationController pushViewController:vc animated:YES];
 //    }else if (indexPath.section==1)
 //    {

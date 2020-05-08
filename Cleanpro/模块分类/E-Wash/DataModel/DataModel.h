@@ -164,6 +164,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)NSString * content;
 @property (nonatomic,strong)NSString * messageId;
 @property (nonatomic,strong)NSString * title;
+@property (nonatomic,strong)NSString * readFlag;
+@property (nonatomic,strong)NSString * templateEvent;
+@property (nonatomic,strong)NSString * creationTime;
+@property (nonatomic,strong)NSDictionary * messageAdditionalInformation;
 @end
 
 

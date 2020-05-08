@@ -44,6 +44,8 @@
     
     NSInteger payAndSet;
     NSInteger payCheck;
+    
+    PostOrderMode * PushOrderMode; ///支付成功后返回的参数
 }
 @property (nonatomic,strong)NSMutableArray * arr_title;
 @property (nonatomic,strong)NSNumber * credit;////积分
@@ -83,6 +85,7 @@
     self.credit_yn=@"1";////默认不使用积分
     self.order_noStr = @"";////默认是空字符串
     self.FMJPriceStr=@"0";
+    PushOrderMode=nil;
     if(self.NewOrderType==1)
     {
         [self settopViewText];
@@ -138,8 +141,8 @@
          [self.topView setHidden:YES];
      }
     [self hidden_TCview];
-    [self Get_wallet_A];
-    
+//    [self Get_wallet_A];
+    [self getToken];
     [super viewWillAppear:animated];
     
 }
@@ -210,6 +213,111 @@
     [self.tableViewDonw registerNib:[UINib nibWithNibName:@"integralTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:integralTableViewCellID];
     [self.view addSubview:self.tableViewDonw];
     
+}
+
+-(void)getToken
+{
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    NSString * tokenStr = [userDefaults objectForKey:@"Token"];
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_GetToken] parameters:nil progress:^(id progress) {
+        //        NSLog(@"请求成功 = %@",progress);
+    } success:^(id responseObject) {
+        NSLog(@"111responseObject = %@",responseObject);
+        [HudViewFZ HiddenHud];
+        NSDictionary * dictObject=(NSDictionary *)responseObject;
+        NSNumber * statusCode =[dictObject objectForKey:@"statusCode"];
+        
+        
+        if([statusCode intValue] ==401)
+        {
+            
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setObject:@"1" forKey:@"Token"];
+            [userDefaults setObject:@"1" forKey:@"phoneNumber"];
+            [userDefaults setObject:nil forKey:@"SaveUserMode"];
+            [userDefaults setObject:@"1" forKey:@"logCamera"];
+            //    [defaults synchronize];
+            
+        }else if([statusCode intValue] ==500)
+        {
+            NSString * errorMessage =[dictObject objectForKey:@"errorMessage"];;
+            [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
+        }else{
+            NSString*tokenStr = [dictObject objectForKey:@"token"];
+            NSString*phoneNumberStr = [dictObject objectForKey:@"mobile"];
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setObject:tokenStr forKey:@"Token"];
+            [userDefaults setObject:phoneNumberStr forKey:@"phoneNumber"];
+            [userDefaults setObject:@"2" forKey:@"logCamera"];
+            [[NSUserDefaults standardUserDefaults] setObject:@"100" forKey:@"TokenError"];
+            //            NSString * IDStr = [dictObject objectForKey:@"id"];
+            NSDictionary * wallet = [dictObject objectForKey:@"wallet"];
+            NSNumber * ba = [wallet objectForKey:@"balance"];
+            NSString * balanceStr =[ba stringValue];
+            //            NSString * currencyUnitStr = [wallet objectForKey:@"currencyUnit"];
+            //            self.currencyUnitStr = [cur stringValue];
+            NSNumber * credit = [wallet objectForKey:@"credit"];
+            NSString * creditStr = [credit stringValue];
+            NSNumber * coupon = [dictObject objectForKey:@"couponCount"];
+            NSString *couponCountStr = [coupon stringValue];
+            self.balance = ba;
+            self.credit = credit;
+            //            用来储存用户信息
+            
+            SaveUserIDMode * mode = [[SaveUserIDMode alloc] init];
+            
+            mode.phoneNumber = [dictObject objectForKey:@"mobile"];//   手机号码
+            mode.loginName = [dictObject objectForKey:@"username"];//   与手机号码相同
+            mode.yonghuID = [dictObject objectForKey:@"memberId"]; ////用户ID
+            //            mode.randomPassword = [dictObject objectForKey:@"randomPassword"];//  验证码
+            //            mode.password = [dictObject objectForKey:@"password"];//  登录密码
+            //            mode.payPassword = [dictObject objectForKey:@"payPassword"];//    支付密码
+            mode.firstName = [dictObject objectForKey:@"firstName"];//   first name
+            mode.lastName = [dictObject objectForKey:@"lastName"];//   last name
+            NSString * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
+            if(![birthdayNum isEqual:[NSNull null]])
+            {
+//                mode.birthday = [birthdayNum ];;
+                NSInteger num = [birthdayNum integerValue];
+                NSNumber * nums = @(num);
+                mode.birthday = [nums stringValue];;
+            }
+            mode.gender = [dictObject objectForKey:@"gender"];//       MALE:男，FEMALE:女
+            mode.postCode = [dictObject objectForKey:@"postCode"];//   Post Code inviteCode
+            mode.EmailStr = [dictObject objectForKey:@"email"];//   email
+            mode.inviteCode = [dictObject objectForKey:@"inviteCode"];//       我填写的邀请码
+            mode.myInviteCode = [dictObject objectForKey:@"myInviteCode"];//       我的邀请码
+            mode.headImageUrl = [dictObject objectForKey:@"headImageId"];
+            mode.payPassword = [dictObject objectForKey:@"payPassword"];
+            ////个人中心需要用到积分
+            mode.credit = creditStr;
+            mode.balance = balanceStr;
+            mode.couponCount = couponCountStr;
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            //存储到NSUserDefaults（转NSData存）
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: mode];
+             NSLog(@"测试断点5555");
+            [defaults setObject:data forKey:@"SaveUserMode"];
+            [defaults synchronize];
+            [jiamiStr base64Data_encrypt:mode.yonghuID];
+            [self.tableViewDonw reloadData];
+        }
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ HiddenHud];
+        if(statusCode==401)
+        {
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+            //创建一个消息对象
+            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
+            //发送消息
+            [[NSNotificationCenter defaultCenter]postNotification:notice];
+            
+        }else{
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+            
+        }
+    }];
 }
 /**
  获取用户钱包
@@ -298,11 +406,11 @@
         {
             //            self.order_c.pay_amount = [NSString stringWithFormat:@"%.2f",[self.credit doubleValue]/100-[self.order_c.total_amount doubleValue]];
             self.order_c.pay_amount=@"0";
-            self.order_c.credits = [NSString stringWithFormat:@"%.2f",[self.order_c.total_amount doubleValue]*100];
+            self.order_c.credits = [NSString stringWithFormat:@"%ld",(NSInteger)([self.order_c.total_amount doubleValue]*100)];
         }else
         {
             self.order_c.pay_amount = [NSString stringWithFormat:@"%.2f",[self.order_c.total_amount doubleValue]-[self.credit doubleValue]/100];
-            self.order_c.credits = [NSString stringWithFormat:@"%.2f",[self.credit doubleValue]];
+            self.order_c.credits = [NSString stringWithFormat:@"%ld",(NSInteger)[self.credit doubleValue]];
         }
         
     }
@@ -539,7 +647,8 @@
         if(password.length==6)
         {
             blockSelf.Pay_passwordStr=password;
-            [blockSelf JYPayPassword];
+//            [blockSelf JYPayPassword]; ///屏蔽校验密码 后台校验
+            [blockSelf postOrder:blockSelf.Pay_passwordStr];
         }
     };
     [self.view addSubview:Tuicang_View];
@@ -599,6 +708,7 @@
             [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
             UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
             newPhoneViewController *vc=[main instantiateViewControllerWithIdentifier:@"newPhoneViewController"];
+            vc.index=1;
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
         }else{
@@ -695,6 +805,8 @@
     vc.OrderAndRenewal = self.OrderAndRenewal;
     vc.OrderIdTime=self.OrderIdTime;
     vc.NewOrderType=1;
+    vc.PushOrderMode=PushOrderMode;
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -781,6 +893,319 @@
         }
     }];
 }
+-(NSString*)getPriceTimeStr:(NSString*)productAttributeValue
+{
+    
+    NSString *Price = [productAttributeValue stringByReplacingOccurrencesOfString:@" mins" withString:@""];
+    return Price;
+}
+-(NSString * )getPriceStr:(NSString*)productAttributeValueId
+{
+    for (int C=0; C<self.arrPrice.count; C++) {
+        productsMode *mode=self.arrPrice[C];
+    for (int i =0 ; i<mode.productVariantList.count; i++) {
+        productVariantListMode * mode1 =mode.productVariantList[i];
+
+        for (int j =0 ; j<mode1.productAttributeValueIds.count; j++) {
+
+                NSString * strID = mode1.productAttributeValueIds[j];
+                if([strID isEqualToString:productAttributeValueId])
+                {
+                    return mode1.priceValue;
+                }
+        }
+    }
+    }
+    
+    return @"0";
+}
+
+-(void)postOrder:(NSString*)Password
+//-(void)postOrder
+{
+     NSMutableArray * returnArrM=[NSMutableArray arrayWithCapacity:0];
+    [returnArrM removeAllObjects];
+    if([self.order_c.order_type isEqualToString:@"LAUNDRY"])
+    {
+        productsMode *mode=self.arrPrice[0];
+        NSDictionary*dcitA=@{
+                @"productVariantId":[self returnProductVariantId:mode],//商品id
+                @"quantity":@"1"//商品数量
+            };
+        [returnArrM addObject:dcitA];
+    }else if([self.order_c.order_type isEqualToString:@"DRYER"])
+    {
+       if(self.OrderAndRenewal==1)
+       {
+           valueListMode * mode2 =self.SPArray[0];
+           valueListMode * mode3 =self.SPArray[1];
+           NSInteger timeJiaJian=[[self getPriceTimeStr:mode3.productAttributeValue] integerValue];
+          NSString * MoRen_time_str=[self getPriceTimeStr:mode2.productAttributeValue];
+           int money_s = (int)(self.timeTotal-[MoRen_time_str integerValue])/timeJiaJian;
+           NSDictionary*dcitA=@{
+               @"productVariantId":[self getDRYERid:self.arrPrice productAttributeValueId:mode2.productAttributeValueId],//商品id
+               @"quantity":@"1"//商品数量
+           };
+           [returnArrM addObject:dcitA];
+           if(money_s>0)
+           {
+           NSDictionary*dcit2=@{
+               @"productVariantId":[self getDRYERid:self.arrPrice productAttributeValueId:mode3.productAttributeValueId],//商品id
+               @"quantity":[NSString stringWithFormat:@"%d",money_s],//商品数量 正常烘干不需要加1
+           };
+           [returnArrM addObject:dcit2];
+           }
+       }else if(self.OrderAndRenewal==2)
+       {
+//           valueListMode * mode2 =self.SPArray[0];
+            valueListMode * mode3 =self.SPArray[1];
+            NSInteger timeJiaJian=[[self getPriceTimeStr:mode3.productAttributeValue] integerValue];
+           NSString * MoRen_time_str=[self getPriceTimeStr:mode3.productAttributeValue];
+            int money_s = (int)(self.timeTotal-[MoRen_time_str integerValue])/timeJiaJian;
+            NSDictionary*dcit2=@{
+                @"productVariantId":[self getDRYERid:self.arrPrice productAttributeValueId:mode3.productAttributeValueId],//商品id
+                @"quantity":[NSString stringWithFormat:@"%d",money_s+1],//商品数量 烘干加时所以要加1
+            };
+            [returnArrM addObject:dcit2];
+       }
+    }
+    
+//    NSString * logisticsType=@"";
+    
+    NSDictionary *dict;
+    dict=@{@"clientType":@"IOS",///客户端类型 IOS 苹果、ANDROID：安卓
+           @"siteId":self.siteIdStr,
+           @"items":returnArrM,
+//           @"logisticsType":logisticsType,
+           @"paymentPlatform" :@"WALLET",
+           @"payPassword":Password,
+//           @"amount":self.order_c.pay_amount,
+//           @"credit":self.order_c.credits,
+    };
+    
+    NSLog(@"dict=== %@    url === %@",dict,[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_CreateOrder]);
+    [HudViewFZ labelExample:self.view];
+    [[AFNetWrokingAssistant shareAssistant] PostURL_E_washToken_error:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URL:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_CreateOrder] parameters:dict progress:^(id progress) {
+        NSLog(@"请求成功 = %@",progress);
+    }Success:^(NSInteger statusCode,id responseObject) {
+        [HudViewFZ HiddenHud];
+        NSLog(@"responseObject = %@",responseObject);
+        if(statusCode==200)
+        {
+            
+            NSDictionary *dict= (NSDictionary*)responseObject;
+            PostOrderMode * mode = [[PostOrderMode alloc] init];
+            
+            NSString * siteId = [dict objectForKey:@"siteId"];
+            if(siteId!=nil)
+            {
+                NSString * orderIDstr =@"";
+                mode.orderNumber = [dict objectForKey:@"orderNumber"];
+                mode.siteId=siteId;
+                mode.expressNumber = [dict objectForKey:@"expressNumber"];
+                mode.merchantId = [dict objectForKey:@"merchantId"];
+                mode.ordersId = [dict objectForKey:@"ordersId"];
+                mode.siteMerchantId = [dict objectForKey:@"siteMerchantId"];
+                mode.siteName = [dict objectForKey:@"siteName"];
+                mode.siteType = [dict objectForKey:@"siteType"];
+                mode.unitType = [dict objectForKey:@"unitType"];
+                NSArray * payItemarr = [dict objectForKey:@"paymentItems"];
+                NSMutableArray * payItemMutableArr=[NSMutableArray arrayWithCapacity:0];
+                for (int i=0; i<payItemarr.count; i++) {
+                    paymentItemsMode*modePay=[[paymentItemsMode alloc] init];
+                    NSDictionary * ditPay=payItemarr[i];
+                    modePay.amount = [ditPay objectForKey:@"amount"];
+                    modePay.couponCardId = [ditPay objectForKey:@"couponCardId"];
+                    modePay.couponCode = [ditPay objectForKey:@"couponCode"];
+                    modePay.discountAmount = [ditPay objectForKey:@"discountAmount"];
+                    modePay.displayPayStatus = [ditPay objectForKey:@"displayPayStatus"];
+                    modePay.fileId = [ditPay objectForKey:@"fileId"];
+                    modePay.orderAmount = [ditPay objectForKey:@"orderAmount"];
+                    modePay.ordersId = [ditPay objectForKey:@"ordersId"];
+                    orderIDstr=modePay.ordersId;
+                    modePay.outTransNo = [ditPay objectForKey:@"outTransNo"];
+                    modePay.payStatus = [ditPay objectForKey:@"payStatus"];
+                    modePay.payTime = [ditPay objectForKey:@"payTime"];
+                    modePay.paymentItemId = [ditPay objectForKey:@"paymentItemId"];
+                    modePay.paymentPlatform = [ditPay objectForKey:@"paymentPlatform"];
+                    modePay.priceName = [ditPay objectForKey:@"priceName"];
+                    modePay.showApp = [ditPay objectForKey:@"showApp"];
+                    modePay.valueType = [ditPay objectForKey:@"valueType"];
+                    [payItemMutableArr addObject:modePay];
+                }
+                mode.paymentItems=payItemMutableArr;
+                self->PushOrderMode=mode;
+                self.order_noStr=mode.ordersId;
+//                [self pushView:mode PaymentMethodStr:1];
+//                [self pushView:orderIDstr taskCommandStr:@""];
+                
+                [self JMPasswordNew:self.order_noStr Password:Password];
+            }
+            
+            
+            
+        }else
+        {
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"statusCode error", @"Language") andDelay:2.0];
+        }
+    } failure:^(id receive, NSInteger statusCode, NSError *error) {
+        NSLog(@"error = %@",error);
+        NSString * errorMessage = (NSString *)receive;
+        [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
+            [HudViewFZ HiddenHud];
+//                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+    }];
+}
+-(NSNumber *)dictCodeStr:(NSError *)error
+{
+//    NSString * receive=@"";
+    NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+//    receive= [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *dictFromData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
+    NSNumber * errorCode = [dictFromData valueForKey:@"errorCode"];
+//
+    return errorCode;
+}
+-(NSString *)dictMessageStr:(NSError *)error
+{
+//    NSString * receive=@"";
+    NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+//    receive= [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *dictFromData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
+    NSString * message = [dictFromData valueForKey:@"message"];
+    return message;
+}
+-(void)JMPasswordNew:(NSString*)orderIDstr Password:(NSString *)Password
+{
+    
+    NSDictionary *dict=@{@"ordersId":orderIDstr,
+                         @"payPassword":Password,
+                         @"amount":self.order_c.pay_amount,
+                         @"credit":self.order_c.credits,
+        };
+    NSLog(@"dict=== %@",dict);
+//        [HudViewFZ labelExample:self.view];
+        [[AFNetWrokingAssistant shareAssistant] PostURL_E_washToken_error:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URL:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_JYPassword] parameters:dict progress:^(id progress) {
+            NSLog(@"请求成功 = %@",progress);
+        }Success:^(NSInteger statusCode,id responseObject) {
+            [HudViewFZ HiddenHud];
+            NSLog(@"responseObject = %@",responseObject);
+            if(statusCode==200)
+            {
+                NSDictionary * dict = (NSDictionary*)responseObject;
+                NSNumber * result= [dict objectForKey:@"result"];
+                if([result integerValue]==1){
+                    [self pushView:orderIDstr taskCommandStr:@""];
+                }
+            }else
+            {
+                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"statusCode error", @"Language") andDelay:2.0];
+            }
+        } failure:^(id receive, NSInteger statusCode, NSError *error) {
+            NSLog(@"error = %@",error);
+//            NSString * errorMessage = (NSString *)receive;
+//            [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
+            NSNumber * code=[self dictCodeStr:error];
+            if([code integerValue]==1000)
+            {
+                [HudViewFZ showMessageTitle:[self dictMessageStr:error] andDelay:2.0];
+            }
+            [HudViewFZ HiddenHud];
+        }];
+}
+
+
+-(NSString *)returnProductVariantId:(productsMode*)mode
+{
+   
+         for (int i = 0; i<mode.attributeList.count; i++) {
+                attributeListsMode * attmode= mode.attributeList[i];
+                for (int j=0; j<attmode.valueList.count; j++) {
+                    valueListMode * modeValue =attmode.valueList[j];
+                    NSString * productAttributeValueIdStr = modeValue.productAttributeValueId;
+                    if([modeValue.productAttributeValue isEqualToString:@"Cold"])
+                    {
+    //                    [_ColdBtn setTitle:modeValue.productAttributeValue forState:(UIControlStateNormal)];
+                        for (int k=0; k<mode.productVariantList.count; k++) {
+                            productVariantListMode * modePro = mode.productVariantList[k];
+                            for (int M=0; M<modePro.productAttributeValueIds.count; M++) {
+                                NSString * ValueId= modePro.productAttributeValueIds[M];
+                                if([ValueId isEqualToString:productAttributeValueIdStr])
+                                {
+                                    if((self.Select_teger+1)==1)
+                                    {
+//                                        NSString * priceValue = [NSString stringWithFormat:@"%@",modePro.priceValue];
+//                                        return priceValue;
+                                        return modePro.productVariantId;
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }else if([modeValue.productAttributeValue isEqualToString:@"Warm"])
+                    {
+                        for (int k=0; k<mode.productVariantList.count; k++) {
+                            productVariantListMode * modePro = mode.productVariantList[k];
+                            for (int M=0; M<modePro.productAttributeValueIds.count; M++) {
+                                NSString * ValueId= modePro.productAttributeValueIds[M];
+                                if([ValueId isEqualToString:productAttributeValueIdStr])
+                                {
+                                    
+                                        if((self.Select_teger+1)==2)
+                                        {
+//                                             NSString * priceValue = [NSString stringWithFormat:@"%@",modePro.priceValue];
+//                                            return priceValue;
+                                            return modePro.productVariantId;
+                                        }
+                                }
+                            }
+                            
+                        }
+                    }else if([modeValue.productAttributeValue isEqualToString:@"Hot"])
+                    {
+                        for (int k=0; k<mode.productVariantList.count; k++) {
+                            productVariantListMode * modePro = mode.productVariantList[k];
+                            for (int M=0; M<modePro.productAttributeValueIds.count; M++) {
+                                NSString * ValueId= modePro.productAttributeValueIds[M];
+                                if([ValueId isEqualToString:productAttributeValueIdStr])
+                                {
+                                    if((self.Select_teger+1)==3)
+                                    {
+                                        return modePro.productVariantId;
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
+                }
+                
+            }
+
+        return nil;
+    
+}
+
+-(NSString*)getDRYERid:(NSMutableArray*)arrP productAttributeValueId:(NSString*)productAttributeValueId
+{
+    for (int C=0; C<arrP.count; C++) {
+        productsMode *mode=self.arrPrice[C];
+    for (int i =0 ; i<mode.productVariantList.count; i++) {
+        productVariantListMode * mode1 =mode.productVariantList[i];
+
+        for (int j =0 ; j<mode1.productAttributeValueIds.count; j++) {
+
+                NSString * strID = mode1.productAttributeValueIds[j];
+                if([strID isEqualToString:productAttributeValueId])
+                {
+                    return mode1.productVariantId;
+                }
+        }
+    }
+    }
+    return nil;
+}
+
 ////// 新创建订单
 -(void)postOrder
 {
@@ -987,10 +1412,23 @@
             }
             if(self.OrderAndRenewal==1)
             {
-                [self postOrder];
+                if([self.order_noStr isEqualToString:@""])
+                {
+                    [self postOrder:self.Pay_passwordStr];
+                }else
+                {
+                    [self JMPasswordNew:self.order_noStr Password:self.Pay_passwordStr];
+                }
             }else if (self.OrderAndRenewal==2)
             {
-                [self postOrderOrderRenewal];
+//                [self postOrderOrderRenewal];
+                if([self.order_noStr isEqualToString:@""])
+                {
+                    [self postOrder:self.Pay_passwordStr];
+                }else
+                {
+                    [self JMPasswordNew:self.order_noStr Password:self.Pay_passwordStr];
+                }
             }
         }else
         {
@@ -1006,12 +1444,31 @@
                     self.order_c.payment_platform=@"WALLET";
                     self.order_c.coupon_code=@"";
                 }
+//                if(self.OrderAndRenewal==1)
+//                {
+//                    [self postOrder:self.Pay_passwordStr];
+//                }else if (self.OrderAndRenewal==2)
+//                {
+//                    [self postOrderOrderRenewal];
+//                }
                 if(self.OrderAndRenewal==1)
                 {
-                    [self postOrder];
+                    if([self.order_noStr isEqualToString:@""])
+                    {
+                        [self postOrder:self.Pay_passwordStr];
+                    }else
+                    {
+                        [self JMPasswordNew:self.order_noStr Password:self.Pay_passwordStr];
+                    }
                 }else if (self.OrderAndRenewal==2)
                 {
-                    [self postOrderOrderRenewal];
+                    if([self.order_noStr isEqualToString:@""])
+                    {
+                        [self postOrder:self.Pay_passwordStr];
+                    }else
+                    {
+                        [self JMPasswordNew:self.order_noStr Password:self.Pay_passwordStr];
+                    }
                 }
             }else
             {
@@ -1043,7 +1500,7 @@
             }
             if(self.OrderAndRenewal==1)
             {
-                [self postOrder];
+                [self postOrder:self.Pay_passwordStr];
             }else if (self.OrderAndRenewal==2)
             {
                 [self postOrderOrderRenewal];
@@ -1066,7 +1523,7 @@
 //                [self postOrder];
                 if(self.OrderAndRenewal==1)
                 {
-                    [self postOrder];
+                    [self postOrder:self.Pay_passwordStr];
                 }else if (self.OrderAndRenewal==2)
                 {
                     [self postOrderOrderRenewal];
@@ -1571,5 +2028,11 @@
         [self updatePostValue];
     }
 }
+
+
+
+
+
+
 
 @end

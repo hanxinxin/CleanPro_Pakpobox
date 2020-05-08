@@ -11,7 +11,7 @@
 @interface lineItemViewController : UIViewController
 
 @property(nonatomic,strong)OrderListClass * mode;
-
+@property(nonatomic,strong)NewOrderList * Newmode;
 @property (weak, nonatomic) IBOutlet UIButton *BtnType_image;
 
 @property (weak, nonatomic) IBOutlet UILabel *OrderType;

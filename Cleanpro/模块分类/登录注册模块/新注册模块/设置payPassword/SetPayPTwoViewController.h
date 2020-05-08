@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString * payStringOne;
 @property (strong, nonatomic) NSString * payStringTwo;
 
-@property (assign, nonatomic) NSInteger index; ////index==1 是 手机号设置  2是旧密码验证
+@property (assign, nonatomic) NSInteger index; ////index==1 是 手机号设置  2是旧密码验证 3 是直接输入旧密码设置新密码
 
 @property (weak, nonatomic) IBOutlet UIButton *next_btn;
 

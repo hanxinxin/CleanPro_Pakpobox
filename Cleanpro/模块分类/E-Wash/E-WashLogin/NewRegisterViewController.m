@@ -50,7 +50,7 @@
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-//        [self setDiqu_select];  /// 先屏蔽地区选择
+        [self setDiqu_select];  /// 先屏蔽地区选择
     });
     //    设置点击任何其他位置 键盘回收
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapBG:)];
@@ -162,7 +162,9 @@
     if(self.phone_Textfield.text.length>=8)
     {
         [HudViewFZ labelExample:self.view];
-        NSDictionary * dict=@{@"mobile":self.phone_Textfield.text};
+        NSDictionary * dict=@{@"mobile":self.phone_Textfield.text,
+                              @"countryCode":self.countryCodeStr
+        };
         //        NSLog(@"url=== %@",[NSString stringWithFormat:@"%@%@",FuWuQiUrl,P_sendVerifyCode]);
         [[AFNetWrokingAssistant shareAssistant] PostURL_Code:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_sendSmsCode] parameters:dict progress:^(id progress) {
             NSLog(@"请求成功 = %@",progress);

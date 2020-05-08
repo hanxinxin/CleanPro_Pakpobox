@@ -207,7 +207,8 @@
 //    unfinished   finished
     [HudViewFZ labelExample:self.view];
     self.Page_intager=0;
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@unfinished?page=%ld&size=%@",E_FuWuQiUrl,E_GetOrderList,(long)self.Page_intager,@"20"] parameters:nil progress:^(id progress) {
+    NSLog(@"urlllll======  %@",[NSString stringWithFormat:@"%@%@unfinished?page=%ld&size=%@&siteTypeList=ALFRED_POINT",E_FuWuQiUrl,E_GetOrderList,(long)self.Page_intager,@"20"]);
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@unfinished?page=%ld&size=%@&siteTypeList=ALFRED_POINT",E_FuWuQiUrl,E_GetOrderList,(long)self.Page_intager,@"20"] parameters:nil progress:^(id progress) {
                 //        NSLog(@"请求成功 = %@",progress);
             } success:^(id responseObject) {
                 NSLog(@"E_GetOrderList = %@",responseObject);
@@ -302,7 +303,7 @@
 {
 //    unfinished   finished
     [HudViewFZ labelExample:self.view];
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@unfinished?page=%ld&size=%@",E_FuWuQiUrl,E_GetOrderList,(long)self.Page_intager+1,@"20"] parameters:nil progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@unfinished?page=%ld&size=%@&siteTypeList=ALFRED_POINT",E_FuWuQiUrl,E_GetOrderList,(long)self.Page_intager+1,@"20"] parameters:nil progress:^(id progress) {
                 //        NSLog(@"请求成功 = %@",progress);
             } success:^(id responseObject) {
                 NSLog(@"E_GetOrderList = %@",responseObject);
@@ -403,7 +404,7 @@
 //    unfinished   finished
     [HudViewFZ labelExample:self.view];
     self.Page_intager=0;
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@finished?page=%ld&size=%@",E_FuWuQiUrl,E_GetOrderList,(long)self.Page_intager,@"20"] parameters:nil progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@finished?page=%ld&size=%@&siteTypeList=ALFRED_POINT",E_FuWuQiUrl,E_GetOrderList,(long)self.Page_intager,@"20"] parameters:nil progress:^(id progress) {
                 //        NSLog(@"请求成功 = %@",progress);
             } success:^(id responseObject) {
                 NSLog(@"E_GetOrderList = %@",responseObject);
@@ -498,7 +499,7 @@
 {
 //    unfinished   finished
     [HudViewFZ labelExample:self.view];
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@finished?page=%ld&size=%@",E_FuWuQiUrl,E_GetOrderList,(long)self.Page_intager+1,@"20"] parameters:nil progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@finished?page=%ld&size=%@&siteTypeList=ALFRED_POINT",E_FuWuQiUrl,E_GetOrderList,(long)self.Page_intager+1,@"20"] parameters:nil progress:^(id progress) {
                 //        NSLog(@"请求成功 = %@",progress);
             } success:^(id responseObject) {
                 NSLog(@"E_GetOrderList = %@",responseObject);
@@ -601,8 +602,8 @@
     [HudViewFZ labelExample:self.view];
     self.Page_intager=0;
 //    [NSString stringWithFormat:@"%@%@?page=%ld&size=%@",E_FuWuQiUrl,E_articlesE_wash,(long)self.Page_intager,@"20"]
-    NSLog(@"KD URL = %@",[NSString stringWithFormat:@"%@%@?eWashStatus=%@&page=%ld&size=%@",E_FuWuQiUrl,E_articlesE_wash,@"finished",(long)self.Page_intager,@"20"]);
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@?eWashStatus=%@&page=%ld&size=%@",E_FuWuQiUrl,E_articlesE_wash,@"unfinished",(long)self.Page_intager,@"20"] parameters:nil progress:^(id progress) {
+    NSLog(@"KD URL = %@",[NSString stringWithFormat:@"%@%@?eWashStatus=%@&page=%ld&size=%@&siteTypeList=ALFRED_POINT",E_FuWuQiUrl,E_articlesE_wash,@"finished",(long)self.Page_intager,@"20"]);
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@?eWashStatus=%@&page=%ld&size=%@&siteTypeList=ALFRED_POINT",E_FuWuQiUrl,E_articlesE_wash,@"unfinished",(long)self.Page_intager,@"20"] parameters:nil progress:^(id progress) {
                 //        NSLog(@"请求成功 = %@",progress);
             } success:^(id responseObject) {
                 NSLog(@"E_articlesE_wash = %@",responseObject);
@@ -711,7 +712,7 @@
 {
 //page=0&size=10
     [HudViewFZ labelExample:self.view];
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@?eWashStatus=%@&page=%ld&size=%@",E_FuWuQiUrl,E_articlesE_wash,@"unfinished",(long)self.Page_intager+1,@"20"] parameters:nil progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@?eWashStatus=%@&page=%ld&size=%@&siteTypeList=ALFRED_POINT",E_FuWuQiUrl,E_articlesE_wash,@"unfinished",(long)self.Page_intager+1,@"20"] parameters:nil progress:^(id progress) {
                 //        NSLog(@"请求成功 = %@",progress);
             } success:^(id responseObject) {
                 NSLog(@"E_articlesE_wash = %@",responseObject);
@@ -1390,7 +1391,7 @@
 //    unfinished   finished
     [HudViewFZ labelExample:self.view];
     self.Page_intager=0;
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@?onlyMe=%d&page=%ld&size=%@",E_FuWuQiUrl,E_articlesE_wash,YES,(long)self.Page_intager,@"20"] parameters:nil progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@?onlyMe=%d&page=%ld&size=%@&siteTypeList=ALFRED_POINT",E_FuWuQiUrl,E_articlesE_wash,YES,(long)self.Page_intager,@"20"] parameters:nil progress:^(id progress) {
                 //        NSLog(@"请求成功 = %@",progress);
             } success:^(id responseObject) {
                 NSLog(@"E_articlesE_wash = %@",responseObject);
@@ -1501,7 +1502,7 @@
 {
 //page=0&size=10
     [HudViewFZ labelExample:self.view];
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@?onlyMe=%d&page=%ld&size=%@",E_FuWuQiUrl,E_articlesE_wash,YES,(long)self.Page_intager+1,@"20"] parameters:nil progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URLString:[NSString stringWithFormat:@"%@%@?onlyMe=%d&page=%ld&size=%@&siteTypeList=ALFRED_POINT",E_FuWuQiUrl,E_articlesE_wash,YES,(long)self.Page_intager+1,@"20"] parameters:nil progress:^(id progress) {
                 //        NSLog(@"请求成功 = %@",progress);
             } success:^(id responseObject) {
                 NSLog(@"E_articlesE_wash = %@",responseObject);

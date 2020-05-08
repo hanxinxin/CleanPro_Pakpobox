@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "TMSwipeCell.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EwashMessageTableViewCell : UITableViewCell
+@interface EwashMessageTableViewCell : TMSwipeCell
 @property (strong, nonatomic) IBOutlet UILabel *TopTitle;
 @property (strong, nonatomic) IBOutlet UILabel *ContentTitle;
 

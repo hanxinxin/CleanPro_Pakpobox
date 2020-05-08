@@ -248,7 +248,17 @@
     [Friends.InpurBtn setBackgroundColor:[UIColor whiteColor]];
     [Friends.TextField setFont:[UIFont fontWithName:@"courer-Bold" size:22.f]];
     Friends.TextField.textColor = [UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
-    Friends.TextField.text=self.ModeUser.myInviteCode;
+    if([self.ModeUser.inviteCode isEqual:[NSNull null]])
+    {
+        Friends.TextField.text=self.ModeUser.myInviteCode;
+    }else
+    {
+       if(![self.ModeUser.myInviteCode isEqual:[NSNull null]])
+       {
+           Friends.TextField.text=self.ModeUser.myInviteCode;
+       }
+    }
+    
     Friends.TextField.delegate=self;
     Friends.TextField.layer.borderColor = [UIColor colorWithRed:112/255.0 green:112/255.0 blue:112/255.0 alpha:1.0].CGColor;
     Friends.TextField.layer.borderWidth = 0.5;
@@ -257,9 +267,9 @@
     [Friends.comeBtn setTitle:FGGetStringWithKeyFromTable(@"Share", @"Language") forState:(UIControlStateNormal)];
     Friends.comeBtn.layer.cornerRadius = 4;
     Friends.delegate =self;
-    if(self.ModeUser.inviteCode == nil)
+    if([self.ModeUser.inviteCode isEqual:[NSNull null]])
     {
-        
+        Friends.InpurBtn.hidden=NO;
     }else
     {
         Friends.InpurBtn.hidden=YES;
@@ -294,6 +304,7 @@
         [Friends.InpurBtn setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];
         [Friends.InpurBtn setBackgroundColor:[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0]];
         [Friends.ShareBtn setTitleColor:[UIColor darkTextColor] forState:(UIControlStateNormal)];
+        Friends.TextField.text=@"";
         [Friends.ShareBtn setBackgroundColor:[UIColor whiteColor]];
         [Friends.comeBtn setTitle:FGGetStringWithKeyFromTable(@"Input", @"Language") forState:(UIControlStateNormal)];
     }
@@ -380,66 +391,108 @@
         
     }];
 }
+//-(void)sendInviteCode:(NSString *)inviteCode
+//{
+//
+//    NSDictionary *dict = @{@"inviteCode":inviteCode
+//                           };
+//    NSLog(@"dict ====%@",dict);
+//    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,Post_inviteCodeSend] parameters:dict progress:^(id progress) {
+//        NSLog(@"111  %@",progress);
+//    } Success:^(NSInteger statusCode,id responseObject) {
+//        [HudViewFZ HiddenHud];
+//        NSLog(@"responseObject = %@",responseObject);
+//        NSDictionary * dictObject=(NSDictionary *)responseObject;
+//        NSString *errorMessage = [dictObject objectForKey:@"errorMessage"];
+////        NSNumber *statusCode1 = [dictObject objectForKey:@"statusCode"];
+//        if(errorMessage==nil)
+//        {
+//
+//        if(statusCode==200)
+//        {
+//
+//
+////            [HudViewFZ showMessageTitle:errorMessage andDelay:2.5];
+//            //            用来储存用户信息
+//
+//            SaveUserIDMode * mode = [[SaveUserIDMode alloc] init];
+//
+//            mode.phoneNumber = [dictObject objectForKey:@"phoneNumber"];//   手机号码
+//            mode.loginName = [dictObject objectForKey:@"loginName"];//   与手机号码相同
+//            mode.yonghuID = [dictObject objectForKey:@"id"]; ////用户ID
+//            //            mode.randomPassword = [dictObject objectForKey:@"randomPassword"];//  验证码
+//            //            mode.password = [dictObject objectForKey:@"password"];//  登录密码
+//            //            mode.payPassword = [dictObject objectForKey:@"payPassword"];//    支付密码
+//            mode.firstName = [dictObject objectForKey:@"firstName"];//   first name
+//            mode.lastName = [dictObject objectForKey:@"lastName"];//   last name
+//            NSNumber * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
+//            mode.birthday = [birthdayNum stringValue];
+//            mode.gender = [dictObject objectForKey:@"gender"];//       MALE:男，FEMALE:女
+//            mode.postCode = [dictObject objectForKey:@"postCode"];//   Post Code inviteCode
+//            mode.EmailStr = [dictObject objectForKey:@"email"];//   email
+//            mode.inviteCode = [dictObject objectForKey:@"inviteCode"];//       我填写的邀请码
+//            mode.myInviteCode = [dictObject objectForKey:@"myInviteCode"];//       我的邀请码
+//            mode.headImageUrl = [dictObject objectForKey:@"headImageUrl"];
+//            mode.payPassword = [dictObject objectForKey:@"payPassword"];
+//            ////个人中心需要用到积分
+//            NSDictionary * wallet = [dictObject objectForKey:@"wallet"];
+//            NSNumber * ba = [wallet objectForKey:@"balance"];
+//            NSNumber * credit = [wallet objectForKey:@"credit"];
+//            NSNumber * coupon = [dictObject objectForKey:@"couponCount"];
+//            mode.credit = [credit stringValue];
+//            mode.balance = [ba stringValue];
+//            mode.couponCount = [coupon stringValue];
+//            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+//            //存储到NSUserDefaults（转NSData存）
+//            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: mode];
+//
+//            [defaults setObject:data forKey:@"SaveUserMode"];
+//            [defaults synchronize];
+//            [jiamiStr base64Data_encrypt:mode.yonghuID];
+//            [self updateFri];
+//        }
+//        }else
+//        {
+//            [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
+//        }
+//
+//    } failure:^(NSInteger statusCode, NSError *error) {
+//        NSLog(@"3333   %@",error);
+//        [HudViewFZ HiddenHud];
+//        if(statusCode==401)
+//        {
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+//            //创建一个消息对象
+//            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
+//            //发送消息
+//            [[NSNotificationCenter defaultCenter]postNotification:notice];
+//
+//        }else{
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+//
+//        }
+//    }];
+//}
+
 -(void)sendInviteCode:(NSString *)inviteCode
 {
     
     NSDictionary *dict = @{@"inviteCode":inviteCode
                            };
     NSLog(@"dict ====%@",dict);
-    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,Post_inviteCodeSend] parameters:dict progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_PostInviteCode] parameters:dict progress:^(id progress) {
         NSLog(@"111  %@",progress);
     } Success:^(NSInteger statusCode,id responseObject) {
         [HudViewFZ HiddenHud];
         NSLog(@"responseObject = %@",responseObject);
         NSDictionary * dictObject=(NSDictionary *)responseObject;
-        NSString *errorMessage = [dictObject objectForKey:@"errorMessage"];
+        NSString *errorMessage = [dictObject objectForKey:@"result"];
 //        NSNumber *statusCode1 = [dictObject objectForKey:@"statusCode"];
-        if(errorMessage==nil)
-        {
-        
+
         if(statusCode==200)
         {
+            [self getToken];
             
-            
-//            [HudViewFZ showMessageTitle:errorMessage andDelay:2.5];
-            //            用来储存用户信息
-            
-            SaveUserIDMode * mode = [[SaveUserIDMode alloc] init];
-            
-            mode.phoneNumber = [dictObject objectForKey:@"phoneNumber"];//   手机号码
-            mode.loginName = [dictObject objectForKey:@"loginName"];//   与手机号码相同
-            mode.yonghuID = [dictObject objectForKey:@"id"]; ////用户ID
-            //            mode.randomPassword = [dictObject objectForKey:@"randomPassword"];//  验证码
-            //            mode.password = [dictObject objectForKey:@"password"];//  登录密码
-            //            mode.payPassword = [dictObject objectForKey:@"payPassword"];//    支付密码
-            mode.firstName = [dictObject objectForKey:@"firstName"];//   first name
-            mode.lastName = [dictObject objectForKey:@"lastName"];//   last name
-            NSNumber * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
-            mode.birthday = [birthdayNum stringValue];
-            mode.gender = [dictObject objectForKey:@"gender"];//       MALE:男，FEMALE:女
-            mode.postCode = [dictObject objectForKey:@"postCode"];//   Post Code inviteCode
-            mode.EmailStr = [dictObject objectForKey:@"email"];//   email
-            mode.inviteCode = [dictObject objectForKey:@"inviteCode"];//       我填写的邀请码
-            mode.myInviteCode = [dictObject objectForKey:@"myInviteCode"];//       我的邀请码
-            mode.headImageUrl = [dictObject objectForKey:@"headImageUrl"];
-            mode.payPassword = [dictObject objectForKey:@"payPassword"];
-            ////个人中心需要用到积分
-            NSDictionary * wallet = [dictObject objectForKey:@"wallet"];
-            NSNumber * ba = [wallet objectForKey:@"balance"];
-            NSNumber * credit = [wallet objectForKey:@"credit"];
-            NSNumber * coupon = [dictObject objectForKey:@"couponCount"];
-            mode.credit = [credit stringValue];
-            mode.balance = [ba stringValue];
-            mode.couponCount = [coupon stringValue];
-            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-            //存储到NSUserDefaults（转NSData存）
-            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: mode];
-            
-            [defaults setObject:data forKey:@"SaveUserMode"];
-            [defaults synchronize];
-            [jiamiStr base64Data_encrypt:mode.yonghuID];
-            [self updateFri];
-        }
         }else
         {
             [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
@@ -463,14 +516,119 @@
     }];
 }
 
+-(void)getToken
+{
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    NSString * tokenStr = [userDefaults objectForKey:@"Token"];
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_GetToken] parameters:nil progress:^(id progress) {
+        //        NSLog(@"请求成功 = %@",progress);
+    } success:^(id responseObject) {
+        NSLog(@"111responseObject = %@",responseObject);
+        [HudViewFZ HiddenHud];
+        NSDictionary * dictObject=(NSDictionary *)responseObject;
+        NSNumber * statusCode =[dictObject objectForKey:@"statusCode"];
+        
+        
+        if([statusCode intValue] ==401)
+        {
+            
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setObject:@"1" forKey:@"Token"];
+            [userDefaults setObject:@"1" forKey:@"phoneNumber"];
+            [userDefaults setObject:nil forKey:@"SaveUserMode"];
+            [userDefaults setObject:@"1" forKey:@"logCamera"];
+            //    [defaults synchronize];
+            
+        }else if([statusCode intValue] ==500)
+        {
+            NSString * errorMessage =[dictObject objectForKey:@"errorMessage"];;
+            [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
+        }else{
+            NSString*tokenStr = [dictObject objectForKey:@"token"];
+            NSString*phoneNumberStr = [dictObject objectForKey:@"mobile"];
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setObject:tokenStr forKey:@"Token"];
+            [userDefaults setObject:phoneNumberStr forKey:@"phoneNumber"];
+            [userDefaults setObject:@"2" forKey:@"logCamera"];
+            [[NSUserDefaults standardUserDefaults] setObject:@"100" forKey:@"TokenError"];
+            //            NSString * IDStr = [dictObject objectForKey:@"id"];
+            NSDictionary * wallet = [dictObject objectForKey:@"wallet"];
+            NSNumber * ba = [wallet objectForKey:@"balance"];
+            NSString * balanceStr =[ba stringValue];
+            //            NSString * currencyUnitStr = [wallet objectForKey:@"currencyUnit"];
+            //            self.currencyUnitStr = [cur stringValue];
+            NSNumber * credit = [wallet objectForKey:@"credit"];
+            NSString * creditStr = [credit stringValue];
+            NSNumber * coupon = [dictObject objectForKey:@"couponCount"];
+            NSString *couponCountStr = [coupon stringValue];
+            //            用来储存用户信息
+            
+            SaveUserIDMode * mode = [[SaveUserIDMode alloc] init];
+            
+            mode.phoneNumber = [dictObject objectForKey:@"mobile"];//   手机号码
+            mode.loginName = [dictObject objectForKey:@"username"];//   与手机号码相同
+            mode.yonghuID = [dictObject objectForKey:@"memberId"]; ////用户ID
+            //            mode.randomPassword = [dictObject objectForKey:@"randomPassword"];//  验证码
+            //            mode.password = [dictObject objectForKey:@"password"];//  登录密码
+            //            mode.payPassword = [dictObject objectForKey:@"payPassword"];//    支付密码
+            mode.firstName = [dictObject objectForKey:@"firstName"];//   first name
+            mode.lastName = [dictObject objectForKey:@"lastName"];//   last name
+            NSString * birthdayNum = [dictObject objectForKey:@"birthday"];//   生日 8位纯数字，格式:yyyyMMdd 例如：19911012
+            if(![birthdayNum isEqual:[NSNull null]])
+            {
+//                mode.birthday = [birthdayNum ];;
+                NSInteger num = [birthdayNum integerValue];
+                NSNumber * nums = @(num);
+                mode.birthday = [nums stringValue];;
+            }
+            mode.gender = [dictObject objectForKey:@"gender"];//       MALE:男，FEMALE:女
+            mode.postCode = [dictObject objectForKey:@"postCode"];//   Post Code inviteCode
+            mode.EmailStr = [dictObject objectForKey:@"email"];//   email
+            mode.inviteCode = [dictObject objectForKey:@"inviteCode"];//       我填写的邀请码
+            mode.myInviteCode = [dictObject objectForKey:@"myInviteCode"];//       我的邀请码
+            mode.headImageUrl = [dictObject objectForKey:@"headImageId"];
+            mode.payPassword = [dictObject objectForKey:@"payPassword"];
+            ////个人中心需要用到积分
+            mode.credit = creditStr;
+            mode.balance = balanceStr;
+            mode.couponCount = couponCountStr;
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            //存储到NSUserDefaults（转NSData存）
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: mode];
+             NSLog(@"测试断点5555");
+            [defaults setObject:data forKey:@"SaveUserMode"];
+            [defaults synchronize];
+            [jiamiStr base64Data_encrypt:mode.yonghuID];
+            [self updateFri];
+        }
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ HiddenHud];
+        if(statusCode==401)
+        {
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+            //创建一个消息对象
+            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
+            //发送消息
+            [[NSNotificationCenter defaultCenter]postNotification:notice];
+            
+        }else{
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+            
+        }
+    }];
+}
+
+
+
 -(void)updateFri
 {
     NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
     self.ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     [self setTouch:101];
-    if(self.ModeUser.inviteCode == nil)
+    if([self.ModeUser.inviteCode isEqual:[NSNull null]])
     {
-        
+        Friends.InpurBtn.hidden=NO;
     }else
     {
         Friends.InpurBtn.hidden=YES;

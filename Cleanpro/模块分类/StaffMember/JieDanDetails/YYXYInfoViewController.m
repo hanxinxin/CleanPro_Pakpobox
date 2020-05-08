@@ -55,6 +55,8 @@
     [self.arrayTitle addObject:@"Address"];
     [self.arrayTitle addObject:@"Phone"];
 //    [self.arrayTitle addObject:@"0"];
+    if(![self.ModeZ.logisticsType isEqual:[NSNull null]])
+    {
     if([self.ModeZ.logisticsType isEqualToString:@"DOORSTEP_DELIVERY"])
     {
         
@@ -71,6 +73,7 @@
             
         }
     }
+    }
     if([userIdStr isEqualToString:@"1"])
     {
         
@@ -83,6 +86,19 @@
     {
         
         [self.RightarrayTitle addObject:self.ModeZ.orderNumber];
+//        if([self.ModeZ.itemsName isEqualToString:@"5P"])
+//        {
+//            [self.RightarrayTitle addObject:@"L"];
+//        }else if([self.ModeZ.itemsName isEqualToString:@"10P"])
+//        {
+//           [self.RightarrayTitle addObject:@"XL"];
+//        }else if([self.ModeZ.itemsName isEqualToString:@"10P/5P"])
+//        {
+//            [self.RightarrayTitle addObject:[NSString stringWithFormat:@"L/%@",@"XL"]];
+//        }else if([self.ModeZ.itemsName isEqualToString:@"5P/10P"])
+//        {
+//            [self.RightarrayTitle addObject:[NSString stringWithFormat:@"L/%@",@"XL"]];
+//        }
         [self.RightarrayTitle addObject:self.ModeZ.itemsName];
         NSString * Qtystr=@"0";
         for (int i =0; i<self.ModeZ.ordersItems.count; i++) {
@@ -103,6 +119,8 @@
         [self.RightarrayTitle addObject:self.ModeZ.status];
         [self.RightarrayTitle addObject:self.ModeZ.recipientName];
 //        [self.RightarrayTitle addObject:self.ModeZ.recipientAddress];
+        if(![self.ModeZ.logisticsType isEqual:[NSNull null]])
+        {
                 if([self.ModeZ.logisticsType isEqualToString:@"DOORSTEP_DELIVERY"])
                 {
                     [self.RightarrayTitle addObject:self.ModeZ.recipientAddress];
@@ -117,7 +135,10 @@
                         [self.RightarrayTitle addObject:self.ModeZ.siteName];
                     }
                 }
+        }
         [self.RightarrayTitle addObject:self.ModeZ.recipientPhoneNumber];
+        if(![self.ModeZ.logisticsType isEqual:[NSNull null]])
+        {
                 if([self.ModeZ.logisticsType isEqualToString:@"DOORSTEP_DELIVERY"])
                 {
                     [self.RightarrayTitle addObject:self.ModeZ.recipientAddress];
@@ -132,6 +153,7 @@
                         [self.RightarrayTitle addObject:self.ModeZ.siteName];
                     }
                 }
+       
         if([self.ModeZ.logisticsType isEqualToString:@"DOORSTEP_DELIVERY"])
         {
         }else if([self.ModeZ.logisticsType isEqualToString:@"SELF_PICKUP"])
@@ -144,6 +166,7 @@
                 }
             }else
             {}
+        }
         }
         
     }

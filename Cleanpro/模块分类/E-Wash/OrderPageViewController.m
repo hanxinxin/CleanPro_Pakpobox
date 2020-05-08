@@ -175,11 +175,34 @@
             productsMode * modeP=mode.Mode;
             if(i==0)
             {
-                str=[NSString stringWithFormat:@"%@",modeP.productName];
+                 str=[NSString stringWithFormat:@"%@",modeP.productName];
             }else
             {
-                str=[NSString stringWithFormat:@"%@/%@",str,modeP.productName];
+                 str=[NSString stringWithFormat:@"%@/%@",str,modeP.productName];
             }
+            /* //屏蔽自己做的适配
+            if(i==0)
+            {
+                if([modeP.productName isEqualToString:@"5 Pound"])
+                {
+                    str=[NSString stringWithFormat:@"%@",@"L"];
+                }else if([modeP.productName isEqualToString:@"10 Pound"])
+                {
+                    str=[NSString stringWithFormat:@"%@",@"XL"];
+                }
+                
+            }else
+            {
+                if([modeP.productName isEqualToString:@"5 Pound"])
+                {
+                    str=[NSString stringWithFormat:@"%@/%@",str,@"L"];
+                }else if([modeP.productName isEqualToString:@"10 Pound"])
+                {
+                    str=[NSString stringWithFormat:@"%@/%@",str,@"XL"];
+                }
+                
+            }
+            */
             
         }
         cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",str];

@@ -15,6 +15,7 @@
 #import "ExistingPayViewController.h"
 #import "ZGQActionSheetView.h"
 #import "EwashMyViewController.h"
+#import "NewLoginViewController.h"
 
 @interface SettingViewController ()<UITableViewDelegate,UITableViewDataSource,ZGQActionSheetViewDelegate>
 @property (nonatomic,strong)NSArray * arrtitle;
@@ -34,9 +35,13 @@
     }
     self.edgesForExtendedLayout = UIRectEdgeTop;
     
-    
-//    arrtitle=@[FGGetStringWithKeyFromTable(@"Payment Setting", @"Language"),FGGetStringWithKeyFromTable(@"Language", @"Language"),FGGetStringWithKeyFromTable(@"Version", @"Language"),FGGetStringWithKeyFromTable(@"Contact us", @"Language")];
-    arrtitle=@[FGGetStringWithKeyFromTable(@"Language", @"Language"),FGGetStringWithKeyFromTable(@"Version", @"Language")];
+    if([userIdStr isEqualToString:@"1"])
+        {
+            arrtitle=@[FGGetStringWithKeyFromTable(@"Payment Setting", @"Language"),FGGetStringWithKeyFromTable(@"Language", @"Language"),FGGetStringWithKeyFromTable(@"Version", @"Language"),FGGetStringWithKeyFromTable(@"Contact us", @"Language")];
+        }else
+        {
+            arrtitle=@[FGGetStringWithKeyFromTable(@"Language", @"Language"),FGGetStringWithKeyFromTable(@"Version", @"Language")];
+        }
 //    [self addsetTableView];
     [self.NextSetp setTitle:FGGetStringWithKeyFromTable(@"Log out", @"Language") forState:(UIControlStateNormal)];
     [self.navigationController.navigationBar setTranslucent:NO];
@@ -66,7 +71,7 @@
     }
     
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]}];
-//
+    [self Get_existPassword];
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.translucent = YES;
 }
@@ -82,6 +87,56 @@
     [super viewWillDisappear:animated];
 }
 
+
+-(void)Get_existPassword
+{
+    
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_existPassword] parameters:nil progress:^(id progress) {
+        //        NSLog(@"请求成功 = %@",progress);
+    } success:^(id responseObject) {
+        NSLog(@"existPassword = %@",responseObject);
+        [HudViewFZ HiddenHud];
+        NSDictionary * dictObject=(NSDictionary *)responseObject;
+        NSNumber * result =[dictObject objectForKey:@"result"];
+        if([result integerValue]==0)
+        {
+            NSData * data1 =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+            SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+            ModeUser.payPassword=@"";
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                       //存储到NSUserDefaults（转NSData存）
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: ModeUser];
+            [defaults setObject:data forKey:@"SaveUserMode"];
+            [defaults synchronize];
+        }else{
+            NSData * data1 =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+            SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+            ModeUser.payPassword=@"6666";
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                       //存储到NSUserDefaults（转NSData存）
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: ModeUser];
+            [defaults setObject:data forKey:@"SaveUserMode"];
+            [defaults synchronize];
+        }
+    }failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ HiddenHud];
+        if(statusCode==401)
+        {
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+//            [self Logout_touch:nil];
+            //创建一个消息对象
+            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
+            //发送消息
+            [[NSNotificationCenter defaultCenter]postNotification:notice];
+            
+        }else{
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+            
+        }
+    }];
+        
+}
 -(void)addsetTableView
 {
     self.tableView.hidden = NO;
@@ -132,13 +187,13 @@
 
 #pragma mark -------- Tableview -------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return arrtitle.count;
-//    return 1;
+//    return arrtitle.count;
+    return 1;
 }
 //4、设置组数
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
-//    return arrtitle.count;
+//    return 1;
+    return arrtitle.count;
 }
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -155,7 +210,23 @@
     [cell.contentView addSubview:lbl];
     //cell选中效果
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    /*
+    if(![userIdStr isEqualToString:@"1"])
+    {
+       
+        if(indexPath.section == 0)
+        {
+            cell.textLabel.text = [arrtitle objectAtIndex:indexPath.section];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }else if(indexPath.section==1)
+        {
+        cell.textLabel.text = [arrtitle objectAtIndex:indexPath.section];
+        NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary];
+        // app版本
+        NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+        [cell.detailTextLabel setText:app_Version];
+        [cell.detailTextLabel setTextColor:[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0]];
+        }
+    }else{
     if(indexPath.section == 0)
     {
         
@@ -195,20 +266,20 @@
         cell.textLabel.text = [arrtitle objectAtIndex:indexPath.section];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
     }
-*/
-    if(indexPath.row==0)
-    {
-        cell.textLabel.text = [arrtitle objectAtIndex:indexPath.row];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
-    }else if(indexPath.row==1)
-    {
-        cell.textLabel.text = [arrtitle objectAtIndex:indexPath.row];
-        NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary];
-        // app版本
-        NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
-        [cell.detailTextLabel setText:app_Version];
-        [cell.detailTextLabel setTextColor:[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0]];
     }
+//    if(indexPath.row==0)
+//    {
+//        cell.textLabel.text = [arrtitle objectAtIndex:indexPath.row];
+//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
+//    }else if(indexPath.row==1)
+//    {
+//        cell.textLabel.text = [arrtitle objectAtIndex:indexPath.row];
+//        NSDictionary * infoDictionary = [[NSBundle mainBundle] infoDictionary];
+//        // app版本
+//        NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+//        [cell.detailTextLabel setText:app_Version];
+//        [cell.detailTextLabel setTextColor:[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0]];
+//    }
      NSLog(@"%ld",(long)indexPath.row);
 //    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
     cell.textLabel.textColor = [UIColor darkGrayColor];
@@ -248,62 +319,75 @@
 //选中时 调用的方法
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    /*
-    NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"];
-    if(indexPath.section==0)
+    if(![userIdStr isEqualToString:@"1"])
     {
-        if([strPhoen isEqualToString:@"1"])
+        if(indexPath.section==0)
         {
-            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            LoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"LoginViewController"];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
-        }else
-        {
-        NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
-        SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-        if([ModeUser.payPassword isEqualToString:@""] && ModeUser.payPassword != nil)
-        {
-            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            newPhoneViewController *vc=[main instantiateViewControllerWithIdentifier:@"newPhoneViewController"];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
-        }else
-        {
-            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            ExistingPayViewController *vc=[main instantiateViewControllerWithIdentifier:@"ExistingPayViewController"];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
+            NSArray *optionArray = @[FGGetStringWithKeyFromTable(@"English", @"Language")];
+            ZGQActionSheetView *sheetView = [[ZGQActionSheetView alloc] initWithOptions:optionArray];
+            sheetView.tag=202;
+            sheetView.delegate = self;
+            [sheetView show];
         }
-        }
-    }else if(indexPath.section==1)
+//        else if(indexPath.section==1)
+//        {
+//            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//            ContactViewController *vc=[main instantiateViewControllerWithIdentifier:@"ContactViewController"];
+//            vc.hidesBottomBarWhenPushed = YES;
+//            [self.navigationController pushViewController:vc animated:YES];
+//        }
+        
+    }else
     {
-        NSArray *optionArray = @[FGGetStringWithKeyFromTable(@"English", @"Language"),FGGetStringWithKeyFromTable(@"Malay", @"Language"),FGGetStringWithKeyFromTable(@"Thai", @"Language"),FGGetStringWithKeyFromTable(@"Chinese", @"Language")];
-        ZGQActionSheetView *sheetView = [[ZGQActionSheetView alloc] initWithOptions:optionArray];
-        sheetView.tag=202;
-        sheetView.delegate = self;
-        [sheetView show];
-    }else if(indexPath.section==2)
-    {
-//        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        ContactViewController *vc=[main instantiateViewControllerWithIdentifier:@"ContactViewController"];
-//        vc.hidesBottomBarWhenPushed = YES;
-//        [self.navigationController pushViewController:vc animated:YES];
-    }else if(indexPath.section==3)
-    {
-        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        ContactViewController *vc=[main instantiateViewControllerWithIdentifier:@"ContactViewController"];
-        vc.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-     */
-    if(indexPath.row==0)
-    {
-        NSArray *optionArray = @[FGGetStringWithKeyFromTable(@"English", @"Language")];
-        ZGQActionSheetView *sheetView = [[ZGQActionSheetView alloc] initWithOptions:optionArray];
-        sheetView.tag=202;
-        sheetView.delegate = self;
-        [sheetView show];
+        NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"];
+            if(indexPath.section==0)
+            {
+                if([strPhoen isEqualToString:@"1"])
+                {
+                    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    NewLoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewLoginViewController"];
+                    vc.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }else
+                {
+                NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+                SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+                if([ModeUser.payPassword isEqualToString:@""] && ModeUser.payPassword != nil)
+                {
+                    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    newPhoneViewController *vc=[main instantiateViewControllerWithIdentifier:@"newPhoneViewController"];
+                    vc.hidesBottomBarWhenPushed = YES;
+                    vc.index=1;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }else
+                {
+                    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    ExistingPayViewController *vc=[main instantiateViewControllerWithIdentifier:@"ExistingPayViewController"];
+                    vc.index=3;//
+                    vc.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                }
+            }else if(indexPath.section==1)
+            {
+                NSArray *optionArray = @[FGGetStringWithKeyFromTable(@"English", @"Language"),FGGetStringWithKeyFromTable(@"Malay", @"Language"),FGGetStringWithKeyFromTable(@"Thai", @"Language"),FGGetStringWithKeyFromTable(@"Chinese", @"Language")];
+                ZGQActionSheetView *sheetView = [[ZGQActionSheetView alloc] initWithOptions:optionArray];
+                sheetView.tag=202;
+                sheetView.delegate = self;
+                [sheetView show];
+            }else if(indexPath.section==2)
+            {
+        //        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        //        ContactViewController *vc=[main instantiateViewControllerWithIdentifier:@"ContactViewController"];
+        //        vc.hidesBottomBarWhenPushed = YES;
+        //        [self.navigationController pushViewController:vc animated:YES];
+            }else if(indexPath.section==3)
+            {
+                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                ContactViewController *vc=[main instantiateViewControllerWithIdentifier:@"ContactViewController"];
+                vc.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
     }
 }
 
@@ -334,7 +418,24 @@
              NSLog(@"中文");
             [Change setNewLanguage:CNS];
         }
+        [self updateViewController];
     }
 }
-
+-(void)updateViewController
+{
+    NSNotification *notification =[NSNotification notificationWithName:@"UIshuaxinLog" object: nil];
+    //通过通知中心发送通知
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+    for (UIViewController *temp in self.navigationController.viewControllers) {
+        if ([temp isKindOfClass:[MyAccountViewController class]]) {
+            [self.navigationController popToViewController:temp animated:YES];
+        }
+    }
+    for (UIViewController *temp in self.navigationController.viewControllers) {
+        if ([temp isKindOfClass:[EwashMyViewController class]]) {
+            [self.navigationController popToViewController:temp animated:YES];
+        }
+    }
+    
+}
 @end

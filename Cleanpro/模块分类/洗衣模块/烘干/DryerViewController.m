@@ -21,6 +21,7 @@
 //    NewAddTimeView * CenterView;
 }
 @property (nonatomic ,strong)NSMutableArray * arrPrice;
+@property (nonatomic ,strong)NSMutableArray * SPArray;
 
 @property (nonatomic ,strong)NSString * MoRen_time_str;
 @property (nonatomic ,strong)NSString * Price_str;
@@ -29,7 +30,7 @@
 @end
 
 @implementation DryerViewController
-@synthesize TimeTeger,morenTimeSj;
+@synthesize TimeTeger,morenTimeSj,timeJiaJian;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -40,11 +41,13 @@
     self.pay_btn.layer.cornerRadius=4;
     order_c=[[CreateOrder alloc] init];
     self.arrPrice=[NSMutableArray arrayWithCapacity:0];
+    self.SPArray=[NSMutableArray arrayWithCapacity:0];
     self.machine_label.text=[NSString stringWithFormat:@"%@",self.arrayList[1]];
     order_c.machine_no=[NSString stringWithFormat:@"%@#%@",self.arrayList[0],self.arrayList[1]];
     
     order_c.client_type=@"IOS";
     order_c.order_type=self.arrayList[2];;
+    timeJiaJian=0;
 //    self.TimeTeger = 23;
 //    order_c.goods_info=@"temperature";
     [self setTimeLabel_text:0];
@@ -104,6 +107,28 @@
        }  
     [super viewWillAppear:animated];
 }
+-(void)viewWillDisappear:(BOOL)animated {
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];
+    backBtn.title = FGGetStringWithKeyFromTable(@"", @"Language");
+    //    [backBtn setImage:[UIImage imageNamed:@"icon_back_black"]];
+    self.navigationItem.backBarButtonItem = backBtn;
+    
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    NSArray *viewControllers = self.navigationController.viewControllers;
+        if (viewControllers.count > 1 && [viewControllers objectAtIndex:viewControllers.count-2] == self) {
+            //push
+        } else if ([viewControllers indexOfObject:self] == NSNotFound) {
+            //pop
+            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+            [appDelegate.ManagerBLE closeConnected];
+            [appDelegate hiddenFCViewNO];
+        }
+
+    [super viewWillDisappear:animated];
+    
+}
+
+
 -(void)zuwang:(NSString*)contentStr
 {
 //    [Manager.inst checkConnect];
@@ -231,11 +256,181 @@
     vc.addrStr = self.addrStr;
     vc.OrderAndRenewal = self.OrderAndRenewal;
     vc.OrderIdTime=self.OrderIdTime;
+    vc.siteIdStr= self.siteIdStr;
+    vc.timeTotal=TimeTeger;
     vc.NewOrderType=1;///洗衣
+    vc.arrPrice=self.arrPrice;
+    vc.SPArray=self.SPArray;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+-(void)getPriceMache
+{
+    [HudViewFZ labelExample:self.view];
+    __block DryerViewController *  blockSelf = self;
+    [blockSelf.arrPrice removeAllObjects];
+    NSLog(@"URL=== %@",[NSString stringWithFormat:@"%@%@%@",E_FuWuQiUrl,E_Getquery,self.siteIdStr]);
+    NSString *escapedPathURL = [[NSString stringWithFormat:@"%@%@%@",E_FuWuQiUrl,E_Getquery,self.siteIdStr] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    
+    NSLog(@"URL=== %@",escapedPathURL);
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL:escapedPathURL parameters:nil progress:^(id progress) {
+        
+    } success:^(id responseObject) {
+        NSLog(@"E_Getquery=  %@",responseObject);
+//        NSDictionary * dictA=(NSDictionary *)responseObject;
+        NSArray * dictArr= (NSArray*)responseObject;
+        for (int Q=0; Q<dictArr.count; Q++) {
 
+        NSDictionary * dictA= (NSDictionary*)dictArr[Q];
+
+            if(dictA)
+            {
+                productsMode * ModeProducts = [[productsMode alloc] init];
+//                NSDictionary * dictA=array[i];
+                NSArray * attributeList = [dictA objectForKey:@"attributeList"];
+                NSArray * productVariantList = [dictA objectForKey:@"productVariantList"];
+                ModeProducts.productId = [dictA objectForKey:@"productId"];
+                ModeProducts.productName = [dictA objectForKey:@"productName"];
+                ModeProducts.productNameEn = [dictA objectForKey:@"productNameEn"];
+                ModeProducts.serviceId = [dictA objectForKey:@"serviceId"];
+                for(int j=0;j<attributeList.count;j++)
+                {
+                    NSDictionary * dictJ=attributeList[j];
+                    attributeListsMode * mode = [[attributeListsMode alloc] init];
+                    mode.attributeType = [dictJ objectForKey:@"attributeType"];
+                    mode.name = [dictJ objectForKey:@"name"];
+                    mode.productAttributeId = [dictJ objectForKey:@"productAttributeId"];
+                    NSArray * valueList = [dictJ objectForKey:@"valueList"];
+                    NSMutableArray * ArrayMu= [NSMutableArray arrayWithCapacity:0];
+                    NSMutableArray * ArrayvalueListMode= [NSMutableArray arrayWithCapacity:0];
+                    for(int B=0;B<valueList.count;B++)
+                    {
+                        NSDictionary * dictObject=valueList[B];
+                        valueListMode * modeValue = [[valueListMode alloc] init];
+                        modeValue.productAttributeValue=[dictObject objectForKey:@"productAttributeValue"];
+                        modeValue.productAttributeValueId=[dictObject objectForKey:@"productAttributeValueId"];
+                        [ArrayvalueListMode addObject:modeValue];
+                    }
+                    mode.valueList = ArrayvalueListMode;
+                    [ArrayMu addObject:mode];
+                    ModeProducts.attributeList=ArrayMu;
+                }
+                NSMutableArray * productArrayMu= [NSMutableArray arrayWithCapacity:0];
+                for(int k=0;k<productVariantList.count;k++)
+                {
+                    NSDictionary * dictJ=productVariantList[k];
+                    NSArray * productAttributeValueIds = [dictJ objectForKey:@"productAttributeValueIds"];
+                    productVariantListMode * modeP = [[productVariantListMode alloc] init];
+                    modeP.priceValue = [dictJ objectForKey:@"priceValue"];
+                    modeP.productAttributeValueName = [dictJ objectForKey:@"productAttributeValueName"];
+                    modeP.productVariantId = [dictJ objectForKey:@"productVariantId"];
+                    NSMutableArray * ValueIds= [NSMutableArray arrayWithCapacity:0];
+                    for(int B=0;B<productAttributeValueIds.count;B++)
+                    {
+                        NSString * productAttributeValueId=productAttributeValueIds[B];
+                        [ValueIds addObject:productAttributeValueId];
+                    }
+                    modeP.productAttributeValueIds = ValueIds;
+                    [productArrayMu addObject:modeP];
+                }
+                ModeProducts.productVariantList=productArrayMu;
+                [self.arrPrice addObject:ModeProducts];
+                
+                [HudViewFZ HiddenHud];
+            }
+                
+            }
+        if(self.arrPrice.count>0)
+        {
+            if(self.OrderAndRenewal==1)
+            {
+                self.SPArray=[self SParray];
+                valueListMode * mode2 =self.SPArray[0];
+                self.Price_str=[NSString stringWithFormat:@"%.2f",[[self getPriceStr:mode2.productAttributeValueId] floatValue]];
+                self->order_c.total_amount=[NSString stringWithFormat:@"%.2f",[[self getPriceStr:mode2.productAttributeValueId] floatValue]];
+                self->morenTimeSj=[[self getPriceTimeStr:mode2.productAttributeValue] integerValue];
+                self.MoRen_time_str=[self getPriceTimeStr:mode2.productAttributeValue];
+                self->TimeTeger = self->morenTimeSj;
+                
+            }else if(self.OrderAndRenewal==2)
+            {
+                self.SPArray=[self SParray];
+                valueListMode * mode2 =self.SPArray[1];
+                self.Price_str=[NSString stringWithFormat:@"%.2f",[[self getPriceStr:mode2.productAttributeValueId] floatValue]];
+                
+                self->order_c.total_amount=[NSString stringWithFormat:@"%.2f",[[self getPriceStr:mode2.productAttributeValueId] floatValue]];
+                self->morenTimeSj=[[self getPriceTimeStr:mode2.productAttributeValue] integerValue];
+                 self.MoRen_time_str=[self getPriceTimeStr:mode2.productAttributeValue];
+                self->TimeTeger = self->morenTimeSj;
+                
+            }
+            
+        [self updateText];
+        }
+    } failure:^(NSError *error) {
+        [HudViewFZ HiddenHud];
+    }];
+}
+-(NSString*)getPriceTimeStr:(NSString*)productAttributeValue
+{
+    
+    NSString *Price = [productAttributeValue stringByReplacingOccurrencesOfString:@" mins" withString:@""];
+    return Price;
+}
+-(NSString * )getPriceStr:(NSString*)productAttributeValueId
+{
+    for (int C=0; C<self.arrPrice.count; C++) {
+        productsMode *mode=self.arrPrice[C];
+    for (int i =0 ; i<mode.productVariantList.count; i++) {
+        productVariantListMode * mode1 =mode.productVariantList[i];
+
+        for (int j =0 ; j<mode1.productAttributeValueIds.count; j++) {
+
+                NSString * strID = mode1.productAttributeValueIds[j];
+                if([strID isEqualToString:productAttributeValueId])
+                {
+                    return mode1.priceValue;
+                }
+        }
+    }
+    }
+    
+    return @"0";
+}
+
+-(NSMutableArray*)SParray
+{
+    NSMutableArray * arrTime =[NSMutableArray arrayWithCapacity:0];
+    for (int C=0; C<self.arrPrice.count; C++) {
+        productsMode *mode=self.arrPrice[C];
+    for (int i =0 ; i<mode.attributeList.count; i++) {
+        attributeListsMode * mode1 =mode.attributeList[i];
+        if([mode1.name isEqualToString:@"Dry time"])
+        {
+        for (int j =0 ; j<mode1.valueList.count; j++) {
+            valueListMode * mode2 =mode1.valueList[j];
+            
+            if(arrTime.count>0)
+            {
+                valueListMode * mode3 =arrTime[0];
+                NSString * timeStr=[self getPriceTimeStr:mode2.productAttributeValue];
+                NSString * timeStr1=[self getPriceTimeStr:mode3.productAttributeValue];
+                if(([timeStr integerValue])>([timeStr1 integerValue]))
+                {
+                    [arrTime insertObject:mode2 atIndex:0];
+                }else{
+                    [arrTime addObject:mode2];
+                }
+            }else{
+                [arrTime addObject:mode2];
+            }
+        }
+        }
+    }
+    }
+    return arrTime;
+}
+/*
 -(void)getPriceMache
 {
     [HudViewFZ labelExample:self.view];
@@ -309,9 +504,15 @@
     }];
 
 }
+ */
+
 
 -(void)updateText
 {
+    
+    
+    valueListMode * mode2 =self.SPArray[1];
+    timeJiaJian=[[self getPriceTimeStr:mode2.productAttributeValue] integerValue];
     [self setmoney_label_text:[self.Price_str floatValue]];
     [self setTimeLabel_text:morenTimeSj];
     
@@ -330,7 +531,7 @@
         [self setbtn_jia_yes];
     }else
     {
-        TimeTeger-=5;
+        TimeTeger-=timeJiaJian;
         if(TimeTeger==morenTimeSj)
         {
             [self setbtn_jian_NO];
@@ -346,7 +547,7 @@
 - (IBAction)Jia_Min_touch:(id)sender {
     if(TimeTeger<200)
     {
-        TimeTeger+=5;
+        TimeTeger+=timeJiaJian;
 //        [self setbtn_jia_yes];
         if(TimeTeger<200)
         {
@@ -369,9 +570,11 @@
 
 -(void)setMoneyInt:(NSInteger)TimeTeger
 {
-    int money_s = (int)(TimeTeger-[self.MoRen_time_str integerValue])/[self.continue_value_str intValue];
+//    int money_s = (int)(TimeTeger-[self.MoRen_time_str integerValue])/[self.continue_value_str intValue];
+    valueListMode * mode2 =self.SPArray[1];
+    int money_s = (int)(TimeTeger-[self.MoRen_time_str integerValue])/timeJiaJian;
      NSLog(@"money_s=   %d",money_s);
-    float money_float = [self.Price_str floatValue]+(money_s*[self.continue_price_str floatValue]);
+    float money_float = [self.Price_str floatValue]+(money_s*[[self getPriceStr:mode2.productAttributeValueId] floatValue]);
     NSLog(@"money_float=   %f",money_float);
     [self setmoney_label_text:money_float];
 }
