@@ -107,13 +107,13 @@ static BOOL selectOne_two=NO;
             upperGradeOneMode * mode3=Selectarray[Selectarray.count-1];
             upperGradeOneMode * mode2 = [self JXGradeMode:mode3.upperGrade];
             upperGradeOneMode * mode1 = [self JXGradeMode:mode2.upperGrade];
-            upperGradeOneMode * mode0 = [self JXGradeMode:mode2.upperGrade];
+            upperGradeOneMode * mode0 = [self JXGradeMode:mode1.upperGrade];
             [self.OneArray addObject:mode0];
             [self.OneArray addObject:mode1];
             [self.OneArray addObject:mode2];
             [self.OneArray addObject:mode3];
             [self setTableviewFrame];
-            [self Get_AddressSelectList:nil parentIdStr:mode3.districtId index:0];
+            [self Get_AddressSelectList:nil parentIdStr:mode2.districtId index:0];
         }else if(Selectarray.count==3)
         {
             ASelect=2;
@@ -124,7 +124,7 @@ static BOOL selectOne_two=NO;
             [self.OneArray addObject:mode2];
             [self.OneArray addObject:mode3];
             [self setTableviewFrame];
-            [self Get_AddressSelectList:nil parentIdStr:mode3.districtId index:0];
+            [self Get_AddressSelectList:nil parentIdStr:mode2.districtId index:0];
         }
     }
 }
@@ -279,13 +279,17 @@ static BOOL selectOne_two=NO;
         [HudViewFZ HiddenHud];
        if(responseObject!=nil)
        {
-           [self.ArrayCity removeAllObjects];
+          
+           NSArray * array = (NSArray *)responseObject;
+           if(array.count>0)
+           {
+                [self.ArrayCity removeAllObjects];
         if(self->ASelect==0)
         {
-            NSArray * arrayZong = (NSArray *)responseObject;
+//            NSArray * array = (NSArray *)responseObject;
             NSMutableArray * KBArray = [NSMutableArray arrayWithCapacity:0];
-           for (int i =0; i<arrayZong.count; i++) {
-               NSDictionary * dict =arrayZong[i];
+           for (int i =0; i<array.count; i++) {
+               NSDictionary * dict =array[i];
                upperGradeOneMode*mode = [self JXGradeMode:dict];
                [KBArray addObject:mode];
            }
@@ -293,7 +297,7 @@ static BOOL selectOne_two=NO;
         }else if(self->ASelect==1)
         {
             NSMutableArray * Muarray = [NSMutableArray arrayWithCapacity:0];
-            NSArray * array = (NSArray *)responseObject;
+//            NSArray * array = (NSArray *)responseObject;
             for (int i =0 ; i<array.count; i++) {
                 NSDictionary * dict = array[i];
                 upperGradeOneMode*modeT = [self JXGradeMode:dict];
@@ -303,7 +307,7 @@ static BOOL selectOne_two=NO;
         }else if(self->ASelect==2)
         {
             NSMutableArray * Muarray3 = [NSMutableArray arrayWithCapacity:0];
-            NSArray * array = (NSArray *)responseObject;
+//            NSArray * array = (NSArray *)responseObject;
             for (int i =0 ; i<array.count; i++) {
                 NSDictionary * dict3 = array[i];
                 upperGradeOneMode*mode3 = [self JXGradeMode:dict3];
@@ -313,7 +317,7 @@ static BOOL selectOne_two=NO;
         }else if(self->ASelect==3)
         {
             NSMutableArray * Muarray3 = [NSMutableArray arrayWithCapacity:0];
-            NSArray * array = (NSArray *)responseObject;
+//            NSArray * array = (NSArray *)responseObject;
             for (int i =0 ; i<array.count; i++) {
                 NSDictionary * dict3 = array[i];
                 upperGradeOneMode*mode3 = [self JXGradeMode:dict3];
@@ -323,6 +327,147 @@ static BOOL selectOne_two=NO;
         }
             [self.tableviewA reloadData];
             [self.tableviewB reloadData];
+               
+           }else{
+               
+           }
+       }
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+        [HudViewFZ HiddenHud];
+    }];
+}
+/// 根据区号获取地址 New
+-(void)Get_AddressSelectList:(NSString *)postcode parentIdStr:(NSString *)parentId index:(NSInteger)Index OneMode:(upperGradeOneMode*)modeS
+{
+    [HudViewFZ labelExample:self];
+    NSString * GetURLStr;
+    if(postcode!=nil)
+    {
+        if(parentId!=nil)
+        {
+            GetURLStr=[NSString stringWithFormat:@"%@%@?postCode=%@&upperGradeId=%@",E_FuWuQiUrl,E_getDistrict,postcode,parentId] ;
+        }else
+        {
+            GetURLStr=[NSString stringWithFormat:@"%@%@?postCode=%@",E_FuWuQiUrl,E_getDistrict,postcode];
+        }
+    }else
+    {
+        if(parentId!=nil)
+        {
+            
+            if(Index!=0)
+            {
+                
+                GetURLStr=[NSString stringWithFormat:@"%@%@?upperGradeId=%@&grade=%ld",E_FuWuQiUrl,E_getDistrict,parentId,(long)Index] ;
+            }else
+            {
+                GetURLStr=[NSString stringWithFormat:@"%@%@?upperGradeId=%@",E_FuWuQiUrl,E_getDistrict,parentId] ;
+            }
+        }else
+        {
+            if(Index!=0)
+            {
+                
+                GetURLStr=[NSString stringWithFormat:@"%@%@?grade=%ld",E_FuWuQiUrl,E_getDistrict,(long)Index] ;
+            }else
+            {
+                GetURLStr=[NSString stringWithFormat:@"%@%@?grade=3",E_FuWuQiUrl,E_getDistrict];
+            }
+        }
+    }
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:GetURLStr parameters:nil progress:^(id progress) {
+        
+    } success:^(id responseObject) {
+        NSLog(@"responseObject== %@",responseObject);
+        
+       if(responseObject!=nil)
+       {
+          
+           NSArray * array = (NSArray *)responseObject;
+           if(array.count>0)
+           {
+               [HudViewFZ HiddenHud];
+                [self.ArrayCity removeAllObjects];
+        if(self->ASelect==0)
+        {
+//            NSArray * array = (NSArray *)responseObject;
+            NSMutableArray * KBArray = [NSMutableArray arrayWithCapacity:0];
+           for (int i =0; i<array.count; i++) {
+               NSDictionary * dict =array[i];
+               upperGradeOneMode*mode = [self JXGradeMode:dict];
+               [KBArray addObject:mode];
+           }
+            self.ArrayCity = KBArray;
+        }else if(self->ASelect==1)
+        {
+            NSMutableArray * Muarray = [NSMutableArray arrayWithCapacity:0];
+//            NSArray * array = (NSArray *)responseObject;
+            for (int i =0 ; i<array.count; i++) {
+                NSDictionary * dict = array[i];
+                upperGradeOneMode*modeT = [self JXGradeMode:dict];
+                [Muarray addObject:modeT];
+            }
+            self.ArrayCity=Muarray;
+        }else if(self->ASelect==2)
+        {
+            NSMutableArray * Muarray3 = [NSMutableArray arrayWithCapacity:0];
+//            NSArray * array = (NSArray *)responseObject;
+            for (int i =0 ; i<array.count; i++) {
+                NSDictionary * dict3 = array[i];
+                upperGradeOneMode*mode3 = [self JXGradeMode:dict3];
+                [Muarray3 addObject:mode3];
+            }
+            self.ArrayCity=Muarray3;
+        }else if(self->ASelect==3)
+        {
+            NSMutableArray * Muarray3 = [NSMutableArray arrayWithCapacity:0];
+//            NSArray * array = (NSArray *)responseObject;
+            for (int i =0 ; i<array.count; i++) {
+                NSDictionary * dict3 = array[i];
+                upperGradeOneMode*mode3 = [self JXGradeMode:dict3];
+                [Muarray3 addObject:mode3];
+            }
+            if(self.OneArray.count==4)
+            {
+                upperGradeOneMode* MAA=self.OneArray[2];
+                if([MAA.grade intValue]==[modeS.grade intValue])
+                {
+                [self.OneArray replaceObjectAtIndex:2 withObject:modeS];
+                [self.OneArray removeObjectAtIndex:3];
+                }
+            }
+            self.ArrayCity=Muarray3;
+        }
+            [self.tableviewA reloadData];
+            [self.tableviewB reloadData];
+            [self setTableviewFrame];
+           }else{
+              [HudViewFZ HiddenHud];
+               if(self->ASelect==3)
+               {
+                   self->ASelect=2;
+                   if(self.OneArray.count==4)
+                   {
+                       
+                       [self.OneArray replaceObjectAtIndex:2 withObject:modeS];
+                       [self.OneArray removeObjectAtIndex:3];
+                       [self setTableviewFrame];
+                       [self.tableviewA reloadData];
+                       [self.tableviewB reloadData];
+                   }else if(self.OneArray.count==3)
+                   {
+                       [self.OneArray replaceObjectAtIndex:2 withObject:modeS];
+                       [self setTableviewFrame];
+                       [self.tableviewA reloadData];
+                       [self.tableviewB reloadData];
+                   }
+               }
+           }
+       }else
+       {
+           [HudViewFZ HiddenHud];
        }
     } failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"error = %@",error);
@@ -644,6 +789,7 @@ static BOOL selectOne_two=NO;
         }
 //        [self.tableviewA reloadData];
 //        [self.tableviewB reloadData];
+        [self setTableviewFrame];
     }else if(tableView.tag==5001)
     {
             if(ASelect==0)
@@ -664,7 +810,10 @@ static BOOL selectOne_two=NO;
                     [self Get_AddressSelectList:nil parentIdStr:mode.districtId index:0];
                 
                 }
+                [self.tableviewA reloadData];
+                [self.tableviewB reloadData];
                 selectOne_two=NO;
+                [self setTableviewFrame];
             }else if (ASelect==1)
             {
                 if(selectOne_two==YES)
@@ -689,7 +838,10 @@ static BOOL selectOne_two=NO;
                     [self Get_AddressSelectList:nil parentIdStr:mode.districtId index:0];
                      
                 }
+                [self.tableviewA reloadData];
+                [self.tableviewB reloadData];
                 selectOne_two=NO;
+                [self setTableviewFrame];
             }else if (ASelect==2)
             {
                 if(selectOne_two==YES)
@@ -701,57 +853,51 @@ static BOOL selectOne_two=NO;
                         [self.OneArray removeObjectAtIndex:3];
                     }
                     ASelect=3;
-                    [self Get_AddressSelectList:nil parentIdStr:mode.districtId index:0];
+                    [self Get_AddressSelectList:nil parentIdStr:mode.districtId index:0 OneMode:mode];
+                    selectOne_two=NO;
+                    [self.tableviewA reloadData];
+                    [self.tableviewB reloadData];
+                    [self setTableviewFrame];
                 }else
                 {
-//                    ASelect=2;
-//                    upperGradeOneMode * mode = self.ArrayCity[indexPath.row];
-//                    if(self.OneArray.count==3)
-//                    {
-//                        [self.OneArray replaceObjectAtIndex:2 withObject:mode];
-//                    }else
-//                    {
-//    //                    ThreeCityMode * mode = self.ArrayCity[indexPath.row];
-//                        [self.OneArray addObject:mode];
-//                    }
                     ASelect=3;
                     upperGradeOneMode *  mode = self.ArrayCity[indexPath.row];
                     [self.OneArray addObject:mode];
-                    [self Get_AddressSelectList:nil parentIdStr:mode.districtId index:0];
+                    [self Get_AddressSelectList:nil parentIdStr:mode.districtId index:0 OneMode:mode];
+                    selectOne_two=NO;
                 }
-                selectOne_two=NO;
+                
                 
             }else if (ASelect==3)
+            {
+                if(selectOne_two==YES)
+                {
+                    upperGradeOneMode * mode = self.ArrayCity[indexPath.row];
+                    [self.OneArray replaceObjectAtIndex:3 withObject:mode];
+                    ASelect=3;
+                }else
+                {
+                    ASelect=3;
+                    upperGradeOneMode * mode = self.ArrayCity[indexPath.row];
+                    if(self.OneArray.count==4)
                     {
-                        if(selectOne_two==YES)
-                        {
-                            upperGradeOneMode * mode = self.ArrayCity[indexPath.row];
-                           [self.OneArray replaceObjectAtIndex:3 withObject:mode];
-                            ASelect=3;
-                        }else
-                        {
-                            ASelect=3;
-                            upperGradeOneMode * mode = self.ArrayCity[indexPath.row];
-                            if(self.OneArray.count==4)
-                            {
-                                [self.OneArray replaceObjectAtIndex:3 withObject:mode];
-                            }else
-                            {
-            //                    ThreeCityMode * mode = self.ArrayCity[indexPath.row];
-                                [self.OneArray addObject:mode];
-                            }
-                        }
-                        selectOne_two=NO;
-                        
+                        [self.OneArray replaceObjectAtIndex:3 withObject:mode];
+                    }else
+                    {
+                        [self.OneArray addObject:mode];
                     }
-            [self.tableviewA reloadData];
-            [self.tableviewB reloadData];
+                }
+                selectOne_two=NO;
+                [self.tableviewA reloadData];
+                [self.tableviewB reloadData];
+                [self setTableviewFrame];
+            }
        
     }
     
     
     
-    [self setTableviewFrame];
+    
 }
 
 -(void)setTableviewFrame

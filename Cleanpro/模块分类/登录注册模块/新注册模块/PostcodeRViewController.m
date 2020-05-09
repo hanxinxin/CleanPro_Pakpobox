@@ -267,7 +267,7 @@
         upperGradeOneMode * mode3=array[array.count-1];
         upperGradeOneMode * mode2 = [self JXGradeMode:mode3.upperGrade];
         upperGradeOneMode * mode1 = [self JXGradeMode:mode2.upperGrade];
-        upperGradeOneMode * mode0 = [self JXGradeMode:mode2.upperGrade];
+        upperGradeOneMode * mode0 = [self JXGradeMode:mode1.upperGrade];
         self.AreaTextfield.text = [NSString stringWithFormat:@"%@%@%@%@",mode0.name,mode1.name,mode2.name,mode3.name];
         if(![mode3.postCode isEqual:[NSNull null]])
         {
@@ -534,11 +534,12 @@
                 if(aria!=nil)
                 {
                     upperGradeOneMode* mode3 = [self JXGradeMode:aria];
-                    upperGradeOneMode * mode2 = [self JXGradeMode:mode3.upperGrade];
-                    upperGradeOneMode * mode1 = [self JXGradeMode:mode2.upperGrade];
-                    upperGradeOneMode * mode0 = [self JXGradeMode:mode1.upperGrade];
+                   
                     if([mode3.grade intValue]==3)
                     {
+//                        upperGradeOneMode * mode2 = [self JXGradeMode:mode3.upperGrade];
+//                        upperGradeOneMode * mode1 = [self JXGradeMode:mode2.upperGrade];
+                                           
                         if([mode3.postCode isEqualToString:self.textfield.text])
                         {
                             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Address set successfully", @"Language") andDelay:2.0];
@@ -548,6 +549,9 @@
                         }
                     }else if([mode3.grade intValue]==4)
                     {
+                        upperGradeOneMode * mode2 = [self JXGradeMode:mode3.upperGrade];
+//                        upperGradeOneMode * mode1 = [self JXGradeMode:mode2.upperGrade];
+//                        upperGradeOneMode * mode0 = [self JXGradeMode:mode1.upperGrade];
                         if([mode2.postCode isEqualToString:self.textfield.text])
                         {
                             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Address set successfully", @"Language") andDelay:2.0];
