@@ -126,7 +126,7 @@
     [self.Location setText:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Outlet ", @"Language")]];
     self.LocationLabel.text=[NSString stringWithFormat:@"%@",self.Newmode.merchantName];
     [self.Machine setText:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Machine No. ", @"Language")]];
-    self.MachineLabel.text=[NSString stringWithFormat:@"%@",[self getString:self.Newmode.siteSerialNumber]];
+    self.MachineLabel.text=[NSString stringWithFormat:@"%@",[self getString:self.Newmode.siteNumber]];
     
     if([self.Newmode.siteType isEqualToString:@"DRYER"])
     {

@@ -35,10 +35,10 @@
     NSString * Message_flage = [[NSUserDefaults standardUserDefaults] objectForKey:@"Message"];
     if([Message_flage intValue]==1)
     {
-        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:3];
+        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:NotificationNumber];
     }else
     {
-        [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:3];
+        [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:NotificationNumber];
     }
 }
 - (void)dealloc {

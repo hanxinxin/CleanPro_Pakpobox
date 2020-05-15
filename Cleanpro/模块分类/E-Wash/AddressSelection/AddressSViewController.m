@@ -49,7 +49,6 @@ static int iCount=0;
 @property (nonatomic,strong)NSMutableArray *selectorPatnArray;//存放选中数据
 @property (strong, nonatomic) UIScrollView *globalScrollview; //全局滑动
 
-@property(nonatomic,strong)NSMutableArray *GetaddressArray;//address数据源
 @property(nonatomic,strong)AddressListMode *SelectAddress;//address数据源
 @property(nonatomic,strong)NSString *fileIdString;//上传图片后的地址
 @property(nonatomic,strong)NSString *AddressString;//输入的地址
@@ -77,7 +76,7 @@ static int iCount=0;
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     self.arrayTitle = [NSMutableArray arrayWithCapacity:0];
-    self.GetaddressArray=[NSMutableArray arrayWithCapacity:0];
+//    self.GetaddressArray=[NSMutableArray arrayWithCapacity:0];
     self.SelectAddress=nil;
     self.OvucherImage=nil;
     self.accessoryTypeBool=NO;
@@ -99,22 +98,45 @@ static int iCount=0;
 //    {
 //
 //    }
-    manager=[LocationManager sharedInstance];
-    manager.delegate=self;
-    [manager setStartUpdatingLocation];
+//    manager=[LocationManager sharedInstance];
+//    manager.delegate=self;
+//    [manager setStartUpdatingLocation];
     iCount=0;
     self.fileIdString=@"";
+    
+    
+    
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
         [self addglobalScrollview];
         [self addArrayT];
-        
         [self AddSTableViewUI];
         [self AddButton];
     });
+       
+    dispatch_time_t delayTime2 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
     
-    
+    dispatch_after(delayTime2, dispatch_get_main_queue(), ^{
+    if(self.SelectWay==1)///上门只需要自己填写地址
+           {
+              
+           }else if(self.SelectWay==2)///到商店需要定位显示附近商店
+           {
+               for (int i =0; i<self.GetaddressArray.count; i++) {
+                   [self.arrayTitle addObject:[NSString stringWithFormat:@"%d",i]];
+               }
+           }else if(self.SelectWay==3)///在洗衣店需要定位显示附近洗衣店
+           {
+               for (int i =0; i<self.GetaddressArray.count; i++) {
+                   [self.arrayTitle addObject:[NSString stringWithFormat:@"%d",i]];
+               }
+           }
+           self->globalScrollview.contentSize = CGSizeMake(CGRectGetWidth(self.view.frame), (self.STable.height)+50+140+100+64);
+           self.accessoryTypeBool=YES;
+           [self setBtnTouchFrame];
+           [self->_STable reloadData];
+       });
 }
 -(void)addglobalScrollview
 {
@@ -148,7 +170,7 @@ static int iCount=0;
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     self.updateNO=NO;
-    [manager setStopUpdatingLocation];
+//    [manager setStopUpdatingLocation];
     iCount=0;
     [super viewWillDisappear:animated];
 }
@@ -222,6 +244,11 @@ static int iCount=0;
                 {
                    
                 }else if(self.SelectWay==2)///到商店需要定位显示附近商店
+                {
+                    for (int i =0; i<self.GetaddressArray.count; i++) {
+                        [self.arrayTitle addObject:[NSString stringWithFormat:@"%d",i]];
+                    }
+                }else if(self.SelectWay==3)///在洗衣店需要定位显示附近洗衣店
                 {
                     for (int i =0; i<self.GetaddressArray.count; i++) {
                         [self.arrayTitle addObject:[NSString stringWithFormat:@"%d",i]];
@@ -321,7 +348,13 @@ static int iCount=0;
 {
     [self.arrayTitle addObject:@"Name"];
     [self.arrayTitle addObject:@"Phone number"];
-    [self.arrayTitle addObject:@"Choose the address of the nearest store"];
+    if(self.SelectWay==3)
+    {
+        [self.arrayTitle addObject:@"Choose the address of the nearest outlet"];
+    }else{
+        [self.arrayTitle addObject:@"Choose the address of the nearest store"];
+    }
+    
 }
 //进入编辑状态
 //[self.tableView setEditing:YES animated:YES];
@@ -355,6 +388,9 @@ static int iCount=0;
     if(self.SelectWay==2)
     {
         [self UpdateBtnStatus];
+    }else if(self.SelectWay==3)
+    {
+        [self UpdateBtnStatus];
     }
 }
 -(void)UpdateBtnStatus
@@ -380,6 +416,10 @@ static int iCount=0;
         
         _STable.frame=CGRectMake(0, 0, SCREEN_WIDTH,(2*50+110));
     }else if(self.SelectWay==2)
+    {
+        _STable.frame=CGRectMake(0, 0, SCREEN_WIDTH,(3*50+(self.arrayTitle.count-3)*80));
+        
+    }else if(self.SelectWay==3)
     {
         _STable.frame=CGRectMake(0, 0, SCREEN_WIDTH,(3*50+(self.arrayTitle.count-3)*80));
         
@@ -538,6 +578,25 @@ static int iCount=0;
         self.ConfirmBtn.hidden=YES;
         DownViewHidden=!DownViewHidden;
     }
+    }else if(self.SelectWay==3)///到商店可以上传图片
+    {
+        if(self.SelectAddress!=nil)
+        {
+        if(self.NameTextfield.text!=nil && ![self.NameTextfield.text isEqualToString:@""])
+        {
+            if(self.PhoneTextfield.text!=nil && ![self.PhoneTextfield.text isEqualToString:@""])
+            {
+                [self postOrder:3];
+            }else{
+                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Phone cannot be empty", @"Language") andDelay:2.0];
+            }
+            
+        }else{
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Name cannot be empty", @"Language") andDelay:2.0];
+        }
+        }else{
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Please select a store address", @"Language") andDelay:2.0];
+        }
     }
     
 }
@@ -740,6 +799,9 @@ static int iCount=0;
     }else if(self.SelectWay==2)
     {
         logisticsType=@"SELF_PICKUP";
+    }else if(self.SelectWay==3)
+    {
+        logisticsType=@"LAUNDRY_OUTLET";
     }
     NSDictionary *dict;
     if(SelectWayOrder==1)///上门需要上传图片
@@ -768,6 +830,16 @@ static int iCount=0;
                @"recipientPhoneNumber":self.PhoneTextfield.text,
             };
         
+    }else if(SelectWayOrder==3)///洗衣店不需要
+    {
+        dict=@{@"clientType":@"IOS",///客户端类型 IOS 苹果、ANDROID：安卓
+               @"siteId":self.SelectAddress.siteId,
+               @"items":returnArrM,
+               @"logisticsType":logisticsType,
+               @"paymentPlatform" :@"CASH_PAY",
+               @"recipientName":self.NameTextfield.text,
+               @"recipientPhoneNumber":self.PhoneTextfield.text,
+            };
     }
     NSLog(@"dict=== %@    url === %@",dict,[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_CreateOrder]);
     [HudViewFZ labelExample:self.view];
@@ -875,6 +947,16 @@ static int iCount=0;
                @"recipientName":self.NameTextfield.text,
                @"recipientPhoneNumber":self.PhoneTextfield.text,
         };
+    }else if(self.SelectWay==3)
+    {///到商店要选择地址
+        logisticsType=@"LAUNDRY_OUTLET";
+        dict=@{@"clientType":@"IOS",///客户端类型 IOS 苹果、ANDROID：安卓
+                              @"siteId":self.SelectAddress.siteId,
+                              @"items":returnArrM,
+                              @"logisticsType":logisticsType,
+               @"recipientName":self.NameTextfield.text,
+               @"recipientPhoneNumber":self.PhoneTextfield.text,
+        };
     }
 //    NSDictionary * dict=@{@"clientType":@"IOS",///客户端类型 IOS 苹果、ANDROID：安卓
 //                          @"siteId":self.SelectAddress.siteId,
@@ -956,6 +1038,12 @@ static int iCount=0;
                 }else if(SelectWayOrder==2) ///上门不需要上传图片
                 {
                     [self PostIpay88:mode.ordersId PaymentItemId:paymentItemIdsStr amount:amountStr];
+                }else if(SelectWayOrder==3) ///洗衣店不需要上传图片也不需要支付
+                {
+                    if(self->PushOrderMode!=nil)
+                    {
+                        [self pushView:self->PushOrderMode PaymentMethodStr:1];
+                    }
                 }
                 
             }
@@ -1115,7 +1203,27 @@ static int iCount=0;
         }else{
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Please select a store address", @"Language") andDelay:2.0];
         }
-    }
+    }else if(self.SelectWay==3)
+        {
+            if(self.SelectAddress!=nil)
+            {
+                
+                if(self.NameTextfield.text!=nil && ![self.NameTextfield.text isEqualToString:@""])
+                {
+                    if(self.PhoneTextfield.text!=nil && ![self.PhoneTextfield.text isEqualToString:@""])
+                    {
+                        [self postIpay88Order:2];
+                    }else{
+                        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Phone cannot be empty", @"Language") andDelay:2.0];
+                    }
+                }else{
+                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Name cannot be empty", @"Language") andDelay:2.0];
+                }
+    //            [self postOrder];
+            }else{
+                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Please select a store address", @"Language") andDelay:2.0];
+            }
+        }
     
     
 }
@@ -1192,6 +1300,10 @@ static int iCount=0;
         
         _STable.frame=CGRectMake(0, 0, SCREEN_WIDTH,(2*50+110));
     }else if(self.SelectWay==2)
+    {
+        _STable.frame=CGRectMake(0, 0, SCREEN_WIDTH,(3*50+(self.arrayTitle.count-3)*80));
+        
+    }else if(self.SelectWay==3)
     {
         _STable.frame=CGRectMake(0, 0, SCREEN_WIDTH,(3*50+(self.arrayTitle.count-3)*80));
         
@@ -1330,6 +1442,30 @@ static int iCount=0;
                        return cellOne;
                        
                    }
+        }else if(self.SelectWay==3)
+        {
+            if(indexPath.row>2)
+                   {
+                       AddressInfoTableViewCell * cellOne = (AddressInfoTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellID];
+                       if (cellOne == nil) {
+                           cellOne= (AddressInfoTableViewCell *)[[[NSBundle  mainBundle]  loadNibNamed:@"AddressInfoTableViewCell" owner:self options:nil]  lastObject];
+                       }
+                           //cell选中效果
+                           cellOne.selectionStyle = UITableViewCellSelectionStyleNone;
+                           cellOne.tag= 500+indexPath.row;
+                           cellOne.selectBtn.selected=NO;
+                       AddressListMode* mode = self.GetaddressArray[(indexPath.row-3)];
+                       cellOne.TopTitle.text=mode.siteName;
+                       cellOne.DownTitle.text=mode.streetAddress;
+                       if([mode.distance doubleValue]>1000)
+                       {
+                           cellOne.JLLabel.text=[NSString stringWithFormat:@"%.2fkm",[mode.distance doubleValue]/1000.0];
+                       }else{
+                           cellOne.JLLabel.text=[NSString stringWithFormat:@"%.2fm",[mode.distance doubleValue]];
+                       }
+                       return cellOne;
+                       
+                   }
         }
     }
 
@@ -1383,6 +1519,14 @@ static int iCount=0;
                     return 80;
                 }
             return 50;
+        }else if(self.SelectWay==3)
+        {
+            
+            if(indexPath.row>2)
+                {
+                    return 80;
+                }
+            return 50;
         }
     return 50;
 }
@@ -1411,24 +1555,6 @@ static int iCount=0;
             
             if(indexPath.row==2)
             {
-        //        if(self.arrayTitle.count==3)
-        //        {
-        ////            [self.arrayTitle addObject:@"1"];
-        ////            [self.arrayTitle addObject:@"2"];
-        //            for (int i =0; i<self.GetaddressArray.count; i++) {
-        //                [self.arrayTitle addObject:[NSString stringWithFormat:@"%d",i]];
-        //            }
-        //            self.accessoryTypeBool=YES;
-        //            [self setBtnTouchFrame];
-        //            [_STable reloadData];
-        //        }else
-        //        {
-        //            [self.arrayTitle removeAllObjects];
-        //            [self addArrayT];
-        //            self.accessoryTypeBool=NO;
-        //            [self setBtnTouchFrame];
-        //            [_STable reloadData];
-        //        }
             }else if(indexPath.row>2)
             {
 
@@ -1456,6 +1582,41 @@ static int iCount=0;
                 
             }
         if(self.SelectWay==2)
+        {
+            [self UpdateBtnStatus];
+        }
+    }else if(self.SelectWay==3)
+    {
+            
+            if(indexPath.row==2)
+            {
+            }else if(indexPath.row>2)
+            {
+
+                for (int i =0; i<self.arrayTitle.count; i++) {
+                    NSIndexPath * forIndex = [NSIndexPath indexPathForRow:i inSection:0];
+                    if(i>2)
+                    {
+                        AddressInfoTableViewCell*cell = [tableView cellForRowAtIndexPath:forIndex];
+                        if(indexPath.row!=i)
+                        {
+                       
+                        cell.selectBtn.selected=NO;
+                        [cell.selectBtn setImage:[UIImage imageNamed:@"circleNil"] forState:(UIControlStateNormal)];
+                            
+                        }else
+                        {
+                            cell.selectBtn.selected=YES;
+                            [cell.selectBtn setImage:[UIImage imageNamed:@"check-circle-fill"] forState:(UIControlStateNormal)];
+                            [self.selectorPatnArray removeAllObjects];
+                            [self.selectorPatnArray addObject:self.arrayTitle[indexPath.row]];
+                        }
+                    }
+                }
+                self.SelectAddress=(AddressListMode*)self.GetaddressArray[(indexPath.row-3)];
+                
+            }
+        if(self.SelectWay==3)
         {
             [self UpdateBtnStatus];
         }

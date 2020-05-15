@@ -216,10 +216,10 @@
     NSString * Message_flage = [[NSUserDefaults standardUserDefaults] objectForKey:@"Message"];
     if([Message_flage intValue]==1)
     {
-        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:3];
+        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:NotificationNumber];
     }else
     {
-        [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:3];
+        [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:NotificationNumber];
     }
 }
 -(void)addRightBtn
@@ -266,7 +266,7 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
-
+        
 -(void)selectRightAction:(id)sender
 {
     NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"];
@@ -587,10 +587,7 @@
         if(statusCode==401)
         {
 //            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
-            //创建一个消息对象
-            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
-            //发送消息
-            [[NSNotificationCenter defaultCenter]postNotification:notice];
+            [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SetNSUserDefaults" object:nil userInfo:nil]];
             
         }else if(statusCode==403){
            

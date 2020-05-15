@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -38,7 +38,6 @@
                             <constraint firstAttribute="width" constant="25" id="KdU-Q3-bQ8"/>
                             <constraint firstAttribute="height" constant="25" id="xLG-7f-ODQ"/>
                         </constraints>
-                        <state key="normal" image="circleNil.png"/>
                         <connections>
                             <action selector="SelectTouch:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Dfu-t2-u5i"/>
                         </connections>
@@ -67,7 +66,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="circleNil.png" width="20" height="20"/>
         <image name="me_settings.png" width="22" height="22"/>
     </resources>
 </document>

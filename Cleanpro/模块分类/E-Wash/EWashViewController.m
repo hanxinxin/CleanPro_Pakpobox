@@ -36,7 +36,7 @@ static int iCount=0;
 @property (nonatomic,strong)UIButton* NextButton;
 @property (assign, nonatomic) NSInteger CountInt1;///数量计数器
 @property (assign, nonatomic) NSInteger CountInt2;///数量计数器
-@property (assign, nonatomic) NSInteger SelectWay;///1.是 上门取  2.是store
+@property (assign, nonatomic) NSInteger SelectWay;///1.是 上门取  2.是store 3是 Laundry Outlet
 
 @property (nonatomic,strong)NSMutableArray* PoubdArr; /// 编织袋选择大小参数选择
 
@@ -44,8 +44,11 @@ static int iCount=0;
 
 @property (nonatomic,strong)NSString* doorstepCostStr; /// 上门快递费
 @property (nonatomic,strong)NSString* selfPickupCostStr; /// 到商店服务费
+@property (nonatomic,strong)NSString* laundryOutletCost;///自己到洗衣店的费用
 
 @property(nonatomic,strong)NSMutableArray *GetaddressArray;//address数据源
+@property(nonatomic,strong)NSMutableArray *OUTLETArray;//address数据源
+@property(nonatomic,strong)NSMutableArray *POINTArray;//address数据源
 @property(nonatomic,strong)LocationManager * manager;;
 @end
 
@@ -56,36 +59,32 @@ static int iCount=0;
     // Do any additional setup after loading the view.
     self.CountInt1=2;
     self.CountInt2=2;
-    self.SelectWay=1;//// 默认为上门取。
+    self.SelectWay=2;//// 默认为商店。
     self.title=FGGetStringWithKeyFromTable(@"E-Wash", @"Language");
     _TopImage=[[UIImageView alloc]initWithFrame:CGRectMake(0, kNavBarAndStatusBarHeight, SCREEN_WIDTH, 170)];
     [_TopImage setImage:[UIImage imageNamed:@"banner-EWASH"]];
     [self.view addSubview:_TopImage];
     self.doorstepCostStr=@"0";
     self.selfPickupCostStr=@"0";
+    self.laundryOutletCost=@"0";
     self.ArrayTable=[NSMutableArray arrayWithCapacity:0];
     self.BZDArray=[NSMutableArray arrayWithCapacity:0];
     self.PoubdArr=[NSMutableArray arrayWithCapacity:0];
     self.CommodityArr=[NSMutableArray arrayWithCapacity:0];
     self.GetaddressArray=[NSMutableArray arrayWithCapacity:0];
-    
-
+    self.OUTLETArray=[NSMutableArray arrayWithCapacity:0];
+    self.POINTArray=[NSMutableArray arrayWithCapacity:0];
     [self.BZDArray addObject:FGGetStringWithKeyFromTable(@"Bag type", @"Language")];
 //    [self.BZDArray addObject:@"1"];
 //    [self.BZDArray addObject:@"0"];
     [ArrayTable addObject:self.BZDArray];
-    [ArrayTable addObject:@[FGGetStringWithKeyFromTable(@"Delivery", @"Language"),FGGetStringWithKeyFromTable(@"Residence", @"Language"),FGGetStringWithKeyFromTable(@"Store", @"Language")]];
+    [ArrayTable addObject:@[FGGetStringWithKeyFromTable(@"Delivery", @"Language"),FGGetStringWithKeyFromTable(@"Residence", @"Language"),FGGetStringWithKeyFromTable(@"Store", @"Language"),FGGetStringWithKeyFromTable(@"Laundry Outlet", @"Language")]];
+//    [ArrayTable addObject:@[FGGetStringWithKeyFromTable(@"Delivery", @"Language"),FGGetStringWithKeyFromTable(@"Residence", @"Language"),FGGetStringWithKeyFromTable(@"Store", @"Language")]];
     [ArrayTable addObject:@[FGGetStringWithKeyFromTable(@"Total", @"Language"),FGGetStringWithKeyFromTable(@"Delivery Fee", @"Language"),FGGetStringWithKeyFromTable(@"Service Fee", @"Language"),FGGetStringWithKeyFromTable(@"", @"Language")]];
     [ArrayTable addObject:@[FGGetStringWithKeyFromTable(@"Next", @"Language")]];
     [self addDowntableUI];
     
     [self Get_E_MenuList];  ////要获取商品数据
-}
-- (void)viewWillAppear:(BOOL)animated {
-//    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]}; // title颜色
-//    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    [self.navigationController.navigationBar setBarTintColor: [UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0]];
     if(manager==nil)
     {
         manager=[LocationManager sharedInstance];
@@ -93,6 +92,13 @@ static int iCount=0;
     }
     [manager setStartUpdatingLocation];
     iCount=0;
+}
+- (void)viewWillAppear:(BOOL)animated {
+//    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]}; // title颜色
+//    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    [self.navigationController.navigationBar setBarTintColor: [UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0]];
+    
     
     [super viewWillAppear:animated];
 }
@@ -130,6 +136,8 @@ static int iCount=0;
             if(contentarr.count>0)
             {
                 [self.GetaddressArray removeAllObjects];
+                [self.POINTArray removeAllObjects];
+                [self.OUTLETArray removeAllObjects];
                 for (int i =0; i<contentarr.count; i++) {
                     NSDictionary * dictCon= contentarr[i];
                     AddressListMode* mode = [[AddressListMode alloc] init];
@@ -143,8 +151,32 @@ static int iCount=0;
                     mode.longitude=[dictCon objectForKey:@"longitude"];
                     mode.distance=[dictCon objectForKey:@"distance"];
                     [self.GetaddressArray addObject:mode];
-                    [self.DownTable reloadData];
+                    
                 }
+                for (int i =0; i<self.GetaddressArray.count; i++) {
+                    AddressListMode* mode =self.GetaddressArray[i];
+                    if([mode.siteType isEqualToString:@"ALFRED_POINT"])
+                    {
+                        [self.POINTArray addObject:mode];
+                    }else if([mode.siteType isEqualToString:@"LAUNDRY_OUTLET"])
+                    {
+                        [self.OUTLETArray addObject:mode];
+                    }
+                }
+                if(self.POINTArray.count>0)
+                {
+                    self.SelectWay=2;
+                }else
+                {
+                    if(self.OUTLETArray.count>0)
+                    {
+                        self.SelectWay=1;
+                    }else
+                    {
+                        self.SelectWay=2;
+                    }
+                }
+                [self.DownTable reloadData];
             }else
             {
                 [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"No stores available nearby", @"Language") andDelay:2.0];
@@ -162,6 +194,7 @@ static int iCount=0;
                 [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
         }];
 }
+
 -(void)setDefaults
 {
          NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -247,10 +280,15 @@ static int iCount=0;
         if(self.SelectWay==1)
         {
             total+=[self.doorstepCostStr floatValue];
+            vc.GetaddressArray=self.OUTLETArray;
         }else if(self.SelectWay==2){
-        //              total+=[self.doorstepCostStr floatValue];
             total+=[self.selfPickupCostStr floatValue];
+            vc.GetaddressArray=self.POINTArray;
+        }else if(self.SelectWay==3){
+            total+=[self.laundryOutletCost floatValue];
+            vc.GetaddressArray=self.OUTLETArray;
         }
+        
         vc.TotalStr=[NSString stringWithFormat:@"%.2f",total];
         [self.navigationController pushViewController:vc animated:YES];
         
@@ -306,6 +344,7 @@ static int iCount=0;
             NSDictionary * products = [dictz objectForKey:@"products"];
             self.doorstepCostStr = [dictz objectForKey:@"doorstepCost"];
             self.selfPickupCostStr = [dictz objectForKey:@"selfPickupCost"];;
+            self.laundryOutletCost=[dictz objectForKey:@"laundryOutletCost"];
             NSArray * array=[products objectForKey:@"content"];
     //        NSNumber * statusCode =[dictObject objectForKey:@"statusCode"];
             [self.PoubdArr removeAllObjects];
@@ -520,28 +559,60 @@ static int iCount=0;
         if (cellOne == nil) {
             cellOne= (DeliveryTableViewCell *)[[[NSBundle  mainBundle]  loadNibNamed:@"DeliveryTableViewCell" owner:self options:nil]  lastObject];
         }
-            if(self.SelectWay==1)
+            if(indexPath.row==1)
             {
-                if(indexPath.row==1)
+                if(self.SelectWay==1)
                 {
                     [cellOne.RightSelect setImage:[UIImage imageNamed:@"check-circle-fill"] forState:(UIControlStateNormal)];
-                    [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_shangmen"] forState:(UIControlStateNormal)];
-                }else if(indexPath.row==2)
+                }else
                 {
-                    [cellOne.RightSelect setImage:[UIImage imageNamed:@"circleNil"] forState:(UIControlStateNormal)];
-                    [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_mendian"] forState:(UIControlStateNormal)];
+                    if(self.OUTLETArray.count>0)
+                    {
+                        [cellOne.RightSelect setImage:[UIImage imageNamed:@"circleNil"] forState:(UIControlStateNormal)];
+                        [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0]];
+                    }else
+                    {
+                        [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:158/255.0 green:174/255.0 blue:183/255.0 alpha:1.0]];
+                    }
                 }
-            }else if(self.SelectWay==2){
-                if(indexPath.row==1)
-                {
-                    [cellOne.RightSelect setImage:[UIImage imageNamed:@"circleNil"] forState:(UIControlStateNormal)];
-                    [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_shangmen"] forState:(UIControlStateNormal)];
-                }else if(indexPath.row==2)
+                [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_shangmen"] forState:(UIControlStateNormal)];
+            }else if(indexPath.row==2)
+            {
+                if(self.SelectWay==2)
                 {
                     [cellOne.RightSelect setImage:[UIImage imageNamed:@"check-circle-fill"] forState:(UIControlStateNormal)];
-                    [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_mendian"] forState:(UIControlStateNormal)];
+                }else
+                {
+                    if(self.POINTArray.count>0)
+                    {
+                        [cellOne.RightSelect setImage:[UIImage imageNamed:@"circleNil"] forState:(UIControlStateNormal)];
+                        [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0]];
+                    }else
+                    {
+                        
+                        [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:158/255.0 green:174/255.0 blue:183/255.0 alpha:1.0]];
+                    }
                 }
+                [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_mendian"] forState:(UIControlStateNormal)];
+            }else if(indexPath.row==3)
+            {
+                if(self.SelectWay==3)
+                {
+                    [cellOne.RightSelect setImage:[UIImage imageNamed:@"check-circle-fill"] forState:(UIControlStateNormal)];
+                }else
+                {
+                    if(self.OUTLETArray.count>0)
+                    {
+                        [cellOne.RightSelect setImage:[UIImage imageNamed:@"circleNil"] forState:(UIControlStateNormal)];
+                        [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0]];
+                    }else
+                    {
+                        [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:158/255.0 green:174/255.0 blue:183/255.0 alpha:1.0]];
+                    }
+                }
+                [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_mendian"] forState:(UIControlStateNormal)];
             }
+            
             //cell选中效果
             cellOne.selectionStyle = UITableViewCellSelectionStyleNone;
             cellOne.LeftTitle.text= [arr objectAtIndex:indexPath.row];
@@ -609,6 +680,19 @@ static int iCount=0;
                     }
                     cell2.detailTextLabel.text = [NSString stringWithFormat:@"%.2f",total];;
                 }
+            }else if(self.SelectWay==3){
+                            
+                if(indexPath.row==1){
+                    cell2.detailTextLabel.text = [NSString stringWithFormat:@"%.2f",[self.laundryOutletCost floatValue]];
+                }else if(indexPath.row==2){
+                    float total =0;
+                    for (int i=0; i<self.CommodityArr.count; i++) {
+                        CommodityMode*mode=self.CommodityArr[i];
+                        NSString* priceStr=[self ReturnPriceStr:mode];
+                        total+=[priceStr floatValue];
+                    }
+                    cell2.detailTextLabel.text = [NSString stringWithFormat:@"%.2f",total];
+                }
             }
             return cell2;
         }else if (indexPath.row==3)
@@ -653,17 +737,74 @@ static int iCount=0;
         [cell addSubview:self.NextButton];
         cell.backgroundColor=[UIColor colorWithRed:241/255.0 green:242/255.0 blue:240/255.0 alpha:1];
         cell.separatorInset = UIEdgeInsetsMake(0, SCREEN_WIDTH, 0, 0);//去掉cell的分割线
-        if(self.GetaddressArray.count>0)
+        if(self.POINTArray.count>0)
         {
             self.NextButton.backgroundColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
             self.NextButton.userInteractionEnabled=YES;
         }else
         {
+            if(self.OUTLETArray.count>0)
+            {
+                self.NextButton.backgroundColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
+                self.NextButton.userInteractionEnabled=YES;
+            }else{
             self.NextButton.backgroundColor=[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
             self.NextButton.userInteractionEnabled=NO;
+            }
         }
     }
     return cell;
+}
+-(void)setcellButton:(DeliveryTableViewCell*)cellOne
+{
+//    if(self.SelectWay==1)
+//    {
+//
+//        if(indexPath.row==1)
+//        {
+//
+//            [cellOne.RightSelect setImage:[UIImage imageNamed:@"check-circle-fill"] forState:(UIControlStateNormal)];
+//            [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_shangmen"] forState:(UIControlStateNormal)];
+//
+//        }else if(indexPath.row==2)
+//        {
+//            [cellOne.RightSelect setImage:[UIImage imageNamed:@"circleNil"] forState:(UIControlStateNormal)];
+//            [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_mendian"] forState:(UIControlStateNormal)];
+//        }else if(indexPath.row==3)
+//        {
+//            [cellOne.RightSelect setImage:[UIImage imageNamed:@"circleNil"] forState:(UIControlStateNormal)];
+//            [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_mendian"] forState:(UIControlStateNormal)];
+//        }
+//
+//    }else if(self.SelectWay==2){
+//        if(indexPath.row==1)
+//        {
+//            [cellOne.RightSelect setImage:[UIImage imageNamed:@"circleNil"] forState:(UIControlStateNormal)];
+//            [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_shangmen"] forState:(UIControlStateNormal)];
+//        }else if(indexPath.row==2)
+//        {
+//            [cellOne.RightSelect setImage:[UIImage imageNamed:@"check-circle-fill"] forState:(UIControlStateNormal)];
+//            [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_mendian"] forState:(UIControlStateNormal)];
+//        }else if(indexPath.row==3)
+//        {
+//            [cellOne.RightSelect setImage:[UIImage imageNamed:@"circleNil"] forState:(UIControlStateNormal)];
+//            [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_mendian"] forState:(UIControlStateNormal)];
+//        }
+//    }else if(self.SelectWay==3){
+//        if(indexPath.row==1)
+//        {
+//            [cellOne.RightSelect setImage:[UIImage imageNamed:@"circleNil"] forState:(UIControlStateNormal)];
+//            [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_shangmen"] forState:(UIControlStateNormal)];
+//        }else if(indexPath.row==2)
+//        {
+//           [cellOne.RightSelect setImage:[UIImage imageNamed:@"circleNil"] forState:(UIControlStateNormal)];
+//            [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_mendian"] forState:(UIControlStateNormal)];
+//        }else if(indexPath.row==3)
+//        {
+//            [cellOne.RightSelect setImage:[UIImage imageNamed:@"check-circle-fill"] forState:(UIControlStateNormal)];
+//            [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_mendian"] forState:(UIControlStateNormal)];
+//        }
+//    }
 }
 
 //设置间隔高度
@@ -745,12 +886,25 @@ static int iCount=0;
     {
         if(indexPath.row==1)
         {
+            if(self.OUTLETArray.count>0)
+            {
             self.SelectWay=1;
             [self.DownTable reloadData];
+            }
         }else if(indexPath.row==2)
         {
+            if(self.POINTArray.count>0)
+            {
             self.SelectWay=2;
             [self.DownTable reloadData];
+            }
+        }else if(indexPath.row==3)
+        {
+            if(self.OUTLETArray.count>0)
+            {
+            self.SelectWay=3;
+            [self.DownTable reloadData];
+            }
         }
         
     }

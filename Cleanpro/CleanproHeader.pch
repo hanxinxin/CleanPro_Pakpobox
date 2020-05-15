@@ -80,6 +80,7 @@
 #define kRegisterFrontNoti @"kRegisterFrontNoti"
 #define kRegisterMessage @"kRegisterMessage"
 #define kRegisterMessageList @"kRegisterMessageList"
+#define NotificationNumber 2  ///tabbar 小红点显示的位置   下标从0开始
 #define sendMessage(key)  [[NSNotificationCenter defaultCenter] postNotificationName:key object:self userInfo:nil];//发送通知
 
 

@@ -24,9 +24,19 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor colorWithRed:241/255.0 green:242/255.0 blue:240/255.0 alpha:1];
     self.arrayTitle = [NSMutableArray arrayWithCapacity:0];
-    statusInt=5;
+    if([self.mode.logisticsType isEqualToString:@"DOORSTEP_DELIVERY"])
+    {
+        statusInt=5;
+    }else if([self.mode.logisticsType isEqualToString:@"SELF_PICKUP"])
+    {
+        statusInt=5;
+    }else if([self.mode.logisticsType isEqualToString:@"LAUNDRY_OUTLET"])
+    {
+        statusInt=3;
+    }
+    
 //    [self addArrayT];
-    NSLog(@"self.mode.status=  %@",self.mode.status);
+    NSLog(@"self.mode.status=  %@  ， logisticsType = %@",self.mode.status,self.mode.logisticsType);
     [self AddSTableViewUI];
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -118,6 +128,28 @@
     
     cell.delegate=self;
     cell.tag=indexPath.row;
+    if(statusInt==5){
+        [self SetCellView5:cell index:indexPath];
+    }else if(statusInt==3)
+    {
+        [self SetCellView3:cell index:indexPath];
+    }
+     
+//            if([self.mode.status isEqualToString:@"Finish"])
+//            {
+//                cell.Cfmbtn.backgroundColor=[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
+//                cell.Cfmbtn.userInteractionEnabled=NO;
+//            }else
+//            {
+//                cell.Cfmbtn.backgroundColor=[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
+//                cell.Cfmbtn.userInteractionEnabled=NO;
+//            }
+    
+    return cell;
+}
+
+-(void)SetCellView5:(JieDanTableViewCell *)cell index:(NSIndexPath *)indexPath
+{
     if(indexPath.row==0)
     {
        
@@ -239,20 +271,85 @@
         }
         cell.leftTitle.text=@"Finish";
     }
-     
-//            if([self.mode.status isEqualToString:@"Finish"])
-//            {
-//                cell.Cfmbtn.backgroundColor=[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
-//                cell.Cfmbtn.userInteractionEnabled=NO;
-//            }else
-//            {
-//                cell.Cfmbtn.backgroundColor=[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
-//                cell.Cfmbtn.userInteractionEnabled=NO;
-//            }
-    
-    return cell;
 }
 
+-(void)SetCellView3:(JieDanTableViewCell *)cell index:(NSIndexPath *)indexPath
+{
+    if(indexPath.row==0)
+    {
+       
+        if(![self.mode.courierCollectUserName isEqual:[NSNull null]])
+        {
+            cell.CenterLabel.text = [NSString stringWithFormat:@"%@",self.mode.courierCollectUserName];
+            cell.Cfmbtn.hidden=YES;
+            
+            [cell.Imagebtn setImage:[UIImage imageNamed:@"icon_zt06"] forState:(UIControlStateNormal)];
+        }else{
+            cell.Cfmbtn.hidden=NO;
+            cell.CenterLabel.text=@"Waiting";
+            [cell.Imagebtn setImage:[UIImage imageNamed:@"icon_zt01"] forState:(UIControlStateNormal)];
+            if([self.mode.status isEqualToString:@"Created"])
+            {
+                
+                cell.Cfmbtn.backgroundColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
+                cell.Cfmbtn.userInteractionEnabled=YES;
+            }else{
+                
+                cell.Cfmbtn.backgroundColor=[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
+                cell.Cfmbtn.userInteractionEnabled=NO;
+            }
+        }
+        cell.leftTitle.text=@"Courier collect";
+        
+        
+    }else if(indexPath.row==1)
+    {
+       
+        if(![self.mode.cleaningUserName isEqual:[NSNull null]])
+        {
+            cell.CenterLabel.text = [NSString stringWithFormat:@"%@",self.mode.cleaningUserName];
+            cell.Cfmbtn.hidden=YES;
+            
+            
+            [cell.Imagebtn setImage:[UIImage imageNamed:@"icon_zt07"] forState:(UIControlStateNormal)];
+        }else{
+            cell.Cfmbtn.hidden=NO;
+            cell.CenterLabel.text=@"Waiting";
+            [cell.Imagebtn setImage:[UIImage imageNamed:@"icon_zt02"] forState:(UIControlStateNormal)];
+            if([self.mode.status isEqualToString:@"Courier collect"])
+            {
+                cell.Cfmbtn.backgroundColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
+                cell.Cfmbtn.userInteractionEnabled=YES;
+            }else{
+                cell.Cfmbtn.backgroundColor=[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
+                cell.Cfmbtn.userInteractionEnabled=NO;
+            }
+        }
+        cell.leftTitle.text=@"Cleaning";
+    }else if(indexPath.row==2)
+    {
+       
+        if(![self.mode.finishUserName isEqual:[NSNull null]])
+        {
+            cell.CenterLabel.text = [NSString stringWithFormat:@"%@",self.mode.finishUserName];
+            cell.Cfmbtn.hidden=YES;
+            [cell.Imagebtn setImage:[UIImage imageNamed:@"icon_zt10"] forState:(UIControlStateNormal)];
+        }else{
+            cell.Cfmbtn.hidden=NO;
+            cell.CenterLabel.text=@"Waiting";
+            [cell.Imagebtn setImage:[UIImage imageNamed:@"icon_zt05"] forState:(UIControlStateNormal)];
+            if([self.mode.status isEqualToString:@"Cleaning"])
+            {
+                cell.Cfmbtn.backgroundColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
+                cell.Cfmbtn.userInteractionEnabled=YES;
+            }else{
+                cell.Cfmbtn.backgroundColor=[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0];
+                cell.Cfmbtn.userInteractionEnabled=NO;
+            }
+        }
+        cell.leftTitle.text=@"Finish";
+    }
+}
 //行高
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
        
@@ -297,23 +394,38 @@
 {
     NSLog(@"Cell.tag == %ld",(long)Cell.tag);
     
-    if(Cell.tag==0)
+    if(statusInt==5)
     {
-        [self post_confirm_collect];
-    }else if(Cell.tag==1)
+        if(Cell.tag==0)
+        {
+            [self post_confirm_collect];
+        }else if(Cell.tag==1)
+        {
+            [self post_Cleaning];
+        }else if(Cell.tag==2)
+        {
+            [self post_Packed];
+        }else if(Cell.tag==3)
+        {
+            [self postIn_delivery];
+        }else if(Cell.tag==4)
+        {
+            [self post_Finish];
+        }
+    }else if(statusInt==3)
     {
-        [self post_Cleaning];
-    }else if(Cell.tag==2)
-    {
-        [self post_Packed];
-    }else if(Cell.tag==3)
-    {
-        [self postIn_delivery];
-    }else if(Cell.tag==4)
-    {
-        [self post_Finish];
+       if(Cell.tag==0)
+        {
+            [self post_confirm_collect];
+        }else if(Cell.tag==1)
+        {
+            [self post_Cleaning];
+        }else if(Cell.tag==2)
+        {
+            [self post_Finish];
+        }
     }
-    NSDictionary * dict =@{@"tag":[NSString stringWithFormat:@"%ld",Cell.tag]};
+    NSDictionary * dict =@{@"tag":[NSString stringWithFormat:@"%ld",(long)Cell.tag]};
     //通过通知中心发送通知
     NSNotification *notification =[NSNotification notificationWithName:@"UpdateListAAA" object:nil userInfo:dict];
     //通过通知中心发送通知

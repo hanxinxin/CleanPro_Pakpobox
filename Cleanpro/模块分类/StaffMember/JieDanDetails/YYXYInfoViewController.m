@@ -72,6 +72,9 @@
         {
             
         }
+    }else if([self.ModeZ.logisticsType isEqualToString:@"LAUNDRY_OUTLET"])
+    {
+        
     }
     }
     if([userIdStr isEqualToString:@"1"])
@@ -126,7 +129,15 @@
                     [self.RightarrayTitle addObject:self.ModeZ.recipientAddress];
                 }else if([self.ModeZ.logisticsType isEqualToString:@"SELF_PICKUP"])
                 {
-        //         @"S";
+                    if(![self.ModeZ.recipientAddress isEqual:[NSNull null]])
+                    {
+                        [self.RightarrayTitle addObject:self.ModeZ.recipientAddress];
+                    }else
+                    {
+                        [self.RightarrayTitle addObject:self.ModeZ.siteName];
+                    }
+                }else if([self.ModeZ.logisticsType isEqualToString:@"LAUNDRY_OUTLET"])
+                {
                     if(![self.ModeZ.recipientAddress isEqual:[NSNull null]])
                     {
                         [self.RightarrayTitle addObject:self.ModeZ.recipientAddress];
@@ -154,19 +165,16 @@
                     }
                 }
        
-        if([self.ModeZ.logisticsType isEqualToString:@"DOORSTEP_DELIVERY"])
-        {
-        }else if([self.ModeZ.logisticsType isEqualToString:@"SELF_PICKUP"])
-        {
-            if(![self.ModeZ.paymentPlatform isEqual:[NSNull null]])
+            if([self.ModeZ.logisticsType isEqualToString:@"SELF_PICKUP"])
             {
-                if([self.ModeZ.paymentPlatform isEqualToString:@"CASH_PAY"])
+                if(![self.ModeZ.paymentPlatform isEqual:[NSNull null]])
                 {
-                    [self.RightarrayTitle addObject:self.ModeZ.fileId];
+                    if([self.ModeZ.paymentPlatform isEqualToString:@"CASH_PAY"])
+                    {
+                        [self.RightarrayTitle addObject:self.ModeZ.fileId];
+                    }
                 }
-            }else
-            {}
-        }
+            }
         }
         
     }

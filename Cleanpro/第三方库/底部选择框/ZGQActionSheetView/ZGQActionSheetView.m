@@ -79,7 +79,8 @@ typedef void(^cancelBlock)(void);
     self.optionColor = [UIColor colorWithWhite:0.2 alpha:1.000];
     self.gap = 5.0f;
     self.needCancelButton = YES;
-    self.cancelTitle = @"Cancel";
+//    self.cancelTitle = @"Cancel";
+    self.cancelTitle = FGGetStringWithKeyFromTable(@"Cancel", @"Language");
 
 }
 

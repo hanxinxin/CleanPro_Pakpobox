@@ -12,7 +12,7 @@
 #import "AircraftAnnotation.h"
 #import "RouteAnnotion.h"
 #import "RouteAnnotationView.h"
-
+static int indexA=0;
 @implementation LocationClass
 
 - (IBAction)DaoHang_btn:(id)sender {
@@ -65,7 +65,7 @@
     self.NO_WASHERLabel.text = FGGetStringWithKeyFromTable(@"E-wash", @"Language");
     airAnnotation = [[AircraftAnnotation alloc] init];
     [self addMapView_c];
-    
+    [self.selfLocation setBackgroundColor:[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:0.8]];
 //    UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(pushAppleMap:)];
 //    self.mendianMiaoShu.userInteractionEnabled=YES;
 //    [self.mendianMiaoShu addGestureRecognizer:labelTapGestureRecognizer];
@@ -114,11 +114,28 @@
     NSString * Message_flage = [[NSUserDefaults standardUserDefaults] objectForKey:@"Message"];
     if([Message_flage intValue]==1)
     {
-        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:3];
+        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:NotificationNumber];
     }else
     {
-        [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:3];
+        [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:NotificationNumber];
     }
+}
+- (IBAction)SetSelfLocation:(id)sender {
+    
+   
+    //2. 设置范围的属性
+    //2.1 获取坐标
+    CLLocationCoordinate2D coordinate = self.MapView.userLocation.location.coordinate;
+    
+    //2.2 设置显示范围 --> 为了跟系统默认的跨度保持一致, 我们可以打印region的span值来获取, 然后设置即可
+    //1° ~ 111KM
+    MKCoordinateSpan span = MKCoordinateSpanMake(0.021252, 0.014720);
+    
+    //2.3 设置范围属性 默认没有动画
+    //self.mapView.region = MKCoordinateRegionMake(coordinate, span);
+    
+    //设置范围方法 可以设置动画
+    [self.MapView setRegion:MKCoordinateRegionMake(coordinate, span) animated:YES];
 }
 
 -(void)setLabelFrame
@@ -225,7 +242,11 @@
             MD_Mode.MDName=[dic objectForKey:@"merchantName"];
             MD_Mode.MDaddress=[dic objectForKey:@"streetAddress"];
             MD_Mode.showApp = [dic objectForKey:@"showOnAppType"];
-            [blockSelf->MD_MUtableArr addObject:MD_Mode];
+            if(![MD_Mode.showApp isEqualToString:@"HIDDEN_ON_APP"])
+            {
+               [blockSelf->MD_MUtableArr addObject:MD_Mode];
+            }
+            
             
 //            }
 //        }
@@ -365,13 +386,13 @@
     for (int i=0; i<MD_MUtableArr.count;i++) {
         LocationClass * MD_Mode = MD_MUtableArr[i];
         CLLocationCoordinate2D ListLoca;
-        ListLoca.latitude = [MD_Mode.MenDian_lat doubleValue];
-        ListLoca.longitude = [MD_Mode.MenDian_lon doubleValue];
-        airAnnotation.coordinate=ListLoca;
-        [self.MapView addAnnotation:airAnnotation];
+        ListLoca.latitude = [MD_Mode.MenDian_lat floatValue];
+        ListLoca.longitude = [MD_Mode.MenDian_lon floatValue];
+//        airAnnotation.coordinate=ListLoca;
+//        [self.MapView addAnnotation:airAnnotation];
         AircraftAnnotation * airAnnotation2 = [[AircraftAnnotation alloc] init];
-        CLLocationDegrees latitude1 = [MD_Mode.MenDian_lat doubleValue];
-        CLLocationDegrees longtitude1 = [MD_Mode.MenDian_lon doubleValue] ;
+        CLLocationDegrees latitude1 = [MD_Mode.MenDian_lat floatValue];
+        CLLocationDegrees longtitude1 = [MD_Mode.MenDian_lon floatValue] ;
         airAnnotation2.coordinate= CLLocationCoordinate2DMake(latitude1, longtitude1);
         airAnnotation2.tagg=i;
 //        airAnnotation2.title=[NSString stringWithFormat:@"%@",MD_Mode.MDName];
@@ -472,16 +493,17 @@
     [self getLocationList:My_Loca];
     
 }
+
 //MapView委托方法，当定位自身时调用
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
     
     //    self.MapView.centerCoordinate = userLocation.coordinate;
     //
     //    [self.MapView setRegion:MKCoordinateRegionMake(userLocation.coordinate, MKCoordinateSpanMake(0.3, 0.3)) animated:YES];
-    static int index=0;
-    if(index<5){
+    
+    if(indexA<4){
     [self load_mapView];
-        index++;
+        indexA++;
     }
     //    如果在ViewDidLoad中调用  添加大头针的话会没有掉落效果  定位结束后再添加大头针才会有掉落效果
     //    [self loadData];
@@ -515,10 +537,11 @@
 //            if([mode.showApp doubleValue]==0)
             if([mode.showApp isEqualToString:@"WASHER_WITH_APP"])
             {
-                annotationView.image = [UIImage imageNamed:@"location_mark_app"];
+                
+                annotationView.image = [UIImage imageNamed:@"icon_pay"];
             }else if([mode.showApp isEqualToString:@"WASHER_WITHOUT_APP"])
             {
-                annotationView.image = [UIImage imageNamed:@"icon_pay"];
+                annotationView.image = [UIImage imageNamed:@"location_mark_app"];
             }else if([mode.showApp isEqualToString:@"NO_WASHER"])
             {
                 annotationView.image = [UIImage imageNamed:@"location_ewash_app"];
@@ -547,7 +570,7 @@
     NSLog(@"点击按钮的时候的调用 == %@",view.annotation.subtitle);
     //    self.myLocationAnnotation.coordinate=self.moveingAnnotation.coordinate;
     //    mapView.userLocation.coordinate=self.moveingAnnotation.coordinate;
-    
+     
 }
 #pragma mark 选中了标注的处理事件
 -(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
@@ -558,7 +581,7 @@
     if ([view.annotation isKindOfClass:[AircraftAnnotation class]])
     {
         AircraftAnnotation * mac=(AircraftAnnotation*)view.annotation;
-        NSLog(@"title===  %ld",mac.tagg);
+        NSLog(@"title===  %ld",(long)mac.tagg);
          LocationClass * MD_Mode = (LocationClass * )MD_MUtableArr[mac.tagg];
         self.mendianLabel.text=MD_Mode.MDName;
         [self returnSize1:self.mendianLabel];
@@ -569,7 +592,7 @@
         NSLog(@"选中===%@",self.mendianMiaoShu.text);
         [self down_viewShow];
     }
-     
+    
 }
 
 -(void)updateView:(MKAnnotationView *)annotationView ClassMode:(LocationClass *)mode
@@ -579,10 +602,10 @@
     //            if([mode.showApp doubleValue]==0)
                 if([mode.showApp isEqualToString:@"WASHER_WITH_APP"])
                 {
-                    annotationView.image = [UIImage imageNamed:@"location_mark_app"];
+                    annotationView.image = [UIImage imageNamed:@"icon_pay"];
                 }else if([mode.showApp isEqualToString:@"WASHER_WITHOUT_APP"])
                 {
-                    annotationView.image = [UIImage imageNamed:@"icon_pay"];
+                    annotationView.image = [UIImage imageNamed:@"location_mark_app"];
                 }else if([mode.showApp isEqualToString:@"NO_WASHER"])
                 {
                     annotationView.image = [UIImage imageNamed:@"location_ewash_app"];

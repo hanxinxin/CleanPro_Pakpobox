@@ -13,6 +13,8 @@
 #import "MyAccountViewController.h"
 #import "NewRegisterViewController.h"
 #import "timelineAddressViewNew.h"
+#import "NewHomeViewController.h"
+#import "EwashMyViewController.h"
 @interface PostcodeRViewController ()<UIGestureRecognizerDelegate,UITextFieldDelegate,timelineDelegate,timelineDelegateNew>
 {
 //    timelineAddressView * timeViewA;
@@ -55,6 +57,7 @@
     tapGesture.delegate=self;
     tapGesture.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:tapGesture];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tongzhiViewController:) name:@"tongzhiViewController" object:nil];
 }
 ////点击别的区域收起键盘
 - (void)tapBG:(UITapGestureRecognizer *)gesture {
@@ -434,12 +437,42 @@
         }
         
     } failure:^(NSInteger statusCode, NSError *error) {
-        
-        NSLog(@"error = %@",error);
-        
-//        [HudViewFZ showMessageTitle:[self dictStr:error] andDelay:2.0];
-        [HudViewFZ HiddenHud];
+        if(statusCode==401)
+        {
+            [HudViewFZ showMessageTitle:@"Token expired" andDelay:2.0];
+            [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SetNSUserDefaults" object:nil userInfo:nil]];
+            [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil]];
+            
+        }else{
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+            
+        }
     }];
+}
+ 
+
+
+- (void)tongzhiViewController:(NSNotification *)text{
+    
+    NSLog(@"－－－－－接收到通知------");
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.55/*延迟执行时间*/ * NSEC_PER_SEC));
+
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            for (UIViewController *temp in self.navigationController.viewControllers) {
+                if ([temp isKindOfClass:[NewHomeViewController class]]) {
+                    [self.navigationController popToViewController:temp animated:YES];
+
+                }
+            }
+            for (UIViewController *temp in self.navigationController.viewControllers) {
+                if ([temp isKindOfClass:[EwashMyViewController class]]) {
+                    [self.navigationController popToViewController:temp animated:YES];
+                    ////            return NO;//这里要设为NO，不是会返回两次。返回到主界面。
+
+                    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"TokenError"];
+                }
+            }
+    });
 }
 -(NSString *)dictStr:(NSError *)error
 {
@@ -798,8 +831,8 @@
                 }
             });
             return YES;
-        }else if (self.textfield.text.length>=5) {
-            self.textfield.text = [[textField.text stringByAppendingString:string] substringToIndex:6];
+        }else if (self.textfield.text.length>=6) {
+            self.textfield.text = [[textField.text stringByAppendingString:string] substringToIndex:7];
             //            NSLog(@"self.phone_textfiled.text =  %@",self.phone_textfiled.text );
             dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.03/*延迟执行时间*/ * NSEC_PER_SEC));
             
@@ -824,7 +857,7 @@
             
             dispatch_after(delayTime, dispatch_get_main_queue(), ^{
                 self.Nextmode.postCode=self.textfield.text;
-                if (self.textfield.text.length==5) {
+                if (self.textfield.text.length>=4) {
                     [self Get_AddressSelectList:self.textfield.text parentIdStr:nil index:0];
                 }
                 if (self.textfield.text.length >0 && self.AreaTextfield.text.length>0) {

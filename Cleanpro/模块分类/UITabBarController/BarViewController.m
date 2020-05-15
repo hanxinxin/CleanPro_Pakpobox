@@ -87,6 +87,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tongzhi_SXUI3)name:@"UIshuaxinScan" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tongzhi_UpdateTabbar)name:@"tongzhi_UpdateTabbar" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addVersionView:forcedFlag:)name:@"addVersionView" object:nil];
+    
     [self get_version_URL];
 }
 -(void)setTitleAndview
@@ -580,7 +581,7 @@
             }
             NSError *error;
             NSDictionary *resultsDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
-            NSLog(@"返回%@",resultsDict);
+//            NSLog(@"返回%@",resultsDict);
             if (error) {
                 return;
             }
@@ -663,6 +664,12 @@
     }
     return NO;
 }
+
+
+
+
+
+
 /**
  扫描二维码 需要先检测相机
  

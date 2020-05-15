@@ -100,17 +100,16 @@
     self.navigationItem.backBarButtonItem = backBtn;
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     
-    
-    //    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    //    [userDefaults setObject:@"0" forKey:@"MessageNo"];
-    //    [userDefaults setObject:@"0" forKey:@"Message"];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:@"0" forKey:@"MessageNo"];
+    [userDefaults setObject:@"0" forKey:@"Message"];
     [self updateMessage];
     [super viewWillDisappear:animated];
 }
 
 -(void)updateMessage_Notification
 {
-        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:3];
+        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:NotificationNumber];
 }
 -(void)updateMessage_List
 {
@@ -129,10 +128,10 @@
             NSString * Message_flage = [[NSUserDefaults standardUserDefaults] objectForKey:@"Message"];
             if([Message_flage intValue]==1)
             {
-                [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:3];
+                [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:NotificationNumber];
             }else
             {
-                [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:3];
+                [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:NotificationNumber];
             }
         
         }else{
@@ -158,10 +157,10 @@
     NSString * Message_flage = [[NSUserDefaults standardUserDefaults] objectForKey:@"Message"];
     if([Message_flage intValue]==1)
     {
-        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:3];
+        [self.navigationController.tabBarController.tabBar showBadgeOnItemIndex:NotificationNumber];
     }else
     {
-        [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:3];
+        [self.navigationController.tabBarController.tabBar hideBadgeOnItemIndex:NotificationNumber];
     }
 }
 
@@ -199,7 +198,7 @@
             dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.06/*延迟执行时间*/ * NSEC_PER_SEC));
             
             dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        [self.tableViewT.mj_header beginRefreshing];
+//        [self.tableViewT.mj_header beginRefreshing];
             });
             
     }
@@ -244,6 +243,12 @@
 }
 -(void)loadNewData
 {
+    NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"phoneNumber"];
+    if([strPhoen isEqualToString:@"1"])
+    {
+        
+    }else
+    {
     if(self.MessageStyle==1)
     {
 
@@ -255,7 +260,7 @@
     {
         [self NewGet_MessageList_arr];
     }
-            
+    }
         
 }
 -(void)loadNewData_foot
@@ -691,10 +696,7 @@
             if(statusCode==401)
             {
                 [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
-                //创建一个消息对象
-                NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
-                //发送消息
-                [[NSNotificationCenter defaultCenter]postNotification:notice];
+                [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SetNSUserDefaults" object:nil userInfo:nil]];
                 
             }else{
                 [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];

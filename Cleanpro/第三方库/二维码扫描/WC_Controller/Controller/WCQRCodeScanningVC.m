@@ -459,7 +459,7 @@
                 NSDictionary * dictList=(NSDictionary *)responseObject;
                   if(dictList)
                   {
-                    NSString * addr = [dictList objectForKey:@"communicateInfo"];;
+                    NSString * addr = [dictList objectForKey:@"machineCode"];;
                     NSString * mac = [dictList objectForKey:@"macAddress"];
 //                    NSString * machineNo = [dictList objectForKey:@"machineNo"];
     //                NSString * siteNo = [dictList objectForKey:@"siteNo"];

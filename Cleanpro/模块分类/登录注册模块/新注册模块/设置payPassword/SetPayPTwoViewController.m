@@ -242,7 +242,8 @@
         }
     } failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"error = %@",error);
-        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+        NSString * strMessage = [self dictStr:error];
+        [HudViewFZ showMessageTitle:strMessage andDelay:2.0];
         [HudViewFZ HiddenHud];
     }];
 }
@@ -517,7 +518,9 @@
         }
     } failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"error = %@",error);
-        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+        
+        NSString * strMessage = [self dictStr:error];
+        [HudViewFZ showMessageTitle:strMessage andDelay:2.0];
         [HudViewFZ HiddenHud];
     }];
 }
@@ -557,9 +560,20 @@
         }
     } failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"error = %@",error);
-        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+        NSString * strMessage = [self dictStr:error];
+        [HudViewFZ showMessageTitle:strMessage andDelay:2.0];
         [HudViewFZ HiddenHud];
     }];
+}
+-(NSString *)dictStr:(NSError *)error
+{
+//    NSString * receive=@"";
+    NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+//    receive= [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *dictFromData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
+    NSString  * message = [dictFromData valueForKey:@"message"];
+//
+    return message;
 }
 #define UITextFieldDelete  -------- - -------
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {

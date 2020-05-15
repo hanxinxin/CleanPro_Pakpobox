@@ -6931,7 +6931,7 @@
 				CODE_SIGN_ENTITLEMENTS = Cleanpro/Cleanpro.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.39;
+				CURRENT_PROJECT_VERSION = 1.1.43;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = LUUCB5LGP5;
 				ENABLE_BITCODE = NO;
@@ -6987,7 +6987,7 @@
 					"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/lib",
 					"$(PROJECT_DIR)/Cleanpro/第三方库/微信PaySDK",
 				);
-				MARKETING_VERSION = 1.1.39;
+				MARKETING_VERSION = 1.1.43;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",
@@ -7145,7 +7145,7 @@
 				CODE_SIGN_ENTITLEMENTS = Cleanpro/Cleanpro.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.39;
+				CURRENT_PROJECT_VERSION = 1.1.43;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = LUUCB5LGP5;
 				ENABLE_BITCODE = NO;
@@ -7201,7 +7201,7 @@
 					"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/lib",
 					"$(PROJECT_DIR)/Cleanpro/第三方库/微信PaySDK",
 				);
-				MARKETING_VERSION = 1.1.39;
+				MARKETING_VERSION = 1.1.43;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",

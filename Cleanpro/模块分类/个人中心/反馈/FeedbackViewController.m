@@ -210,11 +210,14 @@
 
 - (IBAction)Submit_touch:(id)sender {
 //    [self addtextView_view];
-    if(self.loginName!=nil && self.FKtype!=nil && self.feedback_textView.text!=nil)
-    {
-        self.FKcontent=self.feedback_textView.text;
-        [self postUpdateFK];
-    }
+    
+    ///最新屏蔽 5.12
+//    if(self.loginName!=nil && self.FKtype!=nil && self.feedback_textView.text!=nil)
+//    {
+//        self.FKcontent=self.feedback_textView.text;
+//        [self postUpdateFK];
+//    }
+   [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"The function is under development, so stay tuned!", @"Language") andDelay:2.0];
 }
 
 - (void)didReceiveMemoryWarning {

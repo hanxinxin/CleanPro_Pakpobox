@@ -199,7 +199,8 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDidConnectHX:) name:@"bearerDidConnectHX" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerCloseHX:) name:@"bearerCloseHX" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDidOpenHX:) name:@"bearerDidOpenHX" object:nil];
- 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(SetNSUserDefaults:) name:@"SetNSUserDefaults" object:nil];
+    
     return YES;
 }
 
@@ -240,7 +241,19 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
     NSLog(@"蓝牙连接成功");
 //    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"蓝牙连接成功", @"Language") andDelay:1.5];
 }
-
+-(void)SetNSUserDefaults:(NSNotification *)noti
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:@"1" forKey:@"Token"];
+        [userDefaults setObject:@"1" forKey:@"memberId"];
+        [userDefaults setObject:@"1" forKey:@"mobile"];
+        [jiamiStr base64Data_encrypt:@"1"];
+    //    [userDefaults setObject:@"1" forKey:@"YHToken"];// 不能屏蔽  不然登录有问题。
+        [userDefaults setObject:@"1" forKey:@"phoneNumber"];
+        [userDefaults setObject:nil forKey:@"SaveUserMode"];
+        [userDefaults setObject:@"1" forKey:@"logCamera"];
+        [userDefaults setObject:@"1" forKey:@"userId"];
+}
 
 -(void)addFCViewSet
 {

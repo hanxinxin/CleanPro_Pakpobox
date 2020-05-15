@@ -152,7 +152,7 @@
 
 
 - (IBAction)Logout_touch:(id)sender {
-     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:@"1" forKey:@"Token"];
     [userDefaults setObject:@"1" forKey:@"memberId"];
     [userDefaults setObject:@"1" forKey:@"mobile"];

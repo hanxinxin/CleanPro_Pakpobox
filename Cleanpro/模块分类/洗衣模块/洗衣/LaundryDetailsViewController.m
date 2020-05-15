@@ -20,6 +20,8 @@
 #import "VendingMachineView.h"
 #import "WPListTableViewCell.h"
 #import "GoodsModel.h"
+#import "NewHomeViewController.h"
+#import "EwashMyViewController.h"
 
 
 #define SelectTableViewCellID @"SelectTableViewCell"
@@ -111,6 +113,7 @@
         [HudViewFZ labelJuHua:self.view andDelay:0.5];
     });
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bearerDidOpen:) name:@"bearerDidOpen" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tongzhiViewController:) name:@"tongzhiViewController" object:nil];
 }
 - (void)viewWillAppear:(BOOL)animated {
     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];
@@ -152,7 +155,31 @@
     self->payCheck=0;
     [super viewDidDisappear:animated];
 }
+- (void)tongzhiViewController:(NSNotification *)text{
+    
+    NSLog(@"－－－－－接收到通知------");
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.55/*延迟执行时间*/ * NSEC_PER_SEC));
 
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        [appDelegate.ManagerBLE closeConnected];
+        [appDelegate hiddenFCViewNO];
+            for (UIViewController *temp in self.navigationController.viewControllers) {
+                if ([temp isKindOfClass:[NewHomeViewController class]]) {
+                    [self.navigationController popToViewController:temp animated:YES];
+
+                }
+            }
+            for (UIViewController *temp in self.navigationController.viewControllers) {
+                if ([temp isKindOfClass:[EwashMyViewController class]]) {
+                    [self.navigationController popToViewController:temp animated:YES];
+                    ////            return NO;//这里要设为NO，不是会返回两次。返回到主界面。
+
+                    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"TokenError"];
+                }
+            }
+    });
+}
 #pragma mark ------  贩卖机支付界面 ------
 -(void)addFMJPayUI
 {
@@ -307,12 +334,8 @@
         [HudViewFZ HiddenHud];
         if(statusCode==401)
         {
-//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
-            //创建一个消息对象
-            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
-            //发送消息
-            [[NSNotificationCenter defaultCenter]postNotification:notice];
-            
+
+                [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SetNSUserDefaults" object:nil userInfo:nil]];
         }else{
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
             
@@ -357,10 +380,16 @@
         if(statusCode==401)
         {
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
-            //创建一个消息对象
-            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
-            //发送消息
-            [[NSNotificationCenter defaultCenter]postNotification:notice];
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.8/*延迟执行时间*/ * NSEC_PER_SEC));
+            
+            dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                //创建一个消息对象
+                NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
+                //发送消息
+                [[NSNotificationCenter defaultCenter]postNotification:notice];
+            });
+            
+            
             
         }else{
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
@@ -406,11 +435,11 @@
         {
             //            self.order_c.pay_amount = [NSString stringWithFormat:@"%.2f",[self.credit doubleValue]/100-[self.order_c.total_amount doubleValue]];
             self.order_c.pay_amount=@"0";
-            self.order_c.credits = [NSString stringWithFormat:@"%ld",(NSInteger)([self.order_c.total_amount doubleValue]*100)];
+            self.order_c.credits = [NSString stringWithFormat:@"%ld",(long)([self.order_c.total_amount doubleValue]*100)];
         }else
         {
             self.order_c.pay_amount = [NSString stringWithFormat:@"%.2f",[self.order_c.total_amount doubleValue]-[self.credit doubleValue]/100];
-            self.order_c.credits = [NSString stringWithFormat:@"%ld",(NSInteger)[self.credit doubleValue]];
+            self.order_c.credits = [NSString stringWithFormat:@"%ld",(long)[self.credit doubleValue]];
         }
         
     }
@@ -1051,8 +1080,21 @@
     } failure:^(id receive, NSInteger statusCode, NSError *error) {
         NSLog(@"error = %@",error);
         NSString * errorMessage = (NSString *)receive;
+        [HudViewFZ HiddenHud];
+        if(statusCode==401)
+        {
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.8/*延迟执行时间*/ * NSEC_PER_SEC));
+            
+            dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil]];
+                [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SetNSUserDefaults" object:nil userInfo:nil]];
+            });
+            
+        }else{
         [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
-            [HudViewFZ HiddenHud];
+            
+        }
 //                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
     }];
 }
@@ -1296,10 +1338,12 @@
         if(statusCode==401)
         {
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
-            //创建一个消息对象
-            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
-            //发送消息
-            [[NSNotificationCenter defaultCenter]postNotification:notice];
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.8/*延迟执行时间*/ * NSEC_PER_SEC));
+            
+            dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil]];
+                [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SetNSUserDefaults" object:nil userInfo:nil]];
+            });
             
         }else{
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
@@ -1380,10 +1424,12 @@
         if(statusCode==401)
         {
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
-            //创建一个消息对象
-            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
-            //发送消息
-            [[NSNotificationCenter defaultCenter]postNotification:notice];
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.8/*延迟执行时间*/ * NSEC_PER_SEC));
+            
+            dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil]];
+                [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SetNSUserDefaults" object:nil userInfo:nil]];
+            });
             
         }else{
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];

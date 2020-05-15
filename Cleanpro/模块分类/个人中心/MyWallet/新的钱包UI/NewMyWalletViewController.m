@@ -61,7 +61,10 @@
     if([strPhoen isEqualToString:@"1"])
     {
        self.UserName.text=FGGetStringWithKeyFromTable(@"Click here to login", @"Language");
-        [self.TouxiangImage setImage:[UIImage imageNamed:@"icon_Avatar"]];
+//        [self.TouxiangImage setImage:[UIImage imageNamed:@"icon_Avatar"]];
+        
+        
+        
     }else
     {
         [self updateText];
@@ -93,7 +96,7 @@
         self.UserName.text=[NSString stringWithFormat:@"%@%@",self.ModeUser.firstName,self.ModeUser.lastName];
         if(self.ModeUser.headImageUrl!=nil)
         {
-            [self.TouxiangImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",FuWuQiUrl,get_downImage,self.ModeUser.headImageUrl]] placeholderImage:[UIImage imageNamed:@"icon_Avatar"]];
+            [self.TouxiangImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",E_FuWuQiUrl,E_DownliadHeaderImage,self.ModeUser.headImageUrl]] placeholderImage:[UIImage imageNamed:@"icon_Avatar"]];
         }else
         {
             [self.TouxiangImage setImage:[UIImage imageNamed:@"icon_Avatar"]];

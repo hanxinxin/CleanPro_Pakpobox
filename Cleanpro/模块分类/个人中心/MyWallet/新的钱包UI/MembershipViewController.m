@@ -11,7 +11,8 @@
 #import "ReloadTableViewCell.h"
 #import "BalanceTableViewCell.h"
 #import "MyAccountViewController.h"
-
+#import "NewHomeViewController.h"
+#import "EwashMyViewController.h"
 #define tableID @"ReloadTableViewCell"
 #define tableID1 @"BalanceTableViewCell"
 @interface MembershipViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -41,6 +42,8 @@
     [self.view addSubview:tableView];
     [tableView registerNib:[UINib nibWithNibName:@"ReloadTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:tableID];
     [tableView registerNib:[UINib nibWithNibName:@"BalanceTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:tableID1];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tongzhiViewController:) name:@"tongzhiViewController" object:nil];
 }
 - (void)viewWillAppear:(BOOL)animated {
    
@@ -49,6 +52,30 @@
     
     [super viewWillAppear:animated];
 }
+
+- (void)tongzhiViewController:(NSNotification *)text{
+    
+    NSLog(@"－－－－－接收到通知------");
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.55/*延迟执行时间*/ * NSEC_PER_SEC));
+
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            for (UIViewController *temp in self.navigationController.viewControllers) {
+                if ([temp isKindOfClass:[NewHomeViewController class]]) {
+                    [self.navigationController popToViewController:temp animated:YES];
+
+                }
+            }
+            for (UIViewController *temp in self.navigationController.viewControllers) {
+                if ([temp isKindOfClass:[EwashMyViewController class]]) {
+                    [self.navigationController popToViewController:temp animated:YES];
+                    ////            return NO;//这里要设为NO，不是会返回两次。返回到主界面。
+
+                    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"TokenError"];
+                }
+            }
+    });
+}
+#pragma mark
 
 -(void)getToken
 {
@@ -149,11 +176,8 @@
            if(statusCode==401)
            {
                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
-               //创建一个消息对象
-               NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
-               //发送消息
-               [[NSNotificationCenter defaultCenter]postNotification:notice];
-               
+               [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SetNSUserDefaults" object:nil userInfo:nil]];
+               [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil]];
            }else{
                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
                
@@ -209,10 +233,8 @@
         if(statusCode==401)
         {
             [HudViewFZ showMessageTitle:@"Token expired" andDelay:2.0];
-            //创建一个消息对象
-            NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
-            //发送消息
-            [[NSNotificationCenter defaultCenter]postNotification:notice];
+            [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SetNSUserDefaults" object:nil userInfo:nil]];
+            [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil]];
             
         }else{
             [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];

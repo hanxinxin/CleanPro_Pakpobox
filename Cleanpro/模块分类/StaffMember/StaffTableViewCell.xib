@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -47,19 +47,6 @@
                         <color key="textColor" red="0.01194231864" green="0.0036725357640000002" blue="0.01607632078" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jMV-rm-5WJ">
-                        <rect key="frame" x="170" y="13" width="50" height="25"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="50" id="P3E-XY-Efv"/>
-                            <constraint firstAttribute="height" constant="25" id="dKp-Qa-OGc"/>
-                        </constraints>
-                        <state key="normal" image="icon_zt01.png">
-                            <color key="titleColor" red="0.1000243351" green="0.58573526139999998" blue="0.90149027110000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </state>
-                        <connections>
-                            <action selector="Status_Touch:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="m6H-fA-bTI"/>
-                        </connections>
-                    </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="col-N5-ZFN">
                         <rect key="frame" x="239" y="12.5" width="65" height="25"/>
                         <color key="backgroundColor" red="0.10002433508634567" green="0.5857352614402771" blue="0.90149027109146118" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -84,21 +71,32 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jMV-rm-5WJ">
+                        <rect key="frame" x="157" y="13" width="74" height="25"/>
+                        <state key="normal" image="icon_zt01.png">
+                            <color key="titleColor" red="0.1000243351" green="0.58573526139999998" blue="0.90149027110000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="Status_Touch:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="m6H-fA-bTI"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="0H7-Xc-oF7" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="5aY-cb-9tp"/>
+                    <constraint firstItem="jMV-rm-5WJ" firstAttribute="leading" secondItem="YW9-0n-KhG" secondAttribute="trailing" constant="8" id="8F4-xw-IpE"/>
                     <constraint firstItem="IqX-OQ-FCM" firstAttribute="leading" secondItem="YW9-0n-KhG" secondAttribute="trailing" constant="10.5" id="A1f-yt-KDU"/>
+                    <constraint firstAttribute="bottom" secondItem="jMV-rm-5WJ" secondAttribute="bottom" constant="12" id="FIH-b9-lsK"/>
                     <constraint firstItem="q2u-M8-yop" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="JFF-HG-kKE"/>
+                    <constraint firstItem="col-N5-ZFN" firstAttribute="leading" secondItem="jMV-rm-5WJ" secondAttribute="trailing" constant="8" id="LYp-RV-gE7"/>
                     <constraint firstItem="YW9-0n-KhG" firstAttribute="leading" secondItem="q2u-M8-yop" secondAttribute="trailing" constant="14" id="PTJ-VT-Sob"/>
                     <constraint firstItem="q2u-M8-yop" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="R1x-E0-YHe"/>
                     <constraint firstAttribute="trailing" secondItem="col-N5-ZFN" secondAttribute="trailing" constant="16" id="RJ9-uo-UKF"/>
                     <constraint firstItem="IqX-OQ-FCM" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="YY9-GG-Teb"/>
                     <constraint firstItem="IqX-OQ-FCM" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="fFK-uG-p3e"/>
-                    <constraint firstItem="jMV-rm-5WJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="13" id="gxd-dG-vnc"/>
                     <constraint firstItem="col-N5-ZFN" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="hhl-Uy-czk"/>
+                    <constraint firstItem="jMV-rm-5WJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="13" id="lbM-Tp-e1H"/>
                     <constraint firstItem="YW9-0n-KhG" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="mWS-WO-Gn0"/>
                     <constraint firstItem="YW9-0n-KhG" firstAttribute="leading" secondItem="0H7-Xc-oF7" secondAttribute="trailing" constant="14" id="oEn-Xo-Chh"/>
-                    <constraint firstItem="jMV-rm-5WJ" firstAttribute="leading" secondItem="IqX-OQ-FCM" secondAttribute="trailing" constant="9.5" id="qFc-Mx-qpa"/>
                     <constraint firstItem="0H7-Xc-oF7" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="tVo-Mp-zYo"/>
                 </constraints>
             </tableViewCellContentView>

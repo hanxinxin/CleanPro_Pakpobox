@@ -956,6 +956,17 @@
                                     <constraint firstAttribute="width" constant="200" id="xTl-dL-0t1"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M5g-ln-Q1b">
+                                <rect key="frame" x="319" y="597" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="PDA-Hx-TdY"/>
+                                    <constraint firstAttribute="width" constant="40" id="n5A-LK-UwA"/>
+                                </constraints>
+                                <state key="normal" image="paperplane" catalog="system"/>
+                                <connections>
+                                    <action selector="SetSelfLocation:" destination="CVC-xN-z3l" eventType="touchUpInside" id="rTW-UQ-WUe"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -964,7 +975,9 @@
                             <constraint firstAttribute="trailing" secondItem="Dp0-ht-4Sn" secondAttribute="trailing" id="YpD-AY-KQV"/>
                             <constraint firstItem="Dp0-ht-4Sn" firstAttribute="leading" secondItem="G3I-j5-LWw" secondAttribute="leading" id="aGr-Qc-AnC"/>
                             <constraint firstItem="nsK-U8-PNA" firstAttribute="top" secondItem="Dp0-ht-4Sn" secondAttribute="bottom" id="bBc-DF-vhw"/>
+                            <constraint firstItem="nsK-U8-PNA" firstAttribute="top" secondItem="M5g-ln-Q1b" secondAttribute="bottom" constant="30" id="csn-q0-VAZ"/>
                             <constraint firstItem="rw4-Ii-41Z" firstAttribute="leading" secondItem="G3I-j5-LWw" secondAttribute="leading" id="fhQ-jL-S54"/>
+                            <constraint firstItem="M5g-ln-Q1b" firstAttribute="trailing" secondItem="G3I-j5-LWw" secondAttribute="trailingMargin" id="mWg-yi-3bv"/>
                             <constraint firstItem="Dp0-ht-4Sn" firstAttribute="top" secondItem="G3I-j5-LWw" secondAttribute="top" id="oxf-Xm-fpY"/>
                             <constraint firstItem="nsK-U8-PNA" firstAttribute="top" secondItem="rw4-Ii-41Z" secondAttribute="bottom" id="teC-g8-uak"/>
                             <constraint firstAttribute="trailing" secondItem="RUa-UP-xdc" secondAttribute="trailing" id="xrD-St-EU9"/>
@@ -979,6 +992,7 @@
                         <outlet property="daohangBtn" destination="bMt-41-Ape" id="xWQ-P8-8MJ"/>
                         <outlet property="mendianLabel" destination="YJI-jb-yIv" id="Vcy-7J-3mo"/>
                         <outlet property="mendianMiaoShu" destination="X5q-3R-pfv" id="vj0-Ma-5sb"/>
+                        <outlet property="selfLocation" destination="M5g-ln-Q1b" id="fCE-if-NDq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tW8-7S-S5A" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5801,6 +5815,7 @@ to verify your identity</string>
         <image name="minus_unavailable.png" width="20" height="20"/>
         <image name="nav_bell.png" width="19" height="21"/>
         <image name="orders_empty.png" width="130" height="130"/>
+        <image name="paperplane" catalog="system" width="128" height="121"/>
         <image name="plus_normal.png" width="20" height="20"/>
         <image name="signup_bg" width="16" height="16"/>
         <image name="vip" width="16" height="16"/>

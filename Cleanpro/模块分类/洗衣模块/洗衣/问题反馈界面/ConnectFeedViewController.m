@@ -15,6 +15,8 @@
 #import "ZGQActionSheetView.h"
 #import "WCQRCodeScanningVC.h"
 #import "AppDelegate.h"
+#import "NewHomeViewController.h"
+#import "EwashMyViewController.h"
 
 #define CollectionViewCellID @"TopCollectionViewCell"
 #define CollectionViewCellID1 @"PhotoCollectionViewCell"
@@ -948,11 +950,8 @@ NSLog(@"select111 ==== %ld,%ld",(long)indexPath.row,(long)indexPath.section);
             if(statusCode==401)
             {
                 [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
-                //创建一个消息对象
-                NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
-                //发送消息
-                [[NSNotificationCenter defaultCenter]postNotification:notice];
-                
+                [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SetNSUserDefaults" object:nil userInfo:nil]];
+                [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil]];
             }else{
                 [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
                 
@@ -965,7 +964,7 @@ NSLog(@"select111 ==== %ld,%ld",(long)indexPath.row,(long)indexPath.section);
     UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"Tips" message:@"Submit Success" preferredStyle:(UIAlertControllerStyleAlert)];
     UIAlertAction *alertA = [UIAlertAction actionWithTitle:@"Confirm" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
         for (UIViewController *temp in self.navigationController.viewControllers) {
-            if ([temp isKindOfClass:[WCQRCodeScanningVC class]]) {
+            if ([temp isKindOfClass:[NewHomeViewController class]]) {
                            //            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
                            //            [appDelegate.appdelegate1 closeConnected];
                 AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
@@ -975,7 +974,7 @@ NSLog(@"select111 ==== %ld,%ld",(long)indexPath.row,(long)indexPath.section);
             }
         }
         for (UIViewController *temp in self.navigationController.viewControllers) {
-            if ([temp isKindOfClass:[MyAccountViewController class]]) {
+            if ([temp isKindOfClass:[EwashMyViewController class]]) {
                            //            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
                            //            [appDelegate.appdelegate1 closeConnected];
                 AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;

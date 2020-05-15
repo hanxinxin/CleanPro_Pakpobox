@@ -1,0 +1,6 @@
+module Pods_Cleanpro {
+  umbrella header "Pods-Cleanpro-umbrella.h"
+
+  export *
+  module * { export * }
+}

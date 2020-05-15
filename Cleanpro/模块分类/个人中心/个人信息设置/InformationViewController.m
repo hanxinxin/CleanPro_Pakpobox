@@ -195,7 +195,15 @@
         {
             if(![self.ModeUser.gender isEqual:[NSNull null]] )
                 {
-                    cell.detailTextLabel.text=self.ModeUser.gender;
+//                    cell.detailTextLabel.text=self.ModeUser.gender;
+                    if([self.ModeUser.gender isEqualToString:@"MALE"])
+                    {
+                        cell.detailTextLabel.text=FGGetStringWithKeyFromTable(@"MALE", @"Language");
+                    }else if([self.ModeUser.gender isEqualToString:@"FEMALE"])
+                    {
+                        cell.detailTextLabel.text=FGGetStringWithKeyFromTable(@"FEMALE", @"Language");
+                    }
+                    
                 }
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头
         }else if(indexPath.row==4)

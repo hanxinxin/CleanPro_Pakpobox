@@ -39,6 +39,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *NoAppLabel;
 @property (strong, nonatomic) IBOutlet UILabel *YesAppLabel;
 @property (strong, nonatomic) IBOutlet UILabel *NO_WASHERLabel;
+@property (strong, nonatomic) IBOutlet UIButton *selfLocation;
 
 
 @end

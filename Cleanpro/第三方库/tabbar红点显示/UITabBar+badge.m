@@ -8,7 +8,7 @@
 
 #import "UITabBar+badge.h"
 
-#define TabbarItemNums 5.0
+#define TabbarItemNums 4.0
 
 @implementation UITabBar (badge)
 
