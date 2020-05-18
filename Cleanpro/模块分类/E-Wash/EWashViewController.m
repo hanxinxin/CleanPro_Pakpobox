@@ -91,6 +91,10 @@ static int iCount=0;
         manager.delegate=self;
     }
     [manager setStartUpdatingLocation];
+    if(![manager ReturnLocationStart])
+    {
+        [self creatOrderAlertView];
+    }
     iCount=0;
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -110,6 +114,27 @@ static int iCount=0;
 //    [self.navigationController setNavigationBarHidden:NO animated:animated];
     [super viewWillDisappear:animated];
 }
+
+
+
+-(void)creatOrderAlertView{
+    
+    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:FGGetStringWithKeyFromTable(@"Tips", @"Language") message:FGGetStringWithKeyFromTable(@"Need to access your current location, please open your location service", @"Language") preferredStyle:(UIAlertControllerStyleAlert)];
+    UIAlertAction *alertA = [UIAlertAction actionWithTitle:FGGetStringWithKeyFromTable(@"Cancel", @"Language") style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    UIAlertAction *alertB = [UIAlertAction actionWithTitle:FGGetStringWithKeyFromTable(@"To set", @"Language") style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
+        NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+        [[UIApplication sharedApplication] openURL:settingsURL options:@{} completionHandler:nil];
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    
+    [alertC addAction:alertA];
+    [alertC addAction:alertB];
+    [self presentViewController:alertC animated:YES completion:nil];
+}
+
+
 -(void)returnLoction:(CLLocationCoordinate2D)CLLocation
 {
     

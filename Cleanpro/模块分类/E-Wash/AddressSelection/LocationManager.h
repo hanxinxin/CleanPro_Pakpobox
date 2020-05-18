@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<LocationManagerDelegate> delegate;
 @property (nonatomic, strong) CLLocationManager * locationManager; ///// 定位
 + (id)sharedInstance;
+-(BOOL)ReturnLocationStart;
 -(void)setStartUpdatingLocation;
 -(void)setStopUpdatingLocation;
 @end

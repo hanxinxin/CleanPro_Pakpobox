@@ -23,6 +23,7 @@
   }
   return Manager;
 }
+
 -(instancetype)init
 {
     self = [super init];
@@ -40,6 +41,23 @@
         [_locationManager startUpdatingHeading];
     }
      return self;
+}
+
+
+-(BOOL)ReturnLocationStart
+{
+    
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    if (kCLAuthorizationStatusDenied == status ||kCLAuthorizationStatusRestricted == status) {
+        //这里是未开通时调用的方法
+       return NO;
+    }else if(kCLAuthorizationStatusNotDetermined == status)
+    {
+        return NO;
+    }else{
+       return YES;
+    }
+    return NO;
 }
 
 -(void)setStartUpdatingLocation

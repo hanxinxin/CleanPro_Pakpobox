@@ -40,25 +40,7 @@ static int indexA=0;
     My_Loca.latitude=5555;
     My_Loca.longitude=5555;
     
-    if ([CLLocationManager locationServicesEnabled] && ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)) {
-        
-        //定位功能可用
-        
-    }else if ([CLLocationManager authorizationStatus] ==kCLAuthorizationStatusDenied) {
-        
-        //定位不能用
-        UIAlertController* alert = [UIAlertController alertControllerWithTitle:FGGetStringWithKeyFromTable(@"Tisp", @"Language")message:FGGetStringWithKeyFromTable(@"\" Settings - privacy - location service \" opens location service and allows StorHub to use location-based services.", @"Language") preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:FGGetStringWithKeyFromTable(@"OK", @"Language") style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            //响应事件
-            NSLog(@"action = %@", action);
-            [self dismissViewControllerAnimated:YES completion:nil];
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }];
-        
-        [alert addAction:defaultAction];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
+    
 //    self.title=FGGetStringWithKeyFromTable(@"Nearby_A", @"Language");
     self.NoAppLabel.text = FGGetStringWithKeyFromTable(@"No APP available", @"Language");
     self.YesAppLabel.text = FGGetStringWithKeyFromTable(@"APP available", @"Language");
@@ -74,11 +56,7 @@ static int indexA=0;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    
-//    [self.navigationController setNavigationBarHidden:NO animated:YES];//隐藏导航栏
-    //    [self.rotateTimer setFireDate:[NSDate dateWithTimeInterval:2.0 sinceDate:[NSDate date]]];
-    //    self.tabBarController.tabBar.hidden = NO;
-    //    [self.navigationController.tabBarController.tabBar setHidden:NO];
+
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.title=FGGetStringWithKeyFromTable(@"Nearby", @"Language");;
 //    self.navigationController.title=@"Location";
@@ -95,7 +73,7 @@ static int indexA=0;
         [self setLabelFrame];
         [self updateMessage];
     });
-    
+    [self ReturnLocationStart];
     [super viewWillAppear:animated];
 }
 
@@ -107,6 +85,35 @@ static int indexA=0;
     
 //    [self.navigationController setNavigationBarHidden:NO animated:animated];
     [super viewWillDisappear:animated];
+}
+-(void)ReturnLocationStart
+{
+    if ([CLLocationManager locationServicesEnabled] && ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)) {
+        
+        //定位功能可用
+        
+    }else if ([CLLocationManager authorizationStatus] ==kCLAuthorizationStatusDenied) {
+        [self creatOrderAlertView];
+        //定位不能用
+
+    }
+}
+
+-(void)creatOrderAlertView{
+    
+    UIAlertController *alertC = [UIAlertController alertControllerWithTitle:FGGetStringWithKeyFromTable(@"Tips", @"Language") message:FGGetStringWithKeyFromTable(@"Need to access your current location, please open your location service", @"Language") preferredStyle:(UIAlertControllerStyleAlert)];
+    UIAlertAction *alertA = [UIAlertAction actionWithTitle:FGGetStringWithKeyFromTable(@"Cancel", @"Language") style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
+//        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    UIAlertAction *alertB = [UIAlertAction actionWithTitle:FGGetStringWithKeyFromTable(@"To set", @"Language") style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
+        NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+        [[UIApplication sharedApplication] openURL:settingsURL options:@{} completionHandler:nil];
+//        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    
+    [alertC addAction:alertA];
+    [alertC addAction:alertB];
+    [self presentViewController:alertC animated:YES completion:nil];
 }
 
 -(void)updateMessage
