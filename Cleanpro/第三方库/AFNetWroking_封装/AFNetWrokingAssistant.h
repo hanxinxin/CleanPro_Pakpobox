@@ -95,4 +95,7 @@
  */
 + (AFHTTPSessionManager *)setHttpsMange;
 
+
+-(void)cancelTask;
+
 @end

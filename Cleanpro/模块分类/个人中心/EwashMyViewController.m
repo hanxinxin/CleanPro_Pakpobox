@@ -628,7 +628,7 @@
             NSData *data = [NSKeyedArchiver archivedDataWithRootObject: ModeUser];
             [defaults setObject:data forKey:@"SaveUserMode"];
             [defaults synchronize];
-            
+//            14.14 14.89 14.40 14.59
         }
     }failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"error = %@",error);

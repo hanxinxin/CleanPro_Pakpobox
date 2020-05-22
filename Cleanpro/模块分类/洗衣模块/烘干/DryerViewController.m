@@ -50,6 +50,8 @@
     timeJiaJian=0;
 //    self.TimeTeger = 23;
 //    order_c.goods_info=@"temperature";
+    morenTimeSj=23;
+    
     [self setTimeLabel_text:0];
     self.Charges_label.textAlignment=NSTextAlignmentCenter;
     self.money_label.textAlignment=NSTextAlignmentCenter;
@@ -66,7 +68,9 @@
     {
         self.title =FGGetStringWithKeyFromTable(@"Dryer", @"Language");
     }
+        [self getPriceMache];
     });
+    
     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [appDelegate addFCViewSet];
 }
@@ -78,8 +82,7 @@
 
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    morenTimeSj=23;
-    [self getPriceMache];
+    
     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     //    [appDelegate.appdelegate1 dataSendWithNameStr:@"Pakpobox"];
     if([appDelegate.appdelegate1 isConnected_to])

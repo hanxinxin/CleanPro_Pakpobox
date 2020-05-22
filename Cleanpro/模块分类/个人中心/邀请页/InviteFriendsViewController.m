@@ -510,12 +510,21 @@
             [[NSNotificationCenter defaultCenter]postNotification:notice];
             
         }else{
-            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+            [HudViewFZ showMessageTitle:[self dictStr:error] andDelay:2.0];
             
         }
     }];
 }
-
+-(NSString *)dictStr:(NSError *)error
+{
+//    NSString * receive=@"";
+    NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+//    receive= [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *dictFromData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
+    NSString  * message = [dictFromData valueForKey:@"message"];
+//
+    return message;
+}
 -(void)getToken
 {
 //    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

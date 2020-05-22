@@ -42,6 +42,9 @@
 		0438992F237273C70029CAAE /* banner01-neiye.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0438992E237273C60029CAAE /* banner01-neiye.jpg */; };
 		04394893245ABEBC00841B04 /* UPloadbanner@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04394891245ABEBC00841B04 /* UPloadbanner@3x.png */; };
 		04394894245ABEBC00841B04 /* UPloadbanner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04394892245ABEBC00841B04 /* UPloadbanner@2x.png */; };
+		043F54232477DE64005D3B43 /* icon_lo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 043F54212477DE64005D3B43 /* icon_lo@3x.png */; };
+		043F54242477DE64005D3B43 /* icon_lo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 043F54222477DE64005D3B43 /* icon_lo@2x.png */; };
+		043F54262477E25B005D3B43 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 043F54252477E25B005D3B43 /* GoogleService-Info.plist */; };
 		0440C14223862A6B000FA7DF /* NewMyWalletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0440C14123862A6B000FA7DF /* NewMyWalletViewController.m */; };
 		0440C15023863D7B000FA7DF /* UIView+LLSegmentBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0440C14523863D7B000FA7DF /* UIView+LLSegmentBar.m */; };
 		0440C15123863D7B000FA7DF /* LLSegmentBarConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 0440C14923863D7B000FA7DF /* LLSegmentBarConfig.m */; };
@@ -575,7 +578,6 @@
 		049A8C6C22A5291900E17425 /* icon_dryer2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 049A8C6A22A5291900E17425 /* icon_dryer2@2x.png */; };
 		049A8C6F22A5291F00E17425 /* icon_laundry2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 049A8C6D22A5291E00E17425 /* icon_laundry2@2x.png */; };
 		049A8C7022A5291F00E17425 /* icon_laundry2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 049A8C6E22A5291F00E17425 /* icon_laundry2@3x.png */; };
-		04A0246B243C850400B1C081 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04A0246A243C850400B1C081 /* GoogleService-Info.plist */; };
 		04B087C222EFF27800C443D5 /* Language.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04B087C622EFF27800C443D5 /* Language.strings */; };
 		04B087C322EFF27800C443D5 /* Language.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04B087C622EFF27800C443D5 /* Language.strings */; };
 		04B087C422EFF27800C443D5 /* Language.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04B087C622EFF27800C443D5 /* Language.strings */; };
@@ -1109,6 +1111,9 @@
 		0438992E237273C60029CAAE /* banner01-neiye.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "banner01-neiye.jpg"; sourceTree = "<group>"; };
 		04394891245ABEBC00841B04 /* UPloadbanner@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UPloadbanner@3x.png"; sourceTree = "<group>"; };
 		04394892245ABEBC00841B04 /* UPloadbanner@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UPloadbanner@2x.png"; sourceTree = "<group>"; };
+		043F54212477DE64005D3B43 /* icon_lo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_lo@3x.png"; sourceTree = "<group>"; };
+		043F54222477DE64005D3B43 /* icon_lo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_lo@2x.png"; sourceTree = "<group>"; };
+		043F54252477E25B005D3B43 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0440C14023862A6B000FA7DF /* NewMyWalletViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewMyWalletViewController.h; sourceTree = "<group>"; };
 		0440C14123862A6B000FA7DF /* NewMyWalletViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewMyWalletViewController.m; sourceTree = "<group>"; };
 		0440C14523863D7B000FA7DF /* UIView+LLSegmentBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LLSegmentBar.m"; sourceTree = "<group>"; };
@@ -1866,7 +1871,6 @@
 		049A8C6A22A5291900E17425 /* icon_dryer2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_dryer2@2x.png"; sourceTree = "<group>"; };
 		049A8C6D22A5291E00E17425 /* icon_laundry2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_laundry2@2x.png"; sourceTree = "<group>"; };
 		049A8C6E22A5291F00E17425 /* icon_laundry2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_laundry2@3x.png"; sourceTree = "<group>"; };
-		04A0246A243C850400B1C081 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		04B087BC22EFEF3700C443D5 /* en-AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-AU"; path = "en-AU.lproj/Main.strings"; sourceTree = "<group>"; };
 		04B087BD22EFEF3800C443D5 /* en-AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-AU"; path = "en-AU.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		04B087C522EFF27800C443D5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Language.strings; sourceTree = "<group>"; };
@@ -4837,7 +4841,7 @@
 		04C4D4D321E7481D0097B3BD /* google推送venolinkAndPakpobox */ = {
 			isa = PBXGroup;
 			children = (
-				04A0246A243C850400B1C081 /* GoogleService-Info.plist */,
+				043F54252477E25B005D3B43 /* GoogleService-Info.plist */,
 			);
 			path = "google推送venolinkAndPakpobox";
 			sourceTree = "<group>";
@@ -4889,6 +4893,8 @@
 		04D36C4E245595C600FD2D47 /* ewash图标补丁 */ = {
 			isa = PBXGroup;
 			children = (
+				043F54222477DE64005D3B43 /* icon_lo@2x.png */,
+				043F54212477DE64005D3B43 /* icon_lo@3x.png */,
 				04D36C4F245595C600FD2D47 /* icon_ewash.png */,
 				04D36C50245595C600FD2D47 /* icon_laundry1.png */,
 				04D36C60245595C600FD2D47 /* icon_laundry1@2x.png */,
@@ -5684,6 +5690,7 @@
 				04CBBCF3239A636E00103F7A /* cycle_bottom_right.png in Resources */,
 				04B10C6521F0848A001A9E8B /* lab_Nearby_on@3x.png in Resources */,
 				04F95F1E20C66E5C00984A6B /* QR@2x.png in Resources */,
+				043F54232477DE64005D3B43 /* icon_lo@3x.png in Resources */,
 				04D36C6C245595C700FD2D47 /* icon_locker@2x.png in Resources */,
 				0418C14821FC5AEF004F6542 /* JF2TableViewCell.xib in Resources */,
 				04B10C5D21F0847A001A9E8B /* payment-method_IPy88@3x.png in Resources */,
@@ -5871,7 +5878,6 @@
 				04F95F1B20C66E5C00984A6B /* icon_promotion@2x.png in Resources */,
 				04B4C9F92435CE6F00B69DF2 /* ipay88_logo_wide.png in Resources */,
 				04413120224B63E800F58689 /* drying@3x.png in Resources */,
-				04A0246B243C850400B1C081 /* GoogleService-Info.plist in Resources */,
 				04967727210FFC630080D920 /* nearby_box@3x.png in Resources */,
 				04B10B9421EC7D0C001A9E8B /* orders_on@3x.png in Resources */,
 				04B4C9EA2435CE6F00B69DF2 /* icon_zt07.png in Resources */,
@@ -5899,6 +5905,7 @@
 				04820AC523BF1FC800CBECC8 /* GrapeR@3x.png in Resources */,
 				04B4C9E02435CE6F00B69DF2 /* icon_zt09.png in Resources */,
 				04B10C8521F0857C001A9E8B /* home_Coupons@2x.png in Resources */,
+				043F54262477E25B005D3B43 /* GoogleService-Info.plist in Resources */,
 				04782CD220C54F5700252F70 /* Assets.xcassets in Resources */,
 				044805222420D0450097EDBE /* SelectHeaderTableViewCell.xib in Resources */,
 				04480508241B5F610097EDBE /* PriceWashTableViewCell.xib in Resources */,
@@ -6091,6 +6098,7 @@
 				04B10C7421F084AF001A9E8B /* lab_home_on@2x.png in Resources */,
 				04F95F0820C66E5C00984A6B /* illustrator_laundry@3x.png in Resources */,
 				04B10C8D21F08D20001A9E8B /* signup_bg@3x.png in Resources */,
+				043F54242477DE64005D3B43 /* icon_lo@2x.png in Resources */,
 				04820ACE23BF1FC800CBECC8 /* goods.json in Resources */,
 				0418C14C21FC787D004F6542 /* banner02@2x.png in Resources */,
 				04F95F1520C66E5C00984A6B /* warm@2x.png in Resources */,
@@ -6931,9 +6939,9 @@
 				CODE_SIGN_ENTITLEMENTS = Cleanpro/Cleanpro.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.44;
+				CURRENT_PROJECT_VERSION = 1.1.48;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = LUUCB5LGP5;
+				DEVELOPMENT_TEAM = F2BT7GJ582;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6987,7 +6995,7 @@
 					"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/lib",
 					"$(PROJECT_DIR)/Cleanpro/第三方库/微信PaySDK",
 				);
-				MARKETING_VERSION = 1.1.44;
+				MARKETING_VERSION = 1.1.48;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",
@@ -7122,7 +7130,7 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pakpobox.Cleanpro.Once;
+				PRODUCT_BUNDLE_IDENTIFIER = com.venolink.Cleanpro.Once;
 				PRODUCT_NAME = Cleanpro;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = Cleanpro/Cleanpro_Bridging_Header.h;
@@ -7145,9 +7153,9 @@
 				CODE_SIGN_ENTITLEMENTS = Cleanpro/Cleanpro.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.44;
+				CURRENT_PROJECT_VERSION = 1.1.48;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = LUUCB5LGP5;
+				DEVELOPMENT_TEAM = F2BT7GJ582;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7201,7 +7209,7 @@
 					"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/lib",
 					"$(PROJECT_DIR)/Cleanpro/第三方库/微信PaySDK",
 				);
-				MARKETING_VERSION = 1.1.44;
+				MARKETING_VERSION = 1.1.48;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",
@@ -7336,7 +7344,7 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pakpobox.Cleanpro.Once;
+				PRODUCT_BUNDLE_IDENTIFIER = com.venolink.Cleanpro.Once;
 				PRODUCT_NAME = Cleanpro;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = Cleanpro/Cleanpro_Bridging_Header.h;

@@ -59,7 +59,7 @@ static int iCount=0;
     // Do any additional setup after loading the view.
     self.CountInt1=2;
     self.CountInt2=2;
-    self.SelectWay=2;//// 默认为商店。
+    self.SelectWay=0;//// 默认为商店。
     self.title=FGGetStringWithKeyFromTable(@"E-Wash", @"Language");
     _TopImage=[[UIImageView alloc]initWithFrame:CGRectMake(0, kNavBarAndStatusBarHeight, SCREEN_WIDTH, 170)];
     [_TopImage setImage:[UIImage imageNamed:@"banner-EWASH"]];
@@ -198,7 +198,7 @@ static int iCount=0;
                         self.SelectWay=1;
                     }else
                     {
-                        self.SelectWay=2;
+                        self.SelectWay=0;
                     }
                 }
                 [self.DownTable reloadData];
@@ -584,11 +584,23 @@ static int iCount=0;
         if (cellOne == nil) {
             cellOne= (DeliveryTableViewCell *)[[[NSBundle  mainBundle]  loadNibNamed:@"DeliveryTableViewCell" owner:self options:nil]  lastObject];
         }
+            
             if(indexPath.row==1)
             {
                 if(self.SelectWay==1)
                 {
                     [cellOne.RightSelect setImage:[UIImage imageNamed:@"check-circle-fill"] forState:(UIControlStateNormal)];
+                    [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0]];
+                }else if(self.SelectWay==0)
+                {
+                    if(self.OUTLETArray.count>0)
+                    {
+                        [cellOne.RightSelect setImage:[UIImage imageNamed:@"circleNil"] forState:(UIControlStateNormal)];
+                        [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0]];
+                    }else
+                    {
+                        [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:158/255.0 green:174/255.0 blue:183/255.0 alpha:1.0]];
+                    }
                 }else
                 {
                     if(self.OUTLETArray.count>0)
@@ -606,6 +618,17 @@ static int iCount=0;
                 if(self.SelectWay==2)
                 {
                     [cellOne.RightSelect setImage:[UIImage imageNamed:@"check-circle-fill"] forState:(UIControlStateNormal)];
+                    [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0]];
+                }else if(self.SelectWay==0)
+                {
+                    if(self.OUTLETArray.count>0)
+                    {
+                        [cellOne.RightSelect setImage:[UIImage imageNamed:@"circleNil"] forState:(UIControlStateNormal)];
+                        [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0]];
+                    }else
+                    {
+                        [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:158/255.0 green:174/255.0 blue:183/255.0 alpha:1.0]];
+                    }
                 }else
                 {
                     if(self.POINTArray.count>0)
@@ -624,6 +647,17 @@ static int iCount=0;
                 if(self.SelectWay==3)
                 {
                     [cellOne.RightSelect setImage:[UIImage imageNamed:@"check-circle-fill"] forState:(UIControlStateNormal)];
+                    [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0]];
+                }else if(self.SelectWay==0)
+                {
+                    if(self.OUTLETArray.count>0)
+                    {
+                        [cellOne.RightSelect setImage:[UIImage imageNamed:@"circleNil"] forState:(UIControlStateNormal)];
+                        [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0]];
+                    }else
+                    {
+                        [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:158/255.0 green:174/255.0 blue:183/255.0 alpha:1.0]];
+                    }
                 }else
                 {
                     if(self.OUTLETArray.count>0)
@@ -635,8 +669,9 @@ static int iCount=0;
                         [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:158/255.0 green:174/255.0 blue:183/255.0 alpha:1.0]];
                     }
                 }
-                [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_mendian"] forState:(UIControlStateNormal)];
+                [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_lo"] forState:(UIControlStateNormal)];
             }
+            
             
             //cell选中效果
             cellOne.selectionStyle = UITableViewCellSelectionStyleNone;

@@ -13,7 +13,8 @@
 //// Cleanpro 2.0  URL
  
 //#define E_FuWuQiUrl @"http://192.168.0.119:83" //  测试版服务器
-#define E_FuWuQiUrl @"https://alfred-ewash.pakpobox.com" //  外网服务器
+//#define E_FuWuQiUrl @"https://alfred-ewash.pakpobox.com" //  外网服务器
+#define E_FuWuQiUrl @"https://cleanpro-api.pakpobox.com"
 
 #define E_register @"/api/member/v1/register" ///注册
 //#define E_login @"/api/member/v1/login"  ///登录

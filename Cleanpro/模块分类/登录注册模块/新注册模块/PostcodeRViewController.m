@@ -25,6 +25,8 @@
 @property (nonatomic,strong)SaveUserIDMode * ModeUser;
 @property (nonatomic,strong)NSArray * CityArray;
 @property (nonatomic,strong)NSMutableArray * SelectArray;
+
+@property (nonatomic, assign) NSInteger inputCount;     //用户输入次数，用来控制延迟搜索请求
 @end
 
 @implementation PostcodeRViewController
@@ -32,6 +34,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.inputCount=0;
     self.next_btn.layer.cornerRadius=4;
     self.Skip_btn.layer.cornerRadius=4;
     self.textfield.layer.cornerRadius=4;
@@ -58,6 +61,7 @@
     tapGesture.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:tapGesture];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tongzhiViewController:) name:@"tongzhiViewController" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:@"UITextFieldTextDidChangeNotification" object:self.textfield];
 }
 ////点击别的区域收起键盘
 - (void)tapBG:(UITapGestureRecognizer *)gesture {
@@ -90,8 +94,10 @@
     [self.navigationController.navigationBar setHidden:NO];
     [self addNoticeForKeyboard];
     [self getUserAddressInfo];/// 获取用户的详细地址
+    
     [super viewWillAppear:animated];
 }
+
 - (void)viewWillDisappear:(BOOL)animated {
     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] init];
     backBtn.title = FGGetStringWithKeyFromTable(@"", @"Language");
@@ -103,6 +109,12 @@
     [super viewWillDisappear:animated];
 }
 
+
+- (void)textFieldDidChange :(NSNotification *)notif
+{
+     //
+    [self inputBarTextViewDidChange:self.textfield hasInputText:self.textfield.text];
+}
 #pragma mark - 键盘通知
 - (void)addNoticeForKeyboard {
     
@@ -444,7 +456,7 @@
             [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil]];
             
         }else{
-            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
             
         }
     }];
@@ -618,12 +630,12 @@
 //                }
             }else
             {
-                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
             }
 //            }
     } failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"error = %@",error);
-        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+        [HudViewFZ showMessageTitle:[self dictStr:error] andDelay:2.0];
         [HudViewFZ HiddenHud];
         
     }];
@@ -838,7 +850,7 @@
             
             dispatch_after(delayTime, dispatch_get_main_queue(), ^{
                 self.Nextmode.postCode=self.textfield.text;
-                [self Get_AddressSelectList:self.textfield.text parentIdStr:nil index:0];
+//                [self Get_AddressSelectList:self.textfield.text parentIdStr:nil index:0];
             if (self.textfield.text.length >0 && self.AreaTextfield.text.length>0) {
                 [self.next_btn setUserInteractionEnabled:YES];
                 self.next_btn.backgroundColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
@@ -858,7 +870,7 @@
             dispatch_after(delayTime, dispatch_get_main_queue(), ^{
                 self.Nextmode.postCode=self.textfield.text;
                 if (self.textfield.text.length>=4) {
-                    [self Get_AddressSelectList:self.textfield.text parentIdStr:nil index:0];
+//                    [self Get_AddressSelectList:self.textfield.text parentIdStr:nil index:0];
                 }
                 if (self.textfield.text.length >0 && self.AreaTextfield.text.length>0) {
                     [self.next_btn setUserInteractionEnabled:YES];
@@ -895,6 +907,34 @@
 {
     self.AreaTextfield.text = [NSString stringWithFormat:@""];
     [self.SelectArray removeAllObjects];
+}
+
+
+
+- (void)inputBarTextViewDidChange:(UITextField *)textView hasInputText:(NSString *)text {
+    // 用户停止输入1秒后进行提示内容匹配搜索
+    self.inputCount ++;
+    [self performSelector:@selector(requestKeyWorld:) withObject:@(self.inputCount) afterDelay:1.0f];
+}
+
+- (void)requestKeyWorld:(NSNumber *)count {
+    if (self.inputCount == [count integerValue]) {
+        //说明用户停止输入超过了一秒，发起网络请求
+        [[AFNetWrokingAssistant shareAssistant] cancelTask];
+        //执行网络请求
+        [self Get_AddressSelectList:self.textfield.text parentIdStr:nil index:0];
+    }
+}
+- (void)searchKeyword:(NSNumber *)inputCount{
+
+    // 判断不等于0是为了防止用户输入完直接点击搜索，延时结束之后又搜索一次
+    if (inputCount.integerValue == self.inputCount && self.inputCount != 0) {
+        
+    }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    return NO;
 }
 
 @end

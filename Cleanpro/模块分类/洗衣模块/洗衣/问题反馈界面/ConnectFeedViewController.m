@@ -22,7 +22,7 @@
 #define CollectionViewCellID1 @"PhotoCollectionViewCell"
 #define cout_Number 15
 
-@interface ConnectFeedViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UIGestureRecognizerDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,ZGQActionSheetViewDelegate>
+@interface ConnectFeedViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UIGestureRecognizerDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextViewDelegate,ZGQActionSheetViewDelegate>
 {
     NSMutableArray * collectionArray;
     NSInteger moren_cell;
@@ -74,6 +74,7 @@
     self.feedback_textView.layer.cornerRadius = 4;//2.0是圆角的弧度，根据需求自己更改
     self.feedback_textView.layer.borderColor = [UIColor colorWithRed:225/255.0 green:229/255.0 blue:230/255.0 alpha:1].CGColor;//设置边框颜色
     self.feedback_textView.layer.borderWidth = 0.8f;//设置边框颜色
+    self.feedback_textView.delegate=self;
     self.feedback_textView.zw_placeHolder = FGGetStringWithKeyFromTable(@"Add a comment", @"Language");
     NSArray * arr = collectionArray[0];
     self.FKtype = arr[0];
@@ -134,7 +135,7 @@
 //                                                  forBarMetrics:UIBarMetricsDefault];
 //    [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"bgnav"]];
     [self addNoticeForKeyboard];
-
+    [self updateSubmitStart];
     [super viewWillAppear:animated];
 }
 - (void)viewWillDisappear:(BOOL)animated {
@@ -188,8 +189,43 @@
             self.view.frame = CGRectMake(0, kNavBarAndStatusBarHeight, SCREEN_WIDTH, SCREEN_HEIGHT-(kNavBarAndStatusBarHeight));
     }];
 }
-
-
+-(void)updateSubmitStart
+{
+    if(self.imageViewArr.count>0)
+        {
+            
+            if(self.feedback_textView.text!=nil && ![self.feedback_textView.text isEqualToString:@""])
+            {
+                if(self.FKtype!=nil)
+                {
+                    [self.Submit_btn setBackgroundColor:[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0]];
+                    [self.Submit_btn setUserInteractionEnabled:YES];
+                }else
+                {
+                    [self.Submit_btn setBackgroundColor:[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0]];
+                    [self.Submit_btn setUserInteractionEnabled:NO];
+                }
+                
+            }else
+            {
+                [self.Submit_btn setBackgroundColor:[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0]];
+                [self.Submit_btn setUserInteractionEnabled:NO];
+            }
+        }else
+        {
+            [self.Submit_btn setBackgroundColor:[UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0]];
+            [self.Submit_btn setUserInteractionEnabled:NO];
+        }
+}
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
+    
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [self updateSubmitStart];
+    });
+    
+    return YES;
+}
 -(void)addCollectionView
 {
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
@@ -263,7 +299,7 @@
 - (IBAction)Submit_touch:(id)sender {
     if(self.imageViewArr.count>0)
     {
-        if(self.feedback_textView.text!=nil)
+        if(self.feedback_textView.text!=nil && ![self.feedback_textView.text isEqualToString:@""])
         {
             if(self.FKtype!=nil)
             {
@@ -506,6 +542,7 @@ NSLog(@"select111 ==== %ld,%ld",(long)indexPath.row,(long)indexPath.section);
             
         }
     
+    [self updateSubmitStart];
 }
 
 -(void)setSelectImage:(NSInteger)SelectTag
@@ -524,6 +561,7 @@ NSLog(@"select111 ==== %ld,%ld",(long)indexPath.row,(long)indexPath.section);
             [self.imageViewArr removeObjectAtIndex:(sheetView.tag-200)];
             [self.PhotoListTable reloadData];
         }
+    [self updateSubmitStart];
 }
 
 #pragma mark 设置每个item的尺寸
@@ -732,6 +770,7 @@ NSLog(@"select111 ==== %ld,%ld",(long)indexPath.row,(long)indexPath.section);
 //    [ConnectFeedViewController compressImageQuality:info[UIImagePickerControllerOriginalImage] toByte:51200]
     [self.imageViewArr addObject:[ConnectFeedViewController compressImageQuality:info[UIImagePickerControllerOriginalImage] toByte:51200]];
     [self.PhotoListTable reloadData];
+    [self updateSubmitStart];
 }
 
 
@@ -953,12 +992,26 @@ NSLog(@"select111 ==== %ld,%ld",(long)indexPath.row,(long)indexPath.section);
                 [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SetNSUserDefaults" object:nil userInfo:nil]];
                 [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil]];
             }else{
-                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+                [HudViewFZ showMessageTitle:[self dictMessageStr:error] andDelay:2.0];
                 
             }
         }];
 }
-
+-(NSNumber *)dictCodeStr:(NSError *)error
+{
+    NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+    NSDictionary *dictFromData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
+    NSNumber * errorCode = [dictFromData valueForKey:@"errorCode"];
+//
+    return errorCode;
+}
+-(NSString *)dictMessageStr:(NSError *)error
+{
+    NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+    NSDictionary *dictFromData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
+    NSString * message = [dictFromData valueForKey:@"message"];
+    return message;
+}
 -(void)submit_Alt
 {
     UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"Tips" message:@"Submit Success" preferredStyle:(UIAlertControllerStyleAlert)];

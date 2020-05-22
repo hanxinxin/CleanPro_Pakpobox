@@ -503,7 +503,9 @@
 
 - (IBAction)pay_touch:(id)sender {
 //
-    
+    if(([self.balance doubleValue]>[self.order_c.total_amount doubleValue]) || ([self.credit floatValue] >= [self.order_c.total_amount floatValue]*100))
+    {
+        
     if([self.payment isEqualToString:@"1"])
     {
             self.order_c.payment_platform=@"IPAY88";
@@ -530,6 +532,9 @@
             [self FMJpushViewController];
         }
         
+    }
+    }else{
+        [self addselect_view:1];
     }
     self.pay_btn.userInteractionEnabled=NO;
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6/*延迟执行时间*/ * NSEC_PER_SEC));
@@ -1150,12 +1155,25 @@
             NSNumber * code=[self dictCodeStr:error];
             if([code integerValue]==1000)
             {
-                [HudViewFZ showMessageTitle:[self dictMessageStr:error] andDelay:2.0];
+                [HudViewFZ showMessageTitle:[self dictStr:error] andDelay:2.0];
+            }if([code integerValue]==1001)
+            {
+                [HudViewFZ showMessageTitle:[self dictStr:error] andDelay:2.0];
+                [self addselect_view:1];
             }
             [HudViewFZ HiddenHud];
         }];
 }
-
+-(NSString *)dictStr:(NSError *)error
+{
+//    NSString * receive=@"";
+    NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+//    receive= [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *dictFromData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
+    NSString  * message = [dictFromData valueForKey:@"message"];
+//
+    return message;
+}
 
 -(NSString *)returnProductVariantId:(productsMode*)mode
 {
@@ -1192,8 +1210,7 @@
                                 NSString * ValueId= modePro.productAttributeValueIds[M];
                                 if([ValueId isEqualToString:productAttributeValueIdStr])
                                 {
-                                    
-                                        if((self.Select_teger+1)==2)
+                                    if((self.Select_teger+1)==2)
                                         {
 //                                             NSString * priceValue = [NSString stringWithFormat:@"%@",modePro.priceValue];
 //                                            return priceValue;

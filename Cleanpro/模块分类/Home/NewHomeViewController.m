@@ -101,8 +101,9 @@
         [self topviewset];
         [self downviewset];
     });
- 
+   
 }
+
 
 - (void)viewWillAppear:(BOOL)animated {
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
@@ -317,10 +318,10 @@
         }
         
     } failure:^(NSInteger statusCode, NSError *error) {
-        NSLog(@"error = %@",error);
+//        NSLog(@"error = %@",error);
         [HudViewFZ HiddenHud];
         
-            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
     }];
 }
 
@@ -594,7 +595,7 @@
                 [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SetNSUserDefaults" object:nil userInfo:nil]];
             });
         }else{
-            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:1.0];
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:1.0];
             
         }
     }];
