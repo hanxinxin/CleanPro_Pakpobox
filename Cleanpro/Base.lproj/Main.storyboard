@@ -3916,21 +3916,25 @@ to verify your identity</string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e0Z-S5-ZhG">
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fOj-eo-Ojo">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </webView>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="e0Z-S5-ZhG" firstAttribute="top" secondItem="lb7-Ja-02g" secondAttribute="top" id="6ht-JS-iEE"/>
-                            <constraint firstItem="PA4-m0-aba" firstAttribute="top" secondItem="e0Z-S5-ZhG" secondAttribute="bottom" id="813-L0-L7g"/>
-                            <constraint firstItem="e0Z-S5-ZhG" firstAttribute="leading" secondItem="lb7-Ja-02g" secondAttribute="leading" id="8Jh-aS-hlk"/>
-                            <constraint firstAttribute="trailing" secondItem="e0Z-S5-ZhG" secondAttribute="trailing" id="bFm-0L-iF0"/>
+                            <constraint firstItem="fOj-eo-Ojo" firstAttribute="leading" secondItem="lb7-Ja-02g" secondAttribute="leading" id="9g7-SE-bnX"/>
+                            <constraint firstItem="PA4-m0-aba" firstAttribute="top" secondItem="fOj-eo-Ojo" secondAttribute="bottom" id="N7A-Wb-RP0"/>
+                            <constraint firstAttribute="trailing" secondItem="fOj-eo-Ojo" secondAttribute="trailing" id="aOd-qk-MsP"/>
+                            <constraint firstItem="fOj-eo-Ojo" firstAttribute="top" secondItem="YjL-vf-sYP" secondAttribute="bottom" id="kKf-lO-KT0"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="webView" destination="e0Z-S5-ZhG" id="KUg-a8-VIA"/>
+                        <outlet property="webView" destination="fOj-eo-Ojo" id="mzy-b9-o2R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fPo-Rm-bRt" userLabel="First Responder" sceneMemberID="firstResponder"/>

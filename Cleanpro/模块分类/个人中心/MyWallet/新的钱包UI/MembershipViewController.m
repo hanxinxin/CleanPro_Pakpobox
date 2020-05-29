@@ -349,10 +349,11 @@
 {
     if(indexPath.section==0)
     {
-        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        RechargeViewController *vc=[main instantiateViewControllerWithIdentifier:@"RechargeViewController"];
-        vc.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:vc animated:YES];
+//        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        RechargeViewController *vc=[main instantiateViewControllerWithIdentifier:@"RechargeViewController"];
+//        vc.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:vc animated:YES];
+        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Coming Soon!", @"Language") andDelay:2.0];
     }
     
 }

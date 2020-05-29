@@ -146,6 +146,7 @@
     [self hidden_TCview];
 //    [self Get_wallet_A];
     [self getToken];
+    [self Get_existPassword];
     [super viewWillAppear:animated];
     
 }
@@ -342,6 +343,43 @@
         }
     }];
 }
+-(void)Get_existPassword
+{
+    
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_existPassword] parameters:nil progress:^(id progress) {
+        //        NSLog(@"请求成功 = %@",progress);
+    } success:^(id responseObject) {
+        NSLog(@"existPassword = %@",responseObject);
+        [HudViewFZ HiddenHud];
+        NSDictionary * dictObject=(NSDictionary *)responseObject;
+        NSNumber * result =[dictObject objectForKey:@"result"];
+        if([result integerValue]==0)
+        {
+            NSData * data1 =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+            SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+            ModeUser.payPassword=@"";
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                       //存储到NSUserDefaults（转NSData存）
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: ModeUser];
+            [defaults setObject:data forKey:@"SaveUserMode"];
+            [defaults synchronize];
+        }else{
+            NSData * data1 =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+            SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+            ModeUser.payPassword=@"6666";
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                       //存储到NSUserDefaults（转NSData存）
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: ModeUser];
+            [defaults setObject:data forKey:@"SaveUserMode"];
+            [defaults synchronize];
+//            14.14 14.89 14.40 14.59
+        }
+    }failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ HiddenHud];
+    }];
+        
+}
 /**
  获取用户钱包
  */
@@ -519,14 +557,14 @@
         {
         NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
         SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-        if([ModeUser.payPassword isEqualToString:@""] && ModeUser.payPassword != nil)
-        {
-        
-            [self addselect_view:2];
-        }else
-        {
-            [self addtextView_view];
-        }
+            if([ModeUser.payPassword isEqualToString:@""] || ModeUser.payPassword == nil)
+            {
+            
+                [self addselect_view:2];
+            }else
+            {
+                [self addtextView_view];
+            }
         }else if(self.NewOrderType==2)
         {
             [self FMJpushViewController];

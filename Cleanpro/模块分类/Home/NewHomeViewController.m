@@ -38,6 +38,7 @@
 @property (nonatomic ,retain) UIPageControl * myPageControl;
 @property (nonatomic, weak)NSTimer* rotateTimer;  //让视图自动切换
 
+@property (nonatomic,strong) NSMutableArray * CollectionArray;
 @property (nonatomic,strong) NSMutableArray *imgArr;//图片数组
 @property (nonatomic,strong) NSMutableArray * imageViewArr;
 @property (nonatomic,strong) NSMutableArray * ArrZongCout;//保存首页图片，检测到有更新的再更新。没有就不更新
@@ -87,9 +88,12 @@
         [self.imgArr addObject:[UIImage imageNamed:@"UPloadbanner"]];
      
         [self.imageViewArr addObject:[UIImage imageNamed:@"888paper.jpg"]];
-        [self.imageViewArr addObject:[UIImage imageNamed:@"promotion2.jpeg"]];
+//        [self.imageViewArr addObject:[UIImage imageNamed:@"promotion2.jpeg"]];
            [self.imageViewArr addObject:[UIImage imageNamed:@"WashingTo.jpg"]];
 //       }
+    
+    self.CollectionArray= [NSMutableArray arrayWithCapacity:0];
+    [self.CollectionArray addObject:@[@"Laundry",@"E-wash"]];
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
@@ -503,15 +507,6 @@
         
         if([statusCode intValue] ==401)
         {
-            //            [[NSUserDefaults standardUserDefaults] setObject:@"100" forKey:@"TokenError"];
-            //            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"TokenError"];
-            //            [HudViewFZ showMessageTitle:@"Token expired" andDelay:2.0];
-            //            for (UIViewController *controller in self.navigationController.viewControllers) {
-            //                if ([controller isKindOfClass:[MyAccountViewController class]]) {
-            //                    [self.navigationController popToViewController:controller animated:YES];
-            //
-            //                }
-            //            }
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
             [userDefaults setObject:@"1" forKey:@"Token"];
             [userDefaults setObject:@"1" forKey:@"phoneNumber"];
@@ -639,7 +634,9 @@
 //    topView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 214*autoSizeScaleX+68*autoSizeScaleX)];
 //    topView.backgroundColor=[UIColor redColor];
 //    [self.view addSubview:topView];
-    topView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 214*autoSizeScaleX+200*autoSizeScaleX+20)];
+    NSArray * arrS=self.CollectionArray[0];
+    int count = (int)((arrS.count%4)==0?(arrS.count/4):((arrS.count/4)+1));
+    topView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 214*autoSizeScaleX+((100*autoSizeScaleX)*count)+20)];
     
     [self addScrollerView];
 //    [self addHButtonViewA];  //屏蔽一起显示金额的view
@@ -650,12 +647,13 @@
 -(void)addCollectionViewA
 {
     
-    NSArray * array= @[@[@"Laundry",@"E-wash",@"Lroning",@"Power Bank",@"Vending Machine",@"Gife",@"Locker",@"Coming Soon"]];
-    NSArray * arrS=array[0];
+//    NSArray * array= @[@[@"Laundry",@"E-wash",@"Lroning",@"Power Bank",@"Vending Machine",@"Gife",@"Locker",@"Coming Soon"]];
+   
+    NSArray * arrS=self.CollectionArray[0];
     NSArray * imagearr= @[@[@"icon_laundry1",@"icon_ewash",@"icon_ironing",@"icon_powerbank",@"icon_vending",@"icon_gifts",@"icon_locker",@"icon_coming"]];
        NSArray * arrImage=imagearr[0];
     int count = (int)((arrS.count%4)==0?(arrS.count/4):((arrS.count/4)+1));
-    self.CenterCollectionView=[[CollectionHXView alloc] initFrame:CGRectMake(0, ShowScrollview.bottom, SCREEN_WIDTH,(100*autoSizeScaleX)*count+20) Array:(NSMutableArray *)array imageArr:(NSMutableArray *)arrImage];
+    self.CenterCollectionView=[[CollectionHXView alloc] initFrame:CGRectMake(0, ShowScrollview.bottom, SCREEN_WIDTH,(100*autoSizeScaleX)*count+20) Array:self.CollectionArray imageArr:(NSMutableArray *)arrImage];
     self.CenterCollectionView.delegate=self;
     self.CenterCollectionView.backgroundColor=[UIColor whiteColor];
     [topView addSubview:self.CenterCollectionView];
@@ -698,7 +696,8 @@
     }else
     {
         
-        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"The function is under development, so stay tuned!", @"Language") andDelay:2.0];
+//        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"The function is under development, so stay tuned!", @"Language") andDelay:2.0];
+//        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Coming Soon!", @"Language") andDelay:2.0];
     }
 }
 -(void)addHButtonViewA
@@ -1128,7 +1127,7 @@
         {
             self.globalScrollview.contentOffset=CGPointMake(0, 0);
             backView.alpha = 0;
-//            NSLog(@"少时诵诗书 === %f",offsetY);
+//            NSLog(@"mkll === %f",offsetY);
         }
     } else if (offsetY > 0 && offsetY < 64) {
 //        backView.alpha = offsetY / 64;

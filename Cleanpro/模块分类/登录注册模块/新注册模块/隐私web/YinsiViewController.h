@@ -12,7 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface YinsiViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UIWebView *webView;
+//@property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property (strong, nonatomic) IBOutlet WKWebView *webView;
 
 @end
 

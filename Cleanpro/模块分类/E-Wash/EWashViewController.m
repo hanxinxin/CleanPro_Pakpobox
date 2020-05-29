@@ -188,6 +188,7 @@ static int iCount=0;
                         [self.OUTLETArray addObject:mode];
                     }
                 }
+                ///*
                 if(self.POINTArray.count>0)
                 {
                     self.SelectWay=2;
@@ -201,6 +202,11 @@ static int iCount=0;
                         self.SelectWay=0;
                     }
                 }
+                // */
+//                if(self.OUTLETArray.count>0)
+//                {
+//                    self.SelectWay=3;
+//                }
                 [self.DownTable reloadData];
             }else
             {
@@ -587,6 +593,7 @@ static int iCount=0;
             
             if(indexPath.row==1)
             {
+                ///*
                 if(self.SelectWay==1)
                 {
                     [cellOne.RightSelect setImage:[UIImage imageNamed:@"check-circle-fill"] forState:(UIControlStateNormal)];
@@ -612,9 +619,12 @@ static int iCount=0;
                         [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:158/255.0 green:174/255.0 blue:183/255.0 alpha:1.0]];
                     }
                 }
+                //*/
+//                 [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:158/255.0 green:174/255.0 blue:183/255.0 alpha:1.0]];
                 [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_shangmen"] forState:(UIControlStateNormal)];
             }else if(indexPath.row==2)
             {
+                ///*
                 if(self.SelectWay==2)
                 {
                     [cellOne.RightSelect setImage:[UIImage imageNamed:@"check-circle-fill"] forState:(UIControlStateNormal)];
@@ -641,6 +651,8 @@ static int iCount=0;
                         [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:158/255.0 green:174/255.0 blue:183/255.0 alpha:1.0]];
                     }
                 }
+                 //*/
+//                 [cellOne.LeftTitle setTextColor:[UIColor colorWithRed:158/255.0 green:174/255.0 blue:183/255.0 alpha:1.0]];
                 [cellOne.LeftImage setImage:[UIImage imageNamed:@"icon_mendian"] forState:(UIControlStateNormal)];
             }else if(indexPath.row==3)
             {
@@ -946,18 +958,22 @@ static int iCount=0;
     {
         if(indexPath.row==1)
         {
+            ///*
             if(self.OUTLETArray.count>0)
             {
             self.SelectWay=1;
             [self.DownTable reloadData];
             }
+             //*/
         }else if(indexPath.row==2)
         {
+            ///*
             if(self.POINTArray.count>0)
             {
             self.SelectWay=2;
             [self.DownTable reloadData];
             }
+             //*/
         }else if(indexPath.row==3)
         {
             if(self.OUTLETArray.count>0)

@@ -32,7 +32,7 @@ static int iCount=0;
     UITapGestureRecognizer *tapSuperGesture22;
     LocationManager * manager;
     
-    PostOrderMode * PushOrderMode;
+    
 }
 @property(nonatomic,strong)NSMutableArray *arrayTitle;//数据源
 @property(nonatomic,assign)BOOL accessoryTypeBool;
@@ -60,6 +60,8 @@ static int iCount=0;
 @property (nonatomic, strong) IpayPayment *IPaypayment;
 @property (nonatomic, strong) Ipay *paymentSdk;
 @property (nonatomic, strong) UIView *paymentView;
+
+@property (nonatomic, strong) PostOrderMode * PushOrderMode;
 @end
 
 @implementation AddressSViewController
@@ -81,7 +83,7 @@ static int iCount=0;
     self.OvucherImage=nil;
     self.accessoryTypeBool=NO;
     self.AddressString=@"";
-    PushOrderMode=nil;
+    self.PushOrderMode=nil;
     DownViewHidden=NO;
     
 //    [self AddDownView];
@@ -368,6 +370,7 @@ static int iCount=0;
         [self.OnlinePayBtn addTarget:self action:@selector(OnlinePayBtnTouch:) forControlEvents:UIControlEventTouchDown];
             self.OnlinePayBtn.backgroundColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
             self.OnlinePayBtn.layer.cornerRadius = 4;
+//        self.OnlinePayBtn.hidden=YES;
         [globalScrollview addSubview:self.OnlinePayBtn];
     }
     if(self.CashBtn==nil)
@@ -891,7 +894,7 @@ static int iCount=0;
                     [payItemMutableArr addObject:modePay];
                 }
                 mode.paymentItems=payItemMutableArr;
-                self->PushOrderMode=mode;
+                self.PushOrderMode=mode;
                 [self pushView:mode PaymentMethodStr:1];
             }
             
@@ -1028,21 +1031,21 @@ static int iCount=0;
                 mode.paymentItems=payItemMutableArr;
                 
                 NSLog(@"paymentItemIdsStr ===  %@",paymentItemIdsStr);
-                self->PushOrderMode=mode;
+                self->_PushOrderMode=mode;
                 if(SelectWayOrder==1)///上门需要上传图片
                 {
-                    if(self->PushOrderMode!=nil)
+                    if(self->_PushOrderMode!=nil)
                     {
-                        [self pushView:self->PushOrderMode PaymentMethodStr:1];
+                        [self pushView:self->_PushOrderMode PaymentMethodStr:1];
                     }
                 }else if(SelectWayOrder==2) ///上门不需要上传图片
                 {
                     [self PostIpay88:mode.ordersId PaymentItemId:paymentItemIdsStr amount:amountStr];
                 }else if(SelectWayOrder==3) ///洗衣店不需要上传图片也不需要支付
                 {
-                    if(self->PushOrderMode!=nil)
+                    if(self->_PushOrderMode!=nil)
                     {
-                        [self pushView:self->PushOrderMode PaymentMethodStr:1];
+                        [self pushView:self->_PushOrderMode PaymentMethodStr:1];
                     }
                 }
                 
@@ -1243,7 +1246,7 @@ static int iCount=0;
     [IPaypayment setAmount:@"1.0"];/////暂时定为1元
 //    [IPaypayment setAmount:Amount];/////暂时定为1元
     [IPaypayment setCurrency:@"MYR"];
-    [IPaypayment setProdDesc:[NSString stringWithFormat:@"%@%@",@"Payment for ",Remark]];
+    [IPaypayment setProdDesc:[NSString stringWithFormat:@"%@",@"Payment for ORD1188"]];
     [IPaypayment setUserName:@"John Woo"];
     [IPaypayment setUserEmail:@"johnwoo@yahoo.com"];
     [IPaypayment setUserContact:@"0123456789"];
@@ -1252,6 +1255,7 @@ static int iCount=0;
     [IPaypayment setLang:@"ISO-8859-1"];
     [IPaypayment setCountry:@"MY"];
     [IPaypayment setBackendPostURL:Url];
+    
     self.paymentView = [self.paymentSdk checkout:IPaypayment];
     self.paymentView.frame = self.view.bounds;
     [self.view addSubview:self.paymentView];
@@ -1263,20 +1267,22 @@ static int iCount=0;
 {
     NSLog(@"paymentSuccess = %@",refNo);
     [self.paymentView removeFromSuperview];
-    if(self->PushOrderMode!=nil)
+    if(self.PushOrderMode!=nil)
     {
-        [self pushView:self->PushOrderMode PaymentMethodStr:2];
+        [self pushView:self.PushOrderMode PaymentMethodStr:2];
     }
 }
 //付款失败
 - (void)paymentFailed:(NSString *)refNo withTransId:(NSString *)transId withAmount:(NSString *)amount withRemark:(NSString *)remark withErrDesc:(NSString *)errDesc
 {
     NSLog(@"paymentFailed refNo= %@ ,transId = %@ ,amount  = %@ ,remark = %@ ,errDesc = %@ ,",refNo,transId,amount,remark,errDesc);
+    [HudViewFZ showMessageTitle:@"Payment failed" andDelay:1.5];
 }
 //// 取消付款
 - (void)paymentCancelled:(NSString *)refNo withTransId:(NSString *)transId withAmount:(NSString *)amount withRemark:(NSString *)remark withErrDesc:(NSString *)errDesc
 {
     NSLog(@"paymentCancelled = %@",refNo);
+    [HudViewFZ showMessageTitle:@"Cancel payment" andDelay:1.5];
 }
 //重新查询成功
 - (void)requerySuccess:(NSString *)refNo withMerchantCode:(NSString *)merchantCode withAmount:(NSString *)amount withResult:(NSString *)result

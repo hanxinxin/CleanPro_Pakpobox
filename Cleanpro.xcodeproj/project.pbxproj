@@ -44,7 +44,6 @@
 		04394894245ABEBC00841B04 /* UPloadbanner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04394892245ABEBC00841B04 /* UPloadbanner@2x.png */; };
 		043F54232477DE64005D3B43 /* icon_lo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 043F54212477DE64005D3B43 /* icon_lo@3x.png */; };
 		043F54242477DE64005D3B43 /* icon_lo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 043F54222477DE64005D3B43 /* icon_lo@2x.png */; };
-		043F54262477E25B005D3B43 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 043F54252477E25B005D3B43 /* GoogleService-Info.plist */; };
 		0440C14223862A6B000FA7DF /* NewMyWalletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0440C14123862A6B000FA7DF /* NewMyWalletViewController.m */; };
 		0440C15023863D7B000FA7DF /* UIView+LLSegmentBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0440C14523863D7B000FA7DF /* UIView+LLSegmentBar.m */; };
 		0440C15123863D7B000FA7DF /* LLSegmentBarConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 0440C14923863D7B000FA7DF /* LLSegmentBarConfig.m */; };
@@ -112,6 +111,7 @@
 		044805202420D0340097EDBE /* SelectHeaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0448051F2420D0340097EDBE /* SelectHeaderTableViewCell.m */; };
 		044805222420D0450097EDBE /* SelectHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 044805212420D0450097EDBE /* SelectHeaderTableViewCell.xib */; };
 		044EAB9921E3027F00E5C7CF /* NewHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 044EAB9821E3027F00E5C7CF /* NewHomeViewController.m */; };
+		0450D4D5247F6B160039E763 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0450D4D4247F6B160039E763 /* GoogleService-Info.plist */; };
 		045483C22410E17000560A27 /* openssl_wrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 045483BA2410E16F00560A27 /* openssl_wrapper.m */; };
 		045483C32410E17000560A27 /* APRSASigner.m in Sources */ = {isa = PBXBuildFile; fileRef = 045483BD2410E16F00560A27 /* APRSASigner.m */; };
 		045483C42410E17000560A27 /* APAuthInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 045483BE2410E17000560A27 /* APAuthInfo.m */; };
@@ -1113,7 +1113,6 @@
 		04394892245ABEBC00841B04 /* UPloadbanner@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UPloadbanner@2x.png"; sourceTree = "<group>"; };
 		043F54212477DE64005D3B43 /* icon_lo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_lo@3x.png"; sourceTree = "<group>"; };
 		043F54222477DE64005D3B43 /* icon_lo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_lo@2x.png"; sourceTree = "<group>"; };
-		043F54252477E25B005D3B43 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0440C14023862A6B000FA7DF /* NewMyWalletViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewMyWalletViewController.h; sourceTree = "<group>"; };
 		0440C14123862A6B000FA7DF /* NewMyWalletViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewMyWalletViewController.m; sourceTree = "<group>"; };
 		0440C14523863D7B000FA7DF /* UIView+LLSegmentBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LLSegmentBar.m"; sourceTree = "<group>"; };
@@ -1218,6 +1217,7 @@
 		044805212420D0450097EDBE /* SelectHeaderTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		044EAB9721E3027F00E5C7CF /* NewHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewHomeViewController.h; sourceTree = "<group>"; };
 		044EAB9821E3027F00E5C7CF /* NewHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewHomeViewController.m; sourceTree = "<group>"; };
+		0450D4D4247F6B160039E763 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		045483BA2410E16F00560A27 /* openssl_wrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = openssl_wrapper.m; sourceTree = "<group>"; };
 		045483BB2410E16F00560A27 /* APRSASigner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APRSASigner.h; sourceTree = "<group>"; };
 		045483BC2410E16F00560A27 /* openssl_wrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = openssl_wrapper.h; sourceTree = "<group>"; };
@@ -4841,7 +4841,7 @@
 		04C4D4D321E7481D0097B3BD /* google推送venolinkAndPakpobox */ = {
 			isa = PBXGroup;
 			children = (
-				043F54252477E25B005D3B43 /* GoogleService-Info.plist */,
+				0450D4D4247F6B160039E763 /* GoogleService-Info.plist */,
 			);
 			path = "google推送venolinkAndPakpobox";
 			sourceTree = "<group>";
@@ -5905,7 +5905,7 @@
 				04820AC523BF1FC800CBECC8 /* GrapeR@3x.png in Resources */,
 				04B4C9E02435CE6F00B69DF2 /* icon_zt09.png in Resources */,
 				04B10C8521F0857C001A9E8B /* home_Coupons@2x.png in Resources */,
-				043F54262477E25B005D3B43 /* GoogleService-Info.plist in Resources */,
+				0450D4D5247F6B160039E763 /* GoogleService-Info.plist in Resources */,
 				04782CD220C54F5700252F70 /* Assets.xcassets in Resources */,
 				044805222420D0450097EDBE /* SelectHeaderTableViewCell.xib in Resources */,
 				04480508241B5F610097EDBE /* PriceWashTableViewCell.xib in Resources */,
@@ -6939,9 +6939,9 @@
 				CODE_SIGN_ENTITLEMENTS = Cleanpro/Cleanpro.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.48;
+				CURRENT_PROJECT_VERSION = 1.1.52;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = F2BT7GJ582;
+				DEVELOPMENT_TEAM = LUUCB5LGP5;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6984,7 +6984,7 @@
 					"\"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/include\"",
 				);
 				INFOPLIST_FILE = Cleanpro/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6995,7 +6995,7 @@
 					"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/lib",
 					"$(PROJECT_DIR)/Cleanpro/第三方库/微信PaySDK",
 				);
-				MARKETING_VERSION = 1.1.48;
+				MARKETING_VERSION = 1.1.52;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",
@@ -7130,7 +7130,7 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.venolink.Cleanpro.Once;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pakpobox.Cleanpro.Once;
 				PRODUCT_NAME = Cleanpro;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = Cleanpro/Cleanpro_Bridging_Header.h;
@@ -7153,9 +7153,9 @@
 				CODE_SIGN_ENTITLEMENTS = Cleanpro/Cleanpro.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.48;
+				CURRENT_PROJECT_VERSION = 1.1.52;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = F2BT7GJ582;
+				DEVELOPMENT_TEAM = LUUCB5LGP5;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7198,7 +7198,7 @@
 					"\"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/include\"",
 				);
 				INFOPLIST_FILE = Cleanpro/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7209,7 +7209,7 @@
 					"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/lib",
 					"$(PROJECT_DIR)/Cleanpro/第三方库/微信PaySDK",
 				);
-				MARKETING_VERSION = 1.1.48;
+				MARKETING_VERSION = 1.1.52;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",
@@ -7344,7 +7344,7 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.venolink.Cleanpro.Once;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pakpobox.Cleanpro.Once;
 				PRODUCT_NAME = Cleanpro;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = Cleanpro/Cleanpro_Bridging_Header.h;

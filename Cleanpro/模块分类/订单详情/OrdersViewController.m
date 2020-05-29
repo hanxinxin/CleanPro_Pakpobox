@@ -35,7 +35,18 @@
         self.automaticallyAdjustsScrollViewInsets = NO;
         
     }
-    
+    self.page=0;
+    self.maxCount=20;
+    self->arr_title=[NSMutableArray arrayWithCapacity:0];
+    [self->arr_title removeAllObjects];
+        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
+        
+        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            
+            
+            [self addTableViewOrders];
+    //        [self loadNewData];
+        });
     
 }
 
@@ -84,20 +95,8 @@
 //    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"bgnav"] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setTranslucent:NO];
 //    self.navigationController.navigationBar.translucent = YES;
-    self.page=0;
-    self.maxCount=20;
-    self->arr_title=[NSMutableArray arrayWithCapacity:0];
-    [self->arr_title removeAllObjects];
     
     
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
-    
-    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        
-        
-        [self addTableViewOrders];
-        [self loadNewData];
-    });
     
     [super viewWillAppear:animated];
 }
@@ -177,7 +176,7 @@
     }];
     self.tableViewTop.mj_footer = foot;
     // 马上进入刷新状态
-//    [self.tableViewTop.mj_header beginRefreshing];
+    [self.tableViewTop.mj_header beginRefreshing];
     
 }
 
@@ -195,7 +194,7 @@
 -(void)getOrderList
 {
     self.page=0;
-    [arr_title removeAllObjects];
+    
     [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?page=%ld&size=%ld",E_FuWuQiUrl,E_WasherDryerquery,(long)self.page,(long)self.maxCount] parameters:nil progress:^(id progress) {
         
     } success:^(id responseObject) {
@@ -210,6 +209,7 @@
 //        {
 //            [self.tableViewTop.mj_footer setHidden:YES];
 //        }
+            [arr_title removeAllObjects];
             NSArray * Array= [dictList objectForKey:@"content"];;
             if(Array.count>0)
             {
@@ -515,6 +515,7 @@
         vc.hidesBottomBarWhenPushed = YES;
 //        vc.mode=arr_title[indexPath.section];
         vc.Newmode=arr_title[indexPath.section];
+    NSLog(@"indexPath.section= %ld",(long)indexPath.section);
         [self.navigationController pushViewController:vc animated:YES];
 //    }else if (indexPath.section==1)
 //    {

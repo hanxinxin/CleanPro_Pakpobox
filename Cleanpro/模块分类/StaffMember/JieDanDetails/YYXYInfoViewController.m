@@ -258,11 +258,14 @@
         //        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str] options:@{} completionHandler:^(BOOL success) {
         //
         //        }];
-        UIWebView * callWebview = [[UIWebView alloc] init];
-
-        [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[NSMutableString alloc] initWithFormat:@"tel:%@",self.ModeZ.recipientPhoneNumber]]]];
-
-        [[UIApplication sharedApplication].keyWindow addSubview:callWebview];
+//        UIWebView * callWebview = [[UIWebView alloc] init];
+//
+//        [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[NSMutableString alloc] initWithFormat:@"tel:%@",self.ModeZ.recipientPhoneNumber]]]];
+//
+//        [[UIApplication sharedApplication].keyWindow addSubview:callWebview];
+        NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",self.ModeZ.recipientPhoneNumber];
+        // NSLog(@"str======%@",str);
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str] options:@{} completionHandler:nil];
     }else if(btn.tag==202)
     {
 //        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"sms://10086&&body=123"]];

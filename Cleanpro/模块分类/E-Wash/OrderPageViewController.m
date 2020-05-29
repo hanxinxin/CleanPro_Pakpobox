@@ -211,7 +211,12 @@
     {
                 for (int i=0; i<self.OrderMode.paymentItems.count; i++) {
                     paymentItemsMode * mode =self.OrderMode.paymentItems[i];
-                    cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[self timeStampConversionNSString:mode.payTime]];
+                    if(![mode isEqual:[NSNull null]]){
+                        if(![mode.payTime isEqual:[NSNull null]])
+                        {
+                        cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[self timeStampConversionNSString:mode.payTime]];
+                        }
+                    }
                 }
     }
     else if(indexPath.row==4)
