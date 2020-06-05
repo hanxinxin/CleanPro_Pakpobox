@@ -142,8 +142,8 @@
             filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x6d17;&#x8863;&#x6a21;&#x5757;/&#x6d17;&#x8863;/LaundryViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "525"
-            endingLineNumber = "525"
+            startingLineNumber = "534"
+            endingLineNumber = "534"
             landmarkName = "-left_viewTouch:"
             landmarkType = "7">
          </BreakpointContent>
@@ -231,102 +231,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "854AB543-5076-404B-80C2-FDA0EF971A6E"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/E-Wash/AddressSelection/AddressSViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "909"
-            endingLineNumber = "909"
-            landmarkName = "-postOrder:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4735C3D7-F421-46FD-B958-79E6672F4979"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/E-Wash/AddressSelection/AddressSViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1061"
-            endingLineNumber = "1061"
-            landmarkName = "-postIpay88Order:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9E087807-6052-421D-B83B-5FA9D2BA84E8"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/E-Wash/AddressSelection/AddressSViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "268"
-            endingLineNumber = "268"
-            landmarkName = "-GetQueryLocation:lat:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D4AF30D5-74EF-4268-B9B2-E8FB0B8A6747"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/E-Wash/AddressSelection/AddressSViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1284"
-            endingLineNumber = "1284"
-            landmarkName = "-paymentCancelled:withTransId:withAmount:withRemark:withErrDesc:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "0A720218-15C8-4245-B3A3-1FC332BF96DD"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/E-Wash/AddressSelection/AddressSViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1290"
-            endingLineNumber = "1290"
-            landmarkName = "-requerySuccess:withMerchantCode:withAmount:withResult:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F140DC21-88A4-4840-8FC4-C5E1D13B0762"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/E-Wash/AddressSelection/AddressSViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1295"
-            endingLineNumber = "1295"
-            landmarkName = "-requeryFailed:withMerchantCode:withAmount:withErrDesc:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "D1F72DB6-6587-46BE-9957-32B12B57629A"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -334,8 +238,8 @@
             filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/E-Wash/AddressSelection/AddressSViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "545"
-            endingLineNumber = "545"
+            startingLineNumber = "559"
+            endingLineNumber = "559"
             landmarkName = "-pushView:PaymentMethodStr:"
             landmarkType = "7">
          </BreakpointContent>
@@ -350,40 +254,8 @@
             filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/E-Wash/AddressSelection/AddressSViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "542"
-            endingLineNumber = "542"
-            landmarkName = "-pushView:PaymentMethodStr:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "ACC581EF-971D-41AE-AE62-98A0540B5C3A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/E-Wash/AddressSelection/AddressSViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "539"
-            endingLineNumber = "539"
-            landmarkName = "-pushView:PaymentMethodStr:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "634E8A31-C379-4556-AC5F-411F67921C90"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/E-Wash/AddressSelection/AddressSViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "541"
-            endingLineNumber = "541"
+            startingLineNumber = "556"
+            endingLineNumber = "556"
             landmarkName = "-pushView:PaymentMethodStr:"
             landmarkType = "7">
          </BreakpointContent>
@@ -583,32 +455,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "938B5E88-2D7F-43DB-B6FC-FBFB08B68976"
+            uuid = "7EA64702-1266-4275-ACD4-6DBB47461542"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/E-Wash/AddressSelection/AddressSViewController.m"
+            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x8ba2;&#x5355;&#x8be6;&#x60c5;/OrdersViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1272"
-            endingLineNumber = "1272"
-            landmarkName = "-paymentSuccess:withTransId:withAmount:withRemark:withAuthCode:"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
+            landmarkName = "-addTableViewOrders"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "AD791D6E-68A6-4A0F-9598-9EC5AE5C2FF6"
+            uuid = "2733C16A-82B3-4F4B-BA18-EF3B6CF6094E"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/E-Wash/AddressSelection/AddressSViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1279"
-            endingLineNumber = "1279"
-            landmarkName = "-paymentFailed:withTransId:withAmount:withRemark:withErrDesc:"
+            startingLineNumber = "1058"
+            endingLineNumber = "1058"
+            landmarkName = "-postIpay88Order:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -16,7 +16,7 @@
 
 @interface DCNavTabBarController : UIViewController
 -(instancetype)initWithSubViewControllers:(NSArray *)subViewControllers;
-
+-(instancetype)initWithSubViewControllers:(NSArray *)subViewControllers layoutStatus:(BOOL)status;
 @property(nonatomic,copy)UIColor *btnTextNomalColor;
 @property(nonatomic,copy)UIColor *btnTextSeletedColor;
 @property(nonatomic,copy)UIColor *sliderColor;

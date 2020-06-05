@@ -688,6 +688,13 @@
 		04B10C8921F08CF0001A9E8B /* lab_Orders_on@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04B10C8721F08CF0001A9E8B /* lab_Orders_on@3x.png */; };
 		04B10C8C21F08D20001A9E8B /* signup_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04B10C8A21F08D1F001A9E8B /* signup_bg@2x.png */; };
 		04B10C8D21F08D20001A9E8B /* signup_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04B10C8B21F08D20001A9E8B /* signup_bg@3x.png */; };
+		04B181A7248623E10022936F /* DryerOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B181A6248623E10022936F /* DryerOrderViewController.m */; };
+		04B181AA2486246E0022936F /* LaundryOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B181A92486246E0022936F /* LaundryOrderViewController.m */; };
+		04B181AD248624860022936F /* LroningOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B181AC248624860022936F /* LroningOrderViewController.m */; };
+		04B181B22487529E0022936F /* picyudou@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04B181AE2487529D0022936F /* picyudou@3x.png */; };
+		04B181B32487529E0022936F /* picyundou02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04B181AF2487529D0022936F /* picyundou02@2x.png */; };
+		04B181B42487529E0022936F /* picyundou02@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04B181B02487529E0022936F /* picyundou02@3x.png */; };
+		04B181B52487529E0022936F /* picyudou@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04B181B12487529E0022936F /* picyudou@2x.png */; };
 		04B3924B23B1A93800D5A1AA /* MJPropertyType.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B3921023B1A93700D5A1AA /* MJPropertyType.m */; };
 		04B3924C23B1A93800D5A1AA /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B3921323B1A93700D5A1AA /* NSObject+MJKeyValue.m */; };
 		04B3924D23B1A93800D5A1AA /* MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B3921423B1A93700D5A1AA /* MJProperty.m */; };
@@ -2022,6 +2029,16 @@
 		04B10C8721F08CF0001A9E8B /* lab_Orders_on@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lab_Orders_on@3x.png"; sourceTree = "<group>"; };
 		04B10C8A21F08D1F001A9E8B /* signup_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "signup_bg@2x.png"; sourceTree = "<group>"; };
 		04B10C8B21F08D20001A9E8B /* signup_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "signup_bg@3x.png"; sourceTree = "<group>"; };
+		04B181A5248623E10022936F /* DryerOrderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DryerOrderViewController.h; sourceTree = "<group>"; };
+		04B181A6248623E10022936F /* DryerOrderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DryerOrderViewController.m; sourceTree = "<group>"; };
+		04B181A82486246E0022936F /* LaundryOrderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LaundryOrderViewController.h; sourceTree = "<group>"; };
+		04B181A92486246E0022936F /* LaundryOrderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LaundryOrderViewController.m; sourceTree = "<group>"; };
+		04B181AB248624860022936F /* LroningOrderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LroningOrderViewController.h; sourceTree = "<group>"; };
+		04B181AC248624860022936F /* LroningOrderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LroningOrderViewController.m; sourceTree = "<group>"; };
+		04B181AE2487529D0022936F /* picyudou@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "picyudou@3x.png"; sourceTree = "<group>"; };
+		04B181AF2487529D0022936F /* picyundou02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "picyundou02@2x.png"; sourceTree = "<group>"; };
+		04B181B02487529E0022936F /* picyundou02@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "picyundou02@3x.png"; sourceTree = "<group>"; };
+		04B181B12487529E0022936F /* picyudou@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "picyudou@2x.png"; sourceTree = "<group>"; };
 		04B3920D23B1A93700D5A1AA /* MJPropertyKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPropertyKey.h; sourceTree = "<group>"; };
 		04B3920E23B1A93700D5A1AA /* NSObject+MJClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJClass.h"; sourceTree = "<group>"; };
 		04B3920F23B1A93700D5A1AA /* NSString+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MJExtension.h"; sourceTree = "<group>"; };
@@ -4893,6 +4910,10 @@
 		04D36C4E245595C600FD2D47 /* ewash图标补丁 */ = {
 			isa = PBXGroup;
 			children = (
+				04B181B12487529E0022936F /* picyudou@2x.png */,
+				04B181AE2487529D0022936F /* picyudou@3x.png */,
+				04B181AF2487529D0022936F /* picyundou02@2x.png */,
+				04B181B02487529E0022936F /* picyundou02@3x.png */,
 				043F54222477DE64005D3B43 /* icon_lo@2x.png */,
 				043F54212477DE64005D3B43 /* icon_lo@3x.png */,
 				04D36C4F245595C600FD2D47 /* icon_ewash.png */,
@@ -5200,6 +5221,12 @@
 			children = (
 				04BC9F5D20CA783600DE5039 /* OrdersViewController.h */,
 				04BC9F5E20CA783600DE5039 /* OrdersViewController.m */,
+				04B181A5248623E10022936F /* DryerOrderViewController.h */,
+				04B181A6248623E10022936F /* DryerOrderViewController.m */,
+				04B181A82486246E0022936F /* LaundryOrderViewController.h */,
+				04B181A92486246E0022936F /* LaundryOrderViewController.m */,
+				04B181AB248624860022936F /* LroningOrderViewController.h */,
+				04B181AC248624860022936F /* LroningOrderViewController.m */,
 				04BC9F6020CA786100DE5039 /* OrdersTableViewCell.h */,
 				04BC9F6120CA786100DE5039 /* OrdersTableViewCell.m */,
 				04BC9F6220CA786100DE5039 /* OrdersTableViewCell.xib */,
@@ -5873,6 +5900,7 @@
 				04B4C9D22435CE6F00B69DF2 /* icon_mendian@2x.png in Resources */,
 				04719B9422A12C2900E4E86F /* collects_registration@2x.png in Resources */,
 				04B4C9D92435CE6F00B69DF2 /* icon_zt06@2x.png in Resources */,
+				04B181B52487529E0022936F /* picyudou@2x.png in Resources */,
 				04786EAB22B3AC4C00E28E9D /* go@3x.png in Resources */,
 				04782CD520C54F5700252F70 /* LaunchScreen.storyboard in Resources */,
 				04F95F1B20C66E5C00984A6B /* icon_promotion@2x.png in Resources */,
@@ -5904,6 +5932,7 @@
 				04F95F0E20C66E5C00984A6B /* mine_on@3x.png in Resources */,
 				04820AC523BF1FC800CBECC8 /* GrapeR@3x.png in Resources */,
 				04B4C9E02435CE6F00B69DF2 /* icon_zt09.png in Resources */,
+				04B181B22487529E0022936F /* picyudou@3x.png in Resources */,
 				04B10C8521F0857C001A9E8B /* home_Coupons@2x.png in Resources */,
 				0450D4D5247F6B160039E763 /* GoogleService-Info.plist in Resources */,
 				04782CD220C54F5700252F70 /* Assets.xcassets in Resources */,
@@ -5955,10 +5984,12 @@
 				04F95F2D20C66E5C00984A6B /* icon_Avatar@3x.png in Resources */,
 				04F95F2C20C66E5C00984A6B /* wallet@2x.png in Resources */,
 				04F95F0920C66E5C00984A6B /* icon_orders_off@3x.png in Resources */,
+				04B181B32487529E0022936F /* picyundou02@2x.png in Resources */,
 				0418C13921FC568A004F6542 /* vip1@3x.png in Resources */,
 				04D36C7A245595C700FD2D47 /* location_ewash_app.png in Resources */,
 				0477136521F099F200574DB8 /* Male_off.png in Resources */,
 				047F0FBF234DE062002D85BA /* icon_pay.png in Resources */,
+				04B181B42487529E0022936F /* picyundou02@3x.png in Resources */,
 				0441311A224B551200F58689 /* AGPushNoteView.xib in Resources */,
 				04B10C1821F02E93001A9E8B /* collections_1@3x.png in Resources */,
 				04F95EAF20C664DC00984A6B /* README.md in Resources */,
@@ -6349,6 +6380,7 @@
 				042D7631238273BA001630A4 /* AES_SecurityUtil.m in Sources */,
 				04782CD020C54F5500252F70 /* Cleanpro.xcdatamodeld in Sources */,
 				045485ED2411097400560A27 /* HeartbeatMessage.swift in Sources */,
+				04B181AD248624860022936F /* LroningOrderViewController.m in Sources */,
 				0454863C2411097400560A27 /* GenericOnPowerUpSet.swift in Sources */,
 				045486472411097400560A27 /* GenericPowerLastGet.swift in Sources */,
 				045486722411097500560A27 /* Element+Models.swift in Sources */,
@@ -6494,6 +6526,7 @@
 				04820AB623BF1FC800CBECC8 /* DetailListCell.m in Sources */,
 				045485F02411097400560A27 /* ConfigGATTProxyStatus.swift in Sources */,
 				0454864A2411097400560A27 /* GenericPowerLevelGet.swift in Sources */,
+				04B181AA2486246E0022936F /* LaundryOrderViewController.m in Sources */,
 				04F270F820CFD1EA00170876 /* AffirmViewController.m in Sources */,
 				04B3925023B1A93800D5A1AA /* NSObject+MJProperty.m in Sources */,
 				042D7630238273BA001630A4 /* BinHexOctUtil.m in Sources */,
@@ -6606,6 +6639,7 @@
 				045486A62411097500560A27 /* KeyIndex.swift in Sources */,
 				0454860B2411097400560A27 /* ConfigSIGModelAppList.swift in Sources */,
 				0454863D2411097400560A27 /* GenericPowerDefautGet.swift in Sources */,
+				04B181A7248623E10022936F /* DryerOrderViewController.m in Sources */,
 				045486792411097500560A27 /* Algorithm.swift in Sources */,
 				04B10C0D21EF2007001A9E8B /* SetPayPTwoViewController.m in Sources */,
 				045486772411097500560A27 /* PublicKey.swift in Sources */,
@@ -6939,7 +6973,7 @@
 				CODE_SIGN_ENTITLEMENTS = Cleanpro/Cleanpro.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.52;
+				CURRENT_PROJECT_VERSION = 1.0.1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = LUUCB5LGP5;
 				ENABLE_BITCODE = NO;
@@ -6995,7 +7029,7 @@
 					"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/lib",
 					"$(PROJECT_DIR)/Cleanpro/第三方库/微信PaySDK",
 				);
-				MARKETING_VERSION = 1.1.52;
+				MARKETING_VERSION = 1.1.52_beta;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",
@@ -7153,7 +7187,7 @@
 				CODE_SIGN_ENTITLEMENTS = Cleanpro/Cleanpro.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.52;
+				CURRENT_PROJECT_VERSION = 1.0.1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = LUUCB5LGP5;
 				ENABLE_BITCODE = NO;
@@ -7209,7 +7243,7 @@
 					"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/lib",
 					"$(PROJECT_DIR)/Cleanpro/第三方库/微信PaySDK",
 				);
-				MARKETING_VERSION = 1.1.52;
+				MARKETING_VERSION = 1.1.52_beta;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",

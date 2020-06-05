@@ -19,6 +19,8 @@
 #import "LocationManager.h"
 #import "NewHomeViewController.h"
 #import "EwashMyViewController.h"
+#import "newPhoneViewController.h"
+#import "RechargeViewController.h"
 
 #define CellID @"AddressInfoTableViewCell"
 #define CellID1 @"TextfieldAddressTableViewCell"
@@ -32,7 +34,18 @@ static int iCount=0;
     UITapGestureRecognizer *tapSuperGesture22;
     LocationManager * manager;
     
-    
+    /////全屏透明色view和 button Lable
+    UIView * Tuicang_View;
+    UIView * Tuicang_View1;
+    UIView * TC_CenterView;
+    UILabel * tisp_lable;
+    UILabel * miaoshu_lable;
+    UIButton * Come_btn;
+    UIButton * back_btn;
+    UITapGestureRecognizer *tapSuperGesture;
+    ///// textfiledView
+    TPPasswordTextView *textfiledView;
+    UIButton * closeBtn;
 }
 @property(nonatomic,strong)NSMutableArray *arrayTitle;//数据源
 @property(nonatomic,assign)BOOL accessoryTypeBool;
@@ -40,6 +53,8 @@ static int iCount=0;
 @property(nonatomic,assign)BOOL updateNO;
 @property (nonatomic,strong)UIButton* OnlinePayBtn;
 @property (nonatomic,strong)UIButton* CashBtn;
+
+@property (nonatomic, strong)NSString * Pay_passwordStr;
 
 @property (nonatomic, strong) HQTextField *NameTextfield;
 @property (nonatomic, strong) HQTextField *PhoneTextfield;
@@ -467,10 +482,9 @@ static int iCount=0;
 #pragma mark - 点击事件
 -(void)OnlinePayBtnTouch:(id)sender
 {
-//    if()
-    [self addIPay88View];
+//    [self addIPay88View];
     
-    
+    [self Get_existPassword];
     
     
 }
@@ -1040,7 +1054,8 @@ static int iCount=0;
                     }
                 }else if(SelectWayOrder==2) ///上门不需要上传图片
                 {
-                    [self PostIpay88:mode.ordersId PaymentItemId:paymentItemIdsStr amount:amountStr];
+//                    [self PostIpay88:mode.ordersId PaymentItemId:paymentItemIdsStr amount:amountStr];
+                    [self Get_existPassword];
                 }else if(SelectWayOrder==3) ///洗衣店不需要上传图片也不需要支付
                 {
                     if(self->_PushOrderMode!=nil)
@@ -1296,6 +1311,318 @@ static int iCount=0;
 }
 
 
+
+-(void)Get_existPassword
+{
+    [HudViewFZ labelExample:self.view];
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_existPassword] parameters:nil progress:^(id progress) {
+        //        NSLog(@"请求成功 = %@",progress);
+    } success:^(id responseObject) {
+        NSLog(@"existPassword = %@",responseObject);
+        [HudViewFZ HiddenHud];
+        NSDictionary * dictObject=(NSDictionary *)responseObject;
+        NSNumber * result =[dictObject objectForKey:@"result"];
+        if([result integerValue]==0)
+        {
+            NSData * data1 =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+            SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+            ModeUser.payPassword=@"";
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                       //存储到NSUserDefaults（转NSData存）
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: ModeUser];
+            [defaults setObject:data forKey:@"SaveUserMode"];
+            [defaults synchronize];
+            
+            [self addselect_view:2];
+            
+        }else{
+            NSData * data1 =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+            SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
+            ModeUser.payPassword=@"6666";
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+                       //存储到NSUserDefaults（转NSData存）
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject: ModeUser];
+            [defaults setObject:data forKey:@"SaveUserMode"];
+            [defaults synchronize];
+            
+            [self addtextView_view];
+//            14.14 14.89 14.40 14.59
+        }
+    }failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ HiddenHud];
+    }];
+        
+}
+#pragma mark ------- 全屏View 背景透明 --------
+
+/**
+ 全屏View 背景透明 //没钱支付的时候提示他需要充值
+ index  1是 没钱提醒充值  2是 没有设置支付密码
+ */
+-(void)addselect_view:(NSInteger)index
+{
+    Tuicang_View=[[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 0)];
+    [Tuicang_View setBackgroundColor:[UIColor colorWithRed:60/255.0 green:60/255.0 blue:60/255.0 alpha:0.3]];
+    
+    tapSuperGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSuperView1:)];
+    tapSuperGesture.delegate = self;
+    [Tuicang_View addGestureRecognizer:tapSuperGesture];
+    TC_CenterView = [[UIView alloc] initWithFrame:CGRectMake(38*autoSizeScaleX_6, 220*autoSizeScaleY_6, SCREEN_WIDTH-(38*autoSizeScaleX_6*2), 175)];
+    [TC_CenterView setBackgroundColor:[UIColor whiteColor]];
+    TC_CenterView.layer.cornerRadius=4;
+    [Tuicang_View addSubview:TC_CenterView];
+    tisp_lable=[[UILabel alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-(38*autoSizeScaleX_6*2), 0)];
+    [tisp_lable setText:@""];
+    tisp_lable.font = [UIFont systemFontOfSize:14];
+    //文字居中显示
+    tisp_lable.textAlignment = NSTextAlignmentCenter;
+    
+    miaoshu_lable=[[UILabel alloc] initWithFrame:CGRectMake(0, 15, SCREEN_WIDTH-(38*autoSizeScaleX_6*2), 70)];
+    if(index==1)
+    {
+        [miaoshu_lable setText:FGGetStringWithKeyFromTable(@"You balance is insufficient,please recharge", @"Language")];
+    }else if(index==2)
+    {
+        [miaoshu_lable setText:FGGetStringWithKeyFromTable(@"Please set your payment password!", @"Language")];
+    }
+    miaoshu_lable.font = [UIFont systemFontOfSize:16];
+    //文字居中显示
+    miaoshu_lable.textAlignment = NSTextAlignmentCenter;
+    //自动折行设置
+    miaoshu_lable.numberOfLines = 0;
+    back_btn = [[UIButton alloc] initWithFrame:CGRectMake(29*autoSizeScaleX_6, 80+15, 100, 40)];
+    [back_btn setTitle:FGGetStringWithKeyFromTable(@"Cancel", @"Language") forState:UIControlStateNormal];
+    [back_btn setBackgroundColor:[UIColor whiteColor]];
+    [back_btn setTitleColor:[UIColor blackColor]forState:UIControlStateNormal];
+    back_btn.titleLabel.font = [UIFont systemFontOfSize: 14.0];
+    back_btn.layer.cornerRadius=4;
+    back_btn.layer.borderColor = [UIColor colorWithRed:152/255.0 green:169/255.0 blue:179/255.0 alpha:1.0].CGColor;//设置边框颜色
+    back_btn.layer.borderWidth = 1.0f;//设置边框颜色
+    [back_btn addTarget:self action:@selector(Touch_two2:) forControlEvents:UIControlEventTouchDown];
+    Come_btn = [[UIButton alloc] initWithFrame:CGRectMake(29*autoSizeScaleX_6+(SCREEN_WIDTH-(38*autoSizeScaleX_6*2)-100*2-29*autoSizeScaleX_6*2)+100, 80+15, 100, 40)];
+    if(index==1)
+    {
+        [Come_btn setTitle:FGGetStringWithKeyFromTable(@"Recharge", @"Language") forState:UIControlStateNormal];
+        Come_btn.tag=1002;  ////标记为充值
+    }else if(index==2)
+    {
+        [Come_btn setTitle:FGGetStringWithKeyFromTable(@"Setting", @"Language") forState:UIControlStateNormal];
+        Come_btn.tag=1001;  ////标记为设置密码
+    }
+    
+    [Come_btn setBackgroundColor:[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0]];
+    [Come_btn setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
+    Come_btn.titleLabel.font = [UIFont systemFontOfSize: 14.0];
+    Come_btn.layer.cornerRadius=4;
+    Come_btn.layer.borderColor = [UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0].CGColor;//设置边框颜色
+    Come_btn.layer.borderWidth = 1.0f;//设置边框颜色
+    [Come_btn addTarget:self action:@selector(Touch_one1:) forControlEvents:UIControlEventTouchDown];
+    
+    [TC_CenterView addSubview:tisp_lable];
+    [TC_CenterView addSubview:miaoshu_lable];
+    [TC_CenterView addSubview:Come_btn];
+    [TC_CenterView addSubview:back_btn];
+    [self.view addSubview:Tuicang_View];
+    [self show_TCview2];
+}
+
+/**
+ 密码输入框、、、弹出支付框
+ */
+-(void)addtextView_view
+{
+    __block AddressSViewController *  blockSelf = self;
+    Tuicang_View1=[[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 0)];
+    [Tuicang_View1 setBackgroundColor:[UIColor colorWithRed:60/255.0 green:60/255.0 blue:60/255.0 alpha:0.9]];
+    
+    tapSuperGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSuperView2:)];
+    tapSuperGesture.delegate = self;
+    [Tuicang_View1 addGestureRecognizer:tapSuperGesture];
+    TC_CenterView = [[UIView alloc] initWithFrame:CGRectMake(38*autoSizeScaleX_6, 220*autoSizeScaleY_6, SCREEN_WIDTH-(38*autoSizeScaleX_6*2), 175)];
+    [TC_CenterView setBackgroundColor:[UIColor whiteColor]];
+    TC_CenterView.layer.cornerRadius=4;
+    [Tuicang_View1 addSubview:TC_CenterView];
+    tisp_lable=[[UILabel alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-(38*autoSizeScaleX_6*2), 0)];
+    [tisp_lable setText:@""];
+    tisp_lable.font = [UIFont systemFontOfSize:14];
+    //文字居中显示
+    tisp_lable.textAlignment = NSTextAlignmentCenter;
+    
+    miaoshu_lable=[[UILabel alloc] initWithFrame:CGRectMake(0, 15, SCREEN_WIDTH-(38*autoSizeScaleX_6*2), 70)];
+    [miaoshu_lable setText:@"Please enter payment password"];
+    miaoshu_lable.font = [UIFont systemFontOfSize:14];
+    //文字居中显示
+    miaoshu_lable.textAlignment = NSTextAlignmentCenter;
+    //自动折行设置
+    miaoshu_lable.numberOfLines = 0;
+    textfiledView = [[TPPasswordTextView alloc] initWithFrame:CGRectMake((TC_CenterView.width-240)/2, 80+15, 240, 40)];
+    textfiledView.elementCount = 6;
+    //  背景色 方便  看
+    textfiledView.backgroundColor = [UIColor whiteColor];
+    //  距离
+    textfiledView.elementMargin = 0;
+    // 边框宽度
+    textfiledView.elementBorderWidth = 1;
+    closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(TC_CenterView.width-25, 5, 20, 20)];
+    [closeBtn setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+//    [closeBtn setTitleColor:[UIColor blackColor]forState:UIControlStateNormal];
+    [closeBtn addTarget:self action:@selector(Touch_two3:) forControlEvents:UIControlEventTouchDown];
+    [TC_CenterView addSubview:tisp_lable];
+    [TC_CenterView addSubview:miaoshu_lable];
+    [TC_CenterView addSubview:textfiledView];
+    [TC_CenterView addSubview:closeBtn];
+    [TC_CenterView addSubview:textfiledView];
+//    [self.view addSubview:view1];
+    
+    textfiledView.passwordDidChangeBlock = ^(NSString *password) {
+        NSLog(@"%@",password);
+        if(password.length==6)
+        {
+            blockSelf.Pay_passwordStr=password;
+//            [blockSelf JYPayPassword]; ///屏蔽校验密码 后台校验
+//            [blockSelf postOrder:blockSelf.Pay_passwordStr];
+            NSLog(@"暂无下一步操作");
+        }
+    };
+    [self.view addSubview:Tuicang_View1];
+    [self show_TCview3];
+}
+-(void)show_TCview2
+{
+    [UIView animateWithDuration:(0.5)/*动画持续时间*/animations:^{
+        //执行的动画
+        self->Tuicang_View.frame=self.view.bounds;
+    }];
+    
+}
+-(void)hidden_TCview2
+{
+    [UIView animateWithDuration:0.6/*动画持续时间*/animations:^{
+        //执行的动画
+        self->Tuicang_View.frame =CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 0);
+    }completion:^(BOOL finished){
+        //动画执行完毕后的操作
+//        [self->Tuicang_View removeFromSuperview];
+        [self->Tuicang_View setHidden:YES];
+    }];
+}
+- (void)tapSuperView1:(UITapGestureRecognizer *)gesture {
+    
+//    [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
+//    CGPoint location = [gesture locationInView:Tuicang_View];
+//    CGRect rec = [self.view convertRect:TC_CenterView.frame   fromView:Tuicang_View];
+////    NSLog(@"%@",NSStringFromCGRect(rec));
+//    NSLog(@"location.x== %f,location.y== %f,",location.x,location.y);
+//    NSLog(@"x== %f,y== %f,",rec.origin.x,rec.origin.y);
+//    if(location.x<TC_CenterView.left)
+//    {
+//            [self hidden_TCview];
+//            [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+//
+//    }
+}
+-(void)Touch_one:(UIButton*)sender
+{
+    
+        NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+        SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        if([ModeUser.payPassword isEqualToString:@""] && ModeUser.payPassword != nil)
+        {
+        
+            [self hidden_TCview2];
+            [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            newPhoneViewController *vc=[main instantiateViewControllerWithIdentifier:@"newPhoneViewController"];
+            vc.index=1;
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else{
+                [self hidden_TCview2];
+                [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+                dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.7/*延迟执行时间*/ * NSEC_PER_SEC));
+
+                dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+
+                    [self addtextView_view];
+                });
+            
+        }
+}
+-(void)Touch_two2:(id)semder
+{
+    [self hidden_TCview2];
+//    [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+//    [self pushDetailsListViewController];
+}
+
+
+-(void)show_TCview3
+{
+    [UIView animateWithDuration:(0.5)/*动画持续时间*/animations:^{
+        //执行的动画
+        self->Tuicang_View1.frame=self.view.bounds;
+    }];
+    
+}
+-(void)hidden_TCview3
+{
+    [UIView animateWithDuration:0.6/*动画持续时间*/animations:^{
+        //执行的动画
+        self->Tuicang_View1.frame =CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 0);
+    }completion:^(BOOL finished){
+        //动画执行完毕后的操作
+//        [self->Tuicang_View removeFromSuperview];
+        [self->Tuicang_View1 setHidden:YES];
+    }];
+}
+- (void)tapSuperView2:(UITapGestureRecognizer *)gesture {
+
+}
+-(void)Touch_one1:(UIButton*)sender
+{
+    if(sender.tag==1002)
+    {
+        [self pushDetailsListViewController];
+    }else{
+        NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+        SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        if([ModeUser.payPassword isEqualToString:@""] && ModeUser.payPassword != nil)
+        {
+        
+            [self hidden_TCview3];
+            [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            newPhoneViewController *vc=[main instantiateViewControllerWithIdentifier:@"newPhoneViewController"];
+            vc.index=1;
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else{
+                [self hidden_TCview3];
+                [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+                dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.7/*延迟执行时间*/ * NSEC_PER_SEC));
+
+                dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+
+                    [self addtextView_view];
+                });
+            
+        }
+        }
+}
+-(void)Touch_two3:(id)semder
+{
+    [self hidden_TCview3];
+//    [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+//    [self pushDetailsListViewController];
+}
+-(void)pushDetailsListViewController
+{
+    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    RechargeViewController *vc=[main instantiateViewControllerWithIdentifier:@"RechargeViewController"];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 
 -(void)AddSTableViewUI

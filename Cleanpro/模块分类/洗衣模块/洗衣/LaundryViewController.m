@@ -245,9 +245,11 @@
         NSLog(@"E_Getquery=  %@",responseObject);
 //        NSDictionary * dictA=(NSDictionary *)responseObject;
         NSArray * dictArr= (NSArray*)responseObject;
-        NSDictionary * dictA= (NSDictionary*)dictArr[0];
+        for (int KM=0; KM<dictArr.count; KM++) {
+        NSDictionary * dictA= (NSDictionary*)dictArr[KM];
             if(dictA)
             {
+                [HudViewFZ HiddenHud];
                 productsMode * ModeProducts = [[productsMode alloc] init];
 //                NSDictionary * dictA=array[i];
                 NSArray * attributeList = [dictA objectForKey:@"attributeList"];
@@ -256,6 +258,8 @@
                 ModeProducts.productName = [dictA objectForKey:@"productName"];
                 ModeProducts.productNameEn = [dictA objectForKey:@"productNameEn"];
                 ModeProducts.serviceId = [dictA objectForKey:@"serviceId"];
+                if(attributeList.count>0 && productVariantList.count>0)
+                {
                 for(int j=0;j<attributeList.count;j++)
                 {
                     NSDictionary * dictJ=attributeList[j];
@@ -298,9 +302,14 @@
                 }
                 ModeProducts.productVariantList=productArrayMu;
                 [self.arrPrice addObject:ModeProducts];
-                
-        [HudViewFZ HiddenHud];
+                    break;  ///找到价格  直接跳出循环
+                }else{
+//                    [HudViewFZ HiddenHud];
+                    continue;///没有找到价格  跳过此次循环进行下一次循环
+                }
+        
     }
+        }
         if(self.arrPrice.count>0)
         {
         [self updateText];

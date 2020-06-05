@@ -80,6 +80,10 @@
     {
         [self.iamge_set setImage:[UIImage imageNamed:@"success_dryer"] forState:UIControlStateNormal];
         self.title =FGGetStringWithKeyFromTable(@"Dryer", @"Language");
+    }else if([self.order_c.order_type isEqualToString:@"IRONING"])
+    {
+        [self.iamge_set setImage:[UIImage imageNamed:@"picyundou02"] forState:UIControlStateNormal];
+        self.title =FGGetStringWithKeyFromTable(@"Ironing", @"Language");
     }
     
 }
@@ -137,11 +141,14 @@
     } else if ([viewControllers indexOfObject:self] == NSNotFound) {
         //pop
        for (UIViewController *temp in self.navigationController.viewControllers) {
-                if ([temp isKindOfClass:[WCQRCodeScanningVC class]]) {
+//                if ([temp isKindOfClass:[WCQRCodeScanningVC class]]) {
+           if ([temp isKindOfClass:[NewHomeViewController class]]) {
                     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
                     [appDelegate.ManagerBLE closeConnected];
                     [appDelegate hiddenFCViewNO];
+                     [self.navigationController popToViewController:temp animated:YES];
                 }
+           
             }
     }
     [super viewWillDisappear:animated];
@@ -242,7 +249,15 @@
         keyPtr[7]=((Byte*)[Databytes bytes])[1];
         keyPtr[15]=((Byte*)[Databytes bytes])[0];;
         //        NSLog(@"秘钥 ：%s",keyPtr);
-                NSData *dataAAA = [AES_SecurityUtil aes128EncryptWithContentData:strCommand KeyStr:keyPtr gIvStr:keyPtr];
+        NSData *dataAAA;
+        if(self.OrderAndRenewal==3)
+        {
+            dataAAA=[AES_SecurityUtil getData:strCommand];;
+        }else
+        {
+            dataAAA = [AES_SecurityUtil aes128EncryptWithContentData:strCommand KeyStr:keyPtr gIvStr:keyPtr];
+        }
+              
 //                NSLog(@"加密前：%@",strCommand);
 //                NSLog(@"加密后：%@",dataAAA);
         

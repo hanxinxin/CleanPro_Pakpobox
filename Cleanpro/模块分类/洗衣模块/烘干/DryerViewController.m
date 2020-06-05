@@ -37,6 +37,13 @@
     [self.Charges_label setText:[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Charges", @"Language")]];
     [self.Time_label setText:[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Time(MIN)", @"Language")]];
     [self.pay_btn setTitle:FGGetStringWithKeyFromTable(@"Pay", @"Language") forState:(UIControlStateNormal)];
+    if(self.OrderAndRenewal==1 || self.OrderAndRenewal==2)
+    {
+        [self.JQImage setImage:[UIImage imageNamed:@"dryerNew.png"]];
+    }else if(self.OrderAndRenewal==3)
+    {
+        [self.JQImage setImage:[UIImage imageNamed:@"picyudou"]];
+    }
     self.topView.layer.cornerRadius=2;
     self.pay_btn.layer.cornerRadius=4;
     order_c=[[CreateOrder alloc] init];
@@ -67,6 +74,9 @@
     }else if([self->order_c.order_type isEqualToString:@"DRYER"])
     {
         self.title =FGGetStringWithKeyFromTable(@"Dryer", @"Language");
+    }else if([self->order_c.order_type isEqualToString:@"IRONING"])
+    {
+        self.title =FGGetStringWithKeyFromTable(@"Ironing", @"Language");
     }
         [self getPriceMache];
     });
@@ -366,6 +376,16 @@
                  self.MoRen_time_str=[self getPriceTimeStr:mode2.productAttributeValue];
                 self->TimeTeger = self->morenTimeSj;
                 
+            }else if(self.OrderAndRenewal==3)
+            {
+                self.SPArray=[self SParray_Ironing];
+                valueListMode * mode2 =self.SPArray[0];
+                self.Price_str=[NSString stringWithFormat:@"%.2f",[[self getPriceStr:mode2.productAttributeValueId] floatValue]];
+                self->order_c.total_amount=[NSString stringWithFormat:@"%.2f",[[self getPriceStr:mode2.productAttributeValueId] floatValue]];
+                self->morenTimeSj=[[self getPriceTimeStr:mode2.productAttributeValue] integerValue];
+                self.MoRen_time_str=[self getPriceTimeStr:mode2.productAttributeValue];
+                self->TimeTeger = self->morenTimeSj;
+                
             }
             
         [self updateText];
@@ -409,6 +429,39 @@
     for (int i =0 ; i<mode.attributeList.count; i++) {
         attributeListsMode * mode1 =mode.attributeList[i];
         if([mode1.name isEqualToString:@"Dry time"])
+        {
+        for (int j =0 ; j<mode1.valueList.count; j++) {
+            valueListMode * mode2 =mode1.valueList[j];
+            
+            if(arrTime.count>0)
+            {
+                valueListMode * mode3 =arrTime[0];
+                NSString * timeStr=[self getPriceTimeStr:mode2.productAttributeValue];
+                NSString * timeStr1=[self getPriceTimeStr:mode3.productAttributeValue];
+                if(([timeStr integerValue])>([timeStr1 integerValue]))
+                {
+                    [arrTime insertObject:mode2 atIndex:0];
+                }else{
+                    [arrTime addObject:mode2];
+                }
+            }else{
+                [arrTime addObject:mode2];
+            }
+        }
+        }
+    }
+    }
+    return arrTime;
+}
+
+-(NSMutableArray*)SParray_Ironing
+{
+    NSMutableArray * arrTime =[NSMutableArray arrayWithCapacity:0];
+    for (int C=0; C<self.arrPrice.count; C++) {
+        productsMode *mode=self.arrPrice[C];
+    for (int i =0 ; i<mode.attributeList.count; i++) {
+        attributeListsMode * mode1 =mode.attributeList[i];
+        if([mode1.name isEqualToString:@"lroning time"])
         {
         for (int j =0 ; j<mode1.valueList.count; j++) {
             valueListMode * mode2 =mode1.valueList[j];

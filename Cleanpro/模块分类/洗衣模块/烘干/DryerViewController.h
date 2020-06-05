@@ -10,6 +10,8 @@
 
 @interface DryerViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIView *topView;
+@property (strong, nonatomic) IBOutlet UIImageView *JQImage;
+
 @property (weak, nonatomic) IBOutlet UILabel *machine_label;
 @property (weak, nonatomic) IBOutlet UILabel *Charges_label;
 
@@ -32,7 +34,7 @@
 @property(nonatomic,strong)NSString * addrStr;  ///加密字节
 
 @property (nonatomic, strong) NSString * siteIdStr; ///站点的id
-@property(nonatomic,assign)NSInteger OrderAndRenewal;  ///判断是正常下单还是加时烘干 1:正常下单 2:烘干加时
+@property(nonatomic,assign)NSInteger OrderAndRenewal;  ///判断是正常下单还是加时烘干 1:烘干机正常下单 2:烘干加时 3:是熨斗机 IRONING
 @property(nonatomic,strong)NSString *  OrderIdTime;
 
 @end

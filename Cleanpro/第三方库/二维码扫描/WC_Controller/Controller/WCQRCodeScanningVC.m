@@ -434,6 +434,16 @@
             vc.siteIdStr=self.siteIdStr;
             vc.OrderAndRenewal=1;
             [self.navigationController pushViewController:vc animated:YES];
+        }else if([array[2] isEqualToString:@"IRONING"])
+        {
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            DryerViewController *vc=[main instantiateViewControllerWithIdentifier:@"DryerViewController"];
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.arrayList=array;
+            vc.addrStr = self.addr;
+            vc.siteIdStr=self.siteIdStr;
+            vc.OrderAndRenewal=3;
+            [self.navigationController pushViewController:vc animated:YES];
         }
     }else {
         NSLog(@"暂未识别出扫描的二维码");

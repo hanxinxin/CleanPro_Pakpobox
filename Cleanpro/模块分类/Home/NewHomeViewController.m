@@ -91,9 +91,8 @@
 //        [self.imageViewArr addObject:[UIImage imageNamed:@"promotion2.jpeg"]];
            [self.imageViewArr addObject:[UIImage imageNamed:@"WashingTo.jpg"]];
 //       }
-    
     self.CollectionArray= [NSMutableArray arrayWithCapacity:0];
-    [self.CollectionArray addObject:@[@"Laundry",@"E-wash"]];
+    [self.CollectionArray addObject:@[@"Laundry",@"E-wash",@"Ironing"]];
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
@@ -692,6 +691,21 @@
             EWashViewController *vc=[main instantiateViewControllerWithIdentifier:@"EWashViewController"];
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
+        }
+    }else if(Cell.tag==2)
+    {
+        NSString * strPhoen=[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"];
+        if([strPhoen isEqualToString:@"1"])
+        {
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            NewLoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewLoginViewController"];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else
+        {
+            WCQRCodeScanningVC *WCVC = [[WCQRCodeScanningVC alloc] init];
+            WCVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:WCVC animated:YES];
         }
     }else
     {

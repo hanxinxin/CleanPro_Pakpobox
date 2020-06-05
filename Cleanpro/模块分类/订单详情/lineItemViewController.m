@@ -57,7 +57,7 @@
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     //    self.title=@"Cleapro";
-    self.navigationController.title=FGGetStringWithKeyFromTable(@"Order", @"Language");
+    self.title=FGGetStringWithKeyFromTable(@"History", @"Language");
     
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]}];
 //    self.overtimeFlag=0;
@@ -117,9 +117,13 @@
     {
         self.OrderType.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Dryer", @"Language")];
 //        self.OrderType.text=[NSString stringWithFormat:@"%@",self.mode.order_type];
-    }else if([self.mode.order_type isEqualToString:@"WASHER"])
+    }else if([self.Newmode.siteType isEqualToString:@"WASHER"])
     {
        self.OrderType.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Washer", @"Language")];
+    }
+    else if([self.Newmode.siteType isEqualToString:@"IRONING"])
+    {
+       self.OrderType.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Ironing", @"Language")];
     }
     self.orderNo.text = [NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Transaction NO.", @"Language")];
     self.NoLabel.text=[NSString stringWithFormat:@"%@",self.Newmode.orderNumber];
@@ -140,7 +144,13 @@
         [self.Temperature setText:[NSString stringWithFormat:@"%@ :",FGGetStringWithKeyFromTable(@"Temperature", @"Language")]];
 //        self.temperatureLabel.text=[NSString stringWithFormat:@"%@",[[self Json_returnDict:self.mode.goods_info]objectForKey:@"temperature"]];
         self.temperatureLabel.text=[NSString stringWithFormat:@"%@",self.Newmode.cleanProItemName];
-    }
+    }else if([self.Newmode.siteType isEqualToString:@"IRONING"])
+        {
+            [self.BtnType_image setImage:[UIImage imageNamed:@"icon_dryer2"] forState:(UIControlStateNormal)];
+            [self.Temperature setText:[NSString stringWithFormat:@"%@ :",FGGetStringWithKeyFromTable(@"Duration", @"Language")]];
+    //        self.temperatureLabel.text=[NSString stringWithFormat:@"%@m",[[self Json_returnDict:self.mode.goods_info]objectForKey:@"time"]];
+            self.temperatureLabel.text=[NSString stringWithFormat:@"%@m",self.Newmode.cleanProItemName];
+        }
     
     [self.Time setText:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Time", @"Language")]];
     self.TimeLabel.text=[NSString stringWithFormat:@"%@",[PublicLibrary timeString:self.Newmode.timeCreated]];

@@ -1,95 +1,75 @@
 //
-//  OrdersViewController.m
+//  LroningOrderViewController.m
 //  Cleanpro
 //
-//  Created by mac on 2018/6/8.
-//  Copyright © 2018年 mac. All rights reserved.
+//  Created by mac on 2020/6/2.
+//  Copyright © 2020 mac. All rights reserved.
 //
 
-#import "OrdersViewController.h"
+#import "LroningOrderViewController.h"
 #import "OrdersTableViewCell.h"
 #import "OrdersUnpaidViewController.h"
 #import "lineItemViewController.h"
 #import "HomeViewController.h"
 #import "MyAccountViewController.h"
-#import "DCNavTabBarController.h"
-#import "DryerOrderViewController.h"
-#import "LaundryOrderViewController.h"
-#import "LroningOrderViewController.h"
+
 
 #define tableID @"OrdersTableViewCell"
-
-@interface OrdersViewController ()<UITableViewDelegate,UITableViewDataSource,DCNavTabBarControllerDelegate>
+@interface LroningOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)NSMutableArray * arr_title;
 @end
 
-@implementation OrdersViewController
+@implementation LroningOrderViewController
 @synthesize arr_title;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-//    if (@available(iOS 11.0, *)) {//解决iOS 10 版本scrollView下滑问题。
-//        
-//        self.tableViewTop.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-//        
-//    } else {
-//        
-//        self.automaticallyAdjustsScrollViewInsets = NO;
-//        
-//    }
-//    6.2屏蔽
-//    self.page=0;
-//    self.maxCount=20;
-//    self->arr_title=[NSMutableArray arrayWithCapacity:0];
-//    [self->arr_title removeAllObjects];
-//        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
-//
-//        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-//
-//              [self.tableViewTop setHidden:NO];
-//            [self addTableViewOrders];
-//    //        [self loadNewData];
-//        });
-    //6.2添加菜单
-    [self removeNilView];
-    dispatch_time_t delayTime1 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2/*延迟执行时间*/ * NSEC_PER_SEC));
-    
-    dispatch_after(delayTime1, dispatch_get_main_queue(), ^{
-       [self addCollection];
+    if (@available(iOS 11.0, *)) {//解决iOS 10 版本scrollView下滑问题。
         
-    });
+        self.tableViewTop.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        
+    } else {
+        
+        self.automaticallyAdjustsScrollViewInsets = NO;
+        
+    }
+    self.page=0;
+    self.maxCount=20;
+    self->arr_title=[NSMutableArray arrayWithCapacity:0];
+    [self->arr_title removeAllObjects];
+        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
+        
+        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            
+            [self.tableViewTop setHidden:NO];
+            [self addTableViewOrders];
+    //        [self loadNewData];
+        });
     
 }
-
--(void)addCollection
-{
-    UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    LaundryOrderViewController *Laundry=[main instantiateViewControllerWithIdentifier:@"LaundryOrderViewController"];
-    Laundry.title = @"Laundry";
-    Laundry.topHeight =(SCREEN_HEIGHT-(kNavBarAndStatusBarHeight)-44-10);
-    DryerOrderViewController *Dryer=[main instantiateViewControllerWithIdentifier:@"DryerOrderViewController"];
-    Dryer.title = @"Dryer";
-    Dryer.topHeight =(SCREEN_HEIGHT-(kNavBarAndStatusBarHeight)-44-10);
-    LroningOrderViewController *Lroning=[main instantiateViewControllerWithIdentifier:@"LroningOrderViewController"];
-    Lroning.title = @"Ironing";
-    Lroning.topHeight =(SCREEN_HEIGHT-(kNavBarAndStatusBarHeight)-44-10);
-    NSArray *subViewControllers = @[Laundry,Dryer,Lroning];
-    DCNavTabBarController *tabBarVC = [[DCNavTabBarController alloc]initWithSubViewControllers:subViewControllers layoutStatus:YES];
-    tabBarVC.delegate=self;
-    tabBarVC.view.frame = CGRectMake(0, kNavBarAndStatusBarHeight, SCREEN_WIDTH, (SCREEN_HEIGHT));
-    [self.view addSubview:tabBarVC.view];
-    [self addChildViewController:tabBarVC];
-}
--(void)SelectInt:(NSInteger)intager
-{
-//    NSLog(@"tag1111==== %ld",intager);
-}
-
 
 - (void)tongzhiViewController:(NSNotification *)text{
     
     NSLog(@"－－－－－接收到通知------");
+//    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.55/*延迟执行时间*/ * NSEC_PER_SEC));
+//
+//    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+//        for (UIViewController *temp in self.navigationController.viewControllers) {
+//            if ([temp isKindOfClass:[HomeViewController class]]) {
+//                [self.navigationController popToViewController:temp animated:YES];
+//
+//            }
+//        }
+//        for (UIViewController *temp in self.navigationController.viewControllers) {
+//            if ([temp isKindOfClass:[MyAccountViewController class]]) {
+//                [self.navigationController popToViewController:temp animated:YES];
+//                ////            return NO;//这里要设为NO，不是会返回两次。返回到主界面。
+//
+//                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"TokenError"];
+//            }
+//        }
+//    });
 }
 
 -(void)addnilView
@@ -109,8 +89,14 @@
     self.title=FGGetStringWithKeyFromTable(@"History", @"Language");
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]}];
+//    [[UINavigationBa、r appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+//    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+//    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"bgnav"] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setTranslucent:NO];
 //    self.navigationController.navigationBar.translucent = YES;
+    
+    
+    
     [super viewWillAppear:animated];
 }
 
@@ -130,12 +116,13 @@
 
 -(void)addTableViewOrders
 {
-    if(self.view.width==375.000000 && self.view.height>=812.000000)
-    {
-        self.tableViewTop.frame=CGRectMake(15, 84+10, SCREEN_WIDTH-15*2,SCREEN_HEIGHT-84-10);
-    }else{
-        self.tableViewTop.frame=CGRectMake(15, 64+10, SCREEN_WIDTH-15*2,SCREEN_HEIGHT-64-10);
-    }
+//    if(self.view.width==375.000000 && self.view.height>=812.000000)
+//    {
+//        self.tableViewTop.frame=CGRectMake(15, 84+10, SCREEN_WIDTH-15*2,SCREEN_HEIGHT-84-10);
+//    }else{
+//        self.tableViewTop.frame=CGRectMake(15, 64+10, SCREEN_WIDTH-15*2,SCREEN_HEIGHT-64-10);
+//    }
+    self.tableViewTop.frame=CGRectMake(15, 10, SCREEN_WIDTH-15*2,self.topHeight);
 //    self.tableViewTop.frame=self.view.frame;
     self.tableViewTop.delegate=self;
     self.tableViewTop.dataSource=self;
@@ -208,10 +195,10 @@
 {
     self.page=0;
     
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?page=%ld&size=%ld",E_FuWuQiUrl,E_WasherDryerquery,(long)self.page,(long)self.maxCount] parameters:nil progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@?page=%ld&size=%ld&siteTypeList=IRONING",E_FuWuQiUrl,E_WasherDryerquery,(long)self.page,(long)self.maxCount] parameters:nil progress:^(id progress) {
         
     } success:^(id responseObject) {
-        NSLog(@"responseObject ORder=  %@",responseObject);
+        NSLog(@"responseObject ORder3=  %@",responseObject);
         NSDictionary * dictList=(NSDictionary *)responseObject;
         if(dictList)
         {
@@ -222,7 +209,7 @@
 //        {
 //            [self.tableViewTop.mj_footer setHidden:YES];
 //        }
-            [arr_title removeAllObjects];
+            [self->arr_title removeAllObjects];
             NSArray * Array= [dictList objectForKey:@"content"];;
             if(Array.count>0)
             {
@@ -270,10 +257,10 @@
 {
     if((self.page+1)<[self.totalPage integerValue])
     {
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@??page=%ld&size=%ld",E_FuWuQiUrl,E_WasherDryerquery,(long)self.page,(long)self.maxCount] parameters:nil progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@??page=%ld&size=%ld&siteTypeList=IRONING",E_FuWuQiUrl,E_WasherDryerquery,(long)self.page,(long)self.maxCount] parameters:nil progress:^(id progress) {
         
     } success:^(id responseObject) {
-        NSLog(@"responseObject ORder=  %@",responseObject);
+        NSLog(@"responseObject ORder3=  %@",responseObject);
         NSDictionary * dictList=(NSDictionary *)responseObject;
         if(dictList)
         {
@@ -485,7 +472,12 @@
         {
             [cell.typeButton setImage:[UIImage imageNamed:@"icon_laundry2"] forState:(UIControlStateNormal)];
             cell.Order_type.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Washer", @"Language")];
+        }else if([mode.siteType isEqualToString:@"IRONING"])
+        {
+            [cell.typeButton setImage:[UIImage imageNamed:@"picyudou"] forState:(UIControlStateNormal)];
+            cell.Order_type.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Ironing", @"Language")];
         }
+    
         cell.OrderNo.text=[NSString stringWithFormat:@"%@%@",FGGetStringWithKeyFromTable(@"Transaction NO. ", @"Language"),mode.orderNumber];
 //        cell.Paid.text=[NSString stringWithFormat:@"%@",mode.pay_status];
         cell.totalAmount.text=[NSString stringWithFormat:@"%.2f",[mode.paidCharge floatValue]];

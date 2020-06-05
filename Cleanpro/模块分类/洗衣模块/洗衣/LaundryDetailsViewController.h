@@ -53,7 +53,7 @@
 
 @property(nonatomic,strong)NSString *  OrderIdTime;
 
-@property(nonatomic,assign)NSInteger NewOrderType;  ///判断是洗衣还是贩卖机 1:洗衣 2:贩卖机
+@property(nonatomic,assign)NSInteger NewOrderType;  ///判断是洗衣还是贩卖机 1:洗衣或烘干或熨斗机 2:贩卖机
 @property (nonatomic, strong)NSArray * FMJArray; ///贩卖机物品数组
 
 

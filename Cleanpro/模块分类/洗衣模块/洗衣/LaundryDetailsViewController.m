@@ -32,6 +32,7 @@
 {
     /////全屏透明色view和 button Lable
     UIView * Tuicang_View;
+    UIView * Tuicang_View1;
     UIView * TC_CenterView;
     UILabel * tisp_lable;
     UILabel * miaoshu_lable;
@@ -146,7 +147,7 @@
     [self hidden_TCview];
 //    [self Get_wallet_A];
     [self getToken];
-    [self Get_existPassword];
+//    [self Get_existPassword];
     [super viewWillAppear:animated];
     
 }
@@ -345,7 +346,7 @@
 }
 -(void)Get_existPassword
 {
-    
+    [HudViewFZ labelExample:self.view];
     [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_existPassword] parameters:nil progress:^(id progress) {
         //        NSLog(@"请求成功 = %@",progress);
     } success:^(id responseObject) {
@@ -363,6 +364,9 @@
             NSData *data = [NSKeyedArchiver archivedDataWithRootObject: ModeUser];
             [defaults setObject:data forKey:@"SaveUserMode"];
             [defaults synchronize];
+            
+            [self addselect_view:2];
+            
         }else{
             NSData * data1 =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
             SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data1];
@@ -372,6 +376,8 @@
             NSData *data = [NSKeyedArchiver archivedDataWithRootObject: ModeUser];
             [defaults setObject:data forKey:@"SaveUserMode"];
             [defaults synchronize];
+            
+            [self addtextView_view];
 //            14.14 14.89 14.40 14.59
         }
     }failure:^(NSInteger statusCode, NSError *error) {
@@ -555,16 +561,17 @@
     {
         if(self.NewOrderType==1)
         {
-        NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
-        SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-            if([ModeUser.payPassword isEqualToString:@""] || ModeUser.payPassword == nil)
-            {
-            
-                [self addselect_view:2];
-            }else
-            {
-                [self addtextView_view];
-            }
+//        NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+//        SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+//            if([ModeUser.payPassword isEqualToString:@""] || ModeUser.payPassword == nil)
+//            {
+//
+//                [self addselect_view:2];
+//            }else
+//            {
+//                [self addtextView_view];
+//            }
+            [self Get_existPassword];
         }else if(self.NewOrderType==2)
         {
             [self FMJpushViewController];
@@ -672,16 +679,16 @@
 -(void)addtextView_view
 {
     __block LaundryDetailsViewController *  blockSelf = self;
-    Tuicang_View=[[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 0)];
-    [Tuicang_View setBackgroundColor:[UIColor colorWithRed:60/255.0 green:60/255.0 blue:60/255.0 alpha:0.9]];
+    Tuicang_View1=[[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 0)];
+    [Tuicang_View1 setBackgroundColor:[UIColor colorWithRed:60/255.0 green:60/255.0 blue:60/255.0 alpha:0.9]];
     
-    tapSuperGesture22 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSuperView:)];
+    tapSuperGesture22 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSuperView1:)];
     tapSuperGesture22.delegate = self;
-    [Tuicang_View addGestureRecognizer:tapSuperGesture22];
+    [Tuicang_View1 addGestureRecognizer:tapSuperGesture22];
     TC_CenterView = [[UIView alloc] initWithFrame:CGRectMake(38*autoSizeScaleX_6, 220*autoSizeScaleY_6, SCREEN_WIDTH-(38*autoSizeScaleX_6*2), 175)];
     [TC_CenterView setBackgroundColor:[UIColor whiteColor]];
     TC_CenterView.layer.cornerRadius=4;
-    [Tuicang_View addSubview:TC_CenterView];
+    [Tuicang_View1 addSubview:TC_CenterView];
     tisp_lable=[[UILabel alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-(38*autoSizeScaleX_6*2), 0)];
     [tisp_lable setText:@""];
     tisp_lable.font = [UIFont systemFontOfSize:14];
@@ -706,7 +713,7 @@
     closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(TC_CenterView.width-25, 5, 20, 20)];
     [closeBtn setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
 //    [closeBtn setTitleColor:[UIColor blackColor]forState:UIControlStateNormal];
-    [closeBtn addTarget:self action:@selector(Touch_two:) forControlEvents:UIControlEventTouchDown];
+    [closeBtn addTarget:self action:@selector(Touch_two1:) forControlEvents:UIControlEventTouchDown];
     [TC_CenterView addSubview:tisp_lable];
     [TC_CenterView addSubview:miaoshu_lable];
     [TC_CenterView addSubview:textfiledView];
@@ -723,8 +730,8 @@
             [blockSelf postOrder:blockSelf.Pay_passwordStr];
         }
     };
-    [self.view addSubview:Tuicang_View];
-    [self show_TCview];
+    [self.view addSubview:Tuicang_View1];
+    [self show_TCview1];
 }
 -(void)show_TCview
 {
@@ -741,7 +748,8 @@
         self->Tuicang_View.frame =CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 0);
     }completion:^(BOOL finished){
         //动画执行完毕后的操作
-        [self->Tuicang_View removeFromSuperview];
+//        [self->Tuicang_View removeFromSuperview];
+        [self->Tuicang_View setHidden:YES];
     }];
 }
 - (void)tapSuperView:(UITapGestureRecognizer *)gesture {
@@ -800,9 +808,93 @@
 -(void)Touch_two:(id)semder
 {
     [self hidden_TCview];
-    [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+//    [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
 //    [self pushDetailsListViewController];
 }
+
+
+-(void)show_TCview1
+{
+    [UIView animateWithDuration:(0.5)/*动画持续时间*/animations:^{
+        //执行的动画
+        self->Tuicang_View1.frame=self.view.bounds;
+    }];
+    
+}
+-(void)hidden_TCview1
+{
+    [UIView animateWithDuration:0.6/*动画持续时间*/animations:^{
+        //执行的动画
+        self->Tuicang_View1.frame =CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 0);
+    }completion:^(BOOL finished){
+        //动画执行完毕后的操作
+//        [self->Tuicang_View removeFromSuperview];
+        [self->Tuicang_View1 setHidden:YES];
+    }];
+}
+- (void)tapSuperView1:(UITapGestureRecognizer *)gesture {
+    
+//    [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
+//    CGPoint location = [gesture locationInView:Tuicang_View];
+//    CGRect rec = [self.view convertRect:TC_CenterView.frame   fromView:Tuicang_View];
+////    NSLog(@"%@",NSStringFromCGRect(rec));
+//    NSLog(@"location.x== %f,location.y== %f,",location.x,location.y);
+//    NSLog(@"x== %f,y== %f,",rec.origin.x,rec.origin.y);
+//    if(location.x<TC_CenterView.left)
+//    {
+//            [self hidden_TCview];
+//            [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+//
+//    }
+}
+-(void)Touch_one1:(UIButton*)sender
+{
+    if([self.payment isEqualToString:@"1"])
+    {
+//        [self push_IPay];
+    }else if([self.payment isEqualToString:@"2"])
+    {
+        NSLog(@"BTN.tag=%ld",(long)sender.tag);
+        if(sender.tag==1002)
+        {
+            [self pushDetailsListViewController];
+        }else{
+        NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+        SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        if([ModeUser.payPassword isEqualToString:@""] && ModeUser.payPassword != nil)
+        {
+        
+            [self hidden_TCview];
+            [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            newPhoneViewController *vc=[main instantiateViewControllerWithIdentifier:@"newPhoneViewController"];
+            vc.index=1;
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else{
+                [self hidden_TCview];
+                [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+                dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.7/*延迟执行时间*/ * NSEC_PER_SEC));
+
+                dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+
+                    [self addtextView_view];
+                });
+            
+        }
+        }
+    }
+}
+-(void)Touch_two1:(id)semder
+{
+    [self hidden_TCview1];
+//    [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+//    [self pushDetailsListViewController];
+}
+
+
+
+
 /*
 -(void)push_IPay:(NSString*)RefNo UrlStr:(NSString *)Url Remark:(NSString *)Remark Amount:(NSString *)Amount
 {
@@ -1040,6 +1132,29 @@
             };
             [returnArrM addObject:dcit2];
        }
+    }else if([self.order_c.order_type isEqualToString:@"IRONING"])
+    {
+        if(self.OrderAndRenewal==3)
+        {
+            valueListMode * mode2 =self.SPArray[0];
+             valueListMode * mode3 =self.SPArray[1];
+             NSInteger timeJiaJian=[[self getPriceTimeStr:mode3.productAttributeValue] integerValue];
+            NSString * MoRen_time_str=[self getPriceTimeStr:mode2.productAttributeValue];
+             int money_s = (int)(self.timeTotal-[MoRen_time_str integerValue])/timeJiaJian;
+             NSDictionary*dcitA=@{
+                 @"productVariantId":[self getDRYERid:self.arrPrice productAttributeValueId:mode2.productAttributeValueId],//商品id
+                 @"quantity":@"1"//商品数量
+             };
+             [returnArrM addObject:dcitA];
+             if(money_s>0)
+             {
+             NSDictionary*dcit2=@{
+                 @"productVariantId":[self getDRYERid:self.arrPrice productAttributeValueId:mode3.productAttributeValueId],//商品id
+                 @"quantity":[NSString stringWithFormat:@"%d",money_s],//商品数量 正常烘干不需要加1
+             };
+             [returnArrM addObject:dcit2];
+             }
+        }
     }
     
 //    NSString * logisticsType=@"";

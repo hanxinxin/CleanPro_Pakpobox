@@ -568,7 +568,8 @@
     
     NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
         NSString *appVersion = infoDict[@"CFBundleShortVersionString"];
-    //    NSString *bundleId   = infoDict[@"CFBundleIdentifier"];
+        NSString *BundleVersion = infoDict[@"CFBundleVersion"];
+//        NSString *bundleId   = infoDict[@"CFBundleIdentifier"];
         NSString *urlString = [NSString stringWithFormat:@"https://itunes.apple.com/cn/lookup?id=%@", @"1499447258"];
         //两种请求appStore最新版本app信息 通过bundleId与appleId判断
         //[NSString stringWithFormat:@"https://itunes.apple.com/cn/lookup?bundleid=%@", bundleId]
@@ -591,7 +592,7 @@
                 NSDictionary *sourceDict = sourceArray[0];
                 NSString *newVersion = sourceDict[@"version"];
                 NSLog(@"newVersion===  %@",newVersion);
-                if([self judgeNewVersion:newVersion withOldVersion:appVersion])
+                if([self judgeNewVersion:newVersion withOldVersion:BundleVersion])
                 {
                     //    NSLog(@"Version==== %@",[NSString stringWithFormat:@"%@%@?clientType=IOS",FuWuQiUrl,get_version]);
                         [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_GetloadAppVersion] parameters:nil progress:^(id progress) {

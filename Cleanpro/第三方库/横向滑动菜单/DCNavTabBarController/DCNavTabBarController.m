@@ -18,7 +18,7 @@
 @property (nonatomic, weak) UIScrollView *topBar;
 @property(nonatomic,assign) CGFloat btnW ;
 @property(nonatomic,assign) CGFloat DIYBtnW ;
-
+@property (nonatomic, assign) BOOL layoutStatus;
 @property (nonatomic, weak) UIView *slider;
 
 @end
@@ -62,6 +62,16 @@
     if(self = [super init])
     {
         _VCArr = subViewControllers;
+        _layoutStatus=YES;
+    }
+    return self;
+}
+-(instancetype)initWithSubViewControllers:(NSArray *)subViewControllers layoutStatus:(BOOL)status
+{
+    if(self = [super init])
+    {
+        _VCArr = subViewControllers;
+        _layoutStatus=status;
     }
     return self;
 }
@@ -99,14 +109,19 @@
     self.topBar = scrollView;
 //    self.topBar.bounces = NO;
     [self.view addSubview:self.topBar];
-    
-    if(count <= 5)
+    if(_layoutStatus)
     {
-         self.btnW = DCScreenW / count;
-        self.DIYBtnW = self.btnW/2;
-    }else
-    {
-         self.btnW = DCScreenW / 5.0;
+        if(count <= 5)
+        {
+             self.btnW = DCScreenW / count;
+            self.DIYBtnW = self.btnW/2;
+        }else
+        {
+             self.btnW = DCScreenW / 5.0;
+            self.DIYBtnW = self.btnW/2;
+        }
+    }else{
+        self.btnW = DCScreenW / 5.0;
         self.DIYBtnW = self.btnW/2;
     }
     //添加button
