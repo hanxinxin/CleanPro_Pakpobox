@@ -2087,7 +2087,7 @@
         }
         UIView *lbl = [[UIView alloc] init]; //定义一个label用于显示cell之间的分割线（未使用系统自带的分割线），也可以用view来画分割线
         lbl.frame = CGRectMake(cell1.frame.origin.x + 10, 0, self.view.width-1, 1);
-        lbl.backgroundColor =  [UIColor colorWithRed:240/255.0 green:241/255.0 blue:242/255.0 alpha:1];
+        lbl.backgroundColor = [UIColor colorWithRed:240/255.0 green:241/255.0 blue:242/255.0 alpha:1];
         [cell1.contentView addSubview:lbl];
         cell1.delegate=self;
         NSArray * arr =arr_title[indexPath.section];

@@ -11,11 +11,11 @@
 #import "LaundrySuccessViewController.h"
 #import "UITextView+ZWPlaceHolder.h"
 #import "MyAccountViewController.h"
-
+#import "EwashMyViewController.h"
 #define CollectionViewCellID @"TopCollectionViewCell"
 #define cout_Number 15
 
-@interface FeedbackViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UIGestureRecognizerDelegate>
+@interface FeedbackViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UIGestureRecognizerDelegate,UITextViewDelegate>
 {
     NSMutableArray * collectionArray;
     NSInteger moren_cell;
@@ -49,7 +49,8 @@
     
     collectionArray=[NSMutableArray arrayWithCapacity:0];
 //    [collectionArray addObject:@[@"Laundry",@"Dryer",@"Price",@"Quality",@"Use Process",@"Others"]];
-    [collectionArray addObject:@[FGGetStringWithKeyFromTable(@"Laundry", @"Language"),FGGetStringWithKeyFromTable(@"Dryer", @"Language"),FGGetStringWithKeyFromTable(@"Price", @"Language"),FGGetStringWithKeyFromTable(@"Quality", @"Language"),FGGetStringWithKeyFromTable(@"Use Process", @"Language"),FGGetStringWithKeyFromTable(@"Others", @"Language")]];
+    [collectionArray addObject:@[FGGetStringWithKeyFromTable(@"Laundry", @"Language"),FGGetStringWithKeyFromTable(@"Dryer", @"Language"),FGGetStringWithKeyFromTable(@"Price", @"Language"),FGGetStringWithKeyFromTable(@"Ironing", @"Language"),FGGetStringWithKeyFromTable(@"Quality", @"Language"),FGGetStringWithKeyFromTable(@"Use Process", @"Language"),FGGetStringWithKeyFromTable(@"Others", @"Language")]];
+//    [collectionArray addObject:@[FGGetStringWithKeyFromTable(@"LAUNDRY", @"Language"),FGGetStringWithKeyFromTable(@"DRY", @"Language"),FGGetStringWithKeyFromTable(@"PRICE", @"Language"),FGGetStringWithKeyFromTable(@"IRONING", @"Language"),FGGetStringWithKeyFromTable(@"QUALITY", @"Language"),FGGetStringWithKeyFromTable(@"USE PROCESS", @"Language"),FGGetStringWithKeyFromTable(@"OTHERS", @"Language")]];
     [self.Amount_label setText:FGGetStringWithKeyFromTable(@"Select an option", @"Language")];
     [self.Submit_btn setTitle:FGGetStringWithKeyFromTable(@"Submit", @"Language") forState:(UIControlStateNormal)];
     NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
@@ -61,7 +62,7 @@
     self.feedback_textView.layer.borderColor = [UIColor colorWithRed:225/255.0 green:229/255.0 blue:230/255.0 alpha:1].CGColor;//设置边框颜色
     self.feedback_textView.layer.borderWidth = 0.8f;//设置边框颜色
     self.feedback_textView.zw_placeHolder = FGGetStringWithKeyFromTable(@"Add a comment", @"Language");
-    self.FKtype = @"Laundry";
+    self.FKtype=@"LAUNDRY";
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
     
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
@@ -71,6 +72,7 @@
     
     [self addtextPhone];
     self.feedback_textView.backgroundColor = [UIColor whiteColor];
+    self.feedback_textView.delegate=self;
     //    设置点击任何其他位置 键盘回收
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapBG:)];
     tapGesture.delegate=self;
@@ -184,12 +186,14 @@
     // 设置第一个cell和最后一个cell,与父控件之间的间距
 //    flowLayout.sectionInset = UIEdgeInsetsMake(0, 12*autoSizeScaleX, 0, 12*autoSizeScaleX);
     flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    if(self.view.frame.size.width==375.000000&& self.view.frame.size.height==812.000000)
+    NSInteger HG=((NSArray*)collectionArray[0]).count;
+    int count = (int)((HG%3)==0?(HG/3):((HG/3)+1));
+    if(self.view.frame.size.width>=375.000000&& self.view.frame.size.height>=812.000000)
     {
-        self.collectionView.frame=CGRectMake(0, self.Amount_label.bottom+10, SCREEN_WIDTH, 140);
+        self.collectionView.frame=CGRectMake(16, self.Amount_label.bottom+10, SCREEN_WIDTH-32, 70*count);
     }else
     {
-        self.collectionView.frame=CGRectMake(0, self.Amount_label.bottom+10, SCREEN_WIDTH, 140);
+        self.collectionView.frame=CGRectMake(16, self.Amount_label.bottom+10, SCREEN_WIDTH-32, 70*count);
     }
     
     self.collectionView.collectionViewLayout=flowLayout;
@@ -205,6 +209,8 @@
     NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
     [self.collectionView selectItemAtIndexPath:selectedIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     [self.collectionView registerNib:[UINib nibWithNibName:@"TopCollectionViewCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:CollectionViewCellID];
+    self.feedback_textView.frame=CGRectMake(16, self.collectionView.bottom, self.collectionView.width, 130);
+    self.Submit_btn.frame=CGRectMake(16, self.feedback_textView.bottom+10, self.collectionView.width, 50);
 }
 
 
@@ -212,13 +218,21 @@
 //    [self addtextView_view];
     
     ///最新屏蔽 5.12
-//    if(self.loginName!=nil && self.FKtype!=nil && self.feedback_textView.text!=nil)
-//    {
-//        self.FKcontent=self.feedback_textView.text;
-//        [self postUpdateFK];
-//    }
-   [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"The function is under development, so stay tuned!", @"Language") andDelay:2.0];
+    if( self.FKtype!=nil && self.feedback_textView.text!=nil)
+    {
+        
+        if ([self isContainsTwoEmoji:self.feedback_textView.text] == YES) {
+
+            [HudViewFZ showMessageTitle:@"Emoji input is not supported" andDelay:1.5];
+
+        }else{
+            self.FKcontent=self.feedback_textView.text;
+            [self postUpdateFK];
+        }
+    }
+//   [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"The function is under development, so stay tuned!", @"Language") andDelay:2.0];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -289,8 +303,31 @@
     for (int i=0; i<arr.count; i++) {
         NSInteger selectedIndex = i;//设置默认选中为第几个
         NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
+        NSString * str = arr[indexPath.row];
         
-        self.FKtype = arr[indexPath.row];
+        if([str isEqualToString:FGGetStringWithKeyFromTable(@"Laundry", @"Language")])
+        {
+            self.FKtype=@"LAUNDRY";
+        }else if([str isEqualToString:FGGetStringWithKeyFromTable(@"Dryer", @"Language")])
+            {
+                self.FKtype=@"DRY";
+            }else if([str isEqualToString:FGGetStringWithKeyFromTable(@"Price", @"Language")])
+            {
+                self.FKtype=@"PRICE";
+            }else if([str isEqualToString:FGGetStringWithKeyFromTable(@"Ironing", @"Language")])
+            {
+                self.FKtype=@"IRONING";
+            }else if([str isEqualToString:FGGetStringWithKeyFromTable(@"Quality", @"Language")])
+            {
+                self.FKtype=@"QUALITY";
+            }else if([str isEqualToString:FGGetStringWithKeyFromTable(@"Use Process", @"Language")])
+            {
+                self.FKtype=@"USE_PROCESS";
+            }else if([str isEqualToString:FGGetStringWithKeyFromTable(@"Others", @"Language")])
+            {
+                self.FKtype=@"OTHERS";
+            }
+//        self.FKtype = arr[indexPath.row];
         TopCollectionViewCell * cell=(TopCollectionViewCell *)[collectionView cellForItemAtIndexPath:selectedIndexPath];
         if(indexPath.row==i)
         {
@@ -477,36 +514,32 @@
     [self pushView];
 }
 
+//
 
 -(void)postUpdateFK
 {
     
     [HudViewFZ labelExample:self.view];
-    NSDictionary * dict=@{@"loginName":self.loginName,
-                          @"type":self.FKtype,
-                          @"content":self.FKcontent,
+    NSDictionary * dict=@{
+                          @"feedbackType":self.FKtype,
+                          @"comment":self.FKcontent,
                           };
     NSLog(@"dict=== %@",dict);
     
-    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,PostCreateFeedback] parameters:dict progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_FeedbackCreate] parameters:dict progress:^(id progress) {
         NSLog(@"请求成功 = %@",progress);
     }Success:^(NSInteger statusCode,id responseObject) {
         [HudViewFZ HiddenHud];
         NSLog(@"responseObject = %@",responseObject);
         NSDictionary * dict = (NSDictionary *)responseObject;
-        NSString * strTime = [dict objectForKey:@"create_time"];
+        NSString * feedbackType = [dict objectForKey:@"feedbackType"];
         
         if(statusCode==200)
         {
-           if(strTime!=nil)
+            if([self.FKtype isEqualToString:feedbackType])
            {
-               [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Feedback successful!", @"Language") andDelay:2.5];
-               for (UIViewController *controller in self.navigationController.viewControllers) {
-                   if ([controller isKindOfClass:[MyAccountViewController class]]) {
-                       
-                       [self.navigationController popViewControllerAnimated:NO];
-                   }
-               }
+               [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Feedback successful!", @"Language") andDelay:2.0];
+               [self blackController];
            }else
            {
                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
@@ -518,10 +551,169 @@
         }
     } failure:^(NSInteger statusCode, NSError *error) {
         NSLog(@"error = %@",error);
-        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+        [HudViewFZ showMessageTitle:[self dictMessageStr:error] andDelay:2.0];
         [HudViewFZ HiddenHud];
     }];
 }
+-(NSString *)dictMessageStr:(NSError *)error
+{
+    NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+    if(responseData!=nil)
+    {
+    NSDictionary *dictFromData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
+    NSString * message = [dictFromData valueForKey:@"message"];
+        
+    if(message==nil)
+    {
+        return @"Error";
+    }
+    return message;
+    }else
+    {
+        return @"Error";
+    }
+}
+
+
+-(void)blackController
+{
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.9/*延迟执行时间*/ * NSEC_PER_SEC));
+    
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        for (UIViewController *controller in self.navigationController.viewControllers) {
+            if ([controller isKindOfClass:[EwashMyViewController class]]) {
+                
+                [self.navigationController popViewControllerAnimated:NO];
+            }
+        }
+    });
+}
+
+#pragma mark -------   TextViewdelegate  ------
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    if ([text isEqualToString:@"\n"]){ //判断输入的字是否是回车，即按下return
+
+        [self.feedback_textView resignFirstResponder];
+
+        return NO;
+
+    }
+
+    
+
+    if (textView.text.length + text.length > 500) {
+
+        NSString *allText = [NSString stringWithFormat:@"%@%@",textView.text,text];
+
+        textView.text = [allText substringToIndex:500];
+
+        [HudViewFZ showMessageTitle:@"Enter no more than 500 words" andDelay:1.5];
+
+        return NO;
+
+    }
+
+    return YES;
+    
+}
+//-(void)textViewDidChange:(UITextView *)textView
+//{
+//    NSRange textRange = [textView selectedRange];
+//    [textView setText:[self disable_emoji:[textView text]]];
+//    [textView setSelectedRange:textRange];
+//}
+//禁止输入表情
+- (NSString *)disable_emoji:(NSString *)text
+{
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"[^\\u0020-\\u007E\\u00A0-\\u00BE\\u2E80-\\uA4CF\\uF900-\\uFAFF\\uFE30-\\uFE4F\\uFF00-\\uFFEF\\u0080-\\u009F\\u2000-\\u201f\r\n]" options:NSRegularExpressionCaseInsensitive error:nil];
+    NSString *modifiedString = [regex stringByReplacingMatchesInString:text options:0 range:NSMakeRange(0, [text length]) withTemplate:@""];
+    return modifiedString;
+}
+//判断是否是表情字符
+- (BOOL)isContainsTwoEmoji:(NSString *)string {
+    __block BOOL isEomji = NO;
+    [string enumerateSubstringsInRange:NSMakeRange(0, [string length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock:
+     ^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
+         const unichar hs = [substring characterAtIndex:0];
+         //         NSLog(@"hs++++++++%04x",hs);
+         if (0xd800 <= hs && hs <= 0xdbff) {
+             if (substring.length > 1) {
+                 const unichar ls = [substring characterAtIndex:1];
+                 const int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
+                 if (0x1d000 <= uc && uc <= 0x1f77f)
+                 {
+                     isEomji = YES;
+                 }
+                 //                 NSLog(@"uc++++++++%04x",uc);
+             }
+         } else if (substring.length > 1) {
+             const unichar ls = [substring characterAtIndex:1];
+             if (ls == 0x20e3|| ls ==0xfe0f) {
+                 isEomji = YES;
+             }
+             //             NSLog(@"ls++++++++%04x",ls);
+         } else {
+             if (0x2100 <= hs && hs <= 0x27ff && hs != 0x263b) {
+                 isEomji = YES;
+             } else if (0x2B05 <= hs && hs <= 0x2b07) {
+                 isEomji = YES;
+             } else if (0x2934 <= hs && hs <= 0x2935) {
+                 isEomji = YES;
+             } else if (0x3297 <= hs && hs <= 0x3299) {
+                 isEomji = YES;
+             } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030 || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b || hs == 0x2b50|| hs == 0x231a ) {
+                 isEomji = YES;
+             }
+         }
+     }];
+    return isEomji;
+}
+
+
+//-(void)postUpdateFK
+//{
+//
+//    [HudViewFZ labelExample:self.view];
+//    NSDictionary * dict=@{@"loginName":self.loginName,
+//                          @"type":self.FKtype,
+//                          @"content":self.FKcontent,
+//                          };
+//    NSLog(@"dict=== %@",dict);
+//
+//    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,PostCreateFeedback] parameters:dict progress:^(id progress) {
+//        NSLog(@"请求成功 = %@",progress);
+//    }Success:^(NSInteger statusCode,id responseObject) {
+//        [HudViewFZ HiddenHud];
+//        NSLog(@"responseObject = %@",responseObject);
+//        NSDictionary * dict = (NSDictionary *)responseObject;
+//        NSString * strTime = [dict objectForKey:@"create_time"];
+//
+//        if(statusCode==200)
+//        {
+//           if(strTime!=nil)
+//           {
+//               [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Feedback successful!", @"Language") andDelay:2.5];
+//               for (UIViewController *controller in self.navigationController.viewControllers) {
+//                   if ([controller isKindOfClass:[MyAccountViewController class]]) {
+//
+//                       [self.navigationController popViewControllerAnimated:NO];
+//                   }
+//               }
+//           }else
+//           {
+//               [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+//           }
+//
+//        }else
+//        {
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+//        }
+//    } failure:^(NSInteger statusCode, NSError *error) {
+//        NSLog(@"error = %@",error);
+//        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Post error", @"Language") andDelay:2.0];
+//        [HudViewFZ HiddenHud];
+//    }];
+//}
 
 
 

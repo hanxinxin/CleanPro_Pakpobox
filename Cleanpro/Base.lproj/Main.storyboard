@@ -2544,12 +2544,10 @@ to verify your identity</string>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7S1-oX-9zb">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7S1-oX-9zb">
                                 <rect key="frame" x="16" y="378" width="343" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.10017182677984238" green="0.58586043119430542" blue="0.89747458696365356" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="Agy-OX-aP4"/>
-                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Submit">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2560,12 +2558,10 @@ to verify your identity</string>
                                     <action selector="pay_touch:" destination="wmk-GV-tRq" eventType="touchUpInside" id="qUi-Mw-OJS"/>
                                 </connections>
                             </button>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="i3c-Fc-Tq5">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="i3c-Fc-Tq5">
                                 <rect key="frame" x="16" y="85" width="343" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="2VH-bS-Rpo"/>
-                                </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="0yF-2N-jb7">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -2574,12 +2570,10 @@ to verify your identity</string>
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sft-ls-f98">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sft-ls-f98">
                                 <rect key="frame" x="16" y="221" width="343" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="Pbc-sv-uvy"/>
-                                </constraints>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -2605,22 +2599,13 @@ to verify your identity</string>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="7S1-oX-9zb" firstAttribute="trailing" secondItem="iDo-Cc-Af5" secondAttribute="trailingMargin" id="24f-Jp-nGA"/>
                             <constraint firstItem="9a5-BW-gIf" firstAttribute="top" secondItem="wYH-h7-ZJf" secondAttribute="bottom" constant="37" id="2xV-NH-VWg"/>
-                            <constraint firstItem="i3c-Fc-Tq5" firstAttribute="trailing" secondItem="iDo-Cc-Af5" secondAttribute="trailingMargin" id="Dmr-x1-dGH"/>
-                            <constraint firstItem="7S1-oX-9zb" firstAttribute="top" secondItem="Sft-ls-f98" secondAttribute="bottom" constant="29" id="IbT-pY-Azz"/>
                             <constraint firstItem="9a5-BW-gIf" firstAttribute="leading" secondItem="iDo-Cc-Af5" secondAttribute="leadingMargin" id="Nlk-9w-FhS"/>
-                            <constraint firstItem="i3c-Fc-Tq5" firstAttribute="top" secondItem="9a5-BW-gIf" secondAttribute="bottom" constant="15" id="QQC-hK-4jP"/>
-                            <constraint firstItem="i3c-Fc-Tq5" firstAttribute="leading" secondItem="iDo-Cc-Af5" secondAttribute="leadingMargin" id="Sa5-ux-4ys"/>
                             <constraint firstItem="Dwl-zz-BkI" firstAttribute="top" secondItem="AaS-d0-eLZ" secondAttribute="bottom" constant="20" id="W20-5T-fRy"/>
-                            <constraint firstItem="7S1-oX-9zb" firstAttribute="leading" secondItem="iDo-Cc-Af5" secondAttribute="leadingMargin" id="ZKZ-3O-OSw"/>
                             <constraint firstItem="7o6-aL-4AC" firstAttribute="leading" secondItem="iDo-Cc-Af5" secondAttribute="leadingMargin" id="bFE-kx-wc7"/>
                             <constraint firstItem="7o6-aL-4AC" firstAttribute="trailing" secondItem="iDo-Cc-Af5" secondAttribute="trailingMargin" id="eE7-nj-YgR"/>
                             <constraint firstItem="9a5-BW-gIf" firstAttribute="trailing" secondItem="iDo-Cc-Af5" secondAttribute="trailingMargin" id="eGr-BO-Cnf"/>
-                            <constraint firstItem="Sft-ls-f98" firstAttribute="leading" secondItem="iDo-Cc-Af5" secondAttribute="leadingMargin" id="jdo-rj-S0i"/>
                             <constraint firstItem="Dwl-zz-BkI" firstAttribute="top" secondItem="7o6-aL-4AC" secondAttribute="bottom" constant="20" id="jvG-mu-jPP"/>
-                            <constraint firstItem="Sft-ls-f98" firstAttribute="top" secondItem="i3c-Fc-Tq5" secondAttribute="bottom" constant="8" id="nzB-FE-vq7"/>
-                            <constraint firstItem="Sft-ls-f98" firstAttribute="trailing" secondItem="iDo-Cc-Af5" secondAttribute="trailingMargin" id="pl5-gJ-fpB"/>
                             <constraint firstItem="AaS-d0-eLZ" firstAttribute="leading" secondItem="iDo-Cc-Af5" secondAttribute="leadingMargin" id="rDj-Eg-mpl"/>
                             <constraint firstItem="AaS-d0-eLZ" firstAttribute="trailing" secondItem="iDo-Cc-Af5" secondAttribute="trailingMargin" id="xSd-Bs-LBq"/>
                         </constraints>

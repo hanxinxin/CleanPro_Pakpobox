@@ -83,5 +83,7 @@
 
 
 ///版本更新获取
-#define E_GetloadAppVersion @"/api/member/v1/loadAppVersion"  ///获取版本的 
+#define E_GetloadAppVersion @"/api/member/v1/loadAppVersion"  ///获取版本的
+
+#define E_FeedbackCreate @"/api/feedback/v1/create"
 #endif /* EWashHeader_h */

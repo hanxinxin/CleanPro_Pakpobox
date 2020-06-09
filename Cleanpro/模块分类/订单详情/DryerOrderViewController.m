@@ -465,7 +465,6 @@
     NewOrderList * mode=arr_title[indexPath.section];
         if([mode.siteType isEqualToString:@"DRYER"])
             {
-        
                 [cell.typeButton setImage:[UIImage imageNamed:@"icon_dryer2"] forState:(UIControlStateNormal)];
                 cell.Order_type.text=[NSString stringWithFormat:@"%@",FGGetStringWithKeyFromTable(@"Dryer", @"Language")];
             }else if([mode.siteType isEqualToString:@"WASHER"])

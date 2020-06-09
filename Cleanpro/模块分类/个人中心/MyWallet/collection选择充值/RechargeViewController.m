@@ -615,15 +615,6 @@
 ////    vc.order_c=self.order_c;
 //    [self.navigationController pushViewController:vc animated:YES];
     UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:@"Tisp" message:@"Top-up success" preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    /*
-     typedef NS_ENUM(NSInteger, UIAlertActionStyle) {
-     UIAlertActionStyleDefault = 0,
-     UIAlertActionStyleCancel,         取消按钮
-     UIAlertActionStyleDestructive     破坏性按钮，比如：“删除”，字体颜色是红色的
-     } NS_ENUM_AVAILABLE_IOS(8_0);
-     
-     */
     // 创建action，这里action1只是方便编写，以后再编程的过程中还是以命名规范为主
     UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 //        NSLog(@"点击了按钮1，进入按钮1的事件");

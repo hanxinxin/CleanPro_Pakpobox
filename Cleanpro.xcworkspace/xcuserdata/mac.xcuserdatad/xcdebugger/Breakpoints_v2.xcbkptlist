@@ -455,22 +455,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "7EA64702-1266-4275-ACD4-6DBB47461542"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Cleanpro/&#x6a21;&#x5757;&#x5206;&#x7c7b;/&#x8ba2;&#x5355;&#x8be6;&#x60c5;/OrdersViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141"
-            landmarkName = "-addTableViewOrders"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "2733C16A-82B3-4F4B-BA18-EF3B6CF6094E"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"

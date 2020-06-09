@@ -146,7 +146,7 @@
         self.temperatureLabel.text=[NSString stringWithFormat:@"%@",self.Newmode.cleanProItemName];
     }else if([self.Newmode.siteType isEqualToString:@"IRONING"])
         {
-            [self.BtnType_image setImage:[UIImage imageNamed:@"icon_dryer2"] forState:(UIControlStateNormal)];
+            [self.BtnType_image setImage:[UIImage imageNamed:@"picyudou"] forState:(UIControlStateNormal)];
             [self.Temperature setText:[NSString stringWithFormat:@"%@ :",FGGetStringWithKeyFromTable(@"Duration", @"Language")]];
     //        self.temperatureLabel.text=[NSString stringWithFormat:@"%@m",[[self Json_returnDict:self.mode.goods_info]objectForKey:@"time"]];
             self.temperatureLabel.text=[NSString stringWithFormat:@"%@m",self.Newmode.cleanProItemName];

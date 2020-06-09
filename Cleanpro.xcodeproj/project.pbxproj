@@ -111,7 +111,7 @@
 		044805202420D0340097EDBE /* SelectHeaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0448051F2420D0340097EDBE /* SelectHeaderTableViewCell.m */; };
 		044805222420D0450097EDBE /* SelectHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 044805212420D0450097EDBE /* SelectHeaderTableViewCell.xib */; };
 		044EAB9921E3027F00E5C7CF /* NewHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 044EAB9821E3027F00E5C7CF /* NewHomeViewController.m */; };
-		0450D4D5247F6B160039E763 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0450D4D4247F6B160039E763 /* GoogleService-Info.plist */; };
+		04521307248F93660061215E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04521306248F93660061215E /* GoogleService-Info.plist */; };
 		045483C22410E17000560A27 /* openssl_wrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 045483BA2410E16F00560A27 /* openssl_wrapper.m */; };
 		045483C32410E17000560A27 /* APRSASigner.m in Sources */ = {isa = PBXBuildFile; fileRef = 045483BD2410E16F00560A27 /* APRSASigner.m */; };
 		045483C42410E17000560A27 /* APAuthInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 045483BE2410E17000560A27 /* APAuthInfo.m */; };
@@ -1224,7 +1224,7 @@
 		044805212420D0450097EDBE /* SelectHeaderTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		044EAB9721E3027F00E5C7CF /* NewHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewHomeViewController.h; sourceTree = "<group>"; };
 		044EAB9821E3027F00E5C7CF /* NewHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewHomeViewController.m; sourceTree = "<group>"; };
-		0450D4D4247F6B160039E763 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		04521306248F93660061215E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		045483BA2410E16F00560A27 /* openssl_wrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = openssl_wrapper.m; sourceTree = "<group>"; };
 		045483BB2410E16F00560A27 /* APRSASigner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APRSASigner.h; sourceTree = "<group>"; };
 		045483BC2410E16F00560A27 /* openssl_wrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = openssl_wrapper.h; sourceTree = "<group>"; };
@@ -4858,7 +4858,7 @@
 		04C4D4D321E7481D0097B3BD /* google推送venolinkAndPakpobox */ = {
 			isa = PBXGroup;
 			children = (
-				0450D4D4247F6B160039E763 /* GoogleService-Info.plist */,
+				04521306248F93660061215E /* GoogleService-Info.plist */,
 			);
 			path = "google推送venolinkAndPakpobox";
 			sourceTree = "<group>";
@@ -5934,7 +5934,6 @@
 				04B4C9E02435CE6F00B69DF2 /* icon_zt09.png in Resources */,
 				04B181B22487529E0022936F /* picyudou@3x.png in Resources */,
 				04B10C8521F0857C001A9E8B /* home_Coupons@2x.png in Resources */,
-				0450D4D5247F6B160039E763 /* GoogleService-Info.plist in Resources */,
 				04782CD220C54F5700252F70 /* Assets.xcassets in Resources */,
 				044805222420D0450097EDBE /* SelectHeaderTableViewCell.xib in Resources */,
 				04480508241B5F610097EDBE /* PriceWashTableViewCell.xib in Resources */,
@@ -6118,6 +6117,7 @@
 				04B4C9D62435CE6F00B69DF2 /* icon_yonghu@3x.png in Resources */,
 				04B10C8121F084CD001A9E8B /* check-circle-fill@3x.png in Resources */,
 				04831BC121F80F51006EF335 /* plus_normal@3x.png in Resources */,
+				04521307248F93660061215E /* GoogleService-Info.plist in Resources */,
 				04480516241B789A0097EDBE /* icon_rightDown12@3x.png in Resources */,
 				04967726210FFC630080D920 /* nearby_box@2x.png in Resources */,
 				04B10C5521F08466001A9E8B /* wallet_recharge@3x.png in Resources */,
@@ -6973,9 +6973,9 @@
 				CODE_SIGN_ENTITLEMENTS = Cleanpro/Cleanpro.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = LUUCB5LGP5;
+				DEVELOPMENT_TEAM = F2BT7GJ582;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7029,7 +7029,7 @@
 					"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/lib",
 					"$(PROJECT_DIR)/Cleanpro/第三方库/微信PaySDK",
 				);
-				MARKETING_VERSION = 1.1.52_beta;
+				MARKETING_VERSION = 1.1.53;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",
@@ -7164,7 +7164,7 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pakpobox.Cleanpro.Once;
+				PRODUCT_BUNDLE_IDENTIFIER = com.venolink.Cleanpro.Once;
 				PRODUCT_NAME = Cleanpro;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = Cleanpro/Cleanpro_Bridging_Header.h;
@@ -7187,9 +7187,9 @@
 				CODE_SIGN_ENTITLEMENTS = Cleanpro/Cleanpro.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = LUUCB5LGP5;
+				DEVELOPMENT_TEAM = F2BT7GJ582;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7243,7 +7243,7 @@
 					"$(PROJECT_DIR)/Cleanpro/北欧蓝牙模块封装/OpenSSL-Universal/ios/lib",
 					"$(PROJECT_DIR)/Cleanpro/第三方库/微信PaySDK",
 				);
-				MARKETING_VERSION = 1.1.52_beta;
+				MARKETING_VERSION = 1.1.53;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",
@@ -7378,7 +7378,7 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pakpobox.Cleanpro.Once;
+				PRODUCT_BUNDLE_IDENTIFIER = com.venolink.Cleanpro.Once;
 				PRODUCT_NAME = Cleanpro;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = Cleanpro/Cleanpro_Bridging_Header.h;
