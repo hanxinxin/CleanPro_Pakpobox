@@ -215,6 +215,8 @@
                         if(![mode.payTime isEqual:[NSNull null]])
                         {
                         cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[self timeStampConversionNSString:mode.payTime]];
+                        }else{
+                            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[self getDateTime]];
                         }
                     }
                 }
@@ -233,6 +235,9 @@
         }else if(self.PaymentMethodStr==2)
         {
             cell.detailTextLabel.text=[NSString stringWithFormat:@"Online Pay"];
+        }else if(self.PaymentMethodStr==3)
+        {
+            cell.detailTextLabel.text=[NSString stringWithFormat:@"WALLET"];
         }
         
     }
@@ -259,6 +264,18 @@
     [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSString *dateStr = [formatter stringFromDate:date];
     return dateStr;
+}
+-(NSString *)getDateTime
+{
+    NSDate *date = [NSDate date];
+    //使用formatter格式化后的时间
+
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+
+    NSString *time_now = [formatter stringFromDate:date];
+    return time_now;
 }
 //行高
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

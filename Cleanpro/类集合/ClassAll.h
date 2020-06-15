@@ -194,4 +194,49 @@
 @property (nonatomic,strong)NSString * timeCreated;//
 @end
 
+@interface PastCardMode : NSObject
+@property (nonatomic,strong)NSNumber * count;
+@property (nonatomic,strong)NSString * creationTime;
+@property (nonatomic,strong)NSNumber * currentCost;
+@property (nonatomic,strong)NSNumber * dayInterval;
+@property (nonatomic,strong)NSNumber * deleteFlag;
+@property (nonatomic,strong)NSString * description1;
+@property (nonatomic,strong)NSString * enDescription;
+@property (nonatomic,strong)NSString * lastUpdatedTime;
+@property (nonatomic,strong)NSString * monthCardId;
+@property (nonatomic,strong)NSString * monthCardType;
+@property (nonatomic,strong)NSNumber * originalCost;
+@property (nonatomic,strong)NSNumber * timeInterval;
+@end
+@interface PastCardListMode : NSObject
+@property (nonatomic,strong)NSNumber * buyTime ;
+@property (nonatomic,strong)NSNumber * count ;
+@property (nonatomic,strong)NSNumber * currentCost;
+@property (nonatomic,strong)NSNumber * dayInterval;
+@property (nonatomic,strong)NSString * description1;
+@property (nonatomic,strong)NSString * enDescription;
+@property (nonatomic,strong)NSNumber * expireTime ;
+@property (nonatomic,strong)NSString * monthCardId ;
+@property (nonatomic,strong)NSString * monthCardType ;
+@property (nonatomic,strong)NSNumber * originalCost ;
+@property (nonatomic,strong)NSNumber * residueCount ;
+@property (nonatomic,strong)NSNumber * timeInterval ;
+@property (nonatomic,strong)NSNumber * useCurrentCost ;
+@end
 
+@interface PastCardInfoMonthCardLogMode : NSObject
+@property (nonatomic,strong)NSNumber *buyTime;
+@property (nonatomic,strong)NSNumber *count;
+@property (nonatomic,strong)NSNumber *currentCost;
+@property (nonatomic,strong)NSNumber *deleteFlags;
+@property (nonatomic,strong)NSNumber *dayInterval;
+@property (nonatomic,strong)NSString * description1;
+@property (nonatomic,strong)NSString * enDescription;
+@property (nonatomic,strong)NSNumber *expireTime;
+@property (nonatomic,strong)NSString *monthCardId ;
+@property (nonatomic,strong)NSString * monthCardType;
+@property (nonatomic,strong)NSNumber *originalCost ;
+@property (nonatomic,strong)NSNumber *residueCount ;
+@property (nonatomic,strong)NSString *timeInterval ;
+@property (nonatomic,strong)NSNumber *useCurrentCost ;
+@end

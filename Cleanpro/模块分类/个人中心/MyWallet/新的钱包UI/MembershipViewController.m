@@ -13,11 +13,13 @@
 #import "MyAccountViewController.h"
 #import "NewHomeViewController.h"
 #import "EwashMyViewController.h"
+#import "PastCradViewController.h"
 #define tableID @"ReloadTableViewCell"
 #define tableID1 @"BalanceTableViewCell"
 @interface MembershipViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     ReloadTableViewCell *cellReload;
+    ReloadTableViewCell *cellReload1;
     BalanceTableViewCell *cellBalance;
 }
 @property (nonatomic , strong)UITableView * tableView;
@@ -261,7 +263,7 @@
 //4、设置组数
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
    
-    return 2;
+    return 3;
 }
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -282,16 +284,44 @@
            self->cellReload.ReloadBtn.layer.cornerRadius= 15;
            self->cellReload.ReloadBtn.layer.borderColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
            self->cellReload.ReloadBtn.layer.borderWidth = 1;
+           [self->cellReload1.ReloadBtn setTitle:@"Reload" forState:(UIControlStateNormal)];
            UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self->cellReload.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(4, 4)];
            CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
            maskLayer.frame = self->cellReload.bounds;
            maskLayer.path = maskPath.CGPath;
            self->cellReload.layer.mask = maskLayer;
-           
        });
        cellReload.layer.cornerRadius=10;
        return cellReload;
    }else if(indexPath.section==1)
+   {
+          cellReload1 = (ReloadTableViewCell *)[tableView dequeueReusableCellWithIdentifier:tableID];
+          if (cellReload1 == nil) {
+              cellReload1= (ReloadTableViewCell *)[[[NSBundle  mainBundle]  loadNibNamed:@"ReloadTableViewCell" owner:self options:nil]  lastObject];
+          }
+          
+          //cell选中效果
+          cellReload1.selectionStyle = UITableViewCellSelectionStyleNone;
+          cellReload1.centerTitle.text=@"Member monthly card";
+       cellReload1.imageLeft.image=[UIImage imageNamed:@"icon_card_big"];
+          dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
+          
+          dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+   //           self->cellReload.layer.cornerRadius=10;
+              self->cellReload1.ReloadBtn.layer.cornerRadius= 15;
+              self->cellReload1.ReloadBtn.layer.borderColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
+              self->cellReload1.ReloadBtn.layer.borderWidth = 1;
+              [self->cellReload1.ReloadBtn setTitle:@"Go buy" forState:(UIControlStateNormal)];
+              UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self->cellReload1.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(4, 4)];
+              CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+              maskLayer.frame = self->cellReload1.bounds;
+              maskLayer.path = maskPath.CGPath;
+              self->cellReload1.layer.mask = maskLayer;
+              
+          });
+          cellReload1.layer.cornerRadius=10;
+          return cellReload1;
+      }else if(indexPath.section==2)
    {
        cellBalance = (BalanceTableViewCell *)[tableView dequeueReusableCellWithIdentifier:tableID1];
        if (cellBalance == nil) {
@@ -350,12 +380,19 @@
 {
     if(indexPath.section==0)
     {
-//        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        RechargeViewController *vc=[main instantiateViewControllerWithIdentifier:@"RechargeViewController"];
-//        vc.hidesBottomBarWhenPushed = YES;
-//        [self.navigationController pushViewController:vc animated:YES];
-        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Coming Soon!", @"Language") andDelay:2.0];
-    }
+        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        RechargeViewController *vc=[main instantiateViewControllerWithIdentifier:@"RechargeViewController"];
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+//        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Coming Soon!", @"Language") andDelay:2.0];
+    }else if(indexPath.section==1)
+        {
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            PastCradViewController *vc=[main instantiateViewControllerWithIdentifier:@"PastCradViewController"];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+    //        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Coming Soon!", @"Language") andDelay:2.0];
+        }
     
 }
 

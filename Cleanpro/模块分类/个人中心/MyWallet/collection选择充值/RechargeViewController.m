@@ -84,7 +84,7 @@
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:[UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
         [self get_pay_chongzhiyouhui];
@@ -105,7 +105,7 @@
 
 -(void)get_pay_chongzhiyouhui
 {
-    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,Get_pay_jine] parameters:nil progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_GetRechargeList] parameters:nil progress:^(id progress) {
         
     } success:^(id responseObject) {
         NSLog(@"responseObject ORder=  %@",responseObject);
@@ -219,18 +219,18 @@
 - (IBAction)pay_touch:(id)sender {
     
     ///5.21日屏蔽
-//    NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
-//    SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-//    [self post_pay_chongzhi_touch:self.payNumber member_id:ModeUser.yonghuID];
-    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Stay tuned", @"Language") andDelay:1.0];
+    NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+    SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    [self post_pay_chongzhi_touch:self.payNumber member_id:ModeUser.yonghuID login_name:ModeUser.loginName];
+//    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Stay tuned", @"Language") andDelay:1.0];
     
     
-////    ///// 用于测试PayPal支付页面
-////    NSString *clientToken = @"CLIENT_TOKEN_FROM_SERVER";
-////    [self showDropIn:clientToken];
+//    ///// 用于测试PayPal支付页面
+//    NSString *clientToken = @"CLIENT_TOKEN_FROM_SERVER";
+//    [self showDropIn:clientToken];
 }
 
--(void)post_pay_chongzhi_touch:(NSString*)amount member_id:(NSString*)member_id
+-(void)post_pay_chongzhi_touch:(NSString*)amount member_id:(NSString*)member_id login_name:(NSString *)login_name
 {
     [HudViewFZ labelExample:self.view];
     NSDictionary * dict=@{@"member_id":member_id,//会员ID
@@ -239,10 +239,11 @@
                           @"trade_type":@"RECHARGE",//(固定）RECHARGE：充值
                           @"pay_platform":@"IPAY88",//支付平台, IPAY88：IPAY88
                           @"pay_method":@"PAGE",//支付方式, (固定)PAGE
+                          @"login_name":login_name,
                           };
     
     NSLog(@"dict=== %@",dict);
-    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,Post_pay_chongzhi] parameters:dict progress:^(id progress) {
+    [[AFNetWrokingAssistant shareAssistant] PostURL_Token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_Ipay88Url] parameters:dict progress:^(id progress) {
          NSLog(@"请求成功 = %@",progress);
     } Success:^(NSInteger statusCode, id responseObject) {
         [HudViewFZ HiddenHud];
@@ -279,31 +280,31 @@
 
 -(void)push_IPay:(NSString*)RefNo UrlStr:(NSString *)Url Remark:(NSString *)Remark Amount:(NSString *)Amount
 {
-    self.paymentSdk=nil;
-    IPaypayment=nil;
-    self.paymentSdk = [[Ipay alloc] init];
-    self.paymentSdk.delegate = self;
-    IPaypayment = [[IpayPayment alloc] init];
-    [IPaypayment setPaymentId:@""];
-    [IPaypayment setMerchantKey:@"KqeL5dOvy5"];
-    [IPaypayment setMerchantCode:@"M13405"];
-    [IPaypayment setRefNo:RefNo];
-//    [IPaypayment setAmount:@"1.0"]; /////暂时先填写为1元
-    [IPaypayment setAmount:Amount]; /////暂时先填写为1元
-    [IPaypayment setCurrency:@"MYR"];
-    [IPaypayment setProdDesc:@"Recharge"];
-    [IPaypayment setUserName:@"John Woo"];
-    [IPaypayment setUserEmail:@"johnwoo@yahoo.com"];
-    [IPaypayment setUserContact:@"0123456789"];
-    [IPaypayment setRemark:Remark];
+        self.paymentSdk=nil;
+        IPaypayment=nil;
+        self.paymentSdk = [[Ipay alloc] init];
+        self.paymentSdk.delegate = self;
+        IPaypayment = [[IpayPayment alloc] init];
+        [IPaypayment setPaymentId:@""];
+        [IPaypayment setMerchantKey:@"KqeL5dOvy5"];
+        [IPaypayment setMerchantCode:@"M13405"];
+        [IPaypayment setRefNo:RefNo];
+        [IPaypayment setAmount:@"1.0"];/////暂时定为1元
+    //    [IPaypayment setAmount:Amount];/////暂时定为1元
+        [IPaypayment setCurrency:@"MYR"];
+        [IPaypayment setProdDesc:[NSString stringWithFormat:@"%@",@"Payment for ORD1188"]];
+        [IPaypayment setUserName:@"John Woo"];
+        [IPaypayment setUserEmail:@"johnwoo@yahoo.com"];
+        [IPaypayment setUserContact:@"0123456789"];
+        [IPaypayment setRemark:Remark];
     //    [IPaypayment setRemark:@"ORD11881"];
-    [IPaypayment setLang:@"ISO-8859-1"];
-    [IPaypayment setCountry:@"MY"];
-    [IPaypayment setBackendPostURL:Url];
+        [IPaypayment setLang:@"ISO-8859-1"];
+        [IPaypayment setCountry:@"MY"];
+        [IPaypayment setBackendPostURL:Url];
+    
     self.paymentView = [self.paymentSdk checkout:IPaypayment];
     self.paymentView.frame = self.view.bounds;
     [self.view addSubview:self.paymentView];
-    
 }
 #pragma mark ------- Ipay 代理
 //付款成功
@@ -370,18 +371,18 @@
 //    cell_coll.down_label.textAlignment=NSTextAlignmentCenter;
     if(mode.giveAmount!=nil && mode.description1 !=nil)
     {
-//        cell_coll.down_label.attributedText=[self settitleLabel:cell_coll.down_label topText:[self ReplacingStr:mode.name] downText:[NSString stringWithFormat:@"%.f",[mode.amount doubleValue]+[mode.giveAmount doubleValue]] tagG:0];
-        cell_coll.down_label.attributedText=[self settitleLabel:cell_coll.down_label topText:[self ReplacingStr:mode.name] downText:@"" tagG:0];
+//        cell_coll.down_label.attributedText=[self settitleLabel:cell_coll.down_label topText:[self ReplacingStr:mode.name] downText:[NSString stringWithFormat:@"%@%.f",mode.description1,[mode.amount doubleValue]+[mode.giveAmount doubleValue]] tagG:0];
+        cell_coll.down_label.attributedText=[self settitleLabel:cell_coll.down_label topText:[self ReplacingStr:mode.name] downText:mode.description1 tagG:0];
     }else
     {
 //        cell_coll.down_label.attributedText=[self settitleLabel:cell_coll.down_label topText:[self ReplacingStr:mode.name] downText:[NSString stringWithFormat:@""] tagG:0];
-        cell_coll.down_label.attributedText=[self settitleLabel:cell_coll.down_label topText:[self ReplacingStr:mode.name] downText:@"" tagG:0];
+        cell_coll.down_label.attributedText=[self settitleLabel:cell_coll.down_label topText:[self ReplacingStr:mode.name] downText:mode.description1 tagG:0];
     }
     if(indexPath.row==moren_cell)
     {
 //        [cell_coll.title_lable setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 //        cell_coll.down_label.attributedText=[self settitleLabel:cell_coll.down_label topText:[self ReplacingStr:mode.name] downText:[NSString stringWithFormat:@"%.f",[mode.amount doubleValue]+[mode.giveAmount doubleValue]] tagG:1];
-        cell_coll.down_label.attributedText=[self settitleLabel:cell_coll.down_label topText:[self ReplacingStr:mode.name] downText:@"" tagG:1];
+        cell_coll.down_label.attributedText=[self settitleLabel:cell_coll.down_label topText:[self ReplacingStr:mode.name] downText:mode.description1 tagG:1];
     }
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     
@@ -463,12 +464,12 @@
             payChongzhiListMode * mode = arr[indexPath.row];
             self.payNumber = mode.amount;
 //             cell.down_label.attributedText=[self settitleLabel:cell.down_label topText:[self ReplacingStr:mode.name] downText:[NSString stringWithFormat:@"%.f",[mode.amount doubleValue]+[mode.giveAmount doubleValue]] tagG:1];
-            cell.down_label.attributedText=[self settitleLabel:cell.down_label topText:[self ReplacingStr:mode.name] downText:@"" tagG:1];
+            cell.down_label.attributedText=[self settitleLabel:cell.down_label topText:[self ReplacingStr:mode.name] downText:mode.description1 tagG:1];
         }else
         {
             payChongzhiListMode * mode = arr[i];
 //            cell.down_label.attributedText=[self settitleLabel:cell.down_label topText:[self ReplacingStr:mode.name] downText:[NSString stringWithFormat:@"%.f",[mode.amount doubleValue]+[mode.giveAmount doubleValue]] tagG:0];
-            cell.down_label.attributedText=[self settitleLabel:cell.down_label topText:[self ReplacingStr:mode.name] downText:@"" tagG:0];
+            cell.down_label.attributedText=[self settitleLabel:cell.down_label topText:[self ReplacingStr:mode.name] downText:mode.description1 tagG:0];
             cell.selected=NO;
         }
         

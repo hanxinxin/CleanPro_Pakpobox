@@ -19,6 +19,8 @@
 #import "StaffViewController.h"
 #import "EWashViewController.h"
 #import "NewLoginViewController.h"
+#import "PastCradOrderViewController.h"
+#import "PastCradOrderViewController.h"
 
 #import "NewMyWalletViewController.h"
 #import "IMessageViewController.h"
@@ -140,7 +142,7 @@
     if([userIdStr isEqualToString:@"1"])
     {
 //        [arrtitle addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"Orders", @"Language"),FGGetStringWithKeyFromTable(@"Settings", @"Language"), nil]];
-        [arrtitle addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"My Wallet", @"Language"),FGGetStringWithKeyFromTable(@"History", @"Language"),FGGetStringWithKeyFromTable(@"E-Wash Orders", @"Language"),FGGetStringWithKeyFromTable(@"Invite Friends", @"Language"), nil]];
+        [arrtitle addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"My Wallet", @"Language"),FGGetStringWithKeyFromTable(@"Past Card", @"Language"),FGGetStringWithKeyFromTable(@"History", @"Language"),FGGetStringWithKeyFromTable(@"E-Wash Orders", @"Language"),FGGetStringWithKeyFromTable(@"Invite Friends", @"Language"), nil]];
         [arrtitle addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"Introduction", @"Language"),FGGetStringWithKeyFromTable(@"Feedback", @"Language"),FGGetStringWithKeyFromTable(@"Settings", @"Language"),nil]];
         self.QuAndUser=1;
     }else
@@ -780,7 +782,7 @@
     [cell.contentView addSubview:lbl];
     //cell选中效果
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    NSArray  * titleT=arrtitle[indexPath.section];
+    NSArray * titleT=arrtitle[indexPath.section];
     cell.textLabel.text = [titleT objectAtIndex:indexPath.row];
     
 //        NSLog(@"%ld",(long)indexPath.row);
@@ -809,12 +811,15 @@
                 cell.imageView.image=[UIImage imageNamed:@"me_balance"];
             }else if (indexPath.row==1)
             {
-                
-                cell.imageView.image=[UIImage imageNamed:@"orders11"];
+                cell.imageView.image=[UIImage imageNamed:@"icon_card_lv"];
             }else if (indexPath.row==2)
             {
-                cell.imageView.image=[UIImage imageNamed:@"icon_lishijilu"];
+                
+                cell.imageView.image=[UIImage imageNamed:@"orders11"];
             }else if (indexPath.row==3)
+            {
+                cell.imageView.image=[UIImage imageNamed:@"icon_lishijilu"];
+            }else if (indexPath.row==4)
             {
                 cell.imageView.image=[UIImage imageNamed:@"invite-friends"];
             }
@@ -850,6 +855,7 @@
     cell.textLabel.textColor = [UIColor darkGrayColor];
     //    cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     //    cell.layer.cornerRadius=4;
+    
     return cell;
 }
 
@@ -946,11 +952,27 @@
                     }else
                     {
                         UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                        OrdersViewController *vc=[main instantiateViewControllerWithIdentifier:@"OrdersViewController"];
+                        PastCradOrderViewController *vc=[main instantiateViewControllerWithIdentifier:@"PastCradOrderViewController"];
                         vc.hidesBottomBarWhenPushed = YES;
                         [self.navigationController pushViewController:vc animated:YES];
                     }
                 }else if (indexPath.row==2)
+                {
+                    NSLog(@"222222");
+                    if([strPhoen isEqualToString:@"1"])
+                    {
+                        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        NewLoginViewController *vc=[main instantiateViewControllerWithIdentifier:@"NewLoginViewController"];
+                        vc.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }else
+                    {
+                        UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        OrdersViewController *vc=[main instantiateViewControllerWithIdentifier:@"OrdersViewController"];
+                        vc.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }
+                }else if (indexPath.row==3)
                 {
                     NSLog(@"333333");
                     if([strPhoen isEqualToString:@"1"])
@@ -967,7 +989,7 @@
                         vc.StatusList=2;
                         [self.navigationController pushViewController:vc animated:YES];
                     }
-                }else if (indexPath.row==3)
+                }else if (indexPath.row==4)
                 {
                     NSLog(@"333333");
                     if([strPhoen isEqualToString:@"1"])

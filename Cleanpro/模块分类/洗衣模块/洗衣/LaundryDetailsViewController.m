@@ -22,10 +22,12 @@
 #import "GoodsModel.h"
 #import "NewHomeViewController.h"
 #import "EwashMyViewController.h"
-
+#import "PayLDTableViewCell.h"
 
 #define SelectTableViewCellID @"SelectTableViewCell"
 #define integralTableViewCellID @"integralTableViewCell"
+#define PayLDTableViewCellID @"PayLDTableViewCell"
+
 
 #define WPListTableViewCellID @"WPListTableViewCell"
 @interface LaundryDetailsViewController ()<UIGestureRecognizerDelegate,UITableViewDelegate,UITableViewDataSource,integralTableViewCellCellDelegate,PaymentResultDelegate>
@@ -60,14 +62,16 @@
 @property (nonatomic, strong) IpayPayment *IPaypayment;
 @property (nonatomic, strong) Ipay *paymentSdk;
 @property (nonatomic, strong) UIView *paymentView;
-
+@property (nonatomic,strong)NSMutableArray * CardArraylist; ///可使用月卡列表
 
 @property (nonatomic, strong)NSString * order_noStr; ////支付成功的订单ID
 
 ///贩卖机订单列表
 @property (strong, nonatomic) VendingMachineView * ShopCartTopView;
 @property (nonatomic, strong)NSString * FMJPriceStr; ///贩卖机的订单总额
-
+@property (nonatomic, assign)BOOL SelectPayCard; ///判断是否显示月卡
+@property (nonatomic, assign)NSInteger SelectPayCardInt; ///选择的是那个月卡
+@property (nonatomic, strong)NSNumber * SystemTime;  //系统时间
 @end
 
 @implementation LaundryDetailsViewController
@@ -77,18 +81,22 @@
     // Do any additional setup after loading the view.
     self.arr_title = [NSMutableArray arrayWithCapacity:0];
 //    [self.arr_title addObject:[NSArray arrayWithObjects:@"Payment method",@"Payment online",@"Wallet", nil]];
-    [self.arr_title addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"Payment method", @"Language"),FGGetStringWithKeyFromTable(@"Wallet", @"Language"), nil]];
-
+    [self.arr_title addObject:[NSArray arrayWithObjects:FGGetStringWithKeyFromTable(@"Payment method", @"Language"),FGGetStringWithKeyFromTable(@"Member card", @"Language"),FGGetStringWithKeyFromTable(@"Wallet", @"Language"), nil]];
+    
     [self.arr_title addObject:[NSArray arrayWithObjects:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Credits", @"Language")], nil]];
+    self.SystemTime=@(0);
     payAndSet=0;
     payCheck=0;
     self.credit=[[NSNumber alloc] initWithInt:0];
     self.balance=[[NSNumber alloc] initWithInt:0];
+    self.CardArraylist=[NSMutableArray arrayWithCapacity:0];
     self.payment=@"2";
     self.credit_yn=@"1";////默认不使用积分
     self.order_noStr = @"";////默认是空字符串
     self.FMJPriceStr=@"0";
     PushOrderMode=nil;
+    self.SelectPayCard=NO;
+    self.SelectPayCardInt=0;
     if(self.NewOrderType==1)
     {
         [self settopViewText];
@@ -133,11 +141,13 @@
             self.title =FGGetStringWithKeyFromTable(@"Washer", @"Language");
             [self.Order_type setText:@"Washer"];
             [self.Temperature setText:[NSString stringWithFormat:@"%@ :", FGGetStringWithKeyFromTable(@"Temperature", @"Language")]];
+            [self getCardList];
         }else if([self.order_c.order_type isEqualToString:@"DRYER"])
         {
             self.title =FGGetStringWithKeyFromTable(@"Dryer", @"Language");
             [self.Temperature setText:[NSString stringWithFormat:@"%@ :", FGGetStringWithKeyFromTable(@"Duration", @"Language")]];
             [self.Order_type setText:self.order_c.order_type];
+            [self getCardList];
         }
     
      }else if (self.NewOrderType==2)
@@ -147,6 +157,7 @@
     [self hidden_TCview];
 //    [self Get_wallet_A];
     [self getToken];
+    [self GetNowTime];
 //    [self Get_existPassword];
     [super viewWillAppear:animated];
     
@@ -240,10 +251,28 @@
     [self.tableViewDonw selectRowAtIndexPath:firstPath animated:YES scrollPosition:UITableViewScrollPositionNone];
     [self.tableViewDonw registerNib:[UINib nibWithNibName:@"SelectTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:SelectTableViewCellID];
     [self.tableViewDonw registerNib:[UINib nibWithNibName:@"integralTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:integralTableViewCellID];
+    [self.tableViewDonw registerNib:[UINib nibWithNibName:@"PayLDTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:PayLDTableViewCellID];
     [self.view addSubview:self.tableViewDonw];
-    
+    self.pay_btn.frame=CGRectMake(self.pay_btn.left, self.tableViewDonw.bottom+15, self.tableViewDonw.width, 50);
 }
 
+/// 获取系统时间戳
+-(void)GetNowTime
+{
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_cardGetNowTime] parameters:nil progress:^(id progress) {
+            //        NSLog(@"请求成功 = %@",progress);
+        } success:^(id responseObject) {
+            NSLog(@"E_cardGetNowTime = %@",responseObject);
+            NSDictionary * dict =(NSDictionary * )responseObject;
+            self.SystemTime = [dict objectForKey:@"returnTime"];
+            [HudViewFZ HiddenHud];
+            
+        } failure:^(NSInteger statusCode, NSError *error) {
+            NSLog(@"error = %@",error);
+            [HudViewFZ HiddenHud];
+            
+        }];
+}
 -(void)getToken
 {
 //    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -442,6 +471,77 @@
     }];
 }
 
+-(void)getCardList
+{
+    [HudViewFZ labelExample:self.view];
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_infoMonthCardLog] parameters:nil progress:^(id progress) {
+               //        NSLog(@"请求成功 = %@",progress);
+           } success:^(id responseObject) {
+               NSLog(@"E_Getcardinfo = %@",responseObject);
+               [HudViewFZ HiddenHud];
+//               NSDictionary*  DictZ=(NSDictionary*)responseObject;
+               NSArray * Array = (NSArray * )responseObject;
+               if(Array.count>0)
+               {
+                   [self.CardArraylist removeAllObjects];
+                   NSMutableArray * arrayMu=[NSMutableArray arrayWithCapacity:0];
+                   for (int i=0; i<Array.count; i++) {
+                       NSDictionary * dict= Array[i];
+                       PastCardInfoMonthCardLogMode* mode=[[PastCardInfoMonthCardLogMode alloc] init];
+                       mode.buyTime=[dict objectForKey:@"buyTime"];
+                       mode.count=[dict objectForKey:@"count"];
+                       mode.currentCost=[dict objectForKey:@"currentCost"];
+                       mode.deleteFlags=[dict objectForKey:@"deleteFlags"];
+                       mode.dayInterval=[dict objectForKey:@"dayInterval"];
+                       mode.description1=[dict objectForKey:@"description"];
+                       mode.enDescription=[dict objectForKey:@"enDescription"];
+                       mode.expireTime=[dict objectForKey:@"expireTime"];
+                       mode.monthCardId=[dict objectForKey:@"monthCardId"] ;
+                       mode.monthCardType=[dict objectForKey:@"monthCardType"];
+                       mode.originalCost=[dict objectForKey:@"originalCost"] ;
+                       mode.residueCount=[dict objectForKey:@"residueCount"] ;
+                       mode.timeInterval=[dict objectForKey:@"timeInterval"] ;
+                       mode.useCurrentCost=[dict objectForKey:@"useCurrentCost"] ;
+                       [arrayMu addObject:mode];
+                       
+                   }
+                   
+                   for (int A=0; A<arrayMu.count; A++) {
+                       PastCardInfoMonthCardLogMode* modeMu=arrayMu[A];
+                       if([modeMu.deleteFlags intValue]==0)
+                       {
+                           [self.CardArraylist addObject:modeMu];
+                       }
+                   }
+//                   if(self.CardArraylist.count>0)
+//                   {
+//                       [self updateaddArray_arr_title];
+//                       [self.tableViewDonw reloadData];
+//                   }
+               }else{
+                   
+               }
+               
+           } failure:^(NSInteger statusCode, NSError *error) {
+               [HudViewFZ HiddenHud];
+               if(statusCode==401)
+               {
+                   [HudViewFZ showMessageTitle:@"Token expired" andDelay:2.0];
+                   [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"SetNSUserDefaults" object:nil userInfo:nil]];
+                   [[NSNotificationCenter defaultCenter]postNotification:[NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil]];
+                   
+               }else{
+                [HudViewFZ showMessageTitle:[self dictStr:error] andDelay:2.0];
+                [HudViewFZ HiddenHud];
+                   
+               }
+           }];
+}
+
+
+
+
+
 -(void)settopViewText
 {
     
@@ -552,11 +652,18 @@
         
     if([self.payment isEqualToString:@"1"])
     {
-            self.order_c.payment_platform=@"IPAY88";
-            self.order_c.coupon_code=@"";
-       
-        [self postOrder];
+//            self.order_c.payment_platform=@"IPAY88";
+//            self.order_c.coupon_code=@"";
+//
+//        [self postOrder];
 //        [self push_IPay];
+        if(self.NewOrderType==1)
+        {
+            [self Get_existPassword];
+        }else if(self.NewOrderType==2)
+        {
+            [self FMJpushViewController];
+        }
     }else if([self.payment isEqualToString:@"2"])
     {
         if(self.NewOrderType==1)
@@ -772,6 +879,35 @@
     if([self.payment isEqualToString:@"1"])
     {
 //        [self push_IPay];
+        
+        if(sender.tag==1002)
+        {
+            [self pushDetailsListViewController];
+        }else{
+        NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+        SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        if([ModeUser.payPassword isEqualToString:@""] && ModeUser.payPassword != nil)
+        {
+        
+            [self hidden_TCview];
+            [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            newPhoneViewController *vc=[main instantiateViewControllerWithIdentifier:@"newPhoneViewController"];
+            vc.index=1;
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else{
+                [self hidden_TCview];
+                [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+                dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.7/*延迟执行时间*/ * NSEC_PER_SEC));
+
+                dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+
+                    [self addtextView_view];
+                });
+            
+        }
+        }
     }else if([self.payment isEqualToString:@"2"])
     {
         NSLog(@"BTN.tag=%ld",(long)sender.tag);
@@ -852,6 +988,36 @@
     if([self.payment isEqualToString:@"1"])
     {
 //        [self push_IPay];
+        
+//        [self.payment isEqualToString:@"1"]
+        if(sender.tag==1002)
+        {
+            [self pushDetailsListViewController];
+        }else{
+        NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
+        SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        if([ModeUser.payPassword isEqualToString:@""] && ModeUser.payPassword != nil)
+        {
+        
+            [self hidden_TCview];
+            [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+            UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            newPhoneViewController *vc=[main instantiateViewControllerWithIdentifier:@"newPhoneViewController"];
+            vc.index=1;
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else{
+                [self hidden_TCview];
+                [Tuicang_View removeGestureRecognizer:tapSuperGesture22 ];
+                dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.7/*延迟执行时间*/ * NSEC_PER_SEC));
+
+                dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+
+                    [self addtextView_view];
+                });
+            
+        }
+        }
     }else if([self.payment isEqualToString:@"2"])
     {
         NSLog(@"BTN.tag=%ld",(long)sender.tag);
@@ -1278,11 +1444,29 @@
 -(void)JMPasswordNew:(NSString*)orderIDstr Password:(NSString *)Password
 {
     
-    NSDictionary *dict=@{@"ordersId":orderIDstr,
-                         @"payPassword":Password,
-                         @"amount":self.order_c.pay_amount,
-                         @"credit":self.order_c.credits,
-        };
+    NSDictionary *dict;
+    if([self.payment isEqualToString:@"1"])
+        {
+            
+            if(self.SelectPayCard==YES)
+            {
+                PastCardInfoMonthCardLogMode* mode=self.CardArraylist[self.SelectPayCardInt-2];
+                dict=@{@"ordersId":orderIDstr,
+                                 @"payPassword":Password,
+                                 @"amount":self.order_c.pay_amount,
+                                 @"credit":self.order_c.credits,
+                       @"monthCardId":mode.monthCardId,
+                };
+            }
+            
+        }else if([self.payment isEqualToString:@"2"])
+        {
+            dict=@{@"ordersId":orderIDstr,
+                             @"payPassword":Password,
+                             @"amount":self.order_c.pay_amount,
+                             @"credit":self.order_c.credits,
+            };
+        }
     NSLog(@"dict=== %@",dict);
 //        [HudViewFZ labelExample:self.view];
         [[AFNetWrokingAssistant shareAssistant] PostURL_E_washToken_error:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URL:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_JYPassword] parameters:dict progress:^(id progress) {
@@ -2035,7 +2219,133 @@
         return cell;
     }else if(indexPath.section==0)
     {
-        if( indexPath.row==1 ||  indexPath.row==2)
+        if(self.SelectPayCard==YES){
+            if(indexPath.row==1)
+            {
+                UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"cellID"];
+                    if (cell == nil) {
+                        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cellID"];
+                    }
+                    UIView *lbl = [[UIView alloc] init]; //定义一个label用于显示cell之间的分割线（未使用系统自带的分割线），也可以用view来画分割线
+                    lbl.frame = CGRectMake(cell.frame.origin.x + 10, 0, self.view.width-1, 1);
+                    lbl.backgroundColor =  [UIColor colorWithRed:240/255.0 green:241/255.0 blue:242/255.0 alpha:1];
+                    [cell.contentView addSubview:lbl];
+                    //cell选中效果
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头 向下箭头 icon_right@2x
+                    NSArray  * titleT=arr_title[indexPath.section];
+                    cell.textLabel.text = [titleT objectAtIndex:indexPath.row];
+                    cell.imageView.image=[UIImage imageNamed:@"icon_card_lv"];
+                    cell.backgroundColor = [UIColor whiteColor];
+                    cell.textLabel.textColor = [UIColor darkGrayColor];
+                    return cell;
+            }else if(indexPath.row>=2 && indexPath.row<=(self.CardArraylist.count+1))
+            {
+                
+                PayLDTableViewCell *cell1 = (PayLDTableViewCell *)[tableView dequeueReusableCellWithIdentifier:PayLDTableViewCellID];
+                if (cell1 == nil) {
+                    cell1= (PayLDTableViewCell *)[[[NSBundle  mainBundle]  loadNibNamed:@"PayLDTableViewCell" owner:self options:nil]  lastObject];
+                }
+                UIView *lbl = [[UIView alloc] init]; //定义一个label用于显示cell之间的分割线（未使用系统自带的分割线），也可以用view来画分割线
+                lbl.frame = CGRectMake(cell1.frame.origin.x + 10, 0, self.view.width-1, 1);
+                lbl.backgroundColor =  [UIColor colorWithRed:240/255.0 green:241/255.0 blue:242/255.0 alpha:1];
+                [cell1.contentView addSubview:lbl];
+                NSArray * arr =arr_title[indexPath.section];
+                PastCardInfoMonthCardLogMode* mode=arr[indexPath.row];
+                cell1.topTitle.text =mode.description1;
+                if([self.payment isEqualToString:@"1"])
+                {
+                    if(self.SelectPayCardInt==indexPath.row)
+                    {
+                    [cell1.selectBtn setImage:[UIImage imageNamed:@"check-circle-fill"] forState:UIControlStateNormal];
+                    }else{
+                        [cell1.selectBtn setImage:[UIImage imageNamed:@"circleNil"] forState:UIControlStateNormal];
+                    }
+                }else
+                {
+                    [cell1.selectBtn setImage:[UIImage imageNamed:@"circleNil"] forState:UIControlStateNormal];
+                }
+                if([mode.monthCardType isEqualToString:@"MEMBER_MONTHLY_CARD"])
+                {
+                    cell1.downTitle.text=[NSString stringWithFormat:@"Remaining times:%@",mode.residueCount];
+                }else if([mode.monthCardType isEqualToString:@"HAPPY_HOUR_CARD"])
+                {
+//                    self.SystemTime
+                    NSDate * dateS=[self timeDate:[self.SystemTime stringValue]];
+                    NSString * DQ=[self nsdateToStringHH:dateS];
+                    float TimeF=[self StringTimeFloat:DQ];
+                    NSLog(@"DQ=== %@",DQ);
+                    if(TimeF>23 || TimeF<7)
+                    {
+//                        [cell1.selectBtn setImage:[UIImage imageNamed:@"circleNil"] forState:UIControlStateNormal];
+                        cell1.userInteractionEnabled=YES;
+                        if([self.payment isEqualToString:@"1"])
+                        {
+                            if(self.SelectPayCardInt==indexPath.row)
+                            {
+                            [cell1.selectBtn setImage:[UIImage imageNamed:@"check-circle-fill"] forState:UIControlStateNormal];
+                            }else{
+                                [cell1.selectBtn setImage:[UIImage imageNamed:@"circleNil"] forState:UIControlStateNormal];
+                            }
+                        }
+                    }else{
+                        [cell1.selectBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+                        cell1.userInteractionEnabled=NO;
+                    }
+                    cell1.downTitle.text=[NSString stringWithFormat:@"Remaining times: %@ / Usage time: %@",mode.residueCount,mode.timeInterval];
+                }
+                //cell选中效果
+                cell1.selectionStyle = UITableViewCellSelectionStyleNone;
+                return cell1;
+            }else if( indexPath.row==(self.CardArraylist.count+2))
+            {
+                SelectTableViewCell *cell1 = (SelectTableViewCell *)[tableView dequeueReusableCellWithIdentifier:SelectTableViewCellID];
+                if (cell1 == nil) {
+                    cell1= (SelectTableViewCell *)[[[NSBundle  mainBundle]  loadNibNamed:@"SelectTableViewCell" owner:self options:nil]  lastObject];
+                }
+                UIView *lbl = [[UIView alloc] init]; //定义一个label用于显示cell之间的分割线（未使用系统自带的分割线），也可以用view来画分割线
+                lbl.frame = CGRectMake(cell1.frame.origin.x + 10, 0, self.view.width-1, 1);
+                lbl.backgroundColor =  [UIColor colorWithRed:240/255.0 green:241/255.0 blue:242/255.0 alpha:1];
+                [cell1.contentView addSubview:lbl];
+                    NSArray * arr =arr_title[indexPath.section];
+                    cell1.title_label.text = arr[indexPath.row];
+  
+                            [cell1.left_btn setImage:[UIImage imageNamed:@"payment-method_wallet"] forState:UIControlStateNormal];
+                            if([self.payment isEqualToString:@"1"])
+                            {
+                                [cell1.right_btn setImage:[UIImage imageNamed:@"circleNil"] forState:UIControlStateNormal];
+                            }else if ([self.payment isEqualToString:@"2"])
+                            {
+                                
+                                [cell1.right_btn setImage:[UIImage imageNamed:@"check-circle-fill"] forState:UIControlStateNormal];
+                            }
+                    
+                //cell选中效果
+                cell1.selectionStyle = UITableViewCellSelectionStyleNone;
+                return cell1;
+            }
+            
+        }else{
+            if(indexPath.row==1)
+            {
+                UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"cellID"];
+                    if (cell == nil) {
+                        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cellID"];
+                    }
+                    UIView *lbl = [[UIView alloc] init]; //定义一个label用于显示cell之间的分割线（未使用系统自带的分割线），也可以用view来画分割线
+                    lbl.frame = CGRectMake(cell.frame.origin.x + 10, 0, self.view.width-1, 1);
+                    lbl.backgroundColor =  [UIColor colorWithRed:240/255.0 green:241/255.0 blue:242/255.0 alpha:1];
+                    [cell.contentView addSubview:lbl];
+                    //cell选中效果
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //显示最右边的箭头 向下箭头 icon_right@2x
+                    NSArray  * titleT=arr_title[indexPath.section];
+                    cell.textLabel.text = [titleT objectAtIndex:indexPath.row];
+                    cell.imageView.image=[UIImage imageNamed:@"icon_card_lv"];
+                    cell.backgroundColor = [UIColor whiteColor];
+                    cell.textLabel.textColor = [UIColor darkGrayColor];
+                    return cell;
+            }else if(indexPath.row==2)
         {
         SelectTableViewCell *cell1 = (SelectTableViewCell *)[tableView dequeueReusableCellWithIdentifier:SelectTableViewCellID];
         if (cell1 == nil) {
@@ -2047,10 +2357,9 @@
         [cell1.contentView addSubview:lbl];
             NSArray * arr =arr_title[indexPath.section];
             cell1.title_label.text = arr[indexPath.row];
-            
                 if(indexPath.row==1)
                 {
-                    /*
+                    
                     [cell1.left_btn setImage:[UIImage imageNamed:@"payment-method_IPy88"] forState:UIControlStateNormal];
                     if([self.payment isEqualToString:@"1"])
                     {
@@ -2061,7 +2370,7 @@
                     }
                     
                 }else if(indexPath.row==2)
-                {*/
+                {
                     [cell1.left_btn setImage:[UIImage imageNamed:@"payment-method_wallet"] forState:UIControlStateNormal];
                     if([self.payment isEqualToString:@"1"])
                     {
@@ -2072,12 +2381,12 @@
                         [cell1.right_btn setImage:[UIImage imageNamed:@"check-circle-fill"] forState:UIControlStateNormal];
                     }
                 }
-                
             
         //cell选中效果
         cell1.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell1;
             
+        }
         }
     }else if(indexPath.section==1 && indexPath.row==0)
     {
@@ -2092,7 +2401,7 @@
         cell1.delegate=self;
         NSArray * arr =arr_title[indexPath.section];
         cell1.topLabel.text = [NSString stringWithFormat:@"%@%@",arr[indexPath.row],self.credit];
-        NSLog(@"对比 = %f,%f",[self.credit floatValue] ,[self.order_c.total_amount floatValue]*100);
+//        NSLog(@"对比 = %f,%f",[self.credit floatValue] ,[self.order_c.total_amount floatValue]*100);
         if([self.credit floatValue] >= [self.order_c.total_amount floatValue]*100 ){
             cell1.downLabel.text = [NSString stringWithFormat:@"%@:%@,%@ :%.2f",FGGetStringWithKeyFromTable(@"Total", @"Language"),self.credit,FGGetStringWithKeyFromTable(@"discount", @"Language"),[self.credit floatValue]/100.f];
             cell1.right_switch.hidden=NO;
@@ -2109,6 +2418,12 @@
             [cell1.right_switch setOn:YES];
         }
         
+        if(self.SelectPayCardInt==0)
+        {
+            cell1.right_switch.hidden=NO;
+        }else{
+            cell1.right_switch.hidden=YES;
+        }
         
         //定制开关颜色UI
         //tintColor 关状态下的背景颜色
@@ -2132,7 +2447,31 @@
      }
     return nil;
 }
-
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.row==1){
+    if(self.SelectPayCard==YES)
+    {
+        
+            
+    // 不用系统自带的箭头
+    if (cell.accessoryType == UITableViewCellAccessoryDisclosureIndicator) {
+        UIImage *arrowImage = [UIImage imageNamed:@"icon_rightDown12"];
+        UIImageView *arrowImageView = [[UIImageView alloc] initWithImage:arrowImage];
+        cell.accessoryView = arrowImageView;
+    }
+    }else
+    {
+        UIImage *arrowImage = [UIImage imageNamed:@"icon_rightDown12"];
+        //改变该图片的方向
+        arrowImage = [UIImage imageWithCGImage:arrowImage.CGImage
+                                        scale:arrowImage.scale
+                                  orientation:UIImageOrientationLeft];
+        UIImageView *arrowImageView = [[UIImageView alloc] initWithImage:arrowImage];
+        
+        cell.accessoryView = arrowImageView;
+    }
+    }
+}
 //行高
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(tableView.tag==1600)
@@ -2192,34 +2531,45 @@
     //    integralTableViewCell * cell1 = (integralTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
         if(indexPath.section==0)
         {
+            
             if(indexPath.row==1)
             {
-                /*
-                self.payment = @"1";
+                if(self.CardArraylist.count>0)
+                {
+                self.SelectPayCard=!self.SelectPayCard;
+                if (self.SelectPayCard==YES) {
+                    [self updateaddArray_arr_title];
+                }else
+                {
+                    [self updateArrayHY];
+                }
+//                [self.tableViewDonw reloadData];
+                }
+            }else{
+        if(self.SelectPayCard==YES)
+        {
+            if(indexPath.row>=2 && indexPath.row<=(self.CardArraylist.count+1))
+            {
+                self.payment=@"1";
+                self.SelectPayCardInt=indexPath.row;
                 [self.tableViewDonw reloadData];
-                
-            }else if(indexPath.row==2)
-            {*/
-                self.payment = @"2";
-                
+            }else if( indexPath.row==(self.CardArraylist.count+2))
+            {
+                self.payment=@"2";
                 [self.tableViewDonw reloadData];
-                /////屏蔽
-    //            NSData * data =[[NSUserDefaults standardUserDefaults] objectForKey:@"SaveUserMode"];
-    //            SaveUserIDMode * ModeUser  = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    //            if([ModeUser.payPassword isEqualToString:@""] && ModeUser.payPassword != nil)
-    //            {
-    ////                UIStoryboard *main=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    ////                newPhoneViewController *vc=[main instantiateViewControllerWithIdentifier:@"newPhoneViewController"];
-    ////                vc.hidesBottomBarWhenPushed = YES;
-    ////                [self.navigationController pushViewController:vc animated:YES];
-    //                payAndSet=2;
-    //                [self addselect_view:2];
-    //            }else
-    //            {
-                
-                    payAndSet=0;
-    //            }
+                payAndSet=0;
+                self.SelectPayCardInt=0;
             }
+        }else{
+                    if(indexPath.row==2)
+                    {
+                        self.payment=@"2";
+                        [self.tableViewDonw reloadData];
+                        payAndSet=0;
+             
+                    }
+        }
+        }
             }else if (indexPath.section==1)
             {
                
@@ -2229,7 +2579,68 @@
     
     }
 }
-
+-(void)updateaddArray_arr_title
+{
+    [self.arr_title removeAllObjects];
+    NSMutableArray * arrmu=[NSMutableArray arrayWithCapacity:0];
+    [arrmu addObject:FGGetStringWithKeyFromTable(@"Payment method", @"Language")];
+    [arrmu addObject:FGGetStringWithKeyFromTable(@"Member card", @"Language")];
+    
+    if(self.CardArraylist.count>0)
+    {
+        for (int i=0; i<self.CardArraylist.count; i++) {
+            PastCardInfoMonthCardLogMode* mode=self.CardArraylist[i];
+//            [arrmu addObject:mode.description1];
+            [arrmu addObject:mode];
+        }
+        
+    }
+    [arrmu addObject:FGGetStringWithKeyFromTable(@"Wallet", @"Language")];
+    [self.arr_title addObject:arrmu];
+    [self.arr_title addObject:[NSArray arrayWithObjects:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Credits", @"Language")], nil]];
+    NSInteger CA=0;
+    for (int c=0; c<self.arr_title.count; c++) {
+        NSArray * ACC=self.arr_title[c];;
+        for (int i=0; i<ACC.count; i++) {
+            CA++;
+        }
+    }
+    
+    self.tableViewDonw.frame=CGRectMake(self.topView.left, self.topView.bottom+8, SCREEN_WIDTH-self.topView.left*2, CA*56+8);
+    self.pay_btn.frame=CGRectMake(self.pay_btn.left, self.tableViewDonw.bottom+15, self.tableViewDonw.width, 50);
+    [self.tableViewDonw reloadData];
+}
+-(void)updateArrayHY
+{
+        [self.arr_title removeAllObjects];
+        NSMutableArray * arrmu=[NSMutableArray arrayWithCapacity:0];
+        [arrmu addObject:FGGetStringWithKeyFromTable(@"Payment method", @"Language")];
+        [arrmu addObject:FGGetStringWithKeyFromTable(@"Member card", @"Language")];
+        
+//        if(self.CardArraylist.count>0)
+//        {
+//            for (int i=0; i<self.CardArraylist.count; i++) {
+//                PastCardInfoMonthCardLogMode* mode=self.CardArraylist[i];
+//    //            [arrmu addObject:mode.description1];
+//                [arrmu addObject:mode];
+//            }
+//
+//        }
+        [arrmu addObject:FGGetStringWithKeyFromTable(@"Wallet", @"Language")];
+        [self.arr_title addObject:arrmu];
+        [self.arr_title addObject:[NSArray arrayWithObjects:[NSString stringWithFormat:@"%@:",FGGetStringWithKeyFromTable(@"Credits", @"Language")], nil]];
+        NSInteger CA=0;
+        for (int c=0; c<self.arr_title.count; c++) {
+            NSArray * ACC=self.arr_title[c];;
+            for (int i=0; i<ACC.count; i++) {
+                CA++;
+            }
+        }
+        
+        self.tableViewDonw.frame=CGRectMake(self.topView.left, self.topView.bottom+8, SCREEN_WIDTH-self.topView.left*2, CA*56+8);
+        self.pay_btn.frame=CGRectMake(self.pay_btn.left, self.tableViewDonw.bottom+15, self.tableViewDonw.width, 50);
+    [self.tableViewDonw reloadData];
+}
 
 #pragma mark   -----  integralTableViewCellCellDelegate  -----
 -(void)switchtouch:(NSInteger)key_Int
@@ -2249,6 +2660,50 @@
 
 
 
-
+//将时间戳转换成NSDate
++(NSDate *)changeSpToTime:(NSString*)spString{
+    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:[spString intValue]];
+    return confromTimesp;
+}
+//将NSDate按yyyy-MM-dd HH:mm:ss格式时间输出
++(NSString*)nsdateToString:(NSDate *)date{
+    NSDateFormatter *dateFormat=[[NSDateFormatter alloc]init];
+    [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString* string=[dateFormat stringFromDate:date];
+    return string;
+}
+-(NSDate *)timeDate:(NSString*)timeStampString
+{
+    // timeStampString 是服务器返回的13位时间戳
+    // iOS 生成的时间戳是10位
+    NSTimeInterval interval    =[timeStampString doubleValue] / 1000.0;
+    NSDate *date               = [NSDate dateWithTimeIntervalSince1970:interval];
+    return date;
+}
+//将NSDate按HH格式时间输出
+-(NSString*)nsdateToStringHH:(NSDate *)date{
+    NSDateFormatter *dateFormat=[[NSDateFormatter alloc]init];
+    [dateFormat setDateFormat:@"HH:mm"];
+    NSString* string=[dateFormat stringFromDate:date];
+    return string;
+}
+-(float)StringTimeFloat:(NSString*)str
+{
+    NSArray *array = [str componentsSeparatedByString:@":"];
+    float timeF=0.f;
+    for (int i=0; i<array.count; i++) {
+        NSString * strone=array[i];
+        if (i==0) {
+           timeF +=[strone floatValue];
+        }else if (i==1) {
+            float Timess=[strone floatValue];
+            timeF +=(Timess/60.f);
+        }else if (i==2) {
+            float Timess=[strone floatValue];
+            timeF +=(Timess/60.f/60.f);
+        }
+    }
+    return timeF;
+}
 
 @end

@@ -66,3 +66,14 @@
 @implementation NewOrderList
 
 @end
+
+@implementation PastCardMode
+
+@end
+@implementation PastCardListMode
+
+@end
+@implementation PastCardInfoMonthCardLogMode
+
+@end
+

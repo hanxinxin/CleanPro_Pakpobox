@@ -56,6 +56,11 @@ static int iCount=0;
 
 @property (nonatomic, strong)NSString * Pay_passwordStr;
 
+@property (nonatomic,strong)NSNumber * credit;////积分
+@property (nonatomic,strong)NSNumber * balance;///余额
+@property (nonatomic,strong)NSString * currencyUnit;////货币单位
+
+
 @property (nonatomic, strong) HQTextField *NameTextfield;
 @property (nonatomic, strong) HQTextField *PhoneTextfield;
 @property (nonatomic,strong)UIImageView* OvucherView;
@@ -212,6 +217,63 @@ static int iCount=0;
 //
 //    }
 //}
+
+
+/**
+ 获取用户钱包
+ */
+-(void)Get_wallet_A
+{
+    [HudViewFZ labelExample:self.view];
+    [[AFNetWrokingAssistant shareAssistant] GETWithCompleteURL_token:[NSString stringWithFormat:@"%@%@",FuWuQiUrl,Get_wallet] parameters:nil progress:^(id progress) {
+        NSLog(@"请求成功 = %@",progress);
+    } success:^(id responseObject) {
+        NSLog(@"responseObject = %@",responseObject);
+        [HudViewFZ HiddenHud];
+        NSDictionary * dictObject=(NSDictionary *)responseObject;
+        NSNumber * statusCode =[dictObject objectForKey:@"statusCode"];
+        
+        
+        if([statusCode intValue] ==401)
+        {
+            //            [[NSUserDefaults standardUserDefaults] setObject:@"100" forKey:@"TokenError"];
+            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"TokenError"];
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+//            for (UIViewController *controller in self.navigationController.viewControllers) {
+//
+//            }
+        }else{
+            
+            self.balance = [dictObject objectForKey:@"balance"];
+            self.currencyUnit = [dictObject objectForKey:@"currencyUnit"];
+            self.credit = [dictObject objectForKey:@"credit"];
+            
+            
+        }
+    } failure:^(NSInteger statusCode, NSError *error) {
+        NSLog(@"error = %@",error);
+        [HudViewFZ HiddenHud];
+        if(statusCode==401)
+        {
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Token expired", @"Language") andDelay:2.0];
+            dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.8/*延迟执行时间*/ * NSEC_PER_SEC));
+            
+            dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+                //创建一个消息对象
+                NSNotification * notice = [NSNotification notificationWithName:@"tongzhiViewController" object:nil userInfo:nil];
+                //发送消息
+                [[NSNotificationCenter defaultCenter]postNotification:notice];
+            });
+            
+            
+            
+        }else{
+            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
+            
+        }
+    }];
+}
+
 -(void)returnLoction:(CLLocationCoordinate2D)CLLocation
 {
     
@@ -380,7 +442,7 @@ static int iCount=0;
     if(self.OnlinePayBtn==nil)
     {
     self.OnlinePayBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, self.STable.bottom+15, 160, 36)];
-            [self.OnlinePayBtn setTitle:FGGetStringWithKeyFromTable(@"Online pay", @"Language") forState:(UIControlStateNormal)];
+            [self.OnlinePayBtn setTitle:FGGetStringWithKeyFromTable(@"Wallet pay", @"Language") forState:(UIControlStateNormal)];
             [self.OnlinePayBtn.titleLabel setTextColor:[UIColor whiteColor]];
         [self.OnlinePayBtn addTarget:self action:@selector(OnlinePayBtnTouch:) forControlEvents:UIControlEventTouchDown];
             self.OnlinePayBtn.backgroundColor=[UIColor colorWithRed:26/255.0 green:149/255.0 blue:229/255.0 alpha:1.0];
@@ -484,8 +546,72 @@ static int iCount=0;
 {
 //    [self addIPay88View];
     
-    [self Get_existPassword];
     
+    if(self.SelectWay==1)
+        {
+            if(![self.AddressString isEqualToString:@""] && ![self.AddressString isEqualToString:@"Please enter your address"])
+            {
+                if(self.NameTextfield.text!=nil && ![self.NameTextfield.text isEqualToString:@""])
+                {
+                    
+                    if(self.PhoneTextfield.text!=nil && ![self.PhoneTextfield.text isEqualToString:@""])
+                    {
+                        
+                        [self Get_existPassword];
+                    }else{
+                        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Phone cannot be empty", @"Language") andDelay:2.0];
+                    }
+                }else{
+                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Name cannot be empty", @"Language") andDelay:2.0];
+                }
+                
+            }else
+            {
+                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Please enter home address", @"Language") andDelay:2.0];
+            }
+            
+        }else if(self.SelectWay==2)
+        {
+            if(self.SelectAddress!=nil)
+            {
+                
+                if(self.NameTextfield.text!=nil && ![self.NameTextfield.text isEqualToString:@""])
+                {
+                    if(self.PhoneTextfield.text!=nil && ![self.PhoneTextfield.text isEqualToString:@""])
+                    {
+                        [self Get_existPassword];
+                    }else{
+                        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Phone cannot be empty", @"Language") andDelay:2.0];
+                    }
+                }else{
+                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Name cannot be empty", @"Language") andDelay:2.0];
+                }
+    //            [self postOrder];
+            }else{
+                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Please select a store address", @"Language") andDelay:2.0];
+            }
+        }else if(self.SelectWay==3)
+            {
+                if(self.SelectAddress!=nil)
+                {
+                    
+                    if(self.NameTextfield.text!=nil && ![self.NameTextfield.text isEqualToString:@""])
+                    {
+                        if(self.PhoneTextfield.text!=nil && ![self.PhoneTextfield.text isEqualToString:@""])
+                        {
+//
+                            [self Get_existPassword];
+                        }else{
+                            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Phone cannot be empty", @"Language") andDelay:2.0];
+                        }
+                    }else{
+                        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Name cannot be empty", @"Language") andDelay:2.0];
+                    }
+        //            [self postOrder];
+                }else{
+                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Please select a store address", @"Language") andDelay:2.0];
+                }
+            }
     
 }
 
@@ -569,7 +695,7 @@ static int iCount=0;
             {
                 if(self.PhoneTextfield.text!=nil && ![self.PhoneTextfield.text isEqualToString:@""])
                 {
-                    [self postOrder:2];
+                    [self postOrder:2 Password:@""];
                 }else
                 {
                     [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Phoen cannot be empty", @"Language") andDelay:2.0];
@@ -603,7 +729,7 @@ static int iCount=0;
         {
             if(self.PhoneTextfield.text!=nil && ![self.PhoneTextfield.text isEqualToString:@""])
             {
-                [self postOrder:3];
+                [self postOrder:3 Password:@""];
             }else{
                 [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Phone cannot be empty", @"Language") andDelay:2.0];
             }
@@ -674,7 +800,7 @@ static int iCount=0;
                     
 //                }
                 
-                [self postOrder:1];
+                [self postOrder:1 Password:@""];
             }else
             {
                 if(success==NO)
@@ -797,7 +923,7 @@ static int iCount=0;
     
     return returnArr;
 }
--(void)postOrder:(NSInteger )SelectWayOrder
+-(void)postOrder:(NSInteger )SelectWayOrder Password:(NSString*)Password
 //-(void)postOrder
 {
     
@@ -830,6 +956,8 @@ static int iCount=0;
                                   @"fileId":self.fileIdString,
         //                          @"recipientAddress":self.SelectAddress.siteName,
                                   @"paymentPlatform" :@"CASH_PAY",
+//               @"paymentPlatform" :@"WALLET",
+//               @"payPassword":Password,
                @"recipientName":self.NameTextfield.text,
                @"recipientPhoneNumber":self.PhoneTextfield.text,
             };
@@ -854,6 +982,8 @@ static int iCount=0;
                @"items":returnArrM,
                @"logisticsType":logisticsType,
                @"paymentPlatform" :@"CASH_PAY",
+//               @"paymentPlatform" :@"WALLET",
+//               @"payPassword":Password,
                @"recipientName":self.NameTextfield.text,
                @"recipientPhoneNumber":self.PhoneTextfield.text,
             };
@@ -931,7 +1061,7 @@ static int iCount=0;
     }];
 }
 
--(void)postIpay88Order:(NSInteger)SelectWayOrder
+-(void)postIpay88Order:(NSInteger)SelectWayOrder Password:(NSString*)Password
 {
     NSArray * returnArrM=[self returnProductVariantId];
     
@@ -951,6 +1081,8 @@ static int iCount=0;
                               @"siteId":mode.siteId,
                               @"items":returnArrM,
                               @"logisticsType":logisticsType,
+               @"paymentPlatform" :@"WALLET",
+               @"payPassword":Password,
                @"recipientName":self.NameTextfield.text,
                @"recipientPhoneNumber":self.PhoneTextfield.text,
         };
@@ -961,6 +1093,8 @@ static int iCount=0;
                               @"siteId":self.SelectAddress.siteId,
                               @"items":returnArrM,
                               @"logisticsType":logisticsType,
+               @"paymentPlatform" :@"WALLET",
+               @"payPassword":Password,
                @"recipientName":self.NameTextfield.text,
                @"recipientPhoneNumber":self.PhoneTextfield.text,
         };
@@ -971,6 +1105,8 @@ static int iCount=0;
                               @"siteId":self.SelectAddress.siteId,
                               @"items":returnArrM,
                               @"logisticsType":logisticsType,
+               @"paymentPlatform" :@"WALLET",
+               @"payPassword":Password,
                @"recipientName":self.NameTextfield.text,
                @"recipientPhoneNumber":self.PhoneTextfield.text,
         };
@@ -1050,17 +1186,25 @@ static int iCount=0;
                 {
                     if(self->_PushOrderMode!=nil)
                     {
-                        [self pushView:self->_PushOrderMode PaymentMethodStr:1];
+//                        [self pushView:self->_PushOrderMode PaymentMethodStr:1];/
+                        [self JMPasswordNew:mode.ordersId Password:Password  SelectWayOrder:1];
                     }
-                }else if(SelectWayOrder==2) ///上门不需要上传图片
+                }else if(SelectWayOrder==2) ///钱包支付
                 {
 //                    [self PostIpay88:mode.ordersId PaymentItemId:paymentItemIdsStr amount:amountStr];
-                    [self Get_existPassword];
+//                    [self Get_existPassword];
+                    if(self->_PushOrderMode!=nil)
+                    {
+//                       [self pushView:self->_PushOrderMode PaymentMethodStr:3];
+                        [self JMPasswordNew:mode.ordersId Password:Password SelectWayOrder:3];
+                    }
+                    
                 }else if(SelectWayOrder==3) ///洗衣店不需要上传图片也不需要支付
                 {
                     if(self->_PushOrderMode!=nil)
                     {
-                        [self pushView:self->_PushOrderMode PaymentMethodStr:1];
+//                        [self pushView:self->_PushOrderMode PaymentMethodStr:1];
+                        [self JMPasswordNew:mode.ordersId Password:Password SelectWayOrder:1];
                     }
                 }
                 
@@ -1083,6 +1227,86 @@ static int iCount=0;
     //                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Get error", @"Language") andDelay:2.0];
         }];
 }
+
+
+-(void)JMPasswordNew:(NSString*)orderIDstr Password:(NSString *)Password SelectWayOrder:(NSInteger)SelectWayOrder
+{
+    
+    NSDictionary *dict=@{@"ordersId":orderIDstr,
+                         @"payPassword":Password,
+                         @"amount":self.TotalStr,
+                         @"credit":@"0",
+        };
+    NSLog(@"dict=== %@",dict);
+//        [HudViewFZ labelExample:self.view];
+        [[AFNetWrokingAssistant shareAssistant] PostURL_E_washToken_error:[[NSUserDefaults standardUserDefaults] objectForKey:@"Token"] URL:[NSString stringWithFormat:@"%@%@",E_FuWuQiUrl,E_JYPassword] parameters:dict progress:^(id progress) {
+            NSLog(@"请求成功 = %@",progress);
+        }Success:^(NSInteger statusCode,id responseObject) {
+            [HudViewFZ HiddenHud];
+            NSLog(@"responseObject = %@",responseObject);
+            if(statusCode==200)
+            {
+                NSDictionary * dict = (NSDictionary*)responseObject;
+                NSNumber * result= [dict objectForKey:@"result"];
+                if([result integerValue]==1){
+//                    [self pushView:orderIDstr taskCommandStr:@""];
+                        if(self->_PushOrderMode!=nil)
+                        {
+                           [self pushView:self->_PushOrderMode PaymentMethodStr:SelectWayOrder];
+                        }
+                    
+                    
+                }
+            }else
+            {
+                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"statusCode error", @"Language") andDelay:2.0];
+            }
+        } failure:^(id receive, NSInteger statusCode, NSError *error) {
+            NSLog(@"error = %@",error);
+//            NSString * errorMessage = (NSString *)receive;
+//            [HudViewFZ showMessageTitle:errorMessage andDelay:2.0];
+            NSNumber * code=[self dictCodeStr:error];
+            if([code integerValue]==1000)
+            {
+                [HudViewFZ showMessageTitle:[self dictStr:error] andDelay:2.0];
+            }if([code integerValue]==1001)
+            {
+                [HudViewFZ showMessageTitle:[self dictStr:error] andDelay:2.0];
+                [self addselect_view:1];
+            }
+            [HudViewFZ HiddenHud];
+        }];
+}
+-(NSString *)dictStr:(NSError *)error
+{
+//    NSString * receive=@"";
+    NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+//    receive= [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *dictFromData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
+    NSString  * message = [dictFromData valueForKey:@"message"];
+//
+    return message;
+}
+-(NSNumber *)dictCodeStr:(NSError *)error
+{
+//    NSString * receive=@"";
+    NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+//    receive= [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *dictFromData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
+    NSNumber * errorCode = [dictFromData valueForKey:@"errorCode"];
+//
+    return errorCode;
+}
+-(NSString *)dictMessageStr:(NSError *)error
+{
+//    NSString * receive=@"";
+    NSData *responseData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+//    receive= [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSDictionary *dictFromData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&error];
+    NSString * message = [dictFromData valueForKey:@"message"];
+    return message;
+}
+
 
 
 -(void)PostIpay88:(NSString*)OrderID PaymentItemId:(NSString*)PaymentItemId amount:(NSString*)amount
@@ -1179,69 +1403,69 @@ static int iCount=0;
 }
 -(void)PayButtonTouch:(id)sender
 {
-    if(self.SelectWay==1)
-    {
-        if(![self.AddressString isEqualToString:@""] && ![self.AddressString isEqualToString:@"Please enter your address"])
-        {
-            if(self.NameTextfield.text!=nil && ![self.NameTextfield.text isEqualToString:@""])
-            {
-                
-                if(self.PhoneTextfield.text!=nil && ![self.PhoneTextfield.text isEqualToString:@""])
-                {
-                    [self postIpay88Order:2];
-                }else{
-                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Phone cannot be empty", @"Language") andDelay:2.0];
-                }
-            }else{
-                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Name cannot be empty", @"Language") andDelay:2.0];
-            }
-            
-        }else
-        {
-            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Please enter home address", @"Language") andDelay:2.0];
-        }
-        
-    }else if(self.SelectWay==2)
-    {
-        if(self.SelectAddress!=nil)
-        {
-            
-            if(self.NameTextfield.text!=nil && ![self.NameTextfield.text isEqualToString:@""])
-            {
-                if(self.PhoneTextfield.text!=nil && ![self.PhoneTextfield.text isEqualToString:@""])
-                {
-                    [self postIpay88Order:2];
-                }else{
-                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Phone cannot be empty", @"Language") andDelay:2.0];
-                }
-            }else{
-                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Name cannot be empty", @"Language") andDelay:2.0];
-            }
-//            [self postOrder];
-        }else{
-            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Please select a store address", @"Language") andDelay:2.0];
-        }
-    }else if(self.SelectWay==3)
-        {
-            if(self.SelectAddress!=nil)
-            {
-                
-                if(self.NameTextfield.text!=nil && ![self.NameTextfield.text isEqualToString:@""])
-                {
-                    if(self.PhoneTextfield.text!=nil && ![self.PhoneTextfield.text isEqualToString:@""])
-                    {
-                        [self postIpay88Order:2];
-                    }else{
-                        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Phone cannot be empty", @"Language") andDelay:2.0];
-                    }
-                }else{
-                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Name cannot be empty", @"Language") andDelay:2.0];
-                }
-    //            [self postOrder];
-            }else{
-                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Please select a store address", @"Language") andDelay:2.0];
-            }
-        }
+//    if(self.SelectWay==1)
+//    {
+//        if(![self.AddressString isEqualToString:@""] && ![self.AddressString isEqualToString:@"Please enter your address"])
+//        {
+//            if(self.NameTextfield.text!=nil && ![self.NameTextfield.text isEqualToString:@""])
+//            {
+//
+//                if(self.PhoneTextfield.text!=nil && ![self.PhoneTextfield.text isEqualToString:@""])
+//                {
+//                    [self postIpay88Order:2 Password:Password];;
+//                }else{
+//                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Phone cannot be empty", @"Language") andDelay:2.0];
+//                }
+//            }else{
+//                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Name cannot be empty", @"Language") andDelay:2.0];
+//            }
+//
+//        }else
+//        {
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Please enter home address", @"Language") andDelay:2.0];
+//        }
+//
+//    }else if(self.SelectWay==2)
+//    {
+//        if(self.SelectAddress!=nil)
+//        {
+//
+//            if(self.NameTextfield.text!=nil && ![self.NameTextfield.text isEqualToString:@""])
+//            {
+//                if(self.PhoneTextfield.text!=nil && ![self.PhoneTextfield.text isEqualToString:@""])
+//                {
+//                    [self postIpay88Order:2 Password:Password];;
+//                }else{
+//                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Phone cannot be empty", @"Language") andDelay:2.0];
+//                }
+//            }else{
+//                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Name cannot be empty", @"Language") andDelay:2.0];
+//            }
+////            [self postOrder];
+//        }else{
+//            [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Please select a store address", @"Language") andDelay:2.0];
+//        }
+//    }else if(self.SelectWay==3)
+//        {
+//            if(self.SelectAddress!=nil)
+//            {
+//
+//                if(self.NameTextfield.text!=nil && ![self.NameTextfield.text isEqualToString:@""])
+//                {
+//                    if(self.PhoneTextfield.text!=nil && ![self.PhoneTextfield.text isEqualToString:@""])
+//                    {
+//                        [self postIpay88Order:2 Password:Password];
+//                    }else{
+//                        [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Phone cannot be empty", @"Language") andDelay:2.0];
+//                    }
+//                }else{
+//                    [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Name cannot be empty", @"Language") andDelay:2.0];
+//                }
+//    //            [self postOrder];
+//            }else{
+//                [HudViewFZ showMessageTitle:FGGetStringWithKeyFromTable(@"Please select a store address", @"Language") andDelay:2.0];
+//            }
+//        }
     
     
 }
@@ -1481,8 +1705,8 @@ static int iCount=0;
         {
             blockSelf.Pay_passwordStr=password;
 //            [blockSelf JYPayPassword]; ///屏蔽校验密码 后台校验
-//            [blockSelf postOrder:blockSelf.Pay_passwordStr];
-            NSLog(@"暂无下一步操作");
+            [blockSelf postIpay88Order:2 Password:password];
+//            NSLog(@"暂无下一步操作");
         }
     };
     [self.view addSubview:Tuicang_View1];

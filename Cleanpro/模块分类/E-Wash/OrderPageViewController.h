@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)NSMutableArray* CommodityArr; ///已选择的购物商品数组
 @property (strong, nonatomic) NSString * TotalStr;
 
-@property (assign, nonatomic) NSInteger PaymentMethodStr; ///1是现金 2是 ipay88
+@property (assign, nonatomic) NSInteger PaymentMethodStr; ///1是现金 2是 ipay88 3 是钱包  现在默认是钱包
 
 @end
 

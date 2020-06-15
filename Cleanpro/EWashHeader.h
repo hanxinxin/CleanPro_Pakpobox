@@ -33,6 +33,9 @@
 #define E_PostaddressUpdate @"/api/member/v1/address/update" ///更新个人的地址
 #define E_PostInviteCode @"/api/member/v1/usingInviteCode" ///填写邀请码
 #define E_GetwalletList @"/api/member/v1/wallet/log/query" ///获取钱包列表
+#define E_GetRechargeList @"/api/pay/v1/recharge/products"  ///获取充值列表
+
+
 
 #define E_Getnearby @"/api/user/v1/merchant/nearby"  /// nearby 附近地图
 
@@ -51,6 +54,14 @@
 #define E_GetBleInfo @"/api/locker/v1/ble/info/by-site-serial-number/" ///获取蓝牙的信息
 #define E_Getquery @"/api/product/v1/commodity/query/clean-pro/by-site-id/" ///获取商品信息
 #define E_JYPassword @"/api/orders/v1/member/app/wallet/pay"  ///支付扣钱和校验密码
+#define E_cardGetNowTime @"/api/member/v1/card/getNowTime"  ///获取系统的时间戳
+///月卡模块
+#define E_Getcardinfo @"/api/member/v1/card/info"  ///查看可购买月卡列表
+#define E_getAllCard @"/api/member/v1/card/getAllCard" //查看购买卡的所有历史记录
+#define E_buyMonthCard @"/api/member/v1/app/card/buyMonthCard" ///购买月卡
+#define E_infoMonthCardLog @"/api/member/v1/card/infoMonthCardLog" ///验证月卡是否过期
+
+
 
 
 #define E_MenuList @"/api/product/v1/menu/list"  /// 获取商品菜单

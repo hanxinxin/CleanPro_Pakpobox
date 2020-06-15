@@ -92,8 +92,8 @@
            [self.imageViewArr addObject:[UIImage imageNamed:@"WashingTo.jpg"]];
 //       }
     self.CollectionArray= [NSMutableArray arrayWithCapacity:0];
-//    [self.CollectionArray addObject:@[@"Laundry",@"E-wash",@"Ironing"]];
-    [self.CollectionArray addObject:@[@"Laundry",@"E-wash"]];
+    [self.CollectionArray addObject:@[@"Laundry",@"E-wash",@"Ironing"]];
+//    [self.CollectionArray addObject:@[@"Laundry",@"E-wash"]];
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05/*延迟执行时间*/ * NSEC_PER_SEC));
     
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{

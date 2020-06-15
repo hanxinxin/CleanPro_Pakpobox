@@ -11,7 +11,9 @@
 #import "LaundryDetailsViewController.h"
 #import "SettingViewController.h"
 #import "EwashMyViewController.h"
-//#import "LaundryDetailsViewController.h"
+#import "AddressSViewController.h"
+#import "MembershipViewController.h"
+#import "PastCradViewController.h"
 
 @interface SetPayPTwoViewController ()<UIGestureRecognizerDelegate,UITextFieldDelegate>
 
@@ -404,32 +406,28 @@
     if(self.index==1)
     {
         for (UIViewController *controller in self.navigationController.viewControllers) {
-            if ([controller isKindOfClass:[EwashMyViewController class]]) {
-                [self.navigationController popToViewController:controller animated:YES];
-            }
-        }
-        for (UIViewController *controller in self.navigationController.viewControllers) {
             if ([controller isKindOfClass:[LaundryDetailsViewController class]]) {
+                [self.navigationController popToViewController:controller animated:YES];
+            }else if ([controller isKindOfClass:[AddressSViewController class]]) {
+                [self.navigationController popToViewController:controller animated:YES];
+            }else if ([controller isKindOfClass:[PastCradViewController class]]) {
                 [self.navigationController popToViewController:controller animated:YES];
             }
         }
     
     }
     for (UIViewController *controller in self.navigationController.viewControllers) {
-        if ([controller isKindOfClass:[MyWalletViewController class]]) {
+        if ([controller isKindOfClass:[MembershipViewController class]]) {
+            [self.navigationController popToViewController:controller animated:YES];
+        }else if ([controller isKindOfClass:[AddressSViewController class]]) {
+            [self.navigationController popToViewController:controller animated:YES];
+        }else if ([controller isKindOfClass:[SettingViewController class]]) {
+            [self.navigationController popToViewController:controller animated:YES];
+        }else if ([controller isKindOfClass:[LaundryDetailsViewController class]]) {
             [self.navigationController popToViewController:controller animated:YES];
         }
     }
-    for (UIViewController *controller in self.navigationController.viewControllers) {
-        if ([controller isKindOfClass:[EwashMyViewController class]]) {
-            [self.navigationController popToViewController:controller animated:YES];
-        }
-    }
-    for (UIViewController *controller in self.navigationController.viewControllers) {
-        if ([controller isKindOfClass:[SettingViewController class]]) {
-            [self.navigationController popToViewController:controller animated:YES];
-        }
-    }
+   
     
 }
 /*
